@@ -12,8 +12,6 @@ import {
   IconArrowRight,
 } from '@tabler/icons-react';
 import {
-  Accordion,
-  Anchor,
   Badge,
   Box,
   Button,
@@ -29,6 +27,7 @@ import {
   Title,
 } from '@mantine/core';
 import { IconPhoto } from '@tabler/icons-react';
+import { FAQ } from '../FAQ/FAQ';
 import classes from './Welcome.module.css';
 
 // Set to true once you add real screenshots to /public/
@@ -153,7 +152,7 @@ export function Welcome() {
 
         <Group justify="center" mt="md">
           <Button
-            href="#download"
+            href="https://github.com/gfazioli/findergit-website/releases/latest"
             component="a"
             leftSection={<IconDownload size={20} />}
             size="xl"
@@ -249,7 +248,7 @@ export function Welcome() {
                 Download the .dmg, open it, drag to Applications.
               </Text>
               <Button
-                href="#"
+                href="https://github.com/gfazioli/findergit-website/releases/latest"
                 component="a"
                 leftSection={<IconDownload size={20} />}
                 size="lg"
@@ -270,95 +269,9 @@ export function Welcome() {
         <Title order={2} ta="center">
           Frequently Asked Questions
         </Title>
-        <Accordion variant="separated" radius="md" w="100%" maw={700} mt="md">
-          <Accordion.Item value="what">
-            <Accordion.Control>What is FinderGit?</Accordion.Control>
-            <Accordion.Panel>
-              <Text c="dimmed" size="sm">
-                FinderGit is a native macOS application that works as a Git-aware file browser.
-                Think of it as Finder&apos;s list view, but with Git status, branch info, inline diffs,
-                and commit/push/pull actions built in.
-              </Text>
-            </Accordion.Panel>
-          </Accordion.Item>
-
-          <Accordion.Item value="free">
-            <Accordion.Control>Is FinderGit free?</Accordion.Control>
-            <Accordion.Panel>
-              <Text c="dimmed" size="sm">
-                Yes, FinderGit is currently free. If you find it useful, consider{' '}
-                <Anchor href="https://github.com/sponsors/gfazioli" size="sm">
-                  sponsoring the project
-                </Anchor>.
-              </Text>
-            </Accordion.Panel>
-          </Accordion.Item>
-
-          <Accordion.Item value="macos">
-            <Accordion.Control>What macOS version do I need?</Accordion.Control>
-            <Accordion.Panel>
-              <Text c="dimmed" size="sm">
-                macOS 15 (Sequoia) or later. FinderGit is built with SwiftUI and uses APIs
-                available from macOS 15+.
-              </Text>
-            </Accordion.Panel>
-          </Accordion.Item>
-
-          <Accordion.Item value="replace">
-            <Accordion.Control>Does FinderGit replace my Git client?</Accordion.Control>
-            <Accordion.Panel>
-              <Text c="dimmed" size="sm">
-                Not entirely. FinderGit is great for everyday operations (status check, commit,
-                push, pull) across many repos at once. For advanced workflows (interactive rebase,
-                cherry-pick, complex merges), you&apos;ll still want a full Git client or the terminal.
-              </Text>
-            </Accordion.Panel>
-          </Accordion.Item>
-
-          <Accordion.Item value="unsigned">
-            <Accordion.Control>Why does macOS say the app is from an unidentified developer?</Accordion.Control>
-            <Accordion.Panel>
-              <Text c="dimmed" size="sm">
-                FinderGit is not yet signed with an Apple Developer ID certificate. To open it,
-                right-click the app, choose &quot;Open&quot;, then click &quot;Open&quot; in the confirmation dialog.
-                You only need to do this once.
-              </Text>
-            </Accordion.Panel>
-          </Accordion.Item>
-
-          <Accordion.Item value="detect">
-            <Accordion.Control>How does FinderGit detect repositories?</Accordion.Control>
-            <Accordion.Panel>
-              <Text c="dimmed" size="sm">
-                When you add a root folder, FinderGit recursively scans for directories containing
-                .git/. The scan depth is configurable in Settings (default: 5 levels). Heavy
-                directories like node_modules and DerivedData are automatically skipped.
-              </Text>
-            </Accordion.Panel>
-          </Accordion.Item>
-
-          <Accordion.Item value="modify">
-            <Accordion.Control>Does FinderGit modify my repositories?</Accordion.Control>
-            <Accordion.Panel>
-              <Text c="dimmed" size="sm">
-                Only when you explicitly perform an action (commit, push, pull, stage, etc.).
-                FinderGit reads your repository state via git status and git diff — it never
-                modifies anything without your command.
-              </Text>
-            </Accordion.Panel>
-          </Accordion.Item>
-
-          <Accordion.Item value="live">
-            <Accordion.Control>How does the live update work?</Accordion.Control>
-            <Accordion.Panel>
-              <Text c="dimmed" size="sm">
-                FinderGit uses macOS FSEvents to monitor file system changes in real time. When a
-                file changes inside a watched repository, the status is automatically refreshed
-                within ~300ms.
-              </Text>
-            </Accordion.Panel>
-          </Accordion.Item>
-        </Accordion>
+        <Box w="100%" maw={700} mt="md">
+          <FAQ />
+        </Box>
       </Stack>
     </Container>
   );

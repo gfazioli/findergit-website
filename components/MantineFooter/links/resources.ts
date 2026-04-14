@@ -7,17 +7,17 @@ export const resources = [
   {
     key: 'getting-started',
     title: 'Getting Started',
-    href: '/docs',
+    href: '/docs/getting-started',
   },
   {
     key: 'keyboard-shortcuts',
     title: 'Keyboard Shortcuts',
-    href: '/docs',
+    href: '/docs/keyboard-shortcuts',
   },
   {
-    key: 'support',
+    key: 'issues',
     title: 'Report an Issue',
-    href: 'https://github.com/gfazioli/FinderGit/issues',
+    href: 'https://github.com/gfazioli/findergit-website/issues',
     newWindow: true,
   },
 ];

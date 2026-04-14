@@ -9,7 +9,7 @@ export default {
   download: {
     type: 'page',
     title: 'Download',
-    href: 'https://github.com/gfazioli/FinderGit/releases/latest',
+    href: 'https://github.com/gfazioli/findergit-website/releases/latest',
   },
   community: {
     title: 'Community',
@@ -19,13 +19,9 @@ export default {
         title: 'Blog',
         href: 'https://undolog.com/',
       },
-      github: {
-        title: 'GitHub Discussions',
-        href: 'https://github.com/gfazioli/FinderGit/discussions',
-      },
       issues: {
         title: 'Report an Issue',
-        href: 'https://github.com/gfazioli/FinderGit/issues',
+        href: 'https://github.com/gfazioli/findergit-website/issues',
       },
     },
   },

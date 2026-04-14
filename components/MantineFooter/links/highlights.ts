@@ -2,7 +2,8 @@ export const highlights = [
   {
     key: 'download',
     title: 'Download FinderGit',
-    href: '#download',
+    href: 'https://github.com/gfazioli/findergit-website/releases/latest',
+    newWindow: true,
   },
   {
     key: 'release-notes',

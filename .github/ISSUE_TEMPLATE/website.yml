@@ -1,0 +1,31 @@
+name: Website Issue
+description: Report a problem with the FinderGit website or documentation
+title: "[Website]: "
+labels: ["website"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Found a problem on the website or in the documentation? Let us know.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What's wrong?
+      placeholder: Describe the issue with the website or docs...
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: Page URL
+      description: Which page has the issue?
+      placeholder: "https://findergit-website.vercel.app/docs/..."
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots.

@@ -77,6 +77,6 @@ export default {
     version: '1.0.0',
     minMacOS: '15.0',
     downloadUrl:
-      'https://github.com/gfazioli/FinderGit/releases/latest',
+      'https://github.com/gfazioli/findergit-website/releases/latest',
   },
 } as const;
