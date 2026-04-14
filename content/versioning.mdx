@@ -1,0 +1,31 @@
+import { Callout, FileTree } from 'nextra/components'
+
+# Versioning
+
+> [!NOTE]
+>
+> In this page we have removed the TOC on the left side as example 👉
+
+
+
+This document explains the versioning strategy for this project, which follows Semantic Versioning guidelines. Releases are numbered in the format `<major>.<minor>.<patch>`. Breaking backwards compatibility bumps the major version, new additions without breaking compatibility bump the minor version, and bug fixes bump the patch version.
+
+## Overview
+
+For transparency and insight into our release cycle, and for striving to maintain backwards compatibility, this code will be maintained under the **Semantic Versioning guidelines** as much as possible.
+
+Releases will be numbered with the following format:
+
+`<major>.<minor>.<patch>`
+
+Example: `1.0.0-alpha < 1.0.0-alpha.1 < 1.0.0-alpha.beta < 1.0.0-beta < 1.0.0-beta.2 < 1.0.0-beta.11 < 1.0.0-rc.1 < 1.0.0`
+
+And constructed with the following guidelines:
+
+- Breaking backwards compatibility bumps the major (and resets the minor and patch)
+- New additions without breaking backwards compatibility bumps the minor (and resets the patch)
+- Bug fixes and misc changes bumps the patch
+
+For more information on SemVer, please visit http://semver.org/.
+
+For more information about npm versioning, please visit https://github.com/npm/node-semver
