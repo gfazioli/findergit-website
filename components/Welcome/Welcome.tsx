@@ -119,6 +119,14 @@ export function Welcome() {
           Free for macOS 15+
         </Badge>
 
+        <Image
+          src="/icon-512x512.png"
+          alt="FinderGit"
+          w={{ base: 120, sm: 160, md: 200 }}
+          h={{ base: 120, sm: 160, md: 200 }}
+          style={{ borderRadius: 32 }}
+        />
+
         <Title maw="90vw" mx="auto" className={classes.title} ta="center">
           Your repositories were never meant to be{' '}
           <TextAnimate
