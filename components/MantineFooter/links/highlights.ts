@@ -3,7 +3,6 @@ export const highlights = [
     key: 'download',
     title: 'Download FinderGit',
     href: '#download',
-    new: true,
   },
   {
     key: 'release-notes',

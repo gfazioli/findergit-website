@@ -12,6 +12,8 @@ import {
   IconArrowRight,
 } from '@tabler/icons-react';
 import {
+  Accordion,
+  Anchor,
   Badge,
   Box,
   Button,
@@ -26,7 +28,42 @@ import {
   ThemeIcon,
   Title,
 } from '@mantine/core';
+import { IconPhoto } from '@tabler/icons-react';
 import classes from './Welcome.module.css';
+
+// Set to true once you add real screenshots to /public/
+const HAS_SCREENSHOTS = false;
+
+function ScreenshotPlaceholder({
+  src,
+  alt,
+  label,
+  height = 400,
+}: {
+  src: string;
+  alt: string;
+  label: string;
+  height?: number;
+}) {
+  if (!HAS_SCREENSHOTS) {
+    return (
+      <Paper shadow="xl" p={4} radius="lg" bg="dark.8" my={16}>
+        <Center h={height} style={{ borderRadius: 'var(--mantine-radius-md)' }} bg="dark.7">
+          <Stack align="center" gap="xs">
+            <IconPhoto size={48} color="var(--mantine-color-dark-3)" />
+            <Text c="dark.3" size="sm">{label}</Text>
+          </Stack>
+        </Center>
+      </Paper>
+    );
+  }
+
+  return (
+    <Paper shadow="xl" p={4} radius="lg" bg="dark.8" my={16}>
+      <Image src={src} alt={alt} radius="md" />
+    </Paper>
+  );
+}
 
 const features = [
   {
@@ -130,14 +167,12 @@ export function Welcome() {
       </Stack>
 
       {/* ─── Screenshot ─── */}
-      <Paper shadow="xl" p={4} radius="lg" bg="dark.8" my={32}>
-        <Image
-          src="/screenshot-hero.png"
-          alt="FinderGit — Git-aware file browser for macOS"
-          radius="md"
-          fallbackSrc="https://placehold.co/1200x700/1a1b1e/4a98eb?text=FinderGit+Screenshot"
-        />
-      </Paper>
+      <ScreenshotPlaceholder
+        src="/screenshot-hero.png"
+        alt="FinderGit — Git-aware file browser for macOS"
+        label="App Screenshot"
+        height={500}
+      />
 
       {/* ─── Problem Statement ─── */}
       <Stack align="center" gap="md" my={64}>
@@ -170,22 +205,18 @@ export function Welcome() {
 
       {/* ─── More Screenshots ─── */}
       <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg" my={64}>
-        <Paper shadow="md" p={4} radius="lg" bg="dark.8">
-          <Image
-            src="/screenshot-diff.png"
-            alt="Inline diff viewer"
-            radius="md"
-            fallbackSrc="https://placehold.co/600x400/1a1b1e/71b0f0?text=Diff+Viewer"
-          />
-        </Paper>
-        <Paper shadow="md" p={4} radius="lg" bg="dark.8">
-          <Image
-            src="/screenshot-detail.png"
-            alt="Repository detail panel"
-            radius="md"
-            fallbackSrc="https://placehold.co/600x400/1a1b1e/71b0f0?text=Detail+Panel"
-          />
-        </Paper>
+        <ScreenshotPlaceholder
+          src="/screenshot-diff.png"
+          alt="Inline diff viewer"
+          label="Diff Viewer"
+          height={300}
+        />
+        <ScreenshotPlaceholder
+          src="/screenshot-detail.png"
+          alt="Repository detail panel"
+          label="Detail Panel"
+          height={300}
+        />
       </SimpleGrid>
 
       {/* ─── Download Section ─── */}
@@ -226,6 +257,101 @@ export function Welcome() {
           </Paper>
         </Stack>
       </Box>
+      {/* ─── FAQ ─── */}
+      <Stack align="center" gap="md" my={64}>
+        <Title order={2} ta="center">
+          Frequently Asked Questions
+        </Title>
+        <Accordion variant="separated" radius="md" w="100%" maw={700} mt="md">
+          <Accordion.Item value="what">
+            <Accordion.Control>What is FinderGit?</Accordion.Control>
+            <Accordion.Panel>
+              <Text c="dimmed" size="sm">
+                FinderGit is a native macOS application that works as a Git-aware file browser.
+                Think of it as Finder&apos;s list view, but with Git status, branch info, inline diffs,
+                and commit/push/pull actions built in.
+              </Text>
+            </Accordion.Panel>
+          </Accordion.Item>
+
+          <Accordion.Item value="free">
+            <Accordion.Control>Is FinderGit free?</Accordion.Control>
+            <Accordion.Panel>
+              <Text c="dimmed" size="sm">
+                Yes, FinderGit is currently free. If you find it useful, consider{' '}
+                <Anchor href="https://github.com/sponsors/gfazioli" size="sm">
+                  sponsoring the project
+                </Anchor>.
+              </Text>
+            </Accordion.Panel>
+          </Accordion.Item>
+
+          <Accordion.Item value="macos">
+            <Accordion.Control>What macOS version do I need?</Accordion.Control>
+            <Accordion.Panel>
+              <Text c="dimmed" size="sm">
+                macOS 15 (Sequoia) or later. FinderGit is built with SwiftUI and uses APIs
+                available from macOS 15+.
+              </Text>
+            </Accordion.Panel>
+          </Accordion.Item>
+
+          <Accordion.Item value="replace">
+            <Accordion.Control>Does FinderGit replace my Git client?</Accordion.Control>
+            <Accordion.Panel>
+              <Text c="dimmed" size="sm">
+                Not entirely. FinderGit is great for everyday operations (status check, commit,
+                push, pull) across many repos at once. For advanced workflows (interactive rebase,
+                cherry-pick, complex merges), you&apos;ll still want a full Git client or the terminal.
+              </Text>
+            </Accordion.Panel>
+          </Accordion.Item>
+
+          <Accordion.Item value="unsigned">
+            <Accordion.Control>Why does macOS say the app is from an unidentified developer?</Accordion.Control>
+            <Accordion.Panel>
+              <Text c="dimmed" size="sm">
+                FinderGit is not yet signed with an Apple Developer ID certificate. To open it,
+                right-click the app, choose &quot;Open&quot;, then click &quot;Open&quot; in the confirmation dialog.
+                You only need to do this once.
+              </Text>
+            </Accordion.Panel>
+          </Accordion.Item>
+
+          <Accordion.Item value="detect">
+            <Accordion.Control>How does FinderGit detect repositories?</Accordion.Control>
+            <Accordion.Panel>
+              <Text c="dimmed" size="sm">
+                When you add a root folder, FinderGit recursively scans for directories containing
+                .git/. The scan depth is configurable in Settings (default: 5 levels). Heavy
+                directories like node_modules and DerivedData are automatically skipped.
+              </Text>
+            </Accordion.Panel>
+          </Accordion.Item>
+
+          <Accordion.Item value="modify">
+            <Accordion.Control>Does FinderGit modify my repositories?</Accordion.Control>
+            <Accordion.Panel>
+              <Text c="dimmed" size="sm">
+                Only when you explicitly perform an action (commit, push, pull, stage, etc.).
+                FinderGit reads your repository state via git status and git diff — it never
+                modifies anything without your command.
+              </Text>
+            </Accordion.Panel>
+          </Accordion.Item>
+
+          <Accordion.Item value="live">
+            <Accordion.Control>How does the live update work?</Accordion.Control>
+            <Accordion.Panel>
+              <Text c="dimmed" size="sm">
+                FinderGit uses macOS FSEvents to monitor file system changes in real time. When a
+                file changes inside a watched repository, the status is automatically refreshed
+                within ~300ms.
+              </Text>
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion>
+      </Stack>
     </Container>
   );
 }

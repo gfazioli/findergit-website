@@ -1,26 +1,27 @@
-## Release Notes
+# Release Notes
 
-Below an overview of the latest changes and improvements made to the application. The Release Notes is getting from GitHub and is updated automatically. 
+Below is an overview of the latest changes and improvements made to FinderGit.
 
-import { ReleaseNotes } from "@/components/ReleaseNotes/ReleaseNotes";
+## v1.0.0 — April 2026
 
-<ReleaseNotes />
+### Initial Release
 
-export const metadata = {
-    toc: await (async () => {
-        try {
-            const res = await fetch(
-                "https://api.github.com/repos/gfazioli/next-app-nextra-template/releases?per_page=10"
-            );
-            const releases = await res.json();
-            if (!Array.isArray(releases)) return [];
-            return releases.map((release) => ({
-                value: `${release.tag_name} - ${new Date(release.created_at).toLocaleDateString("en-US", { month: "short", year: "numeric" }).replace(" ", ", ")}`,
-                depth: "3",
-                id: release.tag_name,
-            }));
-        } catch {
-            return [];
-        }
-    })()
-}
+FinderGit launches as a native macOS Git-aware file browser.
+
+**Features:**
+- Expandable tree view with sortable columns (Name, Branch, Status, Changes, Size, Date)
+- Live Git status for all repositories via FSEvents
+- Inline diff viewer with colored additions/deletions
+- Git actions: stage, unstage, commit, push, pull, fetch
+- Smart context menus adapting to file type and Git state
+- Quick Look support (Space bar)
+- Search and filter with "Git Only" toggle
+- Multiple root folders with drag-and-drop sidebar
+- Sub-directory dirty indicators
+- Settings: scan depth, font size, excluded folders, terminal app, Git path
+- Full menu bar with keyboard shortcuts
+- Custom app icon
+
+**Requirements:**
+- macOS 15 (Sequoia) or later
+- Git (bundled with macOS)

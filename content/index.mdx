@@ -1,72 +1,39 @@
-import { Button } from '@mantine/core';
-import { Callout, FileTree, Steps } from 'nextra/components'
-import { FileTreeLabel } from '@/components/FileTreeLabel'
+# FinderGit
 
-# Introduction
+**FinderGit** is a native macOS application that combines file browsing with Git intelligence. Instead of switching between Finder and a Git client, you get everything in one window.
 
-Hello, world!
-Welcome to the Nextra + Mantine template.
+## What it does
 
-This is a starter template for [Next.js](https://nextjs.org/) app router + [Mantine](https://mantine.dev/) + [Nextra](https://nextra.site/) documentation site.
+- **Tree view with sortable columns** — browse your files like Finder's list view, with columns for Branch, Status, Changes, Size, and Date Modified
+- **Live Git status** — every repository shows its current branch, clean/dirty/unpushed state, updated in real time via FSEvents
+- **Inline diff viewer** — click any modified file to see a colored diff with line numbers
+- **Git actions** — stage, unstage, commit, push, pull, fetch, and switch branches directly from the app
+- **Smart context menus** — right-click adapts to context: file operations for regular files, Git operations for repositories
+- **Quick Look** — press Space to preview any file, just like in Finder
+- **Search & filter** — filter the tree by name or toggle "Git Only" to show just repositories
+- **Multiple root folders** — add as many root directories as you want; drag folders from the tree to the sidebar
 
-## Features
+## Requirements
 
-This template comes with the following features:
+- macOS 15 (Sequoia) or later
+- `git` (bundled with macOS)
 
-- [PostCSS](https://postcss.org/) with [mantine-postcss-preset](https://mantine.dev/styles/postcss-preset)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Storybook](https://storybook.js.org/)
-- [Jest](https://jestjs.io/) setup with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
-- ESLint setup with [eslint-config-mantine](https://github.com/mantinedev/eslint-config-mantine)
-- Provides API example in `/api/version`
+## Architecture
 
-## Nextra Features
+FinderGit is built with **SwiftUI** and the **Observation** framework. The core Git logic lives in a reusable `FinderGitCore` framework that wraps the `git` CLI with async/await APIs.
 
-- [Nextra](https://nextra.site/) documentation site with Mantine theme
-- Sync Dark mode between documentation and application (Mantine/Nextra)
-- Customizable components in `components` folder
-- Provides new Navigation and Footer components for Nextra documentation site
+```
+FinderGitCore (framework)
+├── GitClient      — async wrapper around /usr/bin/git
+├── GitStatus      — parser for git status --porcelain=v2
+├── GitActions     — commit, push, pull, fetch, branch, stash
+├── GitDiff        — unified diff parser
+└── GitWatcher     — FSEvents file system monitor
 
-## Folder structure
-
-You will find a lot of predefined folders and files in the project. Here is a short description of the most important ones:
-
-<FileTree>
-  <FileTree.Folder name="app" defaultOpen>
-      <FileTree.Folder name={<FileTreeLabel type="folder" name="api">Useful API</FileTreeLabel>} defaultOpen />
-          <FileTree.File name={<FileTreeLabel type="file" name="layout.tsx">Main layout</FileTreeLabel>} />
-      <FileTree.File name={<FileTreeLabel type="file" name="page.tsx">Homepage</FileTreeLabel>} />
-  </FileTree.Folder>
-  <FileTree.Folder name={<FileTreeLabel type="folder" name="components">Useful components</FileTreeLabel>} defaultOpen />
-  <FileTree.Folder name="config" defaultOpen>
-    <FileTree.File name={<FileTreeLabel type="file" name="index.ts">Most of the config are here!</FileTreeLabel>} />
-  </FileTree.Folder>
-  <FileTree.Folder name={<FileTreeLabel type="folder" name="content">MDX docs</FileTreeLabel>} defaultOpen />
-</FileTree>
-
-You can start by changing the main configuration in `config/index.ts` file. This file contains the most important configuration for the project.
-
-
-
-## npm scripts
-
-### Build and dev scripts
-
-- `dev` – start dev server
-- `build` – bundle application for production
-- `analyze` – analyzes application bundle with [@next/bundle-analyzer](https://www.npmjs.com/package/@next/bundle-analyzer)
-
-### Testing scripts
-
-- `typecheck` – checks TypeScript types
-- `lint` – runs ESLint
-- `prettier:check` – checks files with Prettier
-- `jest` – runs jest tests
-- `jest:watch` – starts jest watch
-- `test` – runs `jest`, `prettier:check`, `lint` and `typecheck` scripts
-
-### Other scripts
-
-- `storybook` – starts storybook dev server
-- `storybook:build` – build production storybook bundle to `storybook-static`
-- `prettier:write` – formats all files with Prettier
+FinderGit (app)
+├── File Browser   — Table with expandable outline + sortable columns
+├── Detail Panel   — repo info, changes list, commit dialog
+├── Diff Viewer    — colored inline diff
+├── Settings       — preferences for scan, git, terminal
+└── App Menus      — File, Repository, View commands
+```

@@ -1,0 +1,53 @@
+# Getting Started
+
+## Installation
+
+1. **Download** the latest `.dmg` from the [download page](#)
+2. **Open** the `.dmg` file
+3. **Drag** FinderGit to your Applications folder
+4. **Launch** FinderGit from Applications or Spotlight
+
+> On first launch, macOS may show a warning because the app is not signed with a Developer ID. Right-click the app and choose "Open" to bypass the warning.
+
+## Adding your first root folder
+
+When you launch FinderGit for the first time, the sidebar is empty. You need to add at least one root folder — this is a directory that FinderGit will scan for Git repositories.
+
+1. Click the **+** button in the toolbar, or go to **File → Add Root Folder** (⌘⇧O)
+2. Select a directory that contains your projects (e.g., `~/Projects` or `~/Developer`)
+3. FinderGit will recursively scan for `.git` directories and display all found repositories
+
+You can add multiple root folders. Each one appears in the sidebar and can be selected individually.
+
+## Understanding the interface
+
+FinderGit has three main areas:
+
+### Sidebar (left)
+Lists your root folders. Click one to show only its contents, or deselect to see everything.
+
+### File Browser (center)
+An expandable tree view with sortable columns:
+- **Name** — file/directory name with system icon
+- **Branch** — current Git branch (for repositories)
+- **Status** — CLEAN (green), DIRTY (orange), or UNPUSHED (blue)
+- **Changes** — number of modified files
+- **Size** — file size
+- **Date Modified** — last modification date
+
+Click any column header to sort. Click again to reverse the order.
+
+### Detail Panel (right)
+Shows details for the selected item:
+- **Repository selected** — branch info, action buttons (Fetch/Pull/Push), changes list with Stage/Unstage, commit dialog
+- **Sub-directory selected** — filtered changes for that directory only
+- **File selected** — file info + inline diff (if modified)
+- **Non-git file** — basic file info (size, date, type)
+
+## Tips
+
+- **Drag** any folder from the tree view to the sidebar to add it as a root
+- **Right-click** for context-sensitive actions (different for files, directories, and git repos)
+- **Space bar** on any selected file for Quick Look preview
+- Use **⌘+** / **⌘-** to zoom the tree view font size
+- Toggle **Git Only** in the toolbar to hide non-repository files

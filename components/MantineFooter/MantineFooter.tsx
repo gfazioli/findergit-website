@@ -3,6 +3,7 @@
 import {
   IconBrandGithubFilled,
   IconBrandMantine,
+  IconBrandVercel,
   IconBrandX,
   IconMailHeart,
 } from '@tabler/icons-react';
@@ -138,9 +139,9 @@ export const MantineFooter = () => {
             <Text fz={12} inline>
               <Group gap={4} component="span">
                 Hosted on{' '}
-                <Anchor fz={13} href="https://github.com/">
+                <Anchor fz={13} href="https://vercel.com/">
                   <Group gap={4} component="span">
-                    <IconBrandGithubFilled size={16} /> GitHub.com
+                    <IconBrandVercel size={16} /> Vercel
                   </Group>
                 </Anchor>
               </Group>

@@ -1,0 +1,46 @@
+# FAQ
+
+## What is FinderGit?
+
+FinderGit is a native macOS application that works as a Git-aware file browser. Think of it as Finder's list view, but with Git status, branch info, inline diffs, and commit/push/pull actions built in.
+
+## Is FinderGit free?
+
+Yes, FinderGit is currently free. If you find it useful, consider [sponsoring the project](https://github.com/sponsors/gfazioli).
+
+## What macOS version do I need?
+
+macOS 15 (Sequoia) or later. FinderGit is built with SwiftUI and uses APIs available from macOS 15+.
+
+## Does FinderGit replace my Git client?
+
+Not entirely. FinderGit is great for everyday operations (status check, commit, push, pull) across many repos at once. For advanced workflows (interactive rebase, cherry-pick, complex merges), you'll still want a full Git client or the terminal.
+
+## Why does macOS say the app is from an unidentified developer?
+
+FinderGit is not yet signed with an Apple Developer ID certificate. To open it:
+1. Right-click the app
+2. Choose "Open"
+3. Click "Open" in the confirmation dialog
+
+You only need to do this once — macOS remembers your choice.
+
+## How does FinderGit detect repositories?
+
+When you add a root folder, FinderGit recursively scans for directories containing `.git/`. The scan depth is configurable in Settings (default: 5 levels). Heavy directories like `node_modules` and `DerivedData` are automatically skipped.
+
+## Does FinderGit modify my repositories?
+
+Only when you explicitly perform an action (commit, push, pull, stage, etc.). FinderGit reads your repository state via `git status` and `git diff` — it never modifies anything without your command.
+
+## How does the live update work?
+
+FinderGit uses macOS FSEvents to monitor file system changes in real time. When a file changes inside a watched repository, the status is automatically refreshed within ~300ms.
+
+## Can I use a custom Git installation?
+
+Yes. Go to **Settings → Git → Git Executable** and set the path to your preferred `git` binary (e.g., `/opt/homebrew/bin/git`).
+
+## Can I use iTerm2 or Warp instead of Terminal?
+
+Yes. Go to **Settings → Terminal** and select your preferred terminal app.
