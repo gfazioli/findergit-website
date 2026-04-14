@@ -59,28 +59,22 @@ export const MantineFooter = () => {
         <Grid grow>
           <Grid.Col span={{ base: 12, sm: 4 }}>
             <Stack gap="xs">
-              <ThemeIcon>
-                <Logo />
-              </ThemeIcon>
+              <Logo size={48} />
               <Text fz={13} mr={64}>
-                This is a template for Next.js + Mantine + Nextra documentation sites. Feel free to
-                use it and{' '}
-                <Anchor fz={13} href="https://github.com/gfazioli/next-app-nextra-template">
-                  contribute to it
+                FinderGit is a native macOS app that combines file browsing with Git
+                intelligence. Built with SwiftUI by{' '}
+                <Anchor fz={13} href="https://undolog.com/">
+                  Giovambattista Fazioli
                 </Anchor>
-                . Don't forget to star it on{' '}
-                <Anchor fz={13} href="https://github.com/gfazioli/next-app-nextra-template">
-                  GitHub
-                </Anchor>
-                . And if you wish, you can also follow me on{' '}
+                . Follow me on{' '}
                 <Anchor fz={13} href="https://twitter.com/gfazioli">
                   Twitter
-                </Anchor>
-                . Obviously, you can also{' '}
-                <Anchor fz={13} href="https://github.com/sponsors/gfazioli">
-                  donate
                 </Anchor>{' '}
-                to support the development of this project.
+                or{' '}
+                <Anchor fz={13} href="https://github.com/sponsors/gfazioli">
+                  sponsor the project
+                </Anchor>
+                .
               </Text>
               <Group>
                 <ActionIcon variant="subtle" component="a" href="https://github.com/gfazioli">

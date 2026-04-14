@@ -1,79 +1,231 @@
 'use client';
 
 import { TextAnimate } from '@gfazioli/mantine-text-animate';
-import { IconBrandGithub, IconExternalLink } from '@tabler/icons-react';
-import { Anchor, Button, Center, Code, Paper, Text, Title } from '@mantine/core';
-import pack from '../../package.json';
-import { ProductHunt } from '../ProductHunt/ProductHunt';
+import {
+  IconBrandApple,
+  IconDownload,
+  IconGitBranch,
+  IconEye,
+  IconTerminal2,
+  IconSearch,
+  IconColumns3,
+  IconArrowRight,
+} from '@tabler/icons-react';
+import {
+  Badge,
+  Box,
+  Button,
+  Center,
+  Container,
+  Group,
+  Image,
+  Paper,
+  SimpleGrid,
+  Stack,
+  Text,
+  ThemeIcon,
+  Title,
+} from '@mantine/core';
 import classes from './Welcome.module.css';
+
+const features = [
+  {
+    icon: IconColumns3,
+    title: 'Sortable Columns',
+    description:
+      'Browse files in an outline table with sortable columns for Branch, Status, Changes, Size, and Date.',
+    color: 'blue',
+  },
+  {
+    icon: IconGitBranch,
+    title: 'Live Git Status',
+    description:
+      'Every repo shows its branch, clean/dirty/unpushed state, and changed files — updated in real time.',
+    color: 'green',
+  },
+  {
+    icon: IconEye,
+    title: 'Inline Diff Viewer',
+    description:
+      'Click any modified file to see a colored diff with line numbers, additions, and deletions.',
+    color: 'orange',
+  },
+  {
+    icon: IconTerminal2,
+    title: 'Git Actions Built-in',
+    description:
+      'Stage, commit, push, pull, fetch, and switch branches without leaving the app.',
+    color: 'violet',
+  },
+  {
+    icon: IconSearch,
+    title: 'Search & Filter',
+    description:
+      'Filter files by name instantly or toggle "Git Only" to show just your repositories.',
+    color: 'cyan',
+  },
+  {
+    icon: IconBrandApple,
+    title: 'Native macOS App',
+    description:
+      'Built with SwiftUI for a fast, native experience. Supports Quick Look, context menus, and keyboard shortcuts.',
+    color: 'pink',
+  },
+];
 
 export function Welcome() {
   return (
-    <>
-      <Center my={64}>
-        <ProductHunt />
-      </Center>
-      <Title maw="90vw" mx="auto" className={classes.title} ta="center">
-        Welcome to Mantine Next.js +
-        <TextAnimate
-          animate="in"
-          by="character"
-          inherit
-          variant="gradient"
-          component="span"
-          segmentDelay={0.2}
-          duration={2}
-          animation="scale"
-          animateProps={{
-            scaleAmount: 3,
-          }}
-          gradient={{ from: 'pink', to: 'yellow' }}
-        >
-          Nextra template
-        </TextAnimate>
-      </Title>
+    <Container size="lg">
+      {/* ─── Hero ─── */}
+      <Stack align="center" gap="xl" py={80}>
+        <Badge size="lg" variant="light" color="blue">
+          Free for macOS 15+
+        </Badge>
 
-      <Text c="dimmed" ta="center" size="xl" maw={580} mx="auto" mt="sm">
-        This starter Next.js project includes a minimal setup for server side rendering, if you want
-        to learn more on Mantine + Next.js integration follow{' '}
-        <Anchor href="https://mantine.dev/guides/next/">this guide</Anchor>. To get started edit{' '}
-        <Code fz="xl">page.tsx</Code> file.
-      </Text>
+        <Title maw="90vw" mx="auto" className={classes.title} ta="center">
+          Your repositories were never meant to be{' '}
+          <TextAnimate
+            animate="in"
+            by="character"
+            inherit
+            variant="gradient"
+            component="span"
+            segmentDelay={0.12}
+            duration={1.5}
+            animation="scale"
+            animateProps={{ scaleAmount: 2 }}
+            gradient={{ from: 'blue', to: 'cyan' }}
+          >
+            invisible.
+          </TextAnimate>
+        </Title>
 
-      <Center>
-        <Button
-          href="https://github.com/gfazioli/next-app-nextra-template"
-          component="a"
-          rightSection={<IconExternalLink />}
-          leftSection={<IconBrandGithub />}
-          variant="outline"
-          px={32}
-          radius={256}
-          size="lg"
-          mx="auto"
-          mt="xl"
-        >
-          Use template v{pack.version}
-        </Button>
-      </Center>
+        <Text c="dimmed" ta="center" size="xl" maw={640} mx="auto">
+          FinderGit is a Git-aware file browser for macOS. See branch, status,
+          changes, and diffs for all your repositories at a glance — without
+          switching apps.
+        </Text>
 
-      <Paper shadow="xl" p={8} mih={300} my={32} bg="black" mx="auto" radius={8}>
-        <TextAnimate.Typewriter
-          fz={11}
-          c="green.5"
-          ff="monospace"
-          multiline
-          delay={100}
-          loop={false}
-          value={[
-            'Dependencies :',
-            ...Object.keys(pack.dependencies).map(
-              (key: string) =>
-                `${key} : ${pack.dependencies[key as keyof typeof pack.dependencies].toString()}`
-            ),
-          ]}
+        <Group justify="center" mt="md">
+          <Button
+            href="#download"
+            component="a"
+            leftSection={<IconDownload size={20} />}
+            size="xl"
+            radius="xl"
+            px={40}
+          >
+            Download for macOS
+          </Button>
+          <Button
+            href="/docs"
+            component="a"
+            rightSection={<IconArrowRight size={18} />}
+            variant="subtle"
+            size="xl"
+          >
+            See what it does
+          </Button>
+        </Group>
+      </Stack>
+
+      {/* ─── Screenshot ─── */}
+      <Paper shadow="xl" p={4} radius="lg" bg="dark.8" my={32}>
+        <Image
+          src="/screenshot-hero.png"
+          alt="FinderGit — Git-aware file browser for macOS"
+          radius="md"
+          fallbackSrc="https://placehold.co/1200x700/1a1b1e/4a98eb?text=FinderGit+Screenshot"
         />
       </Paper>
-    </>
+
+      {/* ─── Problem Statement ─── */}
+      <Stack align="center" gap="md" my={64}>
+        <Title order={2} ta="center">
+          Managing multiple Git repos shouldn&apos;t be painful
+        </Title>
+        <Text c="dimmed" ta="center" size="lg" maw={600}>
+          Finder shows you files, but not your Git state. Terminal gives you
+          status, but not the big picture. FinderGit bridges the gap — one
+          window, all your repos, live.
+        </Text>
+      </Stack>
+
+      {/* ─── Features ─── */}
+      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl" my={48}>
+        {features.map((feature) => (
+          <Stack key={feature.title} gap="xs" align="flex-start">
+            <ThemeIcon size={48} radius="md" color={feature.color} variant="light">
+              <feature.icon size={26} />
+            </ThemeIcon>
+            <Text fw={600} size="lg">
+              {feature.title}
+            </Text>
+            <Text c="dimmed" size="sm">
+              {feature.description}
+            </Text>
+          </Stack>
+        ))}
+      </SimpleGrid>
+
+      {/* ─── More Screenshots ─── */}
+      <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg" my={64}>
+        <Paper shadow="md" p={4} radius="lg" bg="dark.8">
+          <Image
+            src="/screenshot-diff.png"
+            alt="Inline diff viewer"
+            radius="md"
+            fallbackSrc="https://placehold.co/600x400/1a1b1e/71b0f0?text=Diff+Viewer"
+          />
+        </Paper>
+        <Paper shadow="md" p={4} radius="lg" bg="dark.8">
+          <Image
+            src="/screenshot-detail.png"
+            alt="Repository detail panel"
+            radius="md"
+            fallbackSrc="https://placehold.co/600x400/1a1b1e/71b0f0?text=Detail+Panel"
+          />
+        </Paper>
+      </SimpleGrid>
+
+      {/* ─── Download Section ─── */}
+      <Box id="download" my={80}>
+        <Stack align="center" gap="lg">
+          <Title order={2} ta="center">
+            Get FinderGit
+          </Title>
+          <Text c="dimmed" ta="center" size="lg" maw={500}>
+            Download the latest release. Requires macOS 15 (Sequoia) or later.
+          </Text>
+
+          <Paper shadow="lg" p="xl" radius="lg" withBorder maw={500} w="100%">
+            <Stack align="center" gap="md">
+              <ThemeIcon size={64} radius="xl" color="blue" variant="light">
+                <IconBrandApple size={36} />
+              </ThemeIcon>
+              <Title order={3}>macOS</Title>
+              <Text c="dimmed" size="sm" ta="center">
+                Universal binary (Apple Silicon + Intel).
+                <br />
+                Download the .dmg, open it, drag to Applications.
+              </Text>
+              <Button
+                href="#"
+                component="a"
+                leftSection={<IconDownload size={20} />}
+                size="lg"
+                radius="xl"
+                fullWidth
+              >
+                Download FinderGit.dmg
+              </Button>
+              <Text c="dimmed" size="xs">
+                v1.0.0 — Requires macOS 15+
+              </Text>
+            </Stack>
+          </Paper>
+        </Stack>
+      </Box>
+    </Container>
   );
 }

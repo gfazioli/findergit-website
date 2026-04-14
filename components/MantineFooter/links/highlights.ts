@@ -1,28 +1,19 @@
 export const highlights = [
   {
-    key: 'undolog',
-    title: 'News',
-    href: 'https://undolog.com',
-  },
-  {
-    key: 'mantine-extensions',
-    title: 'Mantine Extensions HUB',
-    href: 'https://mantine-extensions.vercel.app',
-  },
-  {
-    key: 'mantine-nextra-template',
-    title: 'Mantine Nextra template',
-    href: 'https://github.com/gfazioli/next-app-nextra-template',
+    key: 'download',
+    title: 'Download FinderGit',
+    href: '#download',
     new: true,
   },
   {
-    key: 'mantine-extension-template',
-    title: 'Extension Template',
-    href: 'https://github.com/mantinedev/extension-template',
+    key: 'release-notes',
+    title: 'Release Notes',
+    href: '/docs/release-notes',
   },
   {
-    key: 'youtube',
-    title: 'YouTube',
-    href: 'https://www.youtube.com/playlist?list=PL85tTROKkZrWyqCcmNCdWajpx05-cTal4',
+    key: 'sponsor',
+    title: 'Sponsor',
+    href: 'https://github.com/sponsors/gfazioli?o=esb',
+    newWindow: true,
   },
 ];

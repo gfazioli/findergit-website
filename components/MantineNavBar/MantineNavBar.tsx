@@ -6,29 +6,20 @@ import { ColorSchemeControl } from '../ColorSchemeControl/ColorSchemeControl';
 import { Logo } from '../Logo/Logo';
 import { MantineNextraThemeObserver } from '../MantineNextraThemeObserver/MantineNextraThemeObserver';
 
-/**
- * You can customize the Nextra NavBar component.
- * Don't forget to use the MantineProvider and MantineNextraThemeObserver components.
- *
- * @since 1.0.0
- *
- */
 export const MantineNavBar = () => {
   return (
     <>
       <MantineNextraThemeObserver />
       <Navbar
         logo={
-          <Group align="center" gap={4}>
+          <Group align="center" gap={8}>
             <Logo />
-            <Text size="lg" fw={300} c="blue" visibleFrom="xl">
-              Mantine NextJS + Nextra
+            <Text size="lg" fw={600} visibleFrom="sm">
+              FinderGit
             </Text>
           </Group>
         }
-        // Mantine discord server
-        chatLink="https://discord.com/invite/wbH82zuWMN"
-        projectLink="https://github.com/gfazioli/next-app-nextra-template"
+        // No project link — repo is private
       >
         <>
           <ColorSchemeControl />

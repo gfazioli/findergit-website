@@ -4,7 +4,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **Next.js 16 + Mantine 9 + Nextra 4** template used as the documentation site foundation for the Mantine Extensions ecosystem. It serves as a reusable starter for building docs sites with integrated Mantine components.
+This is the **marketing, presentation, and download website** for **FinderGit**, a native macOS app that combines file browsing with Git intelligence.
+
+**This is NOT a macOS application.** This is a Next.js web project deployed on Vercel.
+
+- **Live URL**: https://findergit-website.vercel.app/
+- **App repository** (private, Swift/SwiftUI): https://github.com/gfazioli/FinderGit
+- **Website repository** (this): https://github.com/gfazioli/findergit-website
+
+The website serves as:
+1. **Landing page** — hero section, feature showcase, download CTA
+2. **Documentation** — user guides, keyboard shortcuts, getting started
+3. **Release notes** — pulled automatically from GitHub Releases API
+4. **Download hub** — links to GitHub Releases for the macOS binary
+
+## Tech Stack
+
+- **Framework**: Next.js 16 + Nextra 4 (docs/MDX)
+- **UI Library**: Mantine 9
+- **Animations**: @gfazioli/mantine-scene, @gfazioli/mantine-text-animate, @gfazioli/mantine-marquee
+- **Icons**: @tabler/icons-react
+- **Analytics**: @vercel/analytics
+- **Hosting**: Vercel
+- **Package Manager**: Yarn 4 (Berry) — do not use npm or pnpm
 
 ## Commands
 
@@ -14,12 +36,9 @@ This is a **Next.js 16 + Mantine 9 + Nextra 4** template used as the documentati
 | `yarn build` | Production build (Next.js + pagefind search index) |
 | `yarn test` | Full suite: typegen, oxfmt, lint, typecheck, jest |
 | `yarn jest` | Run Jest tests only |
-| `yarn jest:watch` | Jest in watch mode |
-| `yarn jest -- path/to/file` | Run a single test file |
 | `yarn typecheck` | TypeScript type checking (`tsc --noEmit`) |
 | `yarn lint` | oxlint + Stylelint |
 | `yarn format:write` | Auto-format all TS/TSX/CSS files (oxfmt) |
-| `yarn format:test` | Check formatting (oxfmt) |
 | `yarn storybook` | Storybook dev server on port 6006 |
 | `yarn analyze` | Bundle analysis with `@next/bundle-analyzer` |
 
@@ -38,34 +57,37 @@ This is a **Next.js 16 + Mantine 9 + Nextra 4** template used as the documentati
 - Dark mode sync between Mantine and Nextra is handled by `MantineNextraThemeObserver`
 - Mantine theme overrides go in `theme.ts` (client-side `createTheme`)
 - Global site configuration (metadata, GitHub API, search, Nextra layout) lives in `config/index.ts`
+- Primary color: blue (matching FinderGit app icon)
+- Custom color palette: `findergit` (blue shades)
 
 ### Key Components (`components/`)
 
-- `MantineNavBar` / `MantineFooter` — custom Nextra layout replacements
+- `MantineNavBar` — top navigation with FinderGit logo + GitHub link
+- `MantineFooter` — 4-column footer with highlights, resources, ecosystem links
+- `Welcome` — hero section with animated title, features grid, download CTA
 - `ColorSchemeControl` / `ColorSchemeToggle` — dark mode toggle
 - `ReleaseNotes` — fetches GitHub releases via `/api/github-releases`
-- `Logo`, `Welcome`, `Content` — branding and landing page components
 
 ### API Routes (`app/api/`)
 
 - `version/` — returns current package version
-- `github-releases/` — proxies GitHub releases API (configured in `config/index.ts`)
-- `search/` — pagefind-based search endpoint
-
-### Search
-
-Search uses [pagefind](https://pagefind.app/). The index is built post-build (`yarn build:pagefind`) into `public/_pagefind/`. The search API route reads this index.
+- `github-releases/` — proxies GitHub Releases API for FinderGit (configured in `config/index.ts`)
+- `search/` — pagefind-based full-text search endpoint
 
 ### CSS Import Order
 
 In `app/layout.tsx`, CSS imports must follow this order:
 1. `@mantine/core/styles.css`
-2. Mantine extension styles (e.g., marquee, text-animate)
+2. Mantine extension styles (marquee, text-animate, scene)
 3. Global styles
 
-### Build Pipeline
+## Content Guidelines
 
-Next.js config (`next.config.mjs`) chains: `nextra()` → `bundleAnalyzer()`. Turbopack is configured with inline SVG loader for SVGs under ~4KB.
+- All website content is in **English**
+- The app is described as: "A Git-aware file browser for macOS"
+- Key selling points: sortable columns, live git status, inline diff viewer, git actions, search & filter, native macOS app
+- Target audience: developers who use Git and want a better file browsing experience on macOS
+- Download links point to GitHub Releases: `https://github.com/gfazioli/FinderGit/releases/latest`
 
 ## Tooling
 

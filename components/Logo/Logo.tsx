@@ -1,8 +1,13 @@
-import { IconBrandMantine } from '@tabler/icons-react';
-import { useMantineTheme } from '@mantine/core';
+import { Image } from '@mantine/core';
 
-export function Logo() {
-  const theme = useMantineTheme();
-
-  return <IconBrandMantine size={48} color={theme.colors.blue[5]} />;
+export function Logo({ size = 36 }: { size?: number }) {
+  return (
+    <Image
+      src="/icon-128x128.png"
+      alt="FinderGit"
+      w={size}
+      h={size}
+      style={{ borderRadius: size > 48 ? 12 : 8 }}
+    />
+  );
 }

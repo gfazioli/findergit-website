@@ -2,6 +2,7 @@ import '@mantine/core/styles.css';
 // !! The order of these imports is important !!
 import '@gfazioli/mantine-marquee/styles.css';
 import '@gfazioli/mantine-text-animate/styles.css';
+import '@gfazioli/mantine-scene/styles.css';
 // Mantine theme overrides (body background, marquee fade edges, etc.)
 import '@/theme/global.css';
 
@@ -42,9 +43,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <MantineProvider theme={theme} defaultColorScheme={head.mantine.defaultColorScheme}>
           <Layout
             banner={
-              <Banner storageKey={`release-notes-${pack.version}`}>
-                ✨ v{pack.version} Released -{' '}
-                <a href="/docs/release-notes">See the release notes</a>
+              <Banner storageKey={`findergit-release-${pack.version}`}>
+                FinderGit v{pack.version} is here — a Git-aware file browser for macOS.{' '}
+                <a href="/docs/release-notes">See what&apos;s new</a>
               </Banner>
             }
             navbar={<MantineNavBar />}

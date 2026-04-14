@@ -6,6 +6,11 @@ export default {
     type: 'page',
     title: 'Documentation',
   },
+  download: {
+    type: 'page',
+    title: 'Download',
+    href: 'https://github.com/gfazioli/FinderGit/releases/latest',
+  },
   community: {
     title: 'Community',
     type: 'menu',
@@ -14,9 +19,13 @@ export default {
         title: 'Blog',
         href: 'https://undolog.com/',
       },
-      medium: {
-        title: 'Medium',
-        href: 'https://medium.com/@giovambattista.fazioli',
+      github: {
+        title: 'GitHub Discussions',
+        href: 'https://github.com/gfazioli/FinderGit/discussions',
+      },
+      issues: {
+        title: 'Report an Issue',
+        href: 'https://github.com/gfazioli/FinderGit/issues',
       },
     },
   },

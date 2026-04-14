@@ -1,22 +1,23 @@
 export const resources = [
   {
-    key: 'mantine-discord',
-    title: 'Mantine Discord',
-    href: 'https://discord.gg/wbH82zuWMN',
+    key: 'docs',
+    title: 'Documentation',
+    href: '/docs',
   },
   {
-    key: 'mantine-components',
-    title: 'Mantine Components',
-    href: 'https://mantine.dev/getting-started/',
+    key: 'getting-started',
+    title: 'Getting Started',
+    href: '/docs',
   },
   {
-    key: 'mantine-ui',
-    title: 'Mantine UI',
-    href: 'https://ui.mantine.dev/',
+    key: 'keyboard-shortcuts',
+    title: 'Keyboard Shortcuts',
+    href: '/docs',
   },
   {
-    key: 'mantine-help',
-    title: 'Mantine Help Center',
-    href: 'https://help.mantine.dev/',
+    key: 'support',
+    title: 'Report an Issue',
+    href: 'https://github.com/gfazioli/FinderGit/issues',
+    newWindow: true,
   },
 ];
