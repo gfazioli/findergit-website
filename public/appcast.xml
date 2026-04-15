@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>FinderGit</title>
+        <link>https://findergit.app/appcast.xml</link>
+        <description>FinderGit release notes</description>
+        <language>en</language>
+        <item>
+            <title>Version 0.1.0</title>
+            <pubDate>Wed, 15 Apr 2026 08:31:53 +0000</pubDate>
+            <sparkle:version>1</sparkle:version>
+            <sparkle:shortVersionString>0.1.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <description><![CDATA[
+                <h2>FinderGit 0.1.0 — first public release</h2>
+                <ul>
+                    <li>Git-aware file browser with sortable columns</li>
+                    <li>Status badges per repository: clean / dirty / unpushed</li>
+                    <li>Inline diff viewer for modified files</li>
+                    <li>Stage / unstage / commit / push / pull / fetch from the UI</li>
+                    <li>Native Markdown preview via Quick Look (Space)</li>
+                    <li>Auto-updates via Sparkle</li>
+                </ul>
+            ]]></description>
+            <enclosure
+                url="https://github.com/gfazioli/findergit-website/releases/download/v0.1.0/FinderGit-0.1.0.dmg"
+                sparkle:edSignature="c6BhViASKQn7EMYM5LdBjl7Ggq7oL9PUxzLkKZuNR34Fcd2CAaqdDf4RmXBDaPg/QmserL+bcKzgc3zE+8kADw==" length="8706092"
+                type="application/octet-stream" />
+        </item>
+    </channel>
+</rss>
