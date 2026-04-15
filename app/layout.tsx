@@ -15,7 +15,6 @@ import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/c
 
 import { MantineFooter, MantineNavBar } from '@/components';
 import config from '@/config';
-import pack from '../package.json';
 import { theme } from '../theme';
 
 import './global.css';
@@ -46,8 +45,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <MantineProvider theme={theme} defaultColorScheme={head.mantine.defaultColorScheme}>
           <Layout
             banner={
-              <Banner storageKey={`findergit-release-${pack.version}`}>
-                FinderGit v{pack.version} is here — a Git-aware file browser for macOS.{' '}
+              <Banner storageKey={`findergit-release-${config.app.version}`}>
+                FinderGit v{config.app.version} is here — a Git-aware file browser for macOS.{' '}
                 <a href="/docs/release-notes">See what&apos;s new</a>
               </Banner>
             }
