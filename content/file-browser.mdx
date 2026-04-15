@@ -48,3 +48,23 @@ Click the same header again to reverse the sort order.
 Use the **search field** in the toolbar to filter files by name. The filter applies across the entire tree with a 300ms debounce.
 
 Toggle the **Git Only** button (branch icon in toolbar) to hide all non-repository files and directories.
+
+## Context menu
+
+Right-click any item in the tree to get a context-sensitive menu. The options adapt to what you right-clicked:
+
+- **Directory inside a repo** — Stage All, Unstage All, plus standard file actions
+- **Modified file** — Stage / Unstage (depending on current state), Reveal in Finder, Copy Path, Quick Look
+- **Clean file** — Open, Quick Look, Reveal in Finder, Copy Path
+- **Non-git directory** — Add as Root Folder, Open in Finder, Open in Terminal
+
+![Context menu on a tracked file showing Stage / Unstage and standard actions](/screenshot-context-menu.png)
+
+## Quick Look
+
+Press **Space** on any selected file to preview it without leaving the app.
+
+- `.md` and `.markdown` files open in a native renderer (GitHub-style theme via MarkdownUI). Close with Space or Escape
+- All other file types fall back to the system Quick Look (`qlmanage`) — same behaviour as in Finder
+
+![Native Markdown preview shown on Space](/screenshot-markdown.png)

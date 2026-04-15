@@ -10,6 +10,7 @@ import {
   IconSearch,
   IconColumns3,
   IconArrowRight,
+  IconMarkdown,
 } from '@tabler/icons-react';
 import {
   Badge,
@@ -30,24 +31,24 @@ import { IconPhoto } from '@tabler/icons-react';
 import { FAQ } from '../FAQ/FAQ';
 import classes from './Welcome.module.css';
 
-// Set to true once you add real screenshots to /public/
-const HAS_SCREENSHOTS = false;
-
 function ScreenshotPlaceholder({
   src,
   alt,
   label,
   height = 400,
+  available = false,
 }: {
   src: string;
   alt: string;
   label: string;
   height?: number;
+  /** Set to true once the real screenshot file exists in /public/. */
+  available?: boolean;
 }) {
-  if (!HAS_SCREENSHOTS) {
+  if (!available) {
     return (
-      <Paper shadow="xl" p={4} radius="lg" bg="dark.8" my={16}>
-        <Center h={height} style={{ borderRadius: 'var(--mantine-radius-md)' }} bg="dark.7">
+      <Paper shadow="xl" radius="lg" bg="dark.8" my={16} style={{ overflow: 'hidden' }}>
+        <Center h={height} bg="dark.7">
           <Stack align="center" gap="xs">
             <IconPhoto size={48} color="var(--mantine-color-dark-3)" />
             <Text c="dark.3" size="sm">{label}</Text>
@@ -58,8 +59,8 @@ function ScreenshotPlaceholder({
   }
 
   return (
-    <Paper shadow="xl" p={4} radius="lg" bg="dark.8" my={16}>
-      <Image src={src} alt={alt} radius="md" />
+    <Paper shadow="xl" radius="lg" my={16} style={{ overflow: 'hidden' }}>
+      <Image src={src} alt={alt} display="block" />
     </Paper>
   );
 }
@@ -99,6 +100,13 @@ const features = [
     description:
       'Filter files by name instantly or toggle "Git Only" to show just your repositories.',
     color: 'cyan',
+  },
+  {
+    icon: IconMarkdown,
+    title: 'Markdown Preview',
+    description:
+      'Press Space on any .md file to see it beautifully rendered with a GitHub-style theme — no app switching.',
+    color: 'grape',
   },
   {
     icon: IconBrandApple,
@@ -179,6 +187,7 @@ export function Welcome() {
         alt="FinderGit — Git-aware file browser for macOS"
         label="App Screenshot"
         height={500}
+        available
       />
 
       {/* ─── Problem Statement ─── */}
@@ -211,18 +220,27 @@ export function Welcome() {
       </SimpleGrid>
 
       {/* ─── More Screenshots ─── */}
-      <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg" my={64}>
+      <SimpleGrid cols={{ base: 1, md: 3 }} spacing="lg" my={64}>
         <ScreenshotPlaceholder
           src="/screenshot-diff.png"
           alt="Inline diff viewer"
           label="Diff Viewer"
           height={300}
+          available
         />
         <ScreenshotPlaceholder
           src="/screenshot-detail.png"
           alt="Repository detail panel"
           label="Detail Panel"
           height={300}
+          available
+        />
+        <ScreenshotPlaceholder
+          src="/screenshot-markdown.png"
+          alt="Native Markdown preview via Quick Look"
+          label="Markdown Preview"
+          height={300}
+          available
         />
       </SimpleGrid>
 

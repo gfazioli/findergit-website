@@ -2,6 +2,8 @@
 
 **FinderGit** is a native macOS application that combines file browsing with Git intelligence. Instead of switching between Finder and a Git client, you get everything in one window.
 
+![FinderGit main window](/screenshot-hero.png)
+
 ## What it does
 
 - **Tree view with sortable columns** — browse your files like Finder's list view, with columns for Branch, Status, Changes, Size, and Date Modified
@@ -9,9 +11,10 @@
 - **Inline diff viewer** — click any modified file to see a colored diff with line numbers
 - **Git actions** — stage, unstage, commit, push, pull, fetch, and switch branches directly from the app
 - **Smart context menus** — right-click adapts to context: file operations for regular files, Git operations for repositories
-- **Quick Look** — press Space to preview any file, just like in Finder
+- **Quick Look** — press Space to preview any file. `.md` and `.markdown` files open in a native renderer (GitHub-style theme); everything else falls back to system Quick Look
 - **Search & filter** — filter the tree by name or toggle "Git Only" to show just repositories
-- **Multiple root folders** — add as many root directories as you want; drag folders from the tree to the sidebar
+- **Multiple root folders** — add as many root directories as you want; drag folders from the macOS Finder into the sidebar to add them as roots
+- **Auto-updates** — built in via Sparkle, signed with EdDSA
 
 ## Requirements
 

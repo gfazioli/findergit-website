@@ -16,7 +16,7 @@ FinderGit is a native macOS app that combines file browsing with Git intelligenc
 - **Git actions** — stage, unstage, commit, push, pull, fetch, branch switch, all from the UI
 - **Native Markdown preview** — press Space on any `.md` file for a rendered preview
 - **Smart context menus** — adapts to whether you're on a regular file, a tracked file, or a repository
-- **Multiple root folders** — add as many as you want; drag folders from the tree to the sidebar
+- **Multiple root folders** — add as many as you want; drop folders from the macOS Finder into the sidebar to add them as roots
 - **Auto-updates** — built in via Sparkle
 
 ## Download
