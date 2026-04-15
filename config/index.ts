@@ -6,7 +6,7 @@ export default {
     },
     description:
       'A native macOS app that combines file browsing with Git intelligence. See branch, status, changes, and diffs for all your repositories at a glance.',
-    metadataBase: new URL('https://findergit-website.vercel.app/'),
+    metadataBase: new URL('https://findergit.app/'),
     keywords: [
       'FinderGit',
       'macOS',
@@ -33,7 +33,7 @@ export default {
       'msapplication-TileColor': '#228be6',
     },
     twitter: {
-      site: 'https://findergit-website.vercel.app/',
+      card: 'summary_large_image',
     },
     alternates: {
       canonical: './',
