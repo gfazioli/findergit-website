@@ -9,6 +9,28 @@
 
 > On first launch, macOS may show a warning because the app is not signed with a Developer ID. Right-click the app and choose "Open" to bypass the warning.
 
+## Before first launch (fresh Mac)
+
+FinderGit uses the `git` binary that ships with the Xcode Command Line Tools. On a brand-new Mac you may need to install them and accept the Xcode license — otherwise every Git action inside FinderGit will surface a `nonZeroExit(status: 89, …)` error.
+
+1. **Install the Command Line Tools** (skip if already installed):
+
+   ```
+   xcode-select --install
+   ```
+
+   A system prompt will appear — click Install and wait a few minutes.
+
+2. **Accept the Xcode license**:
+
+   ```
+   sudo xcodebuild -license
+   ```
+
+   Scroll with Space, type `agree`, press Enter.
+
+After these two steps, `git` works system-wide and FinderGit stops complaining.
+
 ## Adding your first root folder
 
 When you launch FinderGit for the first time, the sidebar is empty. You need to add at least one root folder — this is a directory that FinderGit will scan for Git repositories.

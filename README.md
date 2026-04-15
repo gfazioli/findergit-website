@@ -28,6 +28,11 @@ After downloading, open the DMG and drag FinderGit into your Applications folder
 ## Requirements
 
 - macOS 15 Sequoia or later
+- Xcode Command Line Tools (FinderGit uses the system `git` binary). On a fresh Mac, run once:
+  ```bash
+  xcode-select --install
+  sudo xcodebuild -license
+  ```
 
 ## Documentation
 
