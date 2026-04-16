@@ -4,37 +4,37 @@ FinderGit supports many keyboard shortcuts for fast navigation and Git operation
 
 ## File operations
 
-| Shortcut | Action |
-|----------|--------|
-| Space | Quick Look the selected file (native Markdown renderer for `.md`/`.markdown`, system Quick Look for everything else) |
-| ⌘↩ | Open the selected file |
-| ⌘⇧R | Reveal in Finder |
-| ⌘⇧C | Copy file path |
-| ⌘⇧O | Add a root folder |
+<ShortcutsTable shortcuts={[
+  { keys: ['Space'], action: 'Quick Look the selected file (native Markdown renderer for .md/.markdown, system Quick Look for everything else)' },
+  { keys: ['⌘', '↩'], action: 'Open the selected file' },
+  { keys: ['⌘', '⇧', 'R'], action: 'Reveal in Finder' },
+  { keys: ['⌘', '⇧', 'C'], action: 'Copy file path' },
+  { keys: ['⌘', '⇧', 'O'], action: 'Add a root folder' },
+]} />
 
 ## View
 
-| Shortcut | Action |
-|----------|--------|
-| ⌘+ | Zoom in (increase tree font size) |
-| ⌘- | Zoom out (decrease tree font size) |
-| ⌘0 | Reset to actual size (13pt) |
-| ⌥⌘R | Rescan all root folders |
+<ShortcutsTable shortcuts={[
+  { keys: ['⌘', '+'], action: 'Zoom in (increase tree font size)' },
+  { keys: ['⌘', '−'], action: 'Zoom out (decrease tree font size)' },
+  { keys: ['⌘', '0'], action: 'Reset to actual size (13pt)' },
+  { keys: ['⌥', '⌘', 'R'], action: 'Rescan all root folders' },
+]} />
 
 ## Repository
 
-| Shortcut | Action |
-|----------|--------|
-| ⌘⇧F | Fetch |
-| ⌘⇧L | Pull |
-| ⌘⇧P | Push |
-| ⌘⇧A | Stage All |
-| ⌘⇧S | Stage selected file |
-| ⌃⌘T | Open in Terminal |
-| ⌘R | Refresh repository status |
+<ShortcutsTable shortcuts={[
+  { keys: ['⌘', '⇧', 'F'], action: 'Fetch' },
+  { keys: ['⌘', '⇧', 'L'], action: 'Pull' },
+  { keys: ['⌘', '⇧', 'P'], action: 'Push' },
+  { keys: ['⌘', '⇧', 'A'], action: 'Stage All' },
+  { keys: ['⌘', '⇧', 'S'], action: 'Stage selected file' },
+  { keys: ['⌃', '⌘', 'T'], action: 'Open in Terminal' },
+  { keys: ['⌘', 'R'], action: 'Refresh repository status' },
+]} />
 
 ## Settings
 
-| Shortcut | Action |
-|----------|--------|
-| ⌘, | Open Settings |
+<ShortcutsTable shortcuts={[
+  { keys: ['⌘', ','], action: 'Open Settings' },
+]} />

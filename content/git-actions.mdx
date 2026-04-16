@@ -44,14 +44,14 @@ Right-click on a file inside a repo for:
 
 The **Repository** menu provides the same actions with keyboard shortcuts:
 
-| Action | Shortcut |
-|--------|----------|
-| Fetch | ⌘⇧F |
-| Pull | ⌘⇧L |
-| Push | ⌘⇧P |
-| Stage All | ⌘⇧A |
-| Stage Selected File | ⌘⇧S |
-| Open in Terminal | ⌃⌘T |
-| Refresh | ⌘R |
+<ShortcutsTable shortcuts={[
+  { keys: ['⌘', '⇧', 'F'], action: 'Fetch' },
+  { keys: ['⌘', '⇧', 'L'], action: 'Pull' },
+  { keys: ['⌘', '⇧', 'P'], action: 'Push' },
+  { keys: ['⌘', '⇧', 'A'], action: 'Stage All' },
+  { keys: ['⌘', '⇧', 'S'], action: 'Stage Selected File' },
+  { keys: ['⌃', '⌘', 'T'], action: 'Open in Terminal' },
+  { keys: ['⌘', 'R'], action: 'Refresh' },
+]} />
 
 Menu items are enabled/disabled based on what's selected and whether the file actually has changes.
