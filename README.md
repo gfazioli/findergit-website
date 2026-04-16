@@ -56,3 +56,7 @@ Then visit [http://localhost:3000](http://localhost:3000).
 ## License
 
 MIT
+
+---
+  
+[![Star History Chart](https://api.star-history.com/svg?repos=gfazioli/findergit-website&type=Timeline)](https://www.star-history.com/#gfazioli/findergit-website&Timeline)
