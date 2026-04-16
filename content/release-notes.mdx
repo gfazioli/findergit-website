@@ -2,6 +2,19 @@
 
 Below is an overview of the latest changes and improvements made to FinderGit.
 
+## v0.1.1 — April 2026
+
+### Major performance improvement
+
+Idle CPU usage drops from ~14% to **~0.5%** on repos with many roots and active file-system activity (Node.js projects, Xcode builds, etc.).
+
+**Under the hood:**
+- **Path denylist in the file-system watcher** — `.git/index`, `.git/objects/`, `node_modules/`, `DerivedData/` and similar noise folders no longer trigger a recompute. The `.git/index` filter eliminated a feedback loop where FinderGit's own `git status` calls were re-triggering themselves.
+- **Per-kind debouncer** on FSEvents notifications (300 ms worktree / 500 ms metadata), so bursts of file changes collapse into a single refresh instead of one-per-event.
+- **Path normalization fix** — correctly classifies `.git/` changes on paths under `/var/folders/…` (resolves the `/var` vs `/private/var` mismatch FSEvents delivers).
+
+No user-facing changes — same UI, same features, just dramatically lighter on CPU.
+
 ## v0.1.0 — April 2026
 
 ### First public release
