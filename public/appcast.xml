@@ -6,6 +6,18 @@
         <description>FinderGit release notes</description>
         <language>en</language>
         <!-- release.sh inserts new <item> entries right below this marker -->
+<item>
+            <title>Version 0.1.1</title>
+            <pubDate>Thu, 16 Apr 2026 17:13:15 +0000</pubDate>
+            <sparkle:version>1</sparkle:version>
+            <sparkle:shortVersionString>0.1.1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <enclosure
+                url="https://github.com/gfazioli/findergit-website/releases/download/v0.1.1/FinderGit-0.1.1.dmg"
+                sparkle:edSignature="+7zc1kDhJxkvKY9NM4z4C4e5RvUNo1sw8PktE0y/vr1ZItv6ZJTU2VdRBEhHv6sdW9luHWM+gN/5jaiiuj11Bw==" length="8714837"
+                type="application/octet-stream" />
+        </item>
+
         <item>
             <title>Version 0.1.0</title>
             <pubDate>Wed, 15 Apr 2026 08:31:53 +0000</pubDate>
