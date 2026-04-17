@@ -61,7 +61,9 @@ export default {
       'https://api.github.com/repos/gfazioli/findergit-website/releases',
   },
   releaseNotes: {
-    url: '/docs/release-notes',
+    // External link to the GitHub Releases page — used by the
+    // "View full changelog on GitHub" button at the bottom of /docs/release-notes.
+    url: 'https://github.com/gfazioli/findergit-website/releases',
     maxReleases: 10,
   },
   search: {
