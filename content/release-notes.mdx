@@ -1,41 +1,7 @@
 # Release Notes
 
-Below is an overview of the latest changes and improvements made to FinderGit.
+Below is an overview of the latest changes and improvements made to FinderGit. The release notes are fetched live from GitHub and update automatically — no manual edits needed.
 
-## v0.1.1 — April 2026
+import { ReleaseNotes } from '@/components/ReleaseNotes/ReleaseNotes';
 
-### Major performance improvement
-
-Idle CPU usage drops from ~14% to **~0.5%** on repos with many roots and active file-system activity (Node.js projects, Xcode builds, etc.).
-
-**Under the hood:**
-- **Path denylist in the file-system watcher** — `.git/index`, `.git/objects/`, `node_modules/`, `DerivedData/` and similar noise folders no longer trigger a recompute. The `.git/index` filter eliminated a feedback loop where FinderGit's own `git status` calls were re-triggering themselves.
-- **Per-kind debouncer** on FSEvents notifications (300 ms worktree / 500 ms metadata), so bursts of file changes collapse into a single refresh instead of one-per-event.
-- **Path normalization fix** — correctly classifies `.git/` changes on paths under `/var/folders/…` (resolves the `/var` vs `/private/var` mismatch FSEvents delivers).
-
-No user-facing changes — same UI, same features, just dramatically lighter on CPU.
-
-## v0.1.0 — April 2026
-
-### First public release
-
-FinderGit launches as a native macOS Git-aware file browser.
-
-**Features:**
-- Expandable tree view with sortable columns (Name, Branch, Status, Changes, Size, Date)
-- Live Git status for all repositories via FSEvents
-- Inline diff viewer with colored additions/deletions
-- Git actions: stage, unstage, commit, push, pull, fetch
-- Smart context menus adapting to file type and Git state
-- Quick Look (Space bar) — native Markdown rendering for `.md`/`.markdown` files via MarkdownUI; system Quick Look (`qlmanage`) for everything else
-- Search and filter with "Git Only" toggle
-- Multiple root folders — drop folders from the macOS Finder into the sidebar to add them as roots
-- Sub-directory dirty indicators
-- Settings: scan depth, font size, excluded folders, terminal app, Git path
-- Full menu bar with keyboard shortcuts
-- Custom app icon
-- Auto-updates via Sparkle (EdDSA-signed)
-
-**Requirements:**
-- macOS 15 (Sequoia) or later
-- Git (bundled with macOS)
+<ReleaseNotes />

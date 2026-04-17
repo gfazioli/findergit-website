@@ -71,8 +71,15 @@ The website serves as:
 ### API Routes (`app/api/`)
 
 - `version/` — returns current package version
-- `github-releases/` — proxies GitHub Releases API for FinderGit (configured in `config/index.ts`)
+- `github-releases/` — proxies GitHub Releases API for FinderGit (configured in `config/index.ts`). Uses `GITHUB_TOKEN` env var when set to raise the rate limit from 60/hr to 5000/hr.
 - `search/` — pagefind-based full-text search endpoint
+
+### Environment variables
+
+- `GITHUB_TOKEN` (optional, recommended on Vercel) — fine-grained or classic token with `public_repo` read scope. Used by:
+  - The `/api/github-releases` proxy (runtime).
+  - The `content/release-notes.mdx` TOC metadata, which fetches at build time so Vercel needs the var available during deploys.
+  Without the token the app still works but may hit 60 req/hr GitHub rate limit on shared IPs.
 
 ### CSS Import Order
 

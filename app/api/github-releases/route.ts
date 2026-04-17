@@ -14,14 +14,19 @@ export async function GET(request: Request) {
       return Response.json({ error: 'Bots are not allowed' }, { status: 403 });
     }
 
+    const headers: Record<string, string> = {
+      Accept: 'application/vnd.github+json',
+    };
+    // Use a token if configured (Vercel env var GITHUB_TOKEN). Authenticated
+    // requests get 5000/hour instead of 60/hour per IP, which matters on
+    // shared IPs like Vercel's.
+    if (process.env.GITHUB_TOKEN) {
+      headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+    }
+
     const response = await fetch(
       `${config.gitHub.releasesUrl}?per_page=${config.releaseNotes.maxReleases}`,
-      {
-        headers: {
-          Accept: 'application/vnd.github+json',
-          // Authorization: `Bearer ${process.env.GITHUB_TOKEN}`, // Optional for rate limit
-        },
-      }
+      { headers }
     );
 
     if (!response.ok) {
