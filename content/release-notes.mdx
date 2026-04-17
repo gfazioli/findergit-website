@@ -1,7 +1,26 @@
-# Release Notes
+## Release Notes
 
 Below is an overview of the latest changes and improvements made to FinderGit. The release notes are fetched live from GitHub and update automatically — no manual edits needed.
 
 import { ReleaseNotes } from '@/components/ReleaseNotes/ReleaseNotes';
 
 <ReleaseNotes />
+
+export const metadata = {
+    toc: await (async () => {
+        try {
+            const res = await fetch(
+                'https://api.github.com/repos/gfazioli/findergit-website/releases?per_page=10'
+            );
+            const releases = await res.json();
+            if (!Array.isArray(releases)) return [];
+            return releases.map((release) => ({
+                value: `${release.tag_name} - ${new Date(release.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).replace(' ', ', ')}`,
+                depth: '3',
+                id: release.tag_name,
+            }));
+        } catch {
+            return [];
+        }
+    })()
+}
