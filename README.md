@@ -12,11 +12,14 @@ FinderGit is a native macOS app that combines file browsing with Git intelligenc
 
 - **Tree view with columns** — browse files like Finder's list view, with sortable columns for Branch, Status, Changes, Size, and Date Modified
 - **Live Git status** — every repository shows its branch, clean/dirty/unpushed state, and number of changed files, updated in real time via FSEvents
+- **Ahead/behind counter** — the status badge shows `↑N`, `↓N`, or `↑N ↓M` so you can spot repos that need a push, a pull, or both at a glance
+- **Auto-fetch** — optional background `git fetch` at a user-chosen interval to keep the ahead/behind counter fresh
 - **Diff viewer** — click any modified file to see a colored inline diff
 - **Git actions** — stage, unstage, commit, push, pull, fetch, branch switch, all from the UI
 - **Native Markdown preview** — press Space on any `.md` file for a rendered preview
 - **Smart context menus** — adapts to whether you're on a regular file, a tracked file, or a repository
 - **Multiple root folders** — add as many as you want; drop folders from the macOS Finder into the sidebar to add them as roots
+- **Universal binary** — one DMG runs on Apple Silicon and Intel Macs
 - **Auto-updates** — built in via Sparkle
 
 ## Download
