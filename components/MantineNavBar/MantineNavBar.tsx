@@ -14,7 +14,7 @@ export const MantineNavBar = () => {
         logo={
           <Group align="center" gap={8}>
             <Logo />
-            <Text size="lg" fw={600} visibleFrom="sm">
+            <Text size="lg" fw={600} visibleFrom="lg">
               FinderGit
             </Text>
           </Group>
