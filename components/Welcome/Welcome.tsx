@@ -177,6 +177,21 @@ export function Welcome() {
               See what it does
             </Button>
           </Group>
+
+          <Center mt="sm">
+            <a
+              href="https://www.producthunt.com/products/findergit/reviews/new?utm_source=badge-product_review&utm_medium=badge&utm_source=badge-findergit"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://api.producthunt.com/widgets/embed-image/v1/product_review.svg?product_id=1207107&theme=neutral"
+                alt="FinderGit - See every Git repo's status from one native Mac window | Product Hunt"
+                width={250}
+                height={54}
+              />
+            </a>
+          </Center>
         </Stack>
 
         {/* ─── Screenshot ─── */}
