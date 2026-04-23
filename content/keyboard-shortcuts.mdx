@@ -7,9 +7,20 @@ FinderGit supports many keyboard shortcuts for fast navigation and Git operation
 <ShortcutsTable shortcuts={[
   { keys: ['Space'], action: 'Quick Look the selected file (native Markdown renderer for .md/.markdown, system Quick Look for everything else)' },
   { keys: ['⌘', '↩'], action: 'Open the selected file' },
+  { keys: ['↩'], action: 'Activate the selection — open a file, or drill into a folder' },
+  { keys: ['⌫'], action: 'Move the whole selection to the Trash (undo-able with ⌘Z)' },
+  { keys: ['⌘', 'Z'], action: 'Restore the last trashed batch to its original location' },
   { keys: ['⌘', '⇧', 'R'], action: 'Reveal in Finder' },
   { keys: ['⌘', '⇧', 'C'], action: 'Copy file path' },
   { keys: ['⌘', '⇧', 'O'], action: 'Add a root folder' },
+]} />
+
+## Navigation
+
+<ShortcutsTable shortcuts={[
+  { keys: ['⌘', 'T'], action: 'Open a new tab — each tab gets its own sidebar selection and drill-down history' },
+  { keys: ['⌘', '['], action: 'Back — pop the drill-down history' },
+  { keys: ['⌘', ']'], action: 'Forward — replay the most recent back' },
 ]} />
 
 ## View

@@ -9,6 +9,11 @@ Open Settings with <Kbd>⌘</Kbd> <Kbd>,</Kbd> or from the menu **FinderGit → 
 ### Startup
 - **Launch FinderGit at login** — automatically start FinderGit when you log in to your Mac
 
+### Updates
+- **Check for updates on launch** — run a Sparkle background check every time FinderGit starts. Silent unless a newer version is available.
+- **Automatically check for updates** — Sparkle's scheduled background check (every 24h by default). Toggle this if you want to freeze on your current version.
+- **Check for Updates Now…** — trigger a check on demand. Disabled in development builds so the Xcode-run binary can't accidentally offer to replace itself with the release DMG.
+
 ### File Browser
 - **Show hidden files** — display dotfiles (files starting with `.`) in the tree view
 - **Scan depth** — maximum folder depth when scanning root folders for `.git` directories (1–10, default 5)

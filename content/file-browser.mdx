@@ -6,6 +6,26 @@ The file browser is the heart of FinderGit. It presents your files in an expanda
 
 Click the disclosure triangle (▸) next to any directory to expand it and see its contents. The tree loads children lazily — only when you expand a folder.
 
+### Drill into a folder
+
+Double-click a directory (or press <Kbd>↩</Kbd>) to **re-root the tree** on that folder — Finder-style. A back/forward capsule and a clickable breadcrumb appear above the table:
+
+- <Kbd>⌘</Kbd> <Kbd>[</Kbd> — back
+- <Kbd>⌘</Kbd> <Kbd>]</Kbd> — forward
+- Click any segment in the breadcrumb to jump directly to that depth
+
+![Folder drill-down with back/forward capsule and breadcrumb](/screenshot-drilldown.png)
+
+### Tabs
+
+Open multiple root folders side-by-side with native macOS tabs (<Kbd>⌘</Kbd> <Kbd>T</Kbd> or **File → New Tab**). Each tab has its own navigation, selection, and drill-down history. The window's titlebar and tab labels automatically reflect the current folder you're viewing.
+
+![Two tabs showing different folders — each with its own title](/screenshot-tabs.png)
+
+### Live updates
+
+When files are created, deleted, or renamed externally — from the terminal, a build step, `git clean`, anything — the tree re-enumerates expanded directories within ~300ms. Your selection and scroll position are preserved across the refresh. You shouldn't need <Kbd>⌘</Kbd> <Kbd>R</Kbd> to see what's on disk.
+
 ### Hidden files
 
 By default, FinderGit hides dotfiles (files starting with `.`). You can show them in **Settings → General → Show hidden files**.
@@ -49,16 +69,42 @@ Use the **search field** in the toolbar to filter files by name. The filter appl
 
 Toggle the **Git Only** button (branch icon in toolbar) to hide all non-repository files and directories.
 
+## Selection
+
+Click a row to select it. Standard macOS selection gestures apply:
+
+- <Kbd>⇧</Kbd> click — contiguous range
+- <Kbd>⌘</Kbd> click — discontiguous add / remove
+- <Kbd>↑</Kbd> / <Kbd>↓</Kbd> with <Kbd>⇧</Kbd> — extend the keyboard selection
+
+The detail panel on the right follows the most recently added item in the selection.
+
+### Bulk actions
+
+When you have multiple files selected, the context menu collapses to a shorter list that operates on the whole set: Open, Reveal in Finder, Copy, Copy Paths, and — when all selected files live in the same repo — **Stage N** / **Unstage N**. At the bottom, **Move N Items to Trash** handles delete.
+
+Press <Kbd>⌫</Kbd> (Delete) to trash the whole selection in one go. <Kbd>⌘</Kbd> <Kbd>Z</Kbd> restores every file to its original path — if a path has been reclaimed in the meantime, the trashed copy is revealed in Finder so nothing silently disappears.
+
+![Multi-selection with the bulk-action context menu](/screenshot-multiselect.png)
+
+## Drag files out
+
+Grab the **icon** of any file or folder and drop it anywhere that accepts a file URL — Finder windows, chat apps, editors, mail composers, the Dock. The text portion of the row stays click-through for selection, so dragging is an explicit gesture.
+
 ## Context menu
 
-Right-click any item in the tree to get a context-sensitive menu. The options adapt to what you right-clicked:
+Right-click any item in the tree to get a context-sensitive menu with inline SF Symbol icons. On a single item the menu adapts to what you right-clicked:
 
-- **Directory inside a repo** — Stage All, Unstage All, plus standard file actions
-- **Modified file** — Stage / Unstage (depending on current state), Reveal in Finder, Copy Path, Quick Look
-- **Clean file** — Open, Quick Look, Reveal in Finder, Copy Path
-- **Non-git directory** — Add as Root Folder, Open in Finder, Open in Terminal
+- **Repository folder** — Open in Finder / Terminal, Add to Root Folders, Quick Look, Get Info, Duplicate, Copy / Copy Path, Fetch / Pull / Push / Stage All, Move to Trash
+- **File inside a repo** — Open, Quick Look, Reveal in Finder, Get Info, Duplicate, Copy / Copy Path, Stage / Unstage (when applicable), Move to Trash
 
-![Context menu on a tracked file showing Stage / Unstage and standard actions](/screenshot-context-menu.png)
+![Context menu on a repository folder](/screenshot-context-menu.png)
+
+**Finder-parity actions**:
+
+- **Get Info** — opens the system Get Info panel (same window you get from Finder's <Kbd>⌘</Kbd> <Kbd>I</Kbd>)
+- **Duplicate** — creates a sibling `… copy` / `… copy 2` next to the original, matching Finder's naming
+- **Copy** — copies the actual file reference to the clipboard, paste-able into another Finder window / Mail / Messages / anywhere
 
 ## Quick Look
 
