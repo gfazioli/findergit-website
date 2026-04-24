@@ -2,12 +2,42 @@
 
 ## Installation
 
-1. **Download** the latest `.dmg` from the [download page](#)
+1. **Download** the latest `.dmg` from [GitHub Releases](https://github.com/gfazioli/findergit-website/releases/latest)
 2. **Open** the `.dmg` file
 3. **Drag** FinderGit to your Applications folder
 4. **Launch** FinderGit from Applications or Spotlight
 
-> On first launch, macOS may show a warning because the app is not signed with a Developer ID. Right-click the app and choose "Open" to bypass the warning.
+## First launch on macOS
+
+FinderGit is currently distributed **unsigned** (Apple notarization is on the roadmap). On first launch, macOS Gatekeeper will block the app with a dialog saying something like *"FinderGit cannot be opened because Apple cannot check it for malicious software."*
+
+This is expected. You can unblock the app in two ways.
+
+### Option 1 — Right-click → Open (fastest)
+
+1. Open the **Applications** folder in Finder
+2. **Right-click** (or Control-click) on **FinderGit**
+3. Choose **Open** from the menu
+4. In the warning dialog, click **Open** again
+
+You only need to do this the first time. From then on, FinderGit opens normally.
+
+### Option 2 — System Settings → Privacy & Security
+
+If the right-click method doesn't work, or if you already tried to launch FinderGit and got the "app is damaged" dialog:
+
+1. Try to open FinderGit once (so macOS registers the block)
+2. Open **System Settings** → **Privacy & Security**
+3. Scroll down to the **Security** section
+4. You'll see *"FinderGit" was blocked to protect your Mac.* — click **Open Anyway**
+
+![Privacy & Security pane showing the Open Anyway button](/screenshot-gatekeeper.png)
+
+5. Enter your password when prompted, then launch FinderGit from Applications
+
+### Why this happens
+
+macOS Gatekeeper requires apps to be signed with an **Apple Developer ID** ($99/year Developer Program) and notarized through Apple's servers. FinderGit is currently built with a free Personal Team signing certificate, which macOS treats as "unverified." Paid notarization is on the roadmap.
 
 ## Before first launch (fresh Mac)
 
