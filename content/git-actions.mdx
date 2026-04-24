@@ -13,7 +13,29 @@ When you select a repository (or any item inside one), the detail panel shows:
 - **Fetch** — fetches from all remotes (`git fetch --all`)
 - **Pull** — pulls from the upstream (`git pull`)
 - **Push** — pushes to the upstream. If no upstream is configured, automatically sets it with `--set-upstream origin <branch>`
-- **Refresh** — re-reads the repository status
+- **Refresh** — re-reads the repository status (local only, no network)
+
+### Button feedback
+
+Every action button adapts its appearance to show you what's happening:
+
+- **Idle** — default icon and label
+- **In progress** — a spinner replaces the icon, the label becomes *"Fetching…"* / *"Pulling…"* / *"Pushing…"* / *"Refreshing…"*, and the other action buttons disable so you can't fire a second command while one is in flight
+- **Success** — a green checkmark briefly flashes on the button that just finished (~1.5s), then fades back to the idle icon
+- **Failure** — a red x stays on the button; hover the button to see the underlying error message
+
+A brief confirmation banner (green) or error banner (red) also appears just under the action bar for a few seconds.
+
+### Responsive compact mode
+
+When the detail panel is narrower than about 500px (common on 13" laptops or split-screen windows), the layout automatically adapts:
+
+- Action buttons collapse to **icon-only** — the title still shows as a tooltip on hover
+- Section spacing and typography tighten
+- Long strings (repo path, last-commit subject) truncate more aggressively
+- Branch/Upstream/Ahead-Behind info switches from a single row to a compact two-column stack
+
+No setting to manage — widen the panel and the full layout returns automatically.
 
 ### Staging and unstaging
 

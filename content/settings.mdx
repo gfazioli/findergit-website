@@ -34,8 +34,15 @@ vendor, bower_components
 ### Git Executable
 Path to the `git` binary. Default: `/usr/bin/git` (the macOS Xcode toolchain stub). Change this if you use a Homebrew or custom git installation.
 
+### Fetch on launch
+When enabled (default), FinderGit runs `git fetch` on every watched repository once, right after the initial discovery scan completes. This ensures ahead/behind counts reflect the true remote state from the first moment the UI is visible — without it, a newly launched app would only start showing BEHIND after you manually triggered Fetch or the periodic auto-fetch fired.
+
+Network errors during the launch fetch are silent (no per-repo error banners). Disable this if you're on a metered connection.
+
 ### Auto Fetch
-Periodically fetch from all remotes. Options: Disabled (default), every 5/15/30/60 minutes.
+Periodically fetch from all remotes in the background. Options: Disabled (default), every 5/15/30/60 minutes.
+
+Keeps ahead/behind counts and remote branches up-to-date without modifying your working tree.
 
 ### Commit Template
 A default message pre-filled in the commit text field. Leave empty for no template.
