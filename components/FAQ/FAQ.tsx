@@ -29,8 +29,7 @@ const faqItems = [
   {
     value: 'unsigned',
     question: 'Why does macOS say the app is from an unidentified developer?',
-    answer:
-      'FinderGit is not yet signed with an Apple Developer ID certificate. To open it, right-click the app, choose "Open", then click "Open" in the confirmation dialog. You only need to do this once.',
+    answer: 'unsigned-link',
   },
   {
     value: 'detect',
@@ -85,6 +84,14 @@ export function FAQ() {
                 </Anchor>{' '}
                 on GitHub. Include your FinderGit version, macOS version, and steps to reproduce the issue.
                 Screenshots are very helpful!
+              </Text>
+            ) : item.answer === 'unsigned-link' ? (
+              <Text c="dimmed" size="sm">
+                FinderGit is not yet signed with an Apple Developer ID certificate, so macOS Gatekeeper blocks it on first launch. You only need to unblock it once — see the{' '}
+                <Anchor href="/docs/getting-started#first-launch-on-macos" size="sm">
+                  First launch on macOS
+                </Anchor>{' '}
+                guide for the two-step procedure (right-click → Open, or System Settings → Privacy &amp; Security → Open Anyway), complete with screenshots. Apple notarization is on the roadmap.
               </Text>
             ) : item.answer === 'feature-request' ? (
               <Text c="dimmed" size="sm">

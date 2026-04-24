@@ -43,10 +43,15 @@ You can customize this list in **Settings → General → Excluded Folders**.
 
 ### Repository badges
 
-Repositories (directories containing `.git/`) show inline status:
-- **CLEAN** (green) — working tree matches HEAD, nothing to push
-- **DIRTY** (orange) — uncommitted changes exist
-- **UNPUSHED** (blue) — clean tree but local commits not yet pushed
+Repositories (directories containing `.git/`) show inline status. The badge reflects both the working-tree state and the local branch's position relative to its upstream:
+
+- **CLEAN** (green) — working tree matches HEAD and the branch is in sync with upstream (or has no upstream)
+- **DIRTY** (orange) — uncommitted changes in the working tree (takes priority over any sync state)
+- **↑N** (blue) — N commits ahead of upstream (push to sync)
+- **↓N** (purple) — N commits behind upstream (pull to sync)
+- **↑N ↓N** (red) — diverged: commits on both sides (pull then push, or rebase)
+
+Hover the badge for a tooltip with the exact meaning. Ahead/behind counts are only accurate after a `git fetch` has brought the latest remote refs — Settings → Git → **Fetch on launch** (on by default) runs one fetch at startup so the counts are correct from the first moment.
 
 ### Sub-directory indicators
 
