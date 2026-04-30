@@ -20,4 +20,10 @@ export const resources = [
     href: 'https://github.com/gfazioli/findergit-website/issues',
     newWindow: true,
   },
+  {
+    key: 'undolog',
+    title: 'Undolog Blog',
+    href: 'https://undolog.com',
+    newWindow: true,
+  },
 ];

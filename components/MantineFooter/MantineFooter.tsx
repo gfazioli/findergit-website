@@ -20,7 +20,6 @@ import {
   Title,
 } from '@mantine/core';
 import { Logo } from '@/components/Logo/Logo';
-import packageJson from '../../package.json';
 import { AnimateBadge } from './AnimateBadge';
 import { ecosystem, highlights, resources } from './links';
 import classes from './MantineFooter.module.css';
@@ -64,8 +63,8 @@ export const MantineFooter = () => {
               <Text fz={13} mr={64}>
                 FinderGit is a native macOS app that combines file browsing with Git
                 intelligence. Built with SwiftUI by{' '}
-                <Anchor fz={13} href="https://undolog.com/">
-                  Giovambattista Fazioli
+                <Anchor fz={13} href="https://gfazioli.github.io/">
+                  Undolog
                 </Anchor>
                 . Follow me on{' '}
                 <Anchor fz={13} href="https://twitter.com/gfazioli">
@@ -131,7 +130,7 @@ export const MantineFooter = () => {
           <Group justify="right">
             <Text fz={12} inline>
               Made with ❤️ by{' '}
-              <Anchor fz={13} href="https://undolog.com/">
+              <Anchor fz={13} href="https://gfazioli.github.io/">
                 Undolog
               </Anchor>
             </Text>
@@ -152,8 +151,7 @@ export const MantineFooter = () => {
                 Built with{' '}
                 <Anchor fz={13} href="https://mantine.dev/">
                   <Group gap={4} component="span">
-                    <IconBrandMantine size={16} /> Mantine v
-                    {packageJson.dependencies['@mantine/core']}
+                    <IconBrandMantine size={16} /> Mantine
                   </Group>
                 </Anchor>
               </Group>

@@ -6,9 +6,9 @@ export const ecosystem = [
     newWindow: true,
   },
   {
-    key: 'undolog',
-    title: 'Undolog Blog',
-    href: 'https://undolog.com',
+    key: 'octoscope',
+    title: 'Octoscope',
+    href: 'https://gfazioli.github.io/octoscope/',
     newWindow: true,
   },
   {
