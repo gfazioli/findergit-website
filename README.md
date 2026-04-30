@@ -26,7 +26,7 @@ FinderGit is a native macOS app that combines file browsing with Git intelligenc
 
 [**→ Download the latest version**](https://github.com/gfazioli/findergit-website/releases/latest)
 
-After downloading, open the DMG and drag FinderGit into your Applications folder. On first launch, right-click the app → **Open** to bypass Gatekeeper (the app is signed with a free Personal Team — not an Apple Developer ID).
+After downloading, open the DMG and drag FinderGit into your Applications folder. Launch it normally — the app is signed with Apple Developer ID and notarized by Apple, so Gatekeeper accepts it on first open.
 
 ## Requirements
 
