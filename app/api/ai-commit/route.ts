@@ -6,14 +6,16 @@
 // configure anything to use the free Auto provider.
 //
 // Limits we enforce here:
-// - 50 KB max diff size — keeps Groq token usage bounded and free-tier safe
+// - 100 KB max diff size — keeps Groq token usage bounded and free-tier
+//   safe while accommodating most real-world commits without false-positive
+//   rejections (see commit history for the 50 → 100 KB bump)
 // - 30 requests/hour per IP — in-memory best-effort rate limit (see note
 //   below); upgrade to Vercel KV or Upstash Redis when abuse becomes real
 // - Bot user-agent rejection — the same heuristic we use for github-releases
 
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
-const MAX_DIFF_BYTES = 50_000;
+const MAX_DIFF_BYTES = 100_000;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
 const RATE_LIMIT_MAX = 30;
 
