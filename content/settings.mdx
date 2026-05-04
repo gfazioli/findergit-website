@@ -47,6 +47,25 @@ Keeps ahead/behind counts and remote branches up-to-date without modifying your 
 ### Commit Template
 A default message pre-filled in the commit text field. Leave empty for no template.
 
+## AI
+
+![Settings — AI tab](/screenshot-settings-ai.png)
+
+Configures the **✨ AI** commit-message generator added in 0.5.0. See the dedicated [AI Commit Messages](/docs/ai-commit-messages) page for the full feature guide and examples.
+
+### Commit Messages
+- **Enable ✨ AI button in the commit field** — master switch. Disable to hide the button entirely
+- **Use Conventional Commits format** — wraps the subject as `type(scope): subject` (default on)
+- **Prefix with a relevant emoji** — let the model pick one matching emoji (default off)
+- **Tone** — Professional / Casual / Friendly
+- **Length** — Short (subject only) / Normal (subject + brief body) / Long (subject + bulleted body)
+
+### Custom Instructions
+Free-form textarea (max 2 KB) appended to the AI prompt as authoritative house style. Use to enforce conventions the defaults can't express — ban specific words, always reference an issue number, sign with your initials, force a specific scope vocabulary.
+
+### Privacy
+Your staged diff is sent to the FinderGit Vercel proxy, which forwards it to Groq under a server-managed API key. **Diffs are not logged or stored.** Capped at 100 KB per request, with an additional 2 KB cap on custom instructions.
+
 ## Terminal
 
 ![Settings — Terminal tab](/screenshot-settings-terminal.png)

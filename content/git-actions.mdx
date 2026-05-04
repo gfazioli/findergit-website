@@ -42,14 +42,14 @@ No setting to manage — widen the panel and the full layout returns automatical
 In the changes list, each file has a **Stage** or **Unstage** button:
 - **Stage** — runs `git add <file>`
 - **Unstage** — runs `git restore --staged <file>`
-- **Stage All** — stages everything (`git add -A`)
+- **Stage All** ↔ **Unstage All** — the header button toggles based on state: stages everything when there are unstaged changes, switches to **Unstage All** (orange tint) when the index is fully caught up so you can reset it in one click
 
-The buttons appear intelligently: "Stage" only shows for files with unstaged changes, "Unstage" only for staged files.
+The per-file buttons appear intelligently: "Stage" only shows for files with unstaged changes, "Unstage" only for staged files.
 
 ### Committing
 
 Below the changes list, a commit section appears when there are changes:
-1. Type your commit message in the text field
+1. Type your commit message in the text field — or click **✨ AI** to generate one from your staged diff (see [AI Commit Messages](/docs/ai-commit-messages))
 2. Click **Commit Staged** to commit only staged files
 3. Or click **Commit All & Push** to stage everything, commit, and push in one action
 
