@@ -1,16 +1,7 @@
 'use client';
 
 import { IconFolder } from '@tabler/icons-react';
-import {
-  Badge,
-  Box,
-  Container,
-  Group,
-  Paper,
-  Stack,
-  Text,
-  Title,
-} from '@mantine/core';
+import { Badge, Box, Container, Group, Paper, Stack, Text, Title } from '@mantine/core';
 
 const repos = [
   {
@@ -70,22 +61,10 @@ export function SolutionSection() {
     >
       <Container size="lg">
         <Stack align="center" gap="md" mb={48}>
-          <Text
-            size="sm"
-            fw={700}
-            tt="uppercase"
-            style={{ letterSpacing: 3 }}
-            c="orange"
-          >
+          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="orange">
             The Solution
           </Text>
-          <Title
-            order={2}
-            ta="center"
-            fz={{ base: 32, sm: 42 }}
-            fw={900}
-            c="white"
-          >
+          <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900} c="white">
             One window. All your repos. Always live.
           </Title>
         </Stack>
@@ -131,12 +110,7 @@ export function SolutionSection() {
                   </Text>
                 </Group>
                 <Group gap="xs">
-                  <Badge
-                    variant="light"
-                    color={repo.branchColor}
-                    size="sm"
-                    radius="sm"
-                  >
+                  <Badge variant="light" color={repo.branchColor} size="sm" radius="sm">
                     {repo.branch}
                   </Badge>
                   <Badge

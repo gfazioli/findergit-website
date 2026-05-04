@@ -40,8 +40,7 @@ export default {
     },
   },
   nextraLayout: {
-    docsRepositoryBase:
-      'https://github.com/gfazioli/findergit-website/tree/main/app/docs/',
+    docsRepositoryBase: 'https://github.com/gfazioli/findergit-website/tree/main/app/docs/',
     sidebar: {
       defaultMenuCollapseLevel: 1,
     },
@@ -57,8 +56,7 @@ export default {
     // when a public releases repo is created.
     repo: 'gfazioli/findergit-website',
     apiUrl: 'https://api.github.com',
-    releasesUrl:
-      'https://api.github.com/repos/gfazioli/findergit-website/releases',
+    releasesUrl: 'https://api.github.com/repos/gfazioli/findergit-website/releases',
   },
   releaseNotes: {
     // External link to the GitHub Releases page — used by the
@@ -78,7 +76,6 @@ export default {
   app: {
     version: '0.5.0',
     minMacOS: '15.0',
-    downloadUrl:
-      'https://github.com/gfazioli/findergit-website/releases/latest',
+    downloadUrl: 'https://github.com/gfazioli/findergit-website/releases/latest',
   },
 } as const;

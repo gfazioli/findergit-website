@@ -1,5 +1,6 @@
 'use client';
 
+import { Scene } from '@gfazioli/mantine-scene';
 import {
   IconEye,
   IconKeyboard,
@@ -8,15 +9,7 @@ import {
   IconDeviceDesktop,
   IconCode,
 } from '@tabler/icons-react';
-import {
-  Badge,
-  Box,
-  Container,
-  Group,
-  Stack,
-  Text,
-  Title,
-} from '@mantine/core';
+import { Badge, Box, Container, Group, Stack, Text, Title } from '@mantine/core';
 
 const techPills = [
   { label: 'SwiftUI', icon: IconCode },
@@ -30,24 +23,33 @@ const techPills = [
 
 export function BuiltForMacSection() {
   return (
-    <Box py={80}>
-      <Container size="lg">
+    <Box pos="relative" py={80} style={{ overflow: 'hidden' }}>
+      {/*
+        Aurora + Mesh evoke the Sequoia/Tahoe wallpaper aesthetic that
+        ships with current macOS releases — the section is literally
+        called "Built for macOS", so leaning into the macOS-native
+        atmospheric vibe rather than a generic wash makes the message
+        land. Colors stay in the FinderGit blue/cyan/indigo brand
+        family rather than Aurora's default green/teal.
+      */}
+      <Scene lazy>
+        <Scene.Mesh
+          stops={[
+            { color: 'blue', position: '15% 25%', spread: 60 },
+            { color: 'cyan', position: '85% 70%', spread: 60 },
+            { color: 'indigo', position: '50% 55%', spread: 75 },
+          ]}
+          opacity={0.18}
+        />
+        <Scene.Aurora colors={['blue', 'cyan', 'indigo']} bands={3} position="top" opacity={0.22} />
+        <Scene.Noise opacity={0.018} />
+      </Scene>
+      <Container size="lg" pos="relative" style={{ zIndex: 1 }}>
         <Stack align="center" gap="md">
-          <Text
-            size="sm"
-            fw={700}
-            tt="uppercase"
-            style={{ letterSpacing: 3 }}
-            c="orange"
-          >
+          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="orange">
             Built for macOS
           </Text>
-          <Title
-            order={2}
-            ta="center"
-            fz={{ base: 32, sm: 42 }}
-            fw={900}
-          >
+          <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
             100% native SwiftUI. Fast. Familiar. Yours.
           </Title>
 

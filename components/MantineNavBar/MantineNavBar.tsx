@@ -21,7 +21,14 @@ export const MantineNavBar = () => {
         }
         // No project link — repo is private
       >
-        <>
+        {/*
+          Wrap the navbar slot's content in a single Group instead of a
+          Fragment. Nextra's Navbar runs its `children` through internal
+          processing that doesn't add keys to fragmented siblings, which
+          fires the React 19 "Each child in a list should have a unique
+          key prop" warning. Passing one concrete element neutralises it.
+        */}
+        <Group gap="sm" wrap="nowrap">
           <ColorSchemeControl />
           <iframe
             src="https://github.com/sponsors/gfazioli/button"
@@ -30,7 +37,7 @@ export const MantineNavBar = () => {
             width="114"
             style={{ border: 0 }}
           />
-        </>
+        </Group>
       </Navbar>
     </>
   );

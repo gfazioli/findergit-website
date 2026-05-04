@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  Box,
-  Container,
-  Group,
-  Paper,
-  Stack,
-  Text,
-  Title,
-} from '@mantine/core';
+import { Box, Container, Group, Paper, Stack, Text, Title } from '@mantine/core';
 
 interface DiffLine {
   lineNum: number | [number, number];
@@ -66,22 +58,10 @@ export function DiffViewerSection() {
     >
       <Container size="lg">
         <Stack align="center" gap="md" mb={48}>
-          <Text
-            size="sm"
-            fw={700}
-            tt="uppercase"
-            style={{ letterSpacing: 3 }}
-            c="orange"
-          >
+          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="orange">
             Diff Viewer
           </Text>
-          <Title
-            order={2}
-            ta="center"
-            fz={{ base: 32, sm: 42 }}
-            fw={900}
-            c="white"
-          >
+          <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900} c="white">
             See every change at a glance
           </Title>
         </Stack>
@@ -105,8 +85,12 @@ export function DiffViewerSection() {
               src/components/Header.swift
             </Text>
             <Group gap="xs">
-              <Text size="sm" c="green" fw={600}>+12</Text>
-              <Text size="sm" c="red" fw={600}>-4</Text>
+              <Text size="sm" c="green" fw={600}>
+                +12
+              </Text>
+              <Text size="sm" c="red" fw={600}>
+                -4
+              </Text>
             </Group>
           </Group>
 
@@ -116,12 +100,7 @@ export function DiffViewerSection() {
               const style = getLineColor(line.type);
               const nums = getLineNumber(line.lineNum, line.type);
               return (
-                <Group
-                  key={idx}
-                  gap={0}
-                  wrap="nowrap"
-                  style={{ backgroundColor: style.bg }}
-                >
+                <Group key={idx} gap={0} wrap="nowrap" style={{ backgroundColor: style.bg }}>
                   <Text
                     size="xs"
                     c="dark.3"

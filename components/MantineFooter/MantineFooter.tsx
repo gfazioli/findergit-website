@@ -16,7 +16,6 @@ import {
   Group,
   Stack,
   Text,
-  ThemeIcon,
   Title,
 } from '@mantine/core';
 import { Logo } from '@/components/Logo/Logo';
@@ -61,8 +60,8 @@ export const MantineFooter = () => {
             <Stack gap="xs">
               <Logo size={48} />
               <Text fz={13} mr={64}>
-                FinderGit is a native macOS app that combines file browsing with Git
-                intelligence. Built with SwiftUI by{' '}
+                FinderGit is a native macOS app that combines file browsing with Git intelligence.
+                Built with SwiftUI by{' '}
                 <Anchor fz={13} href="https://gfazioli.github.io/">
                   Undolog
                 </Anchor>

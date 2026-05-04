@@ -46,8 +46,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Layout
             banner={
               <Banner storageKey={`findergit-release-${config.app.version}`}>
-                FinderGit v{config.app.version} is here — a Git-aware file browser for macOS.{' '}
-                <a href="/docs/release-notes">See what&apos;s new</a>
+                {/*
+                  Wrap the banner body in a single span. Nextra's Banner
+                  internally maps over its children; passing two siblings
+                  (the text node + the <a>) triggers React 19's "Each
+                  child should have a unique key" warning surfaced through
+                  the ConfigProvider.
+                */}
+                <span>
+                  FinderGit v{config.app.version} is here — a Git-aware file browser for macOS.{' '}
+                  <a href="/docs/release-notes">See what&apos;s new</a>
+                </span>
               </Banner>
             }
             navbar={<MantineNavBar />}

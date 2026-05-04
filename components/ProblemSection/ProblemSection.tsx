@@ -1,20 +1,7 @@
 'use client';
 
-import {
-  IconFolder,
-  IconTerminal2,
-  IconGitMerge,
-} from '@tabler/icons-react';
-import {
-  Box,
-  Container,
-  Paper,
-  SimpleGrid,
-  Stack,
-  Text,
-  ThemeIcon,
-  Title,
-} from '@mantine/core';
+import { IconFolder, IconTerminal2, IconGitMerge } from '@tabler/icons-react';
+import { Box, Container, Paper, SimpleGrid, Stack, Text, ThemeIcon, Title } from '@mantine/core';
 
 // Icon colours pick a vivid, distinct hue per tool so each card has a
 // clear visual identity in both light and dark mode. The previous palette
@@ -53,13 +40,7 @@ export function ProblemSection() {
     <Box py={80}>
       <Container size="lg">
         <Stack align="center" gap="md" mb={48}>
-          <Text
-            size="sm"
-            fw={700}
-            tt="uppercase"
-            style={{ letterSpacing: 3 }}
-            c="orange"
-          >
+          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="orange">
             The Problem
           </Text>
           <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
@@ -69,20 +50,9 @@ export function ProblemSection() {
 
         <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="lg">
           {problems.map((item) => (
-            <Paper
-              key={item.title}
-              p="xl"
-              radius="lg"
-              bg="var(--mantine-color-default)"
-              withBorder
-            >
+            <Paper key={item.title} p="xl" radius="lg" bg="var(--mantine-color-default)" withBorder>
               <Stack gap="md">
-                <ThemeIcon
-                  size={48}
-                  radius="md"
-                  color={item.color}
-                  variant="filled"
-                >
+                <ThemeIcon size={48} radius="md" color={item.color} variant="filled">
                   <item.icon size={26} />
                 </ThemeIcon>
                 <Text fw={700} size="lg">

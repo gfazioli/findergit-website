@@ -1,7 +1,6 @@
 'use client';
 
 import { Group, Kbd, Table, Text } from '@mantine/core';
-import type { ReactNode } from 'react';
 
 interface Shortcut {
   keys: string[];

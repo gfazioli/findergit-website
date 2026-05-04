@@ -74,20 +74,26 @@ export function FAQ() {
             ) : item.answer === 'bug-report' ? (
               <Text c="dimmed" size="sm">
                 Please open a{' '}
-                <Anchor href="https://github.com/gfazioli/findergit-website/issues/new?template=bug_report.yml" size="sm">
+                <Anchor
+                  href="https://github.com/gfazioli/findergit-website/issues/new?template=bug_report.yml"
+                  size="sm"
+                >
                   Bug Report
                 </Anchor>{' '}
-                on GitHub. Include your FinderGit version, macOS version, and steps to reproduce the issue.
-                Screenshots are very helpful!
+                on GitHub. Include your FinderGit version, macOS version, and steps to reproduce the
+                issue. Screenshots are very helpful!
               </Text>
             ) : item.answer === 'feature-request' ? (
               <Text c="dimmed" size="sm">
                 We&apos;d love to hear your ideas! Open a{' '}
-                <Anchor href="https://github.com/gfazioli/findergit-website/issues/new?template=feature_request.yml" size="sm">
+                <Anchor
+                  href="https://github.com/gfazioli/findergit-website/issues/new?template=feature_request.yml"
+                  size="sm"
+                >
                   Feature Request
                 </Anchor>{' '}
-                on GitHub and describe what you&apos;d like FinderGit to do. The more detail you provide, the better
-                we can evaluate and prioritize it.
+                on GitHub and describe what you&apos;d like FinderGit to do. The more detail you
+                provide, the better we can evaluate and prioritize it.
               </Text>
             ) : (
               <Text c="dimmed" size="sm">

@@ -112,9 +112,7 @@ function buildSystemPrompt(config: AICommitConfig): string {
     config.conventional
       ? '- Follow Conventional Commits format: type(scope): subject — types include feat, fix, refactor, chore, docs, test, style, perf'
       : '- Do not prefix with a Conventional Commits type',
-    config.emoji
-      ? '- Start the subject with one relevant emoji'
-      : '- Do not include emojis',
+    config.emoji ? '- Start the subject with one relevant emoji' : '- Do not include emojis',
     `- Tone: ${config.tone}`,
     `- Length: ${lengthDescription(config.length)}`,
     '- Focus on WHY the change was made, not WHAT changed line by line',
@@ -201,7 +199,9 @@ export async function POST(request: Request): Promise<Response> {
   const diffBytes = new TextEncoder().encode(body.diff).byteLength;
   if (diffBytes > MAX_DIFF_BYTES) {
     return Response.json(
-      { error: `Diff too large (max ${MAX_DIFF_BYTES / 1000} KB, received ${Math.round(diffBytes / 1000)} KB)` },
+      {
+        error: `Diff too large (max ${MAX_DIFF_BYTES / 1000} KB, received ${Math.round(diffBytes / 1000)} KB)`,
+      },
       { status: 413 }
     );
   }
