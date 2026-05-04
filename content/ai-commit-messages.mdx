@@ -15,7 +15,7 @@ The button is disabled until you have something staged. While generating, a smal
 
 ## Zero setup
 
-The free **Auto** provider (used by default) routes your diff through the FinderGit Vercel proxy → Groq's `llama-3.3-70b-versatile` model under a server-managed API key. No signup, no API key, no Homebrew install, no `pip install` — it just works the moment you launch FinderGit.
+The default mode is free and works out of the box. No signup, no API key, no Homebrew install, no `pip install` — open FinderGit and the button is there. FinderGit takes care of talking to the AI on your behalf.
 
 ## Configuration
 
@@ -89,14 +89,13 @@ fix(parser): handle empty input gracefully
 
 ## Privacy & limits
 
-Your staged diff is sent to the FinderGit proxy on Vercel, which forwards it to Groq under a server-managed API key. **Diffs are not logged or stored** — they pass through the request lifetime only.
+Your staged diff is sent to the AI in-flight only — **diffs are not logged or stored**. No personal credentials are required: FinderGit handles the request on your behalf.
 
 | Limit | Value |
 |---|---|
 | Max diff size per request | 100 KB |
 | Max custom instructions length | 2 KB |
 | Rate limit | 30 requests / hour per IP |
-| Model | `llama-3.3-70b-versatile` (Groq free tier) |
 
 If you stage more than 100 KB of diff, the AI button surfaces an inline message asking you to stage fewer files — typically a sign that the commit is large enough to deserve splitting into multiple commits anyway.
 
@@ -105,10 +104,10 @@ If you hit the per-IP rate limit (rare in normal use), the error banner shows a 
 ## Troubleshooting
 
 - **Button is disabled** — nothing is staged. Stage at least one file.
-- **"AI provider is temporarily unreachable"** — transient network or Vercel cold start. Click the **×** to dismiss the banner and retry. Persistent failures appear in the Xcode console (development builds) as `[AICommitClient] HTTP {status} from ...` lines.
+- **"AI provider is temporarily unreachable"** — transient network glitch or warm-up delay. Click the **×** to dismiss the banner and retry; usually works on the second attempt.
 - **"Diff too large (max 100 KB)"** — stage fewer files, or split the change into multiple commits.
 - **"Hit the AI rate limit"** — wait the indicated number of seconds and try again. The 30/hour limit resets per IP.
 
 ## Coming next
 
-The current implementation is **Phase 1**: free Auto provider via the FinderGit proxy. **Phase 2** (planned) adds *Bring Your Own Key* support — pick a provider (Groq, OpenAI, Anthropic, or a local Ollama instance), supply your own API key (stored in macOS Keychain), and skip the proxy entirely. Useful for privacy-sensitive repositories or to bypass the per-IP rate limit on the free tier.
+The current implementation is **Phase 1**: the free zero-setup mode that just works. **Phase 2** (planned) adds *Bring Your Own Key* support — pick your preferred AI provider, supply your own API key (stored in macOS Keychain), and FinderGit calls that provider directly. Useful for privacy-sensitive repositories or to bypass the per-IP rate limit on the free tier.
