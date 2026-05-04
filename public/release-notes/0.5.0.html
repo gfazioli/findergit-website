@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.5.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.5.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<h2>✨ Native AI commit messages</h2>
+<p>The marquee feature: FinderGit now generates commit messages from your staged diff. Click the <strong>✨ AI</strong> button next to the commit field, and a server-managed Groq Llama 3.3 70B reads your <code class="notranslate">git diff --cached</code> and produces a properly-formatted message. Zero setup — no API key, no signup, no Homebrew.</p>
+<h2>✨ Highlights</h2>
+<ul>
+<li><strong>AI commit-message generator</strong> in the commit pane (closes #13). Disabled when nothing is staged. Spinner during generation, dismissable inline error banner if anything goes wrong.</li>
+<li><strong>Dedicated AI tab in Settings</strong> — toggle the feature, pick Conventional Commits / emoji prefix / professional|casual|friendly tone / short|normal|long body length, and a free-form <strong>Custom Instructions</strong> textarea for house-style rules ("always sign with — initials", "ban the word 'leverage'", "mention the issue number from the branch name").</li>
+<li><strong>Long bodies as bullet lists</strong> — <code class="notranslate">Long (with body)</code> now produces the de-facto OSS convention (subject, blank line, <code class="notranslate">- </code> bullets each describing one change and its motivation), not prose paragraphs.</li>
+<li><strong>Stage All ↔ Unstage All toggle</strong> — the button flips its label and tint depending on whether anything is left to stage. Clean working tree of staged-only changes? "Unstage All" lets you reset the index in one click.</li>
+<li><strong>Sparkle update prompt now shows release notes</strong> — Sparkle's "Check for Updates" window pulls the per-version page into its webview, so updates land with proper context instead of a naked DMG link. Same page is publicly visitable at <a href="https://findergit.app/release-notes/0.5.0.html" rel="nofollow">findergit.app/release-notes/0.5.0.html</a>.</li>
+</ul>
+<h2>🐛 Fixes</h2>
+<ul>
+<li><strong>Fixed a dangerous keyboard-shortcut conflict</strong> that intercepted Space across the app: typing in any text field (Settings AI Custom Instructions, commit message, search) was silently dropping every space character and firing Quick Look on the most-recently-selected file browser node instead. Quick Look's menu shortcut moved from bare Space to ⌘Y (Finder convention); bare Space remains active for the file browser when it actually has focus.</li>
+</ul>
+<h2>🔧 Under the hood</h2>
+<ul>
+<li>New <code class="notranslate">AICommitClient</code> in <code class="notranslate">FinderGitCore</code> with a typed config (<code class="notranslate">AICommitConfig</code>), typed errors (<code class="notranslate">AICommitError</code>), and an ephemeral <code class="notranslate">URLSession</code> for the proxy round-trip.</li>
+<li>New backend <code class="notranslate">/api/ai-commit</code> route on <code class="notranslate">findergit-website</code> (Next.js) forwarding to Groq under a server-managed API key, with 30-req/hour per-IP rate limit, 100 KB diff size cap, and 2 KB cap on custom instructions.</li>
+<li><code class="notranslate">scripts/release.sh</code> extended to render release notes through the GitHub Markdown API and publish a per-version standalone HTML page. Same page powers Sparkle's update prompt and serves as a public permalink.</li>
+<li><code class="notranslate">git diff --cached</code> raw text exposed via new <code class="notranslate">GitClient.stagedDiffText(in:)</code> helper for clients that need the diff string rather than a parsed <code class="notranslate">FileDiff</code>.</li>
+</ul>
+<h2>📦 Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.5.0.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications</li>
+<li>Launch normally — signed with Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>💻 Requirements</h2>
+<p>macOS 15 Sequoia or later. Universal binary (Apple Silicon + Intel).</p>
+</body>
+</html>
