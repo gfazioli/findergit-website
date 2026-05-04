@@ -16,6 +16,11 @@ import {
   Title,
 } from '@mantine/core';
 
+// Icon colours pick a vivid, distinct hue per tool so each card has a
+// clear visual identity in both light and dark mode. The previous palette
+// (gray / dark / blue) collapsed to barely-visible washes against the
+// card backgrounds. Filled variants guarantee contrast on either theme
+// without depending on the card's own surface colour.
 const problems = [
   {
     icon: IconFolder,
@@ -23,7 +28,7 @@ const problems = [
     description: 'Shows files, but ',
     highlight: 'no Git state',
     rest: '. Your repos look like any other folder.',
-    color: 'gray',
+    color: 'blue',
   },
   {
     icon: IconTerminal2,
@@ -31,7 +36,7 @@ const problems = [
     description: 'Gives status, but ',
     highlight: 'no big picture',
     rest: '. One repo at a time, no visual overview.',
-    color: 'dark',
+    color: 'teal',
   },
   {
     icon: IconGitMerge,
@@ -39,7 +44,7 @@ const problems = [
     description: 'Powerful, but ',
     highlight: 'heavyweight',
     rest: '. Designed for deep work, not quick scanning.',
-    color: 'blue',
+    color: 'grape',
   },
 ];
 
@@ -76,7 +81,7 @@ export function ProblemSection() {
                   size={48}
                   radius="md"
                   color={item.color}
-                  variant="light"
+                  variant="filled"
                 >
                   <item.icon size={26} />
                 </ThemeIcon>
