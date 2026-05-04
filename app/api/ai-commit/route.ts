@@ -33,7 +33,13 @@ interface AICommitConfig {
   emoji: boolean;
   tone: Tone;
   length: Length;
+  customInstructions: string;
 }
+
+// Cap on free-form custom instructions to keep token spend bounded and
+// reduce the surface for prompt-injection abuse. Real-world house-style
+// rules fit comfortably in well under this.
+const MAX_CUSTOM_INSTRUCTIONS = 2000;
 
 interface AICommitRequest {
   diff: string;
@@ -79,9 +85,22 @@ function lengthDescription(length: Length): string {
     case 'short':
       return 'one line, under 60 characters';
     case 'normal':
-      return 'one line under 72 characters, optionally followed by a brief body';
+      return 'one line under 72 characters, optionally followed by a single short paragraph of body';
     case 'long':
-      return 'subject line plus a multi-line body explaining motivation and impact';
+      // Bullet-list body is the de-facto OSS convention (Linux kernel,
+      // major projects on GitHub) — easier to scan than prose paragraphs
+      // and matches what reviewers expect in PR descriptions too.
+      return [
+        'subject line, then a blank line, then a bulleted body.',
+        "Each bullet starts with '- ' and is one complete sentence describing a single change and its motivation.",
+        'Example of the desired shape:',
+        '',
+        '    chore: bump dependencies',
+        '',
+        '    - Update Mantine packages to 9.1.1 for improved compatibility and bug fixes.',
+        '    - Upgrade Storybook to 10.3.6 to include the latest UI enhancements.',
+        '    - Bump oxlint, postcss, and rollup to newer patch releases for stability.',
+      ].join('\n');
   }
 }
 
@@ -102,6 +121,21 @@ function buildSystemPrompt(config: AICommitConfig): string {
     '- Never include code from the diff in the message',
     '- Respond with ONLY the commit message, no surrounding quotes, no explanations, no preamble.',
   ];
+
+  // Custom instructions are appended as a separate authoritative block so
+  // the model treats them as personal house style. They override the
+  // defaults if they conflict (the model is told so explicitly), which is
+  // what the user expects: "I told you to never use 'leverage'" should
+  // beat the generic 'professional tone' rule.
+  const custom = (config.customInstructions ?? '').trim();
+  if (custom.length > 0) {
+    lines.push(
+      '',
+      'Additional user instructions (treat as authoritative; override the defaults above if they conflict):',
+      custom
+    );
+  }
+
   return lines.join('\n');
 }
 
@@ -109,11 +143,16 @@ function parseConfig(raw: unknown): AICommitConfig {
   const r = (raw ?? {}) as Partial<AICommitConfig>;
   const tone = (r.tone && TONES.has(r.tone as Tone) ? r.tone : 'professional') as Tone;
   const length = (r.length && LENGTHS.has(r.length as Length) ? r.length : 'short') as Length;
+  let customInstructions = typeof r.customInstructions === 'string' ? r.customInstructions : '';
+  if (customInstructions.length > MAX_CUSTOM_INSTRUCTIONS) {
+    customInstructions = customInstructions.slice(0, MAX_CUSTOM_INSTRUCTIONS);
+  }
   return {
     conventional: typeof r.conventional === 'boolean' ? r.conventional : true,
     emoji: typeof r.emoji === 'boolean' ? r.emoji : false,
     tone,
     length,
+    customInstructions,
   };
 }
 
