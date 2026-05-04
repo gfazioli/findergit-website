@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 8
+  version: 9
   cacheKey: 10c0
 
 "@adobe/css-tools@npm:^4.4.0":
@@ -2815,15 +2815,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gfazioli/mantine-scene@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@gfazioli/mantine-scene@npm:2.0.0"
+"@gfazioli/mantine-scene@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@gfazioli/mantine-scene@npm:2.1.0"
   peerDependencies:
     "@mantine/core": ">=7.0.0"
     "@mantine/hooks": ">=7.0.0"
     react: ^18.x || ^19.x
     react-dom: ^18.x || ^19.x
-  checksum: 10c0/b9ac953062ffe93ec4edaba7733862a366d8a756cbba9919be17efea79e6a78241c9c57c7b17168f5ad8e5d046093001f5e5821a6f8adbdea55f89280b7c5997
+  checksum: 10c0/af7bd8e926d19c10fa2433f5b818f69da927940fd8bb4667f06dba262094cc53deb43de64bfaa1ceb98cb3a3a5e47094cee22ac78481442272c8b509f8b0b929
   languageName: node
   linkType: hard
 
@@ -3616,29 +3616,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mantine/core@npm:9.0.2":
-  version: 9.0.2
-  resolution: "@mantine/core@npm:9.0.2"
+"@mantine/core@npm:9.1.1":
+  version: 9.1.1
+  resolution: "@mantine/core@npm:9.1.1"
   dependencies:
     "@floating-ui/react": "npm:^0.27.19"
     clsx: "npm:^2.1.1"
     react-number-format: "npm:^5.4.5"
     react-remove-scroll: "npm:^2.7.2"
-    type-fest: "npm:^5.5.0"
+    type-fest: "npm:^5.6.0"
   peerDependencies:
-    "@mantine/hooks": 9.0.2
+    "@mantine/hooks": 9.1.1
     react: ^19.2.0
     react-dom: ^19.2.0
-  checksum: 10c0/362352ea018c346e673abb9c37ca752fcdd5c0a5d3fb37f1d3a11bcf61452e66369bf9ef5be2289ae0291fb623ec6125a8701f645c7f569b96a76ca7bee7c49e
+  checksum: 10c0/2023bd79d69a3c1e3871a0668f1f7041b7f31c53cf388fb12cf749b8e5f9ba14bcd5b5245bab900f6120149444039c2fa70a018b17cff168af4552d64d1eace4
   languageName: node
   linkType: hard
 
-"@mantine/hooks@npm:9.0.2":
-  version: 9.0.2
-  resolution: "@mantine/hooks@npm:9.0.2"
+"@mantine/hooks@npm:9.1.1":
+  version: 9.1.1
+  resolution: "@mantine/hooks@npm:9.1.1"
   peerDependencies:
     react: ^19.2.0
-  checksum: 10c0/6027bd5e8519d65e3906cfeb345317c502d148381ebaafe9a76766464d497c8d155a054b5dd7325e2757002b4334d2a31e38aefee9856167fe3f4dc3335534a3
+  checksum: 10c0/63189c4e2c67f296822dc6e844152cf2521878ba7aed1b6a99b4c34662b2f97f4f43d46a84772a38e5fbbf478c42ac76066bcde2089b71d9051eee734f44b4c1
   languageName: node
   linkType: hard
 
@@ -3870,74 +3870,74 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/bundle-analyzer@npm:^16.2.3":
-  version: 16.2.3
-  resolution: "@next/bundle-analyzer@npm:16.2.3"
+"@next/bundle-analyzer@npm:^16.2.4":
+  version: 16.2.4
+  resolution: "@next/bundle-analyzer@npm:16.2.4"
   dependencies:
     webpack-bundle-analyzer: "npm:4.10.1"
-  checksum: 10c0/c8712e7f8cd0210f2f4b3c185e1d894dd3f23a521d79055b592398a9cdf38ea07039284171537c643ed65654a13bb207e63d7af3bb1115ee5691e21933dea502
+  checksum: 10c0/04fb5188f7539d09e35d58e4d4f35cedef31465144401e038ab5be362ba2d70e5681d5e0fd0ce94f3ac2a9c37795ca34710e712b4bdfabb5494bd415177f918f
   languageName: node
   linkType: hard
 
-"@next/env@npm:16.2.3":
-  version: 16.2.3
-  resolution: "@next/env@npm:16.2.3"
-  checksum: 10c0/56c3fee8ea226efe59ef065e054380f872c00c45c9fe4475eaa45f80773c3c1adc3ead3ccdd77447d3c1aeb4b3004aaaa033dd4a100d3e572fd01b83f992dde8
+"@next/env@npm:16.2.4":
+  version: 16.2.4
+  resolution: "@next/env@npm:16.2.4"
+  checksum: 10c0/4bf41f0da7cc97ca2a2f2b7f3fc81e14aba2afc280d32163b134b8f642b315fbabb5d9c224a783d8e759bbc73eedfc9acd048e772950395aa1e6290dd386d209
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-arm64@npm:16.2.3":
-  version: 16.2.3
-  resolution: "@next/swc-darwin-arm64@npm:16.2.3"
+"@next/swc-darwin-arm64@npm:16.2.4":
+  version: 16.2.4
+  resolution: "@next/swc-darwin-arm64@npm:16.2.4"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-x64@npm:16.2.3":
-  version: 16.2.3
-  resolution: "@next/swc-darwin-x64@npm:16.2.3"
+"@next/swc-darwin-x64@npm:16.2.4":
+  version: 16.2.4
+  resolution: "@next/swc-darwin-x64@npm:16.2.4"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-gnu@npm:16.2.3":
-  version: 16.2.3
-  resolution: "@next/swc-linux-arm64-gnu@npm:16.2.3"
+"@next/swc-linux-arm64-gnu@npm:16.2.4":
+  version: 16.2.4
+  resolution: "@next/swc-linux-arm64-gnu@npm:16.2.4"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-musl@npm:16.2.3":
-  version: 16.2.3
-  resolution: "@next/swc-linux-arm64-musl@npm:16.2.3"
+"@next/swc-linux-arm64-musl@npm:16.2.4":
+  version: 16.2.4
+  resolution: "@next/swc-linux-arm64-musl@npm:16.2.4"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-gnu@npm:16.2.3":
-  version: 16.2.3
-  resolution: "@next/swc-linux-x64-gnu@npm:16.2.3"
+"@next/swc-linux-x64-gnu@npm:16.2.4":
+  version: 16.2.4
+  resolution: "@next/swc-linux-x64-gnu@npm:16.2.4"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-musl@npm:16.2.3":
-  version: 16.2.3
-  resolution: "@next/swc-linux-x64-musl@npm:16.2.3"
+"@next/swc-linux-x64-musl@npm:16.2.4":
+  version: 16.2.4
+  resolution: "@next/swc-linux-x64-musl@npm:16.2.4"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-win32-arm64-msvc@npm:16.2.3":
-  version: 16.2.3
-  resolution: "@next/swc-win32-arm64-msvc@npm:16.2.3"
+"@next/swc-win32-arm64-msvc@npm:16.2.4":
+  version: 16.2.4
+  resolution: "@next/swc-win32-arm64-msvc@npm:16.2.4"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-win32-x64-msvc@npm:16.2.3":
-  version: 16.2.3
-  resolution: "@next/swc-win32-x64-msvc@npm:16.2.3"
+"@next/swc-win32-x64-msvc@npm:16.2.4":
+  version: 16.2.4
+  resolution: "@next/swc-win32-x64-msvc@npm:16.2.4"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -4124,135 +4124,135 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oxlint/binding-android-arm-eabi@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-android-arm-eabi@npm:1.60.0"
+"@oxlint/binding-android-arm-eabi@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-android-arm-eabi@npm:1.62.0"
   conditions: os=android & cpu=arm
   languageName: node
   linkType: hard
 
-"@oxlint/binding-android-arm64@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-android-arm64@npm:1.60.0"
+"@oxlint/binding-android-arm64@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-android-arm64@npm:1.62.0"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxlint/binding-darwin-arm64@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-darwin-arm64@npm:1.60.0"
+"@oxlint/binding-darwin-arm64@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-darwin-arm64@npm:1.62.0"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxlint/binding-darwin-x64@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-darwin-x64@npm:1.60.0"
+"@oxlint/binding-darwin-x64@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-darwin-x64@npm:1.62.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@oxlint/binding-freebsd-x64@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-freebsd-x64@npm:1.60.0"
+"@oxlint/binding-freebsd-x64@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-freebsd-x64@npm:1.62.0"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-arm-gnueabihf@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-linux-arm-gnueabihf@npm:1.60.0"
+"@oxlint/binding-linux-arm-gnueabihf@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-linux-arm-gnueabihf@npm:1.62.0"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-arm-musleabihf@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-linux-arm-musleabihf@npm:1.60.0"
+"@oxlint/binding-linux-arm-musleabihf@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-linux-arm-musleabihf@npm:1.62.0"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-arm64-gnu@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-linux-arm64-gnu@npm:1.60.0"
+"@oxlint/binding-linux-arm64-gnu@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-linux-arm64-gnu@npm:1.62.0"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-arm64-musl@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-linux-arm64-musl@npm:1.60.0"
+"@oxlint/binding-linux-arm64-musl@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-linux-arm64-musl@npm:1.62.0"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-ppc64-gnu@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-linux-ppc64-gnu@npm:1.60.0"
+"@oxlint/binding-linux-ppc64-gnu@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-linux-ppc64-gnu@npm:1.62.0"
   conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-riscv64-gnu@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-linux-riscv64-gnu@npm:1.60.0"
+"@oxlint/binding-linux-riscv64-gnu@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-linux-riscv64-gnu@npm:1.62.0"
   conditions: os=linux & cpu=riscv64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-riscv64-musl@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-linux-riscv64-musl@npm:1.60.0"
+"@oxlint/binding-linux-riscv64-musl@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-linux-riscv64-musl@npm:1.62.0"
   conditions: os=linux & cpu=riscv64 & libc=musl
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-s390x-gnu@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-linux-s390x-gnu@npm:1.60.0"
+"@oxlint/binding-linux-s390x-gnu@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-linux-s390x-gnu@npm:1.62.0"
   conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-x64-gnu@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-linux-x64-gnu@npm:1.60.0"
+"@oxlint/binding-linux-x64-gnu@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-linux-x64-gnu@npm:1.62.0"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-x64-musl@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-linux-x64-musl@npm:1.60.0"
+"@oxlint/binding-linux-x64-musl@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-linux-x64-musl@npm:1.62.0"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@oxlint/binding-openharmony-arm64@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-openharmony-arm64@npm:1.60.0"
+"@oxlint/binding-openharmony-arm64@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-openharmony-arm64@npm:1.62.0"
   conditions: os=openharmony & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxlint/binding-win32-arm64-msvc@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-win32-arm64-msvc@npm:1.60.0"
+"@oxlint/binding-win32-arm64-msvc@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-win32-arm64-msvc@npm:1.62.0"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxlint/binding-win32-ia32-msvc@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-win32-ia32-msvc@npm:1.60.0"
+"@oxlint/binding-win32-ia32-msvc@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-win32-ia32-msvc@npm:1.62.0"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@oxlint/binding-win32-x64-msvc@npm:1.60.0":
-  version: 1.60.0
-  resolution: "@oxlint/binding-win32-x64-msvc@npm:1.60.0"
+"@oxlint/binding-win32-x64-msvc@npm:1.62.0":
+  version: 1.62.0
+  resolution: "@oxlint/binding-win32-x64-msvc@npm:1.62.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -4550,22 +4550,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-themes@npm:^10.3.5":
-  version: 10.3.5
-  resolution: "@storybook/addon-themes@npm:10.3.5"
+"@storybook/addon-themes@npm:^10.3.6":
+  version: 10.3.6
+  resolution: "@storybook/addon-themes@npm:10.3.6"
   dependencies:
     ts-dedent: "npm:^2.0.0"
   peerDependencies:
-    storybook: ^10.3.5
-  checksum: 10c0/fef56bb9c6d45fea53f4a5f0d209a7ba77a16f2b6665f38526e20bc50b755fbf3976f87848c85955e86828ec1a02762ac9b82c275f7f69b14b22b8fc8913eb60
+    storybook: ^10.3.6
+  checksum: 10c0/494736b47b192b55472c0acf53bc448de0148aa1319af71cbc4ab6ca55c2c1b195f24024a7eaead9d0df26bc9a5f5774fcb5b0a00f9b599daca31c457a9a9776
   languageName: node
   linkType: hard
 
-"@storybook/builder-webpack5@npm:10.3.5":
-  version: 10.3.5
-  resolution: "@storybook/builder-webpack5@npm:10.3.5"
+"@storybook/builder-webpack5@npm:10.3.6":
+  version: 10.3.6
+  resolution: "@storybook/builder-webpack5@npm:10.3.6"
   dependencies:
-    "@storybook/core-webpack": "npm:10.3.5"
+    "@storybook/core-webpack": "npm:10.3.6"
     case-sensitive-paths-webpack-plugin: "npm:^2.4.0"
     cjs-module-lexer: "npm:^1.2.3"
     css-loader: "npm:^7.1.2"
@@ -4581,22 +4581,22 @@ __metadata:
     webpack-hot-middleware: "npm:^2.25.1"
     webpack-virtual-modules: "npm:^0.6.0"
   peerDependencies:
-    storybook: ^10.3.5
+    storybook: ^10.3.6
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/71d3c95acb79c05c14742a74845a3f2a13ef87477ff95a35665709ca7b4399edb79525637eb2b3bf0742d9e88cf46104a8a5ef4308e28b72bdbf91431a79839c
+  checksum: 10c0/947eaed5fdbea48d0eaa4225a229e8edc1e31fa4de02f7cd91e73ad9a67858ea82fa59e88f4edda42c5b75e210d18e36273e9d6c089a9952a10aa902e630f37f
   languageName: node
   linkType: hard
 
-"@storybook/core-webpack@npm:10.3.5":
-  version: 10.3.5
-  resolution: "@storybook/core-webpack@npm:10.3.5"
+"@storybook/core-webpack@npm:10.3.6":
+  version: 10.3.6
+  resolution: "@storybook/core-webpack@npm:10.3.6"
   dependencies:
     ts-dedent: "npm:^2.0.0"
   peerDependencies:
-    storybook: ^10.3.5
-  checksum: 10c0/384b453c1bdd49fe9c4eef6e8e783ae239cce1c9e4fa6e5f1a9cb46ab50868c3cdb8e66cf993a7cfd925154ff3d1322a0a4c23571fc98ca10f6f5d1272e33768
+    storybook: ^10.3.6
+  checksum: 10c0/d667cc293e020f1d4559cae9742d514df55563472c9d3421588d0608bfd42c50a0bd67cd24a4228b0fcb24fb8d6fa4c35733e087b693b103502165189006dfb0
   languageName: node
   linkType: hard
 
@@ -4617,9 +4617,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/nextjs@npm:^10.3.5":
-  version: 10.3.5
-  resolution: "@storybook/nextjs@npm:10.3.5"
+"@storybook/nextjs@npm:^10.3.6":
+  version: 10.3.6
+  resolution: "@storybook/nextjs@npm:10.3.6"
   dependencies:
     "@babel/core": "npm:^7.28.5"
     "@babel/plugin-syntax-bigint": "npm:^7.8.3"
@@ -4635,9 +4635,9 @@ __metadata:
     "@babel/preset-typescript": "npm:^7.28.5"
     "@babel/runtime": "npm:^7.28.4"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.11"
-    "@storybook/builder-webpack5": "npm:10.3.5"
-    "@storybook/preset-react-webpack": "npm:10.3.5"
-    "@storybook/react": "npm:10.3.5"
+    "@storybook/builder-webpack5": "npm:10.3.6"
+    "@storybook/preset-react-webpack": "npm:10.3.6"
+    "@storybook/react": "npm:10.3.6"
     "@types/semver": "npm:^7.7.1"
     babel-loader: "npm:^9.1.3"
     css-loader: "npm:^6.7.3"
@@ -4658,22 +4658,22 @@ __metadata:
     next: ^14.1.0 || ^15.0.0 || ^16.0.0
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-    storybook: ^10.3.5
+    storybook: ^10.3.6
     webpack: ^5.0.0
   peerDependenciesMeta:
     typescript:
       optional: true
     webpack:
       optional: true
-  checksum: 10c0/736ad4d25ee0b8b4cba116ff10c9e89aef0f7c6285fc808ea6b487e9103bbd559589c7ca84142b03571b105f1a8afa3fbd699568c1a3b60cdf9567f4ca7c8816
+  checksum: 10c0/dbf51738d47f6c454b568cf6f73ff4f91764ef78f206c14544084e4f6b5361b169082163acda44859de470eab9381ed0e893a99a53cfc778d07b3da87cd0af05
   languageName: node
   linkType: hard
 
-"@storybook/preset-react-webpack@npm:10.3.5":
-  version: 10.3.5
-  resolution: "@storybook/preset-react-webpack@npm:10.3.5"
+"@storybook/preset-react-webpack@npm:10.3.6":
+  version: 10.3.6
+  resolution: "@storybook/preset-react-webpack@npm:10.3.6"
   dependencies:
-    "@storybook/core-webpack": "npm:10.3.5"
+    "@storybook/core-webpack": "npm:10.3.6"
     "@storybook/react-docgen-typescript-plugin": "npm:1.0.6--canary.9.0c3f3b7.0"
     "@types/semver": "npm:^7.7.1"
     magic-string: "npm:^0.30.5"
@@ -4685,11 +4685,11 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-    storybook: ^10.3.5
+    storybook: ^10.3.6
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/deb87bab231b595094f048e59f03638d0a0efcfac1274cc1bc7f95a03fa5ae84b3afe1cf5551183098081569f35ee3b9827c5b3d7c811b7e2824a786f44f4976
+  checksum: 10c0/94df7549a55d814fca1dda23d25552a3ba2ade5f152950235ea14a489913be4bd1cfedf4295cb0c077dc41b7e47e4512216fdb22af62edf1e4ec4316ae149629
   languageName: node
   linkType: hard
 
@@ -4711,34 +4711,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/react-dom-shim@npm:10.3.5":
-  version: 10.3.5
-  resolution: "@storybook/react-dom-shim@npm:10.3.5"
+"@storybook/react-dom-shim@npm:10.3.6":
+  version: 10.3.6
+  resolution: "@storybook/react-dom-shim@npm:10.3.6"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-    storybook: ^10.3.5
-  checksum: 10c0/53383a37a4507dbdb088bebb402f259126d678d63d4b83186b794192e8a8d6528852b223d8bd7f98645293e5f99cf5feb11bfa14e441a47de92d42d3aa04ecdb
+    storybook: ^10.3.6
+  checksum: 10c0/60183fc05b0410ca174f215d3271ffbccdc2680bd0704f58dc931cf60e72f497a9f22c00afa868398ad693c7ec633ef619541d4b0611fc2a577fb09609fcc3c7
   languageName: node
   linkType: hard
 
-"@storybook/react@npm:10.3.5, @storybook/react@npm:^10.3.5":
-  version: 10.3.5
-  resolution: "@storybook/react@npm:10.3.5"
+"@storybook/react@npm:10.3.6, @storybook/react@npm:^10.3.6":
+  version: 10.3.6
+  resolution: "@storybook/react@npm:10.3.6"
   dependencies:
     "@storybook/global": "npm:^5.0.0"
-    "@storybook/react-dom-shim": "npm:10.3.5"
+    "@storybook/react-dom-shim": "npm:10.3.6"
     react-docgen: "npm:^8.0.2"
     react-docgen-typescript: "npm:^2.2.2"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-    storybook: ^10.3.5
+    storybook: ^10.3.6
     typescript: ">= 4.9.x"
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/708460a9f8055dfe8c86f383222f6e17484138537a317e3dcc457b578686302a0bfb566f3c921cba1bfcbd2378405046a360808b2d78601875cf6066d5dd4930
+  checksum: 10c0/3d3af66105cdca98c537b4bcc3e92f87e3b56d154b24e9b167300e9d5de8a7ba6a5ef3c22203ccb6f4c2f0602a5546273b2b49728aa383ba0f98e66a286647a8
   languageName: node
   linkType: hard
 
@@ -11405,16 +11405,16 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.29.0"
     "@gfazioli/mantine-marquee": "npm:^4.0.1"
-    "@gfazioli/mantine-scene": "npm:^2.0.0"
+    "@gfazioli/mantine-scene": "npm:^2.1.0"
     "@gfazioli/mantine-text-animate": "npm:^4.0.0"
-    "@mantine/core": "npm:9.0.2"
-    "@mantine/hooks": "npm:9.0.2"
+    "@mantine/core": "npm:9.1.1"
+    "@mantine/hooks": "npm:9.1.1"
     "@mdx-js/loader": "npm:^3.1.1"
     "@mdx-js/react": "npm:^3.1.1"
-    "@next/bundle-analyzer": "npm:^16.2.3"
-    "@storybook/addon-themes": "npm:^10.3.5"
-    "@storybook/nextjs": "npm:^10.3.5"
-    "@storybook/react": "npm:^10.3.5"
+    "@next/bundle-analyzer": "npm:^16.2.4"
+    "@storybook/addon-themes": "npm:^10.3.6"
+    "@storybook/nextjs": "npm:^10.3.6"
+    "@storybook/react": "npm:^10.3.6"
     "@tabler/icons-react": "npm:^3.41.1"
     "@testing-library/dom": "npm:^10.4.1"
     "@testing-library/jest-dom": "npm:^6.9.1"
@@ -11427,25 +11427,25 @@ __metadata:
     babel-loader: "npm:^10.1.1"
     jest: "npm:^30.3.0"
     jest-environment-jsdom: "npm:^30.3.0"
-    next: "npm:16.2.3"
+    next: "npm:16.2.4"
     nextra: "npm:4.6.1"
     nextra-theme-docs: "npm:4.6.1"
     oxfmt: "npm:^0.43.0"
-    oxlint: "npm:^1.60.0"
+    oxlint: "npm:^1.62.0"
     pagefind: "npm:^1.5.2"
-    postcss: "npm:^8.5.9"
+    postcss: "npm:^8.5.13"
     postcss-import: "npm:^16.1.1"
     postcss-preset-mantine: "npm:1.18.0"
     postcss-simple-vars: "npm:^7.0.1"
     react: "npm:19.2.5"
     react-dom: "npm:19.2.5"
-    storybook: "npm:^10.3.5"
+    storybook: "npm:^10.3.6"
     stylelint: "npm:^16.26.1"
     stylelint-config-standard-scss: "npm:^16.0.0"
     swr: "npm:^2.4.1"
     ts-jest: "npm:^29.4.9"
     turbopack-inline-svg-loader: "npm:^1.0.3"
-    typescript: "npm:6.0.2"
+    typescript: "npm:6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -12662,19 +12662,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:16.2.3":
-  version: 16.2.3
-  resolution: "next@npm:16.2.3"
+"next@npm:16.2.4":
+  version: 16.2.4
+  resolution: "next@npm:16.2.4"
   dependencies:
-    "@next/env": "npm:16.2.3"
-    "@next/swc-darwin-arm64": "npm:16.2.3"
-    "@next/swc-darwin-x64": "npm:16.2.3"
-    "@next/swc-linux-arm64-gnu": "npm:16.2.3"
-    "@next/swc-linux-arm64-musl": "npm:16.2.3"
-    "@next/swc-linux-x64-gnu": "npm:16.2.3"
-    "@next/swc-linux-x64-musl": "npm:16.2.3"
-    "@next/swc-win32-arm64-msvc": "npm:16.2.3"
-    "@next/swc-win32-x64-msvc": "npm:16.2.3"
+    "@next/env": "npm:16.2.4"
+    "@next/swc-darwin-arm64": "npm:16.2.4"
+    "@next/swc-darwin-x64": "npm:16.2.4"
+    "@next/swc-linux-arm64-gnu": "npm:16.2.4"
+    "@next/swc-linux-arm64-musl": "npm:16.2.4"
+    "@next/swc-linux-x64-gnu": "npm:16.2.4"
+    "@next/swc-linux-x64-musl": "npm:16.2.4"
+    "@next/swc-win32-arm64-msvc": "npm:16.2.4"
+    "@next/swc-win32-x64-msvc": "npm:16.2.4"
     "@swc/helpers": "npm:0.5.15"
     baseline-browser-mapping: "npm:^2.9.19"
     caniuse-lite: "npm:^1.0.30001579"
@@ -12718,7 +12718,7 @@ __metadata:
       optional: true
   bin:
     next: dist/bin/next
-  checksum: 10c0/8a9d27fc773d69f7f471cf1a23bde2ab2950e0411ef3e0d5c1664ed9654e94c3304eae1c4283ec0fa4e70e7b3f4416913350e118e0c18e8b055693dc5d021883
+  checksum: 10c0/81dc1ef30141891dc5cc999a0a6210c68305b585b3a7508799767572a9fb7e4c7dcb5a50f5fa3fabadf6a46c2273405360b1d6f17f89edd891da1746ae31c186
   languageName: node
   linkType: hard
 
@@ -13153,29 +13153,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oxlint@npm:^1.60.0":
-  version: 1.60.0
-  resolution: "oxlint@npm:1.60.0"
+"oxlint@npm:^1.62.0":
+  version: 1.62.0
+  resolution: "oxlint@npm:1.62.0"
   dependencies:
-    "@oxlint/binding-android-arm-eabi": "npm:1.60.0"
-    "@oxlint/binding-android-arm64": "npm:1.60.0"
-    "@oxlint/binding-darwin-arm64": "npm:1.60.0"
-    "@oxlint/binding-darwin-x64": "npm:1.60.0"
-    "@oxlint/binding-freebsd-x64": "npm:1.60.0"
-    "@oxlint/binding-linux-arm-gnueabihf": "npm:1.60.0"
-    "@oxlint/binding-linux-arm-musleabihf": "npm:1.60.0"
-    "@oxlint/binding-linux-arm64-gnu": "npm:1.60.0"
-    "@oxlint/binding-linux-arm64-musl": "npm:1.60.0"
-    "@oxlint/binding-linux-ppc64-gnu": "npm:1.60.0"
-    "@oxlint/binding-linux-riscv64-gnu": "npm:1.60.0"
-    "@oxlint/binding-linux-riscv64-musl": "npm:1.60.0"
-    "@oxlint/binding-linux-s390x-gnu": "npm:1.60.0"
-    "@oxlint/binding-linux-x64-gnu": "npm:1.60.0"
-    "@oxlint/binding-linux-x64-musl": "npm:1.60.0"
-    "@oxlint/binding-openharmony-arm64": "npm:1.60.0"
-    "@oxlint/binding-win32-arm64-msvc": "npm:1.60.0"
-    "@oxlint/binding-win32-ia32-msvc": "npm:1.60.0"
-    "@oxlint/binding-win32-x64-msvc": "npm:1.60.0"
+    "@oxlint/binding-android-arm-eabi": "npm:1.62.0"
+    "@oxlint/binding-android-arm64": "npm:1.62.0"
+    "@oxlint/binding-darwin-arm64": "npm:1.62.0"
+    "@oxlint/binding-darwin-x64": "npm:1.62.0"
+    "@oxlint/binding-freebsd-x64": "npm:1.62.0"
+    "@oxlint/binding-linux-arm-gnueabihf": "npm:1.62.0"
+    "@oxlint/binding-linux-arm-musleabihf": "npm:1.62.0"
+    "@oxlint/binding-linux-arm64-gnu": "npm:1.62.0"
+    "@oxlint/binding-linux-arm64-musl": "npm:1.62.0"
+    "@oxlint/binding-linux-ppc64-gnu": "npm:1.62.0"
+    "@oxlint/binding-linux-riscv64-gnu": "npm:1.62.0"
+    "@oxlint/binding-linux-riscv64-musl": "npm:1.62.0"
+    "@oxlint/binding-linux-s390x-gnu": "npm:1.62.0"
+    "@oxlint/binding-linux-x64-gnu": "npm:1.62.0"
+    "@oxlint/binding-linux-x64-musl": "npm:1.62.0"
+    "@oxlint/binding-openharmony-arm64": "npm:1.62.0"
+    "@oxlint/binding-win32-arm64-msvc": "npm:1.62.0"
+    "@oxlint/binding-win32-ia32-msvc": "npm:1.62.0"
+    "@oxlint/binding-win32-x64-msvc": "npm:1.62.0"
   peerDependencies:
     oxlint-tsgolint: ">=0.18.0"
   dependenciesMeta:
@@ -13222,7 +13222,7 @@ __metadata:
       optional: true
   bin:
     oxlint: bin/oxlint
-  checksum: 10c0/d12a2f4a6aeba5263e37b28e565b04ba8707eaec7cae53a43f3976771ec019f341fdd0f7fbd089e02c6c135d12a149a07b7162f96c2b3fa702b0642c93aff72f
+  checksum: 10c0/12045a9ab4054d25d56d55edf73e64dbe9418aeb84e46e5aacfbfe49a50a29d9897dc078e86c3a82c2adeec38df2e756431644d6df78a94265850952f49117bf
   languageName: node
   linkType: hard
 
@@ -13942,14 +13942,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.5.9":
-  version: 8.5.9
-  resolution: "postcss@npm:8.5.9"
+"postcss@npm:^8.5.13":
+  version: 8.5.13
+  resolution: "postcss@npm:8.5.13"
   dependencies:
     nanoid: "npm:^3.3.11"
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
-  checksum: 10c0/7cb2b32202ea1ead03f15cfbb2756a64a0f98942378e99b3dfce33678fe5eaf93e31d675a46e3a0dfb417d7b49b82d8999d0dd42a33c3b128e71ade0f978719a
+  checksum: 10c0/3aa7c8cbdfbfd99b34406a433cef56d164dd135fc9cb9e63d487cc363291f877a55ec7b8ff6ec15348c17c2d98a43be46bfad671e6340403041a3e79f70c2f2f
   languageName: node
   linkType: hard
 
@@ -15496,9 +15496,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"storybook@npm:^10.3.5":
-  version: 10.3.5
-  resolution: "storybook@npm:10.3.5"
+"storybook@npm:^10.3.6":
+  version: 10.3.6
+  resolution: "storybook@npm:10.3.6"
   dependencies:
     "@storybook/global": "npm:^5.0.0"
     "@storybook/icons": "npm:^2.0.1"
@@ -15515,12 +15515,15 @@ __metadata:
     ws: "npm:^8.18.0"
   peerDependencies:
     prettier: ^2 || ^3
+    vite-plus: ^0.1.15
   peerDependenciesMeta:
     prettier:
       optional: true
+    vite-plus:
+      optional: true
   bin:
     storybook: ./dist/bin/dispatcher.js
-  checksum: 10c0/1443e4710b0bb972db7704d8445c039a6335afafebe853d2b0d89b161262050cd7ae5eda3811c771d54d832f0acc80cf2c231d24f73d1f547d020898394afde6
+  checksum: 10c0/ee6702667459ba2d49269ddd63a7281f17816fcdd4bacd338ed47a4a8e7ad65760c90d99f6b2dfdfd0a564bcfcab3c1ea05b50bf3aafc6b5b19a039a5da77870
   languageName: node
   linkType: hard
 
@@ -16386,32 +16389,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^5.5.0":
-  version: 5.5.0
-  resolution: "type-fest@npm:5.5.0"
+"type-fest@npm:^5.6.0":
+  version: 5.6.0
+  resolution: "type-fest@npm:5.6.0"
   dependencies:
     tagged-tag: "npm:^1.0.0"
-  checksum: 10c0/60bf79a8df45abf99490e3204eceb5cf7f915413f8a69fb578c75cab37ddcb7d29ee21f185f0e1617323ac0b2a441e001b8dc691e220d0b087e9c29ea205538c
+  checksum: 10c0/5468a8ffda7f3904e6f7bbd8069eb8b6dd4bd9156e206df7a01d09a73e28cd1afedf74ead9d0fc12841c8c90074194859feca240511c50800962fde1bd9ddcbc
   languageName: node
   linkType: hard
 
-"typescript@npm:6.0.2":
-  version: 6.0.2
-  resolution: "typescript@npm:6.0.2"
+"typescript@npm:6.0.3":
+  version: 6.0.3
+  resolution: "typescript@npm:6.0.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/4b860b0bf87cc0fee0f66d8ef2640b5a8a8a8c74d1129adb82e389e5f97124383823c47946bef8a73ede371461143a3aa8544399d2133c7b2e4f07e81860af7f
+  checksum: 10c0/4a25ff5045b984370f48f196b3a0120779b1b343d40b9a68d114ea5e5fff099809b2bb777576991a63a5cd59cf7bffd96ff6fe10afcefbcb8bd6fb96ad4b6606
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A6.0.2#optional!builtin<compat/typescript>":
-  version: 6.0.2
-  resolution: "typescript@patch:typescript@npm%3A6.0.2#optional!builtin<compat/typescript>::version=6.0.2&hash=5786d5"
+"typescript@patch:typescript@npm%3A6.0.3#optional!builtin<compat/typescript>":
+  version: 6.0.3
+  resolution: "typescript@patch:typescript@npm%3A6.0.3#optional!builtin<compat/typescript>::version=6.0.3&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/49f0b84fc6ca55653e77752b8a61beabc09ee3dae5d965c31596225aa6ef213c5727b1d2e895b900416dc603854ba0872ac4a812c2a4ed6793a601f9c675de02
+  checksum: 10c0/2f25c74e65663c248fa1ade2b8459d9ce5372ff9dad07067310f132966ebec1d93f6c42f0baf77a6b6a7a91460463f708e6887013aaade22111037457c6b25df
   languageName: node
   linkType: hard
 
