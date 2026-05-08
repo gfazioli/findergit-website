@@ -96,6 +96,21 @@ In `app/layout.tsx`, CSS imports must follow this order:
 - Target audience: developers who use Git and want a better file browsing experience on macOS
 - Download links point to GitHub Releases: `https://github.com/gfazioli/FinderGit/releases/latest`
 
+### No infrastructure leaks in user-facing copy
+
+User-facing pages (`content/*.mdx` aimed at end users, the homepage, release notes hosted at `public/release-notes/<version>.html`, FAQ entries, marketing CTAs) **never name the underlying provider, model, or infrastructure**:
+
+- ❌ "Groq", "Llama", "OpenAI", "Anthropic" — say "the AI" or "the AI provider"
+- ❌ "Vercel proxy", "Next.js API route", "Cloudflare Worker" — say "FinderGit handles the request on your behalf"
+- ❌ "Sparkle", "AppKit's NSEvent monitor", framework names — say "the auto-update framework" / "macOS keyboard handling"
+- ✅ User-relevant facts ARE allowed: "free", "no API key required", "diffs are not stored", "macOS 15+ required", "100 KB diff cap"
+
+Reasoning: end users care about what the feature does for them, not which vendor or library powers it. Naming the stack also paints us into a corner if we ever swap it (e.g., a different AI provider) — would force rewriting every page.
+
+**Exceptions**:
+- Developer-facing files (commit messages, this `CLAUDE.md`, `CHANGELOG.md`) — name infra freely
+- "Under the hood" sections at the bottom of release notes — okay to be specific for power users who want to know, but prefer generic phrasing where it doesn't lose information
+
 ## Tooling
 
 - **Formatter**: oxfmt (`.oxfmtrc.json`)
