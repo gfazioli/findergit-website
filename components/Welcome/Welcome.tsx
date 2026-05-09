@@ -24,6 +24,7 @@ import {
   Image,
   Modal,
   Paper,
+  UnstyledButton,
   SimpleGrid,
   Stack,
   Text,
@@ -122,26 +123,35 @@ function ZoomableScreenshot({
 }: {
   src: string;
   alt: string;
-  /** 0..1, drop-shadow alpha. The hero image carries its own coloured
-   *  background so a slightly lighter shadow reads better there. */
+  /** 0..1, drop-shadow alpha. The hero sits on a coloured wallpaper
+   *  background, so a stronger shadow (higher alpha) reads better there
+   *  — the dark feature-row backdrop tolerates a softer one. */
   shadowOpacity?: number;
 }) {
   const [opened, setOpened] = useState(false);
 
   return (
     <>
-      <Image
-        src={src}
-        alt={alt}
-        display="block"
+      {/* `UnstyledButton` gives the thumbnail real button semantics — */}
+      {/* keyboard focusability, Enter/Space activation, ARIA role —    */}
+      {/* without imposing any visual chrome of its own. Plain `onClick`*/}
+      {/* on the `Image` would not be reachable without a mouse.        */}
+      <UnstyledButton
         onClick={() => setOpened(true)}
-        style={{
-          width: '100%',
-          height: 'auto',
-          cursor: 'zoom-in',
-          filter: `drop-shadow(0 30px 60px rgba(0, 0, 0, ${shadowOpacity}))`,
-        }}
-      />
+        aria-label={`Open enlarged screenshot: ${alt}`}
+        style={{ display: 'block', width: '100%', cursor: 'zoom-in' }}
+      >
+        <Image
+          src={src}
+          alt={alt}
+          display="block"
+          style={{
+            width: '100%',
+            height: 'auto',
+            filter: `drop-shadow(0 30px 60px rgba(0, 0, 0, ${shadowOpacity}))`,
+          }}
+        />
+      </UnstyledButton>
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}
