@@ -61,6 +61,34 @@ Directories inside a repository show an orange dot with a number if they contain
 
 Modified files inside a repository show their `git status` porcelain code (e.g., `M.` for modified-unstaged, `A.` for added-staged, `??` for untracked).
 
+## Sidebar
+
+The sidebar on the left lists every **root folder** you've added — directories where FinderGit scans for Git repositories.
+
+### Adding and removing roots
+
+- **Drag a folder** from Finder onto the sidebar to add it as a root
+- **+** button in the sidebar toolbar opens an open panel
+- **−** button removes the currently selected root (its repos drop out of the file browser; the actual files on disk are untouched)
+- **↻** button rescans every root for new or removed repositories
+
+### Filtering long lists
+
+Type into the **filter field** at the top of the sidebar to narrow the visible roots. The filter matches both folder names and group names — typing the name of a group surfaces every root inside it.
+
+![Sidebar with the filter field active and a virtual group expanded](/screenshot-sidebar-groups.png)
+
+### Reordering and organising roots
+
+- **Drag** any root to reorder it within the sidebar — position is persisted across launches
+- **Right-click → Move to Group** to assign a root to a group, or drag the row directly onto a group header
+- **+ Group** button (folder icon) opens a small dialog to create a virtual group — Tower-style containers that hold roots without changing anything on disk. Useful when you want to keep work, side projects, and dotfiles visually separated
+- Groups can be renamed or deleted from their own right-click menu; expanded/collapsed state is sticky like Finder
+
+### Sub-directory tree
+
+Click a root to focus the file browser on its contents. Click the row again (or click empty space) to deselect and show every root's contents merged into a single tree.
+
 ## Sorting
 
 Click any column header to sort the tree by that column. Supported columns:
@@ -70,9 +98,12 @@ Click the same header again to reverse the sort order.
 
 ## Search and filter
 
-Use the **search field** in the toolbar to filter files by name. The filter applies across the entire tree with a 300ms debounce.
+A header strip pinned above the file browser hosts both controls:
 
-Toggle the **Git Only** button (branch icon in toolbar) to hide all non-repository files and directories.
+- **Filter files** field — filter the tree by name. The filter applies across the entire tree with a 300ms debounce. <Kbd>⌘</Kbd> <Kbd>F</Kbd> focuses the field from anywhere in the window.
+- **Git Only** toggle — hide every file and directory that isn't (or isn't inside) a Git repository.
+
+Both controls are scoped to the file browser column and stay anchored above it as the window resizes.
 
 ## Selection
 
@@ -118,4 +149,4 @@ Press **Space** on any selected file to preview it without leaving the app.
 - `.md` and `.markdown` files open in a native renderer (GitHub-style theme via MarkdownUI). Close with Space or Escape
 - All other file types fall back to the system Quick Look (`qlmanage`) — same behaviour as in Finder
 
-![Native Markdown preview shown on Space](/screenshot-markdown.png)
+![Native Markdown preview shown on Space](/screenshot-feature-markdown.png)

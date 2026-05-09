@@ -2,7 +2,7 @@
 
 FinderGit lets you perform common Git operations directly from the app, without opening a terminal.
 
-![Repository detail panel with changes list, Stage/Unstage and commit area](/screenshot-detail.png)
+![Repository detail panel with changes list, Stage/Unstage and commit area](/screenshot-feature-ai-commit.png)
 
 ## Available actions
 
@@ -39,7 +39,12 @@ No setting to manage — widen the panel and the full layout returns automatical
 
 ### Staging and unstaging
 
-In the changes list, each file has a **Stage** or **Unstage** button:
+The changes list is grouped into two clearly labelled sections:
+
+- **Staged Changes (N)** — files already in the index, ready to be committed
+- **Unstaged Changes (N)** — files modified or untracked in the working tree, not yet picked up
+
+Each file in either section has a **Stage** or **Unstage** button:
 - **Stage** — runs `git add <file>`
 - **Unstage** — runs `git restore --staged <file>`
 - **Stage All** ↔ **Unstage All** — the header button toggles based on state: stages everything when there are unstaged changes, switches to **Unstage All** (orange tint) when the index is fully caught up so you can reset it in one click
