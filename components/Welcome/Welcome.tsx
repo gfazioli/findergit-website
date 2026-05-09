@@ -96,7 +96,7 @@ function FeatureRow({
   // `Grid.Col.order` lets us alternate desktop side without breaking the
   // mobile reading order — image always stays on top in the stacked view.
   return (
-    <Grid gutter={{ base: 32, md: 56 }} align="center">
+    <Grid gap={{ base: 32, md: 56 }} align="center">
       <Grid.Col span={{ base: 12, md: 7 }} order={{ base: 1, md: reverse ? 2 : 1 }}>
         {imageCol}
       </Grid.Col>
@@ -421,7 +421,7 @@ export function Welcome() {
             </Text>
           </Stack>
 
-          <Stack gap={{ base: 64, md: 112 }}>
+          <Stack gap={96}>
             <FeatureRow
               icon={IconMarkdown}
               iconColor="blue"
