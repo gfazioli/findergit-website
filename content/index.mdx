@@ -18,28 +18,11 @@
 - **Multiple root folders** — add as many root directories as you want; drag folders from the macOS Finder into the sidebar to add them as roots
 - **Universal binary** — one DMG runs on Apple Silicon and Intel Macs; macOS picks the right slice at launch
 - **Auto-updates** — built in via Sparkle, signed with EdDSA
+- **Online help** — `⌘?` opens the live documentation in your browser, always up to date with the running version
+- **What's New panel** — every minor release introduces itself on first launch with a curated list of highlights, available any time from the Help menu
 
 ## Requirements
 
 - macOS 15 (Sequoia) or later
 - `git` — provided by the Xcode Command Line Tools. On a fresh Mac, run `xcode-select --install` and accept the license with `sudo xcodebuild -license` before launching FinderGit (see [Getting Started](/docs/getting-started))
 
-## Architecture
-
-FinderGit is built with **SwiftUI** and the **Observation** framework. The core Git logic lives in a reusable `FinderGitCore` framework that wraps the `git` CLI with async/await APIs.
-
-```
-FinderGitCore (framework)
-├── GitClient      — async wrapper around /usr/bin/git
-├── GitStatus      — parser for git status --porcelain=v2
-├── GitActions     — commit, push, pull, fetch, branch, stash
-├── GitDiff        — unified diff parser
-└── GitWatcher     — FSEvents file system monitor
-
-FinderGit (app)
-├── File Browser   — Table with expandable outline + sortable columns
-├── Detail Panel   — repo info, changes list, commit dialog
-├── Diff Viewer    — colored inline diff
-├── Settings       — preferences for scan, git, terminal
-└── App Menus      — File, Repository, View commands
-```
