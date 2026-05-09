@@ -455,7 +455,7 @@ export function Welcome() {
               icon={IconGitCompare}
               iconColor="cyan"
               title="Diffs at the file level, with one-click stage"
-              description="Click any modified file and the detail panel shows the patch — additions in green, deletions in red, line numbers preserved. The Stage button right above commits the file to the index without dropping into a shell."
+              description="Click any modified file and the detail panel shows the patch — additions in green, deletions in red, line numbers preserved. The Stage button right above adds the file to the index without dropping into a shell."
               image="/screenshot-feature-diff.png"
               imageAlt="File-level diff view in the FinderGit detail panel"
             />
