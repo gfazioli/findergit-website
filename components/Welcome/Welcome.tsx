@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Scene } from '@gfazioli/mantine-scene';
 import { TextAnimate } from '@gfazioli/mantine-text-animate';
 import {
@@ -11,13 +12,17 @@ import {
   IconArrowRight,
   IconMarkdown,
   IconBolt,
+  IconSparkles,
+  IconGitCompare,
 } from '@tabler/icons-react';
 import {
   Box,
   Button,
   Container,
+  Grid,
   Group,
   Image,
+  Modal,
   Paper,
   SimpleGrid,
   Stack,
@@ -27,7 +32,6 @@ import {
   Badge,
   Center,
 } from '@mantine/core';
-import { IconPhoto } from '@tabler/icons-react';
 import config from '@/config';
 import { FAQ } from '../FAQ/FAQ';
 import { ProblemSection } from '../ProblemSection/ProblemSection';
@@ -37,39 +41,152 @@ import { AICommitSection } from '../AICommitSection/AICommitSection';
 import { BuiltForMacSection } from '../BuiltForMacSection/BuiltForMacSection';
 import classes from './Welcome.module.css';
 
-function ScreenshotPlaceholder({
+/**
+ * Single feature row in the "In action" showcase. Pairs a large screenshot
+ * with copy on the opposite side, alternating left/right per row to give
+ * the section vertical rhythm. Mobile collapses both columns into a stack
+ * with the screenshot always on top, regardless of `reverse` — copy
+ * second is the natural reading order on a phone.
+ */
+function FeatureRow({
+  icon: Icon,
+  iconColor,
+  title,
+  description,
+  image,
+  imageAlt,
+  reverse = false,
+}: {
+  icon: typeof IconMarkdown;
+  iconColor: string;
+  title: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  /** When true, copy is on the left and screenshot on the right at md+. */
+  reverse?: boolean;
+}) {
+  const copyCol = (
+    <Stack gap="md" justify="center" h="100%">
+      <ThemeIcon size={44} radius="md" variant="light" color={iconColor}>
+        <Icon size={24} />
+      </ThemeIcon>
+      <Title order={3} fz={{ base: 24, sm: 30 }} fw={800} lh={1.15}>
+        {title}
+      </Title>
+      <Text c="dimmed" size="md" lh={1.65}>
+        {description}
+      </Text>
+    </Stack>
+  );
+
+  // No Paper / border / radius wrapper: each screenshot already carries
+  // its own macOS Tahoe-rounded window chrome inside the bitmap, so any
+  // outer border just shrinks the perceived size and clashes with the
+  // real chrome. `ZoomableScreenshot` uses `filter: drop-shadow` for
+  // elevation (follows the alpha channel of the PNG instead of the
+  // rectangular bounding box) and adds click-to-zoom so the user can
+  // read the small text without us blowing up the image inline.
+  const imageCol = <ZoomableScreenshot src={image} alt={imageAlt} />;
+
+  // 7/5 split: the screenshot gets the dominant side (~58% of the row)
+  // so detail like file names, branch labels and diff lines actually
+  // becomes legible; the copy still has comfortable measure for the
+  // headline + paragraph.
+  // `Grid.Col.order` lets us alternate desktop side without breaking the
+  // mobile reading order — image always stays on top in the stacked view.
+  return (
+    <Grid gutter={{ base: 32, md: 56 }} align="center">
+      <Grid.Col span={{ base: 12, md: 7 }} order={{ base: 1, md: reverse ? 2 : 1 }}>
+        {imageCol}
+      </Grid.Col>
+      <Grid.Col span={{ base: 12, md: 5 }} order={{ base: 2, md: reverse ? 1 : 2 }}>
+        {copyCol}
+      </Grid.Col>
+    </Grid>
+  );
+}
+
+/**
+ * Click-to-zoom screenshot. The thumbnail uses a `drop-shadow` filter so
+ * the soft halo follows the rounded macOS chrome already baked into each
+ * PNG's alpha channel; clicking opens a fullscreen Modal where the same
+ * image renders constrained to 95vw/95vh with `object-fit: contain` so
+ * landscape and portrait shots both fit. The Modal closes on backdrop
+ * click, on the system close button, and on Escape (Mantine default).
+ */
+function ZoomableScreenshot({
   src,
   alt,
-  label,
-  height = 400,
-  available = false,
+  shadowOpacity = 0.55,
 }: {
   src: string;
   alt: string;
-  label: string;
-  height?: number;
-  /** Set to true once the real screenshot file exists in /public/. */
-  available?: boolean;
+  /** 0..1, drop-shadow alpha. The hero image carries its own coloured
+   *  background so a slightly lighter shadow reads better there. */
+  shadowOpacity?: number;
 }) {
-  if (!available) {
-    return (
-      <Paper shadow="xl" radius="lg" bg="dark.8" my={16} style={{ overflow: 'hidden' }}>
-        <Center h={height} bg="dark.7">
-          <Stack align="center" gap="xs">
-            <IconPhoto size={48} color="var(--mantine-color-dark-3)" />
-            <Text c="dark.3" size="sm">
-              {label}
-            </Text>
-          </Stack>
-        </Center>
-      </Paper>
-    );
-  }
+  const [opened, setOpened] = useState(false);
 
   return (
-    <Paper shadow="xl" radius="lg" my={16} style={{ overflow: 'hidden' }}>
-      <Image src={src} alt={alt} display="block" />
-    </Paper>
+    <>
+      <Image
+        src={src}
+        alt={alt}
+        display="block"
+        onClick={() => setOpened(true)}
+        style={{
+          width: '100%',
+          height: 'auto',
+          cursor: 'zoom-in',
+          filter: `drop-shadow(0 30px 60px rgba(0, 0, 0, ${shadowOpacity}))`,
+        }}
+      />
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        fullScreen
+        withCloseButton
+        padding={0}
+        radius={0}
+        transitionProps={{ transition: 'fade', duration: 180 }}
+        styles={{
+          content: { backgroundColor: 'transparent', boxShadow: 'none' },
+          body: {
+            padding: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.92)',
+            minHeight: '100vh',
+          },
+          header: {
+            position: 'absolute',
+            top: 16,
+            right: 16,
+            background: 'transparent',
+            zIndex: 10,
+            padding: 0,
+            minHeight: 0,
+          },
+          close: { color: 'white' },
+        }}
+      >
+        <Image
+          src={src}
+          alt={alt}
+          onClick={() => setOpened(false)}
+          style={{
+            maxWidth: '95vw',
+            maxHeight: '95vh',
+            width: 'auto',
+            height: 'auto',
+            cursor: 'zoom-out',
+            objectFit: 'contain',
+          }}
+        />
+      </Modal>
+    </>
   );
 }
 
@@ -234,13 +351,13 @@ export function Welcome() {
           </Stack>
 
           {/* ─── Screenshot ─── */}
-          <ScreenshotPlaceholder
-            src="/screenshot-hero.png"
-            alt="FinderGit — Git-aware file browser for macOS"
-            label="App Screenshot"
-            height={500}
-            available
-          />
+          <Box mt={32}>
+            <ZoomableScreenshot
+              src="/screenshot-hero.png"
+              alt="FinderGit — Git-aware file browser for macOS"
+              shadowOpacity={0.7}
+            />
+          </Box>
         </Container>
       </Box>
 
@@ -289,32 +406,52 @@ export function Welcome() {
       {/* ─── Built for macOS ─── */}
       <BuiltForMacSection />
 
-      {/* ─── More Screenshots ─── */}
-      <Container size="lg">
-        <SimpleGrid cols={{ base: 1, md: 3 }} spacing="lg" my={64}>
-          <ScreenshotPlaceholder
-            src="/screenshot-diff.png"
-            alt="Inline diff viewer"
-            label="Diff Viewer"
-            height={300}
-            available
-          />
-          <ScreenshotPlaceholder
-            src="/screenshot-detail.png"
-            alt="Repository detail panel"
-            label="Detail Panel"
-            height={300}
-            available
-          />
-          <ScreenshotPlaceholder
-            src="/screenshot-markdown.png"
-            alt="Native Markdown preview via Quick Look"
-            label="Markdown Preview"
-            height={300}
-            available
-          />
-        </SimpleGrid>
-      </Container>
+      {/* ─── In action — feature showcase with alternating image/copy rows ─── */}
+      <Box py={96} style={{ backgroundColor: 'var(--mantine-color-dark-9)' }}>
+        <Container size="xl">
+          <Stack align="center" gap="md" mb={72}>
+            <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.5">
+              In action
+            </Text>
+            <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
+              Built around the way you actually work
+            </Title>
+            <Text c="dimmed" ta="center" size="lg" maw={640}>
+              Three touches that make Git feel native to the file browser — not bolted on top.
+            </Text>
+          </Stack>
+
+          <Stack gap={{ base: 64, md: 112 }}>
+            <FeatureRow
+              icon={IconMarkdown}
+              iconColor="blue"
+              title="Read the README without leaving the browser"
+              description="Press space on any .md or .markdown file and FinderGit renders the document inline — headings, lists, links, code blocks. No app switch, no terminal round-trip when you're just trying to remember what a folder contains."
+              image="/screenshot-feature-markdown.png"
+              imageAlt="Markdown preview overlay rendering a README inside FinderGit"
+            />
+
+            <FeatureRow
+              icon={IconSparkles}
+              iconColor="grape"
+              title="Commit messages, generated from your diff"
+              description="Click the ✨ button next to the commit field — get a properly-formatted message in about a second. Conventional Commits, optional emoji prefix, four tone presets. Free for everyone, no account, no API key to manage."
+              image="/screenshot-feature-ai-commit.png"
+              imageAlt="AI-generated commit message in the FinderGit detail panel"
+              reverse
+            />
+
+            <FeatureRow
+              icon={IconGitCompare}
+              iconColor="cyan"
+              title="Diffs at the file level, with one-click stage"
+              description="Click any modified file and the detail panel shows the patch — additions in green, deletions in red, line numbers preserved. The Stage button right above commits the file to the index without dropping into a shell."
+              image="/screenshot-feature-diff.png"
+              imageAlt="File-level diff view in the FinderGit detail panel"
+            />
+          </Stack>
+        </Container>
+      </Box>
 
       {/* ─── Get Started CTA ─── */}
       <Box
