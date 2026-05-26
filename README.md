@@ -24,7 +24,7 @@
 </p>
 
 <p align="center">
-  <img src="public/screenshot-hero.png" alt="FinderGit" width="820" />
+  <img src="public/screenshot-hero.png" alt="FinderGit window showing the Finder-style tree view with Branch, Status and Changes columns" width="820" />
 </p>
 
 ## What is FinderGit?
