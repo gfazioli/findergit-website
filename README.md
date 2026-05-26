@@ -1,10 +1,31 @@
-# FinderGit
+<p align="center">
+  <img src="public/icon-512x512.png" alt="FinderGit" width="160" height="160" />
+</p>
 
-The marketing and download site for **[FinderGit](https://findergit.app)** — a native macOS app that brings Git intelligence into a Finder-style file browser.
+<h1 align="center">FinderGit</h1>
 
-[![Latest Release](https://img.shields.io/github/v/release/gfazioli/findergit-website?label=Download&color=blue)](https://github.com/gfazioli/findergit-website/releases/latest)
-[![macOS](https://img.shields.io/badge/macOS-15%2B-blue)](https://www.apple.com/macos/)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+<p align="center">
+  <strong>A Git-aware file browser for macOS.</strong><br/>
+  Finder-style list view, real-time Git status, inline diffs, full git actions — all in one window.
+</p>
+
+<p align="center">
+  <a href="https://github.com/gfazioli/findergit-website/releases/latest"><img src="https://img.shields.io/github/v/release/gfazioli/findergit-website?label=Download&color=blue" alt="Latest Release" /></a>
+  <a href="https://www.apple.com/macos/"><img src="https://img.shields.io/badge/macOS-15%2B-blue" alt="macOS 15+" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License" /></a>
+</p>
+
+<p align="center">
+  <a href="https://findergit.app">Website</a>
+  ·
+  <a href="https://findergit.app/docs/getting-started">Documentation</a>
+  ·
+  <a href="https://github.com/gfazioli/findergit-website/releases/latest">Download</a>
+</p>
+
+<p align="center">
+  <img src="public/screenshot-hero.png" alt="FinderGit" width="820" />
+</p>
 
 ## What is FinderGit?
 
