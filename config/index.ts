@@ -1,7 +1,11 @@
 export default {
   metadata: {
     title: {
-      default: 'FinderGit — Git-aware File Browser for macOS',
+      // 58 characters — within the 50-60 OG sweet spot.
+      // "Native macOS" + "Git Intelligence" both pull weight in
+      // the click decision: the first frames the platform, the
+      // second the differentiator over a plain file browser.
+      default: 'FinderGit — Native macOS File Browser with Git Intelligence',
       template: '%s | FinderGit',
     },
     description:
