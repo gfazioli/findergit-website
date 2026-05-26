@@ -6,6 +6,12 @@ export const ecosystem = [
     newWindow: true,
   },
   {
+    key: 'netfox',
+    title: 'Netfox',
+    href: 'https://netfox.app',
+    newWindow: true,
+  },
+  {
     key: 'octoscope',
     title: 'Octoscope',
     href: 'https://gfazioli.github.io/octoscope/',
