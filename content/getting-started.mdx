@@ -66,11 +66,12 @@ An expandable tree view with sortable columns:
 Click any column header to sort. Click again to reverse the order.
 
 ### Detail Panel (right)
-Shows details for the selected item:
-- **Repository selected** — branch info, action buttons (Fetch/Pull/Push), separate **Staged** and **Unstaged** changes lists with per-file Stage/Unstage, commit dialog
-- **Sub-directory selected** — filtered changes for that directory only
-- **File selected** — file info + inline diff (if modified)
-- **Non-git file** — basic file info (size, date, type)
+Shows details for the selected item.
+
+- **Repository selected** — a five-tab view (Overview · Unstage · Commits · Issues · Pull Requests) with the global Fetch / Pull / Push / Refresh actions docked at the bottom edge, reachable from any tab. See [Detail Panel](/docs/detail-panel) for the full breakdown.
+- **Sub-directory selected** — filtered changes for that directory only.
+- **File selected** — file info + inline diff (if modified).
+- **Non-git file** — basic file info (size, date, type).
 
 ## Tips
 
@@ -80,3 +81,10 @@ Shows details for the selected item:
 - Use <Kbd>⌘</Kbd> <Kbd>+</Kbd> / <Kbd>⌘</Kbd> <Kbd>−</Kbd> to zoom the tree view font size
 - Toggle **Git Only** above the file browser to hide non-repository files
 - Press <Kbd>⌘</Kbd> <Kbd>?</Kbd> any time to open the live online docs in your browser
+
+## Next steps
+
+- **[Detail Panel](/docs/detail-panel)** — what each of the five tabs (Overview, Unstage, Commits, Issues, Pull Requests) shows when a repo is selected.
+- **[GitHub Integration](/docs/github-integration)** — turn on the Issues, Pull Requests and Overview tabs, plus the file-browser Issues / PRs / Stars columns, by pointing FinderGit at your GitHub auth (`gh` CLI or a token).
+- **[Git Actions](/docs/git-actions)** — the operations available from the docked action bar, the Unstage tab, and the context menus, with their keyboard shortcuts.
+- **[AI Commit Messages](/docs/ai-commit-messages)** — the ✨ button inside the Unstage tab's commit form.

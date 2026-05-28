@@ -2,13 +2,23 @@
 
 FinderGit lets you perform common Git operations directly from the app, without opening a terminal.
 
-![Repository detail panel with changes list, Stage/Unstage and commit area](/screenshot-feature-ai-commit.png)
+## Where the actions live
+
+Git operations are spread across three surfaces of the [Detail Panel](/docs/detail-panel):
+
+- **Docked action bar** (bottom edge of the panel, visible from every tab) — Fetch · Pull · Push · Refresh, plus a compact branch · upstream · ahead/behind summary.
+- **Unstage tab** — the changes list, per-file Stage / Unstage, and the commit form.
+- **Context menus** in the file browser — right-click any repo for quick Fetch / Pull / Push / Stage All / Open in Terminal; right-click a file for Stage / Unstage.
+
+The repository-level commands (Fetch / Pull / Push) all run against the upstream of the currently checked-out branch. The first push sets it with `--set-upstream origin <branch>` automatically.
+
+![Unstage tab — changes list with inline diff and the commit form, docked action bar at the bottom](/screenshot-detail-unstage.png)
 
 ## Available actions
 
-### From the Detail Panel
+### Docked action bar
 
-When you select a repository (or any item inside one), the detail panel shows:
+The bar sits at the bottom of the [Detail Panel](/docs/detail-panel) and stays reachable from every tab — you never leave Commits to push or leave Issues to pull.
 
 - **Fetch** — fetches from all remotes (`git fetch --all`)
 - **Pull** — pulls from the upstream (`git pull`)
@@ -39,7 +49,7 @@ No setting to manage — widen the panel and the full layout returns automatical
 
 ### Staging and unstaging
 
-The changes list is grouped into two clearly labelled sections:
+Stage / Unstage and the commit form live in the [Unstage tab](/docs/detail-panel#unstage). The changes list is grouped into two clearly labelled sections:
 
 - **Staged Changes (N)** — files already in the index, ready to be committed
 - **Unstaged Changes (N)** — files modified or untracked in the working tree, not yet staged (not in the index)
