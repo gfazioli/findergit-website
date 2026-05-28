@@ -6,10 +6,12 @@
 
 ## What it does
 
-- **Tree view with sortable columns** — browse your files like Finder's list view, with columns for Branch, Status, Changes, Size, and Date Modified
+- **Tree view with sortable columns** — browse your files like Finder's list view, with columns for Branch, Status, Changes, Size, and Date Modified — plus GitHub-driven columns for Issues, PRs, and Stars on repos that point at github.com
 - **Live Git status** — every repository shows its current branch, clean/dirty/unpushed state, updated in real time via FSEvents
 - **Ahead/behind counter** — the status badge shows `↑N`, `↓N`, or `↑N ↓M` with tooltips so you can spot repos that need a push, a pull, or both without opening them
 - **Auto-fetch** — optional background `git fetch` at a user-chosen interval so the ahead/behind counter stays fresh without manual refreshes
+- **Tabbed detail panel** — the right side splits into Overview (GitHub description, stars, topics, contributors), Unstage (changes + commit form), Commits (local log), Issues, and Pull Requests; the global Fetch/Pull/Push/Refresh actions dock at the bottom and stay reachable from every tab
+- **GitHub-aware** — read open issues, pull requests and repo metadata directly from GitHub through the local `gh` CLI or a Personal Access Token (see [GitHub Integration](/docs/github-integration))
 - **Inline diff viewer** — click any modified file to see a colored diff with line numbers
 - **Git actions** — stage, unstage, commit, push, pull, fetch, and switch branches directly from the app
 - **Smart context menus** — right-click adapts to context: file operations for regular files, Git operations for repositories

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.7.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.7.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<h1>FinderGit 0.7.0 — the detail panel grows up</h1>
+<p>The right-hand detail panel splits into a real tabbed view, FinderGit<br>
+starts reading directly from GitHub, and the file browser gains three<br>
+new columns. Biggest release since 0.5.</p>
+<h2>A tabbed detail panel</h2>
+<p>Selecting a repo now opens a five-tab view in the right column:</p>
+<ul>
+<li><strong>Overview</strong> — GitHub-side identity: description, stars, forks,<br>
+topic chips, latest release, top contributors</li>
+<li><strong>Unstage</strong> — the working-tree affordances that used to crowd the<br>
+Overview: changes list, diff, commit form, AI button</li>
+<li><strong>Commits</strong> — recent local history with copy-SHA per row</li>
+<li><strong>Issues</strong> and <strong>Pull Requests</strong> — open items on the repo, with<br>
+the same row shape and click-to-open behaviour</li>
+</ul>
+<p>The global actions (Fetch / Pull / Push / Refresh) dock at the<br>
+bottom edge of the panel and stay reachable from every tab, so you<br>
+never leave Commits to push or leave Issues to pull.</p>
+<p>The active tab is remembered across selections and across launches.</p>
+<h2>GitHub integration</h2>
+<p>FinderGit now reads Issues, Pull Requests and repository metadata<br>
+directly from your repos' GitHub remotes. Two paths to authenticate:</p>
+<ul>
+<li><strong>`gh` CLI</strong> — if you already ran `gh auth login`, FinderGit<br>
+inherits the auth and there's nothing to set up.</li>
+<li><strong>Personal Access Token</strong> — fall back when `gh` isn't installed.<br>
+Paste a token in Settings → Git → GitHub Token; FinderGit validates<br>
+it before saving and stores it in your macOS Keychain (never on<br>
+disk in FinderGit's own files).</li>
+</ul>
+<p>If neither is configured, the GitHub-driven tabs and columns just<br>
+stay empty — the rest of the app keeps working.</p>
+<h2>Three new file-browser columns</h2>
+<p>Next to <strong>Changes</strong>, three GitHub-driven columns now appear: <strong>Issues</strong><br>
+(open issues count), <strong>PRs</strong> (open pull requests count), and <strong>Stars</strong><br>
+(stargazer count, with a small ⭐ icon). Click any column header to<br>
+sort — sort by Stars to surface your most-popular repo, by Issues to<br>
+find the busiest. Numbers use the compact `1.2K` format. Repos<br>
+without a GitHub remote leave the cells empty.</p>
+<h2>Commits tab is configurable</h2>
+<p>The new Commits tab defaults to <strong>4</strong> recent commits to keep the<br>
+panel skim-friendly. Crank it up to 50 in <strong>Settings → Git → Commit<br>
+History</strong> when you need more history.</p>
+<h2>Polish</h2>
+<ul>
+<li>Issue and PR rows now use GitHub-style icons (filled circle for<br>
+open / closed issues; pull-request arrows for PRs with three<br>
+states: open / merged / closed, plus a Draft pill) instead of<br>
+plain coloured dots — a draft PR no longer looks identical to an<br>
+open one.</li>
+<li>Commit rows are tighter (gap dropped from ~25pt to ~13pt between<br>
+rows) and the copy-SHA button is now vertically centred on each<br>
+row with a green checkmark feedback for ~1 second after a copy.</li>
+<li>The 'Git Only' toggle no longer flashes the unfiltered list for<br>
+~300ms when you switch root folders — the filter applies<br>
+synchronously now.</li>
+<li>Detail-panel <strong>height</strong> persists in the bottom layout, mirroring<br>
+the width persistence that already worked in side-by-side mode.<br>
+Drag the divider, switch repos, the height sticks.</li>
+<li>Overview tab on local-only repos shows a short hint pointing at<br>
+Unstage / Commits instead of an empty panel.</li>
+</ul>
+<h2>Under the hood</h2>
+<ul>
+<li>New `FinderGitCore` modules: `RemoteParser`, `RemoteProvider` (with<br>
+CLI and PAT-backed implementations), `RemoteService` actor with<br>
+per-listing TTL caches (60s for issues/PRs, 5min for file-browser<br>
+counts), `KeychainStore` for host-keyed token storage.</li>
+<li>File-browser counts driven by a single GraphQL query per repo so<br>
+the three columns paint in one round-trip rather than three.</li>
+<li>`RemoteHost` enum already recognises GitLab and Bitbucket<br>
+hostnames; their providers ship in a follow-up release (#7).</li>
+<li>100% Swift Concurrency, no `DispatchQueue` in the new code; the<br>
+cross-module enum switches carry `@unknown default` arms to stay<br>
+Swift 6-ready.</li>
+</ul>
+</body>
+</html>

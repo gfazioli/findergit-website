@@ -92,9 +92,23 @@ Click a root to focus the file browser on its contents. Click the row again (or 
 ## Sorting
 
 Click any column header to sort the tree by that column. Supported columns:
-- Name, Branch, Status, Changes, Size, Date Modified
+- Name, Branch, Status, Changes, Issues, PRs, Stars, Size, Date Modified
 
 Click the same header again to reverse the sort order.
+
+## GitHub columns
+
+Three columns pull data from GitHub directly:
+
+- **Issues** — count of open issues
+- **PRs** — count of open pull requests
+- **Stars** — stargazer count, with a small ⭐ icon
+
+Big numbers use the compact format (`1.2K` instead of `1234`). Sort by Stars to find your most-popular repo at a glance; sort by Issues to surface the busiest.
+
+The columns only populate for repos with a recognised GitHub remote. Local-only repos, GitLab and Bitbucket remotes leave the cells empty rather than showing a placeholder dash on every row.
+
+See [GitHub Integration](/docs/github-integration) for how to enable these columns (either via the `gh` CLI or a Personal Access Token).
 
 ## Search and filter
 

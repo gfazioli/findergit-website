@@ -3,6 +3,8 @@ export default {
   '---': { type: 'separator' },
   'getting-started': 'Getting Started',
   'file-browser': 'File Browser',
+  'detail-panel': 'Detail Panel',
+  'github-integration': 'GitHub Integration',
   'git-actions': 'Git Actions',
   'ai-commit-messages': 'AI Commit Messages',
   'diff-viewer': 'Diff Viewer',
