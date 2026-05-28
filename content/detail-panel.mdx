@@ -4,6 +4,8 @@ import { Kbd } from '@/components/Kbd';
 
 When you select a repository in the file browser, the right-hand detail panel splits into a **tab strip on top**, an **informational body in the middle**, and a **docked action bar pinned at the bottom**. Tabs hold the depth; the action bar holds the affordances that always need to be one click away.
 
+![Detail panel showing the Overview tab — description, stars, topics, contributors, with Fetch/Pull/Push/Refresh docked at the bottom](/screenshot-hero.png)
+
 The five tabs:
 
 - **Overview** — at-a-glance facts about the repo (description, stars, topics, contributors, latest release) when it has a GitHub remote
@@ -56,6 +58,8 @@ A scrollable list of recent commits from local `git log`. Each row shows:
 
 Hover any row to highlight it. The number of commits shown defaults to **4** to keep the panel skim-friendly; you can raise it up to **50** in [Settings → Git → Commit History](/docs/settings#commit-history).
 
+![Commits tab with recent commit rows — subject, short SHA, author, relative date, copy button](/screenshot-detail-commits.png)
+
 ## Issues and Pull Requests
 
 Both tabs share the same row shape:
@@ -69,3 +73,7 @@ Both tabs share the same row shape:
 Click anywhere on a row to open the issue or PR on github.com. Each tab has a **New Issue / New Pull Request** button in the header that opens the corresponding "new" page in your browser, plus a **Refresh** button that bypasses the 60-second cache when you want fresh data.
 
 Both tabs need either a working `gh` CLI (see [GitHub Integration](/docs/github-integration)) or a Personal Access Token in Settings; on repos with no recognised GitHub remote (or no remote at all), the tabs show a short explanation instead of an empty list.
+
+![Issues tab — green open-issue icon, number, title, labels, author avatar, with New Issue and Refresh in the header](/screenshot-detail-issues.png)
+
+![Pull Requests tab — pull-request icon per state, number, title, labels, author, with New Pull Request in the header](/screenshot-detail-prs.png)
