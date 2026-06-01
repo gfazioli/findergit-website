@@ -14,30 +14,59 @@ export async function GET(request: Request) {
       return Response.json({ error: 'Bots are not allowed' }, { status: 403 });
     }
 
-    const headers: Record<string, string> = {
+    const url = `${config.gitHub.releasesUrl}?per_page=${config.releaseNotes.maxReleases}`;
+    const baseHeaders: Record<string, string> = {
       Accept: 'application/vnd.github+json',
+      'User-Agent': 'findergit-website',
     };
-    // Use a token if configured (Vercel env var GITHUB_TOKEN). Authenticated
-    // requests get 5000/hour instead of 60/hour per IP, which matters on
-    // shared IPs like Vercel's.
+
+    // Try authenticated first if a token is configured (5000 req/hour vs 60/hour).
+    // If the token is invalid/expired (401) or rejected by org policy (403, e.g.
+    // fine-grained tokens with too-long lifetime), retry unauthenticated instead
+    // of failing — public releases are readable without auth.
+    const fetchOptions = { next: { revalidate: 3600 } };
+    let response: Response;
     if (process.env.GITHUB_TOKEN) {
-      headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+      response = await fetch(url, {
+        ...fetchOptions,
+        headers: { ...baseHeaders, Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },
+      });
+      if (response.status === 401 || response.status === 403) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `GITHUB_TOKEN returned ${response.status} — falling back to unauthenticated fetch`
+        );
+        response = await fetch(url, { ...fetchOptions, headers: baseHeaders });
+      }
+    } else {
+      response = await fetch(url, { ...fetchOptions, headers: baseHeaders });
     }
 
-    const response = await fetch(
-      `${config.gitHub.releasesUrl}?per_page=${config.releaseNotes.maxReleases}`,
-      { headers }
-    );
-
     if (!response.ok) {
+      const bodyText = await response.text();
+      const rateRemaining = response.headers.get('x-ratelimit-remaining');
+      const rateReset = response.headers.get('x-ratelimit-reset');
       // eslint-disable-next-line no-console
-      console.error('Error fetching releases:', response.statusText);
+      console.error('[github-releases] non-OK response', {
+        status: response.status,
+        statusText: response.statusText,
+        rateRemaining,
+        rateReset,
+        body: bodyText.slice(0, 300),
+      });
       return Response.json(response.statusText, { status: response.status });
     }
 
     const releases = await response.json();
 
-    return Response.json({ releases, status: 'ok' });
+    return Response.json(
+      { releases, status: 'ok' },
+      {
+        headers: {
+          'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+        },
+      }
+    );
   } catch (error: any) {
     // eslint-disable-next-line no-console
     console.error('Error checking user agent:', error);
