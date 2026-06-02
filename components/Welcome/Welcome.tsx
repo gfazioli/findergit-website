@@ -237,7 +237,7 @@ const features = [
     icon: IconCode,
     title: 'Quick Look',
     description:
-      'Press Space to preview any file in-window — syntax-highlighted code, rendered Markdown, images and PDFs.',
+      'Press Space to preview any file in-window — syntax-highlighted code, rendered Markdown, images, PDFs and media.',
     color: 'grape',
   },
 ];
