@@ -78,7 +78,7 @@ export default {
     defaultLanguage: 'en',
   },
   app: {
-    version: '0.7.1',
+    version: '0.8.0',
     minMacOS: '15.0',
     downloadUrl: 'https://github.com/gfazioli/findergit-website/releases/latest',
   },
