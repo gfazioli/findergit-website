@@ -10,6 +10,7 @@ import {
   IconSearch,
   IconColumns3,
   IconArrowRight,
+  IconCode,
   IconMarkdown,
   IconBolt,
   IconSparkles,
@@ -233,9 +234,10 @@ const features = [
     color: 'cyan',
   },
   {
-    icon: IconMarkdown,
-    title: 'Markdown Preview',
-    description: 'Press Space to preview .md files with a beautiful GitHub-style theme.',
+    icon: IconCode,
+    title: 'Quick Look',
+    description:
+      'Press Space to preview any file in-window — syntax-highlighted code, rendered Markdown, images and PDFs.',
     color: 'grape',
   },
 ];
@@ -433,12 +435,12 @@ export function Welcome() {
 
           <Stack gap={96}>
             <FeatureRow
-              icon={IconMarkdown}
+              icon={IconEye}
               iconColor="blue"
-              title="Read the README without leaving the browser"
-              description="Press space on any .md or .markdown file and FinderGit renders the document inline — headings, lists, links, code blocks. No app switch, no terminal round-trip when you're just trying to remember what a folder contains."
-              image="/screenshot-feature-markdown.png"
-              imageAlt="Markdown preview overlay rendering a README inside FinderGit"
+              title="Preview any file without leaving the browser"
+              description="Press Space (or ⌘Y) on any file and FinderGit previews it inline — source code with full syntax highlighting, rendered Markdown, images, PDFs and media. Space or Escape closes it again, Finder-style. No app switch, no terminal round-trip when you're just trying to remember what a folder contains."
+              image="/screenshot-feature-code-preview.png"
+              imageAlt="Source code preview with syntax highlighting inside FinderGit"
             />
 
             <FeatureRow
