@@ -1,6 +1,7 @@
 'use client';
 
 import { type CSSProperties, useState } from 'react';
+import Link from 'next/link';
 import { Scene } from '@gfazioli/mantine-scene';
 import { TextAnimate } from '@gfazioli/mantine-text-animate';
 import {
@@ -69,15 +70,19 @@ function FeatureRow({
   /** When true, copy is on the left and screenshot on the right at md+. */
   reverse?: boolean;
 }) {
+  // Each row renders inside the "In action" dark band (see Welcome()), so
+  // the copy is forced to light colours — white title, gray-4 description —
+  // rather than the theme-default near-black, which would be unreadable on
+  // the dark backdrop in light mode.
   const copyCol = (
     <Stack gap="md" justify="center" h="100%">
       <ThemeIcon size={44} radius="md" variant="light" color={iconColor}>
         <Icon size={24} />
       </ThemeIcon>
-      <Title order={3} fz={{ base: 24, sm: 30 }} fw={800} lh={1.15}>
+      <Title order={3} fz={{ base: 24, sm: 30 }} fw={800} lh={1.15} c="white">
         {title}
       </Title>
-      <Text c="dimmed" size="md" lh={1.65}>
+      <Text c="gray.4" size="md" lh={1.65}>
         {description}
       </Text>
     </Stack>
@@ -208,6 +213,7 @@ const features = [
     title: 'Live Git Status',
     description: 'Branch, clean/dirty/unpushed state, changed files \u2014 updated in real time.',
     color: 'green',
+    href: '/docs/file-browser#git-indicators',
   },
   {
     icon: IconColumns3,
@@ -215,24 +221,28 @@ const features = [
     description:
       'Browse files in an outline table sorted by branch, status, changes, size, or date.',
     color: 'blue',
+    href: '/docs/file-browser#sorting',
   },
   {
     icon: IconEye,
     title: 'Inline Diff Viewer',
     description: 'Click any modified file to see a colored diff with line numbers.',
     color: 'orange',
+    href: '/docs/diff-viewer',
   },
   {
     icon: IconBolt,
     title: 'Git Actions',
     description: 'Stage, commit, push, pull, fetch, and switch branches without leaving the app.',
     color: 'violet',
+    href: '/docs/git-actions',
   },
   {
     icon: IconSearch,
     title: 'Search & Filter',
     description: 'Filter by name instantly or toggle "Git Only" to show just your repositories.',
     color: 'cyan',
+    href: '/docs/file-browser#search-and-filter',
   },
   {
     icon: IconCode,
@@ -240,12 +250,14 @@ const features = [
     description:
       'Press Space to preview any file in-window — syntax-highlighted code, rendered Markdown, images, PDFs and media.',
     color: 'grape',
+    href: '/docs/file-browser#quick-look',
   },
   {
     icon: IconDatabase,
     title: 'Repo Maintenance',
     description: 'See how much disk space each repo eats, then reclaim it with one-click cleanup.',
     color: 'teal',
+    href: '/docs/repo-maintenance',
   },
   {
     icon: IconSparkles,
@@ -253,6 +265,7 @@ const features = [
     description:
       'Generate a properly-formatted commit message from your staged diff in a click — free, no API key.',
     color: 'pink',
+    href: '/docs/ai-commit-messages',
   },
 ];
 
@@ -406,10 +419,17 @@ export function Welcome() {
 
         <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg" mb={80}>
           {features.map((feature) => (
+            // Whole card is a Next.js Link via Mantine's polymorphic
+            // `component` prop — keeps the Paper/Raycast card styling while
+            // making the entire card clickable, keyboard-focusable, and
+            // prefetched. `cardLink` resets the anchor's default text color /
+            // underline and adds a focus-visible ring matching the hover tint.
             <Paper
               key={feature.title}
+              component={Link}
+              href={feature.href}
               p="lg"
-              className={classes.featureCard}
+              className={`${classes.featureCard} ${classes.cardLink}`}
               // Per-card accent: resolve the feature's Mantine palette hex
               // into the --card-color CSS var the card's tint/border/glow read.
               style={{ '--card-color': `var(--mantine-color-${feature.color}-5)` } as CSSProperties}
@@ -452,10 +472,16 @@ export function Welcome() {
             <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.5">
               In action
             </Text>
-            <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
+            {/* This band sits on a hardcoded dark backdrop (the screenshots
+                carry dark macOS chrome, so the dark band is intentional —
+                same idiom as the Get Started CTA below). Force light text so
+                the heading + copy read on the dark band in *both* schemes
+                instead of falling back to the near-black default token in
+                light mode. */}
+            <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900} c="white">
               Built around the way you actually work
             </Title>
-            <Text c="dimmed" ta="center" size="lg" maw={640}>
+            <Text c="gray.4" ta="center" size="lg" maw={640}>
               Four touches that make Git feel native to the file browser — not bolted on top.
             </Text>
           </Stack>

@@ -1,7 +1,9 @@
 'use client';
 
-import { IconFolder, IconTerminal2, IconGitMerge } from '@tabler/icons-react';
+import type { CSSProperties } from 'react';
+import { IconFolder, IconGitMerge, IconTerminal2 } from '@tabler/icons-react';
 import { Box, Container, Paper, SimpleGrid, Stack, Text, ThemeIcon, Title } from '@mantine/core';
+import classes from './ProblemSection.module.css';
 
 // Icon colours pick a vivid, distinct hue per tool so each card has a
 // clear visual identity in both light and dark mode. The previous palette
@@ -50,17 +52,30 @@ export function ProblemSection() {
 
         <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="lg">
           {problems.map((item) => (
-            <Paper key={item.title} p="xl" radius="lg" bg="var(--mantine-color-default)" withBorder>
-              <Stack gap="md">
-                <ThemeIcon size={48} radius="md" color={item.color} variant="filled">
+            <Paper
+              key={item.title}
+              p="lg"
+              className={classes.problemCard}
+              // Per-card accent: resolve the card's Mantine palette hex into the
+              // --card-color CSS var the card's tint/border/glow read.
+              style={{ '--card-color': `var(--mantine-color-${item.color}-5)` } as CSSProperties}
+            >
+              <Stack gap={10} align="flex-start">
+                <ThemeIcon
+                  size={48}
+                  radius="md"
+                  color={item.color}
+                  variant="light"
+                  className={classes.problemIcon}
+                >
                   <item.icon size={26} />
                 </ThemeIcon>
-                <Text fw={700} size="lg">
+                <Text fw={700} fz={18}>
                   {item.title}
                 </Text>
-                <Text c="dimmed" size="sm">
+                <Text c="dimmed" fz={14} lh={1.55}>
                   {item.description}
-                  <Text component="span" c="red" fw={600} size="sm" td="underline">
+                  <Text component="span" c="red" fw={600} fz={14} td="underline">
                     {item.highlight}
                   </Text>
                   {item.rest}
