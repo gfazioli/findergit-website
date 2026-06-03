@@ -7,6 +7,7 @@ export default {
   '---guides': { type: 'separator', title: 'Guides' },
   'github-integration': 'GitHub Integration',
   'git-actions': 'Git Actions',
+  'repo-maintenance': 'Repo Maintenance',
   'ai-commit-messages': 'AI Commit Messages',
   'diff-viewer': 'Diff Viewer',
   '---reference': { type: 'separator', title: 'Reference' },

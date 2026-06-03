@@ -112,6 +112,10 @@ The columns only populate for repos with a recognised GitHub remote. Local-only 
 
 See [GitHub Integration](/docs/github-integration) for how to enable these columns (either via the `gh` CLI or a Personal Access Token).
 
+## Size column
+
+On repository rows, the **Size** column shows how much disk space the repo's Git data occupies. It's computed lazily — measured per repo only as rows come into view — so it never stalls a large folder. Hover the value for a popover that breaks the number down (Git data on disk). After a cleanup from the [Repo Maintenance](/docs/repo-maintenance) tab, the column refreshes itself to the new, smaller figure. Sort by Size to bring your bulkiest repositories to the top.
+
 ## Search and filter
 
 A header strip pinned above the file browser hosts both controls:

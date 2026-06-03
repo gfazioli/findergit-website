@@ -1,0 +1,67 @@
+# Repo Maintenance
+
+Over time a Git repository accumulates loose objects, redundant pack files, and stale reflog entries — disk space that no longer earns its keep. FinderGit surfaces all of it in a dedicated **Maintenance** tab and lets you reclaim it without opening a terminal or remembering the right incantation.
+
+![Maintenance tab — disk-usage report with the Size column and its hover popover](/screenshot-feature-maintenance.png)
+
+## The Maintenance tab
+
+Select any repository and open the **Maintenance** tab in the [Detail Panel](/docs/detail-panel). At the top you get a plain-language **disk-usage report** for the repo's Git data:
+
+- **Git directory** — the total size of the repo's `.git` folder. This is the headline number: everything Git stores about your history, objects, and refs.
+- **Packs** — how many pack files exist and their combined size. Packs are the compressed, deduplicated form your history eventually settles into.
+- **Loose objects** — the count and size of objects that haven't been packed yet. Lots of loose objects (often after heavy committing, rebasing, or fetching) is the clearest sign a cleanup will pay off.
+- **Reflog entries** — how many entries the reflog is holding. The reflog is Git's safety net: it remembers where your branches *used* to point, which is what makes most "I lost a commit" situations recoverable.
+
+### The "at least ~X" floor estimate
+
+Below the report, FinderGit shows an **estimated reclaimable** figure — for example *at least ~21.8 MB*. The wording is deliberate. FinderGit only counts space it can be **certain** to recover (clearly loose and redundant data). The actual savings are usually larger, because repacking and pruning frequently compress history further than a conservative pre-flight estimate can promise.
+
+Treat the number as a **floor, not a ceiling**: it's the minimum you'll get back, never an overstatement. When there's nothing loose to reclaim, the estimate simply says so (for example *nothing loose*), so you're never nudged into a cleanup that wouldn't help.
+
+## Two ways to clean up
+
+FinderGit gives you two buttons with very different risk profiles. Click the **ⓘ** info button next to them for an in-app explainer of which to reach for.
+
+![The ⓘ Optimize-vs-Deep-Clean explainer alongside the Deep Clean options](/screenshot-maintenance-info.png)
+
+### Optimize — safe, one click
+
+**Optimize** is the everyday choice. It performs Git's standard housekeeping: loose objects get packed and redundant data is consolidated to claw back space, **without touching your history or your safety net**. Your reflog stays intact, so the undo history that lets you recover dropped commits is fully preserved. There's nothing to configure — one click and done. When in doubt, use Optimize.
+
+### Deep Clean — maximum reclaim
+
+**Deep Clean** goes further to reclaim the most space, and it's the one to handle with care. To squeeze out the last megabytes it can **expire the reflog and immediately prune** the objects those entries were protecting.
+
+The tradeoff is plain: **once the reflog is expired and pruned, the dropped history is unrecoverable.** That's the very safety net that normally bails you out — so Deep Clean is the right tool when you're confident the repo's current branches and tags are exactly what you want to keep, and not before.
+
+A few things worth knowing:
+
+- **Your stashes are kept by default.** Deep Clean won't silently throw away work you've stashed — that protection stays on unless you explicitly turn it off in the options.
+- **The prune is immediate.** Because Deep Clean prunes right away rather than waiting for Git's usual grace period, **don't run it while another Git operation is in flight** on the same repo (a fetch, a long rebase, a build step that commits, a second client). Pruning out from under a concurrent operation can confuse it. Let other Git activity finish first.
+- **You'll be asked to confirm.** Deep Clean always shows a confirmation dialog spelling out what's about to be erased before anything runs, so the destructive step is never a single accidental click.
+
+## Deep Clean options
+
+Expand **Deep Clean options** to tune exactly how aggressive the cleanup is:
+
+- **Aggressive repack** — recompresses the whole history one big object at a time for the tightest possible packing. It reclaims more space than a normal repack, but takes noticeably longer and works the machine harder. Worth it for a one-off deep tidy; overkill for routine cleanups.
+- **Expire reflog** — clears the reflog so the objects it was protecting become eligible to prune. This is the switch that unlocks the largest savings and the one that removes the recovery safety net — leave it off if you might still want to rewind recent branch moves.
+- **Keep stashes** — on by default. Keeps your stashed changes safe through the cleanup. Turn it off only if you're certain you don't need any stashed work.
+- **Prune objects** — the prune horizon: how old an unreachable object must be before it's removed. Set to **Immediately** to reclaim everything eligible right away (the most thorough setting, and the one behind the "immediate prune" caveat above), or pick a grace window to leave very recent objects untouched.
+
+## The result
+
+After a cleanup, FinderGit reports exactly what it recovered — for example *Recovered 21.8 MB (23.9 MB → 2.2 MB)* — so the payoff is concrete, not a vague "done". The disk-usage report and the floor estimate refresh in place to reflect the slimmed-down repo.
+
+![Post-clean result — Recovered 21.8 MB (23.9 MB to 2.2 MB), with a "nothing loose" estimate afterwards](/screenshot-maintenance-result.png)
+
+## The Size column
+
+You don't have to open the Maintenance tab to see which repos are heavy. The [File Browser](/docs/file-browser) carries a **Size** column that shows each repository's Git-data size right in the table.
+
+- **Computed lazily, per repo** — the size is measured only for repos as they come into view, so adding the column never stalls a big folder. Rows fill in as you browse.
+- **Hover for detail** — hover the value to get a popover that breaks the number down (for example *Git data on disk*), so you can judge at a glance whether a repo is worth a cleanup.
+- **Auto-refreshes after a cleanup** — run Optimize or Deep Clean and the Size column updates itself to the new, smaller figure without a manual rescan.
+
+Click the **Size** column header to sort by it and bring your bulkiest repositories to the top — the fastest way to find where a Repo Maintenance pass will free the most space.
