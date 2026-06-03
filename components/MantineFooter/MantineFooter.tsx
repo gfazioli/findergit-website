@@ -82,7 +82,11 @@ export const MantineFooter = () => {
                 <ActionIcon variant="subtle" component="a" href="https://twitter.com/gfazioli">
                   <IconBrandX size={24} />
                 </ActionIcon>
-                <ActionIcon variant="subtle" component="a" href="https://www.undolog.com/s/findergit">
+                <ActionIcon
+                  variant="subtle"
+                  component="a"
+                  href="https://www.undolog.com/s/findergit"
+                >
                   <IconMailHeart size={24} />
                 </ActionIcon>
               </Group>
