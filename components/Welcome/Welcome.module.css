@@ -11,22 +11,25 @@
 
 /*
  * Raycast-style feature card. The per-card accent comes from --card-color,
- * set inline from the feature's Mantine palette hex. The base sits on the
- * dark surface; a very low-alpha radial tint of --card-color washes in from
- * the top-left and fades to transparent so each card carries its own hue
- * without overwhelming the dark idiom.
+ * set inline from the feature's Mantine palette hex. A very low-alpha radial
+ * tint of --card-color washes in from the top-left and fades to transparent
+ * so each card carries its own hue. The base adapts per scheme via
+ * light-dark(): a near-white surface on light mode (so the near-black title
+ * token stays readable) and the original dark-7 surface on dark mode. The
+ * border likewise switches from a faint black hairline (light) to the faint
+ * white hairline (dark) so the card edge reads against either page colour.
  */
 .featureCard {
   position: relative;
   border-radius: rem(16px);
-  border: 1px solid rgb(255 255 255 / 6%);
+  border: 1px solid light-dark(rgb(0 0 0 / 8%), rgb(255 255 255 / 6%));
   background:
     radial-gradient(
       120% 120% at 0% 0%,
       color-mix(in srgb, var(--card-color) 8%, transparent) 0%,
       transparent 55%
     ),
-    var(--mantine-color-dark-7);
+    light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
   transition:
     transform 180ms ease,
     border-color 180ms ease,
@@ -43,10 +46,33 @@
       color-mix(in srgb, var(--card-color) 14%, transparent) 0%,
       transparent 60%
     ),
-    var(--mantine-color-dark-7);
+    light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
   box-shadow:
     0 12px 30px -12px color-mix(in srgb, var(--card-color) 45%, transparent),
     0 0 0 1px color-mix(in srgb, var(--card-color) 20%, transparent);
+}
+
+/*
+ * Card-as-link reset + keyboard affordance. The card now renders as an
+ * <a> (Next.js Link via Mantine's polymorphic component), so strip the
+ * anchor's default underline/colour and inherit the card text colour, and
+ * make the whole surface read as clickable. focus-visible mirrors the hover
+ * treatment (tinted border + soft accent ring) so keyboard users get the
+ * same affordance as the pointer hover.
+ */
+.cardLink {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cardLink:focus-visible {
+  outline: none;
+  border-color: color-mix(in srgb, var(--card-color) 35%, transparent);
+  box-shadow:
+    0 12px 30px -12px color-mix(in srgb, var(--card-color) 45%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--card-color) 45%, transparent);
 }
 
 /* Rounded tinted icon square with a faint matching glow. */

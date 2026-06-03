@@ -1,0 +1,61 @@
+/*
+ * Raycast-style problem card, mirroring Welcome.module.css's .featureCard.
+ * The per-card accent comes from --card-color, set inline from each card's
+ * Mantine palette hex. A very low-alpha radial tint of --card-color washes in
+ * from the top-left and fades to transparent so each card carries its own hue.
+ * The base adapts per scheme via light-dark(): a near-white surface on light
+ * mode (so the near-black title token stays readable) and the dark-7 surface
+ * on dark mode. The border likewise switches from a faint black hairline
+ * (light) to a faint white hairline (dark) so the edge reads on either page.
+ */
+.problemCard {
+  position: relative;
+  border-radius: rem(16px);
+  border: 1px solid light-dark(rgb(0 0 0 / 8%), rgb(255 255 255 / 6%));
+  background:
+    radial-gradient(
+      120% 120% at 0% 0%,
+      color-mix(in srgb, var(--card-color) 8%, transparent) 0%,
+      transparent 55%
+    ),
+    light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
+}
+
+.problemCard:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--card-color) 35%, transparent);
+  background:
+    radial-gradient(
+      120% 120% at 0% 0%,
+      color-mix(in srgb, var(--card-color) 14%, transparent) 0%,
+      transparent 60%
+    ),
+    light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+  box-shadow:
+    0 12px 30px -12px color-mix(in srgb, var(--card-color) 45%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--card-color) 20%, transparent);
+}
+
+/* Tinted icon square keeps its tint plus a faint matching glow. */
+.problemIcon {
+  box-shadow: 0 6px 18px -6px color-mix(in srgb, var(--card-color) 55%, transparent);
+}
+
+/* Respect users who opt out of motion: keep tint/border, drop the lift. */
+@media (prefers-reduced-motion: reduce) {
+  .problemCard {
+    transition:
+      border-color 180ms ease,
+      box-shadow 180ms ease,
+      background 180ms ease;
+  }
+
+  .problemCard:hover {
+    transform: none;
+  }
+}
