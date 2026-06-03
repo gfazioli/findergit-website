@@ -15,6 +15,7 @@ import {
   IconBolt,
   IconSparkles,
   IconGitCompare,
+  IconDatabase,
 } from '@tabler/icons-react';
 import {
   Box,
@@ -240,6 +241,12 @@ const features = [
       'Press Space to preview any file in-window — syntax-highlighted code, rendered Markdown, images, PDFs and media.',
     color: 'grape',
   },
+  {
+    icon: IconDatabase,
+    title: 'Repo Maintenance',
+    description: 'See how much disk space each repo eats, then reclaim it with one-click cleanup.',
+    color: 'teal',
+  },
 ];
 
 export function Welcome() {
@@ -429,7 +436,7 @@ export function Welcome() {
               Built around the way you actually work
             </Title>
             <Text c="dimmed" ta="center" size="lg" maw={640}>
-              Three touches that make Git feel native to the file browser — not bolted on top.
+              Four touches that make Git feel native to the file browser — not bolted on top.
             </Text>
           </Stack>
 
@@ -460,6 +467,16 @@ export function Welcome() {
               description="Click any modified file and the detail panel shows the patch — additions in green, deletions in red, line numbers preserved. The Stage button right above adds the file to the index without dropping into a shell."
               image="/screenshot-feature-diff.png"
               imageAlt="File-level diff view in the FinderGit detail panel"
+            />
+
+            <FeatureRow
+              icon={IconDatabase}
+              iconColor="teal"
+              title="Reclaim the space your repos waste"
+              description="The Maintenance tab shows exactly where a repository's Git data goes — packs, loose objects, undo history. A one-click Optimize tidies it up, and a careful Deep Clean frees the rest while your stashes stay safe. And the Size column gives you every repo's footprint at a glance, so you always know which one to clean first."
+              image="/screenshot-feature-maintenance.png"
+              imageAlt="Repo Maintenance tab showing Git disk-space breakdown with Optimize and Deep Clean actions in FinderGit"
+              reverse
             />
           </Stack>
         </Container>
