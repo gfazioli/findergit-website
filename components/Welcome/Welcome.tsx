@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { type CSSProperties, useState } from 'react';
 import { Scene } from '@gfazioli/mantine-scene';
 import { TextAnimate } from '@gfazioli/mantine-text-animate';
 import {
@@ -247,6 +247,13 @@ const features = [
     description: 'See how much disk space each repo eats, then reclaim it with one-click cleanup.',
     color: 'teal',
   },
+  {
+    icon: IconSparkles,
+    title: 'AI Commit Messages',
+    description:
+      'Generate a properly-formatted commit message from your staged diff in a click — free, no API key.',
+    color: 'pink',
+  },
 ];
 
 export function Welcome() {
@@ -397,17 +404,30 @@ export function Welcome() {
           </Title>
         </Stack>
 
-        <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl" mb={80}>
+        <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg" mb={80}>
           {features.map((feature) => (
-            <Paper key={feature.title} p="xl" radius="lg" withBorder>
-              <Stack gap="xs" align="flex-start">
-                <ThemeIcon size={48} radius="md" color={feature.color} variant="light">
+            <Paper
+              key={feature.title}
+              p="lg"
+              className={classes.featureCard}
+              // Per-card accent: resolve the feature's Mantine palette hex
+              // into the --card-color CSS var the card's tint/border/glow read.
+              style={{ '--card-color': `var(--mantine-color-${feature.color}-5)` } as CSSProperties}
+            >
+              <Stack gap={10} align="flex-start">
+                <ThemeIcon
+                  size={48}
+                  radius="md"
+                  color={feature.color}
+                  variant="light"
+                  className={classes.featureIcon}
+                >
                   <feature.icon size={26} />
                 </ThemeIcon>
-                <Text fw={600} size="lg">
+                <Text fw={700} fz={18}>
                   {feature.title}
                 </Text>
-                <Text c="dimmed" size="sm">
+                <Text c="dimmed" size="sm" lh={1.55}>
                   {feature.description}
                 </Text>
               </Stack>
