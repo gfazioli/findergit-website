@@ -80,7 +80,9 @@ export async function GET(request: Request) {
     // leak into the app's release-notes feed.
     const prefix = config.releaseNotes.appReleaseNamePrefix;
     const appReleases = Array.isArray(releases)
-      ? releases.filter((r: any) => typeof r?.name === 'string' && r.name.startsWith(prefix))
+      ? releases
+          .filter((r: any) => typeof r?.name === 'string' && r.name.startsWith(prefix))
+          .slice(0, config.releaseNotes.displayCount)
       : releases;
 
     return Response.json(

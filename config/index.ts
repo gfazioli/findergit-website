@@ -74,6 +74,11 @@ export default {
     // name prefix so a website-internal entry never appears in the app's
     // release notes. (Cross-port: netfox-website would use 'Netfox'.)
     appReleaseNamePrefix: 'FinderGit',
+    // How many recent releases to render on the page + in the TOC. The
+    // rest stay one click away via "View full changelog on GitHub" at the
+    // bottom — the page was growing unbounded. Sliced AFTER the app-name
+    // filter so a website template release can't eat a visible slot.
+    displayCount: 3,
   },
   search: {
     queryKeyword: 'q',
