@@ -75,9 +75,16 @@ export async function GET(request: Request) {
     }
 
     const releases = await response.json();
+    // Keep only FinderGit app releases (see config.releaseNotes
+    // .appReleaseNamePrefix) so the website's own template releases don't
+    // leak into the app's release-notes feed.
+    const prefix = config.releaseNotes.appReleaseNamePrefix;
+    const appReleases = Array.isArray(releases)
+      ? releases.filter((r: any) => typeof r?.name === 'string' && r.name.startsWith(prefix))
+      : releases;
 
     return Response.json(
-      { releases, status: 'ok' },
+      { releases: appReleases, status: 'ok' },
       {
         headers: {
           'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',

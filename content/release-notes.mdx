@@ -3,6 +3,7 @@
 Below is an overview of the latest changes and improvements made to FinderGit. The release notes are fetched live from GitHub and update automatically — no manual edits needed.
 
 import { ReleaseNotes } from '@/components/ReleaseNotes/ReleaseNotes';
+import config from '@/config';
 
 <ReleaseNotes />
 
@@ -28,7 +29,12 @@ export const metadata = {
             );
             const releases = await res.json();
             if (!Array.isArray(releases)) return [];
-            return releases.map((release) => ({
+            // Only FinderGit app releases — drop the website's own template
+            // releases (see config.releaseNotes.appReleaseNamePrefix).
+            const prefix = config.releaseNotes.appReleaseNamePrefix;
+            return releases
+                .filter((release) => typeof release?.name === 'string' && release.name.startsWith(prefix))
+                .map((release) => ({
                 value: `${release.tag_name} - ${new Date(release.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).replace(' ', ', ')}`,
                 depth: '3',
                 id: release.tag_name,

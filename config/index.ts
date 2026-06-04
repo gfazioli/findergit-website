@@ -67,6 +67,13 @@ export default {
     // "View full changelog on GitHub" button at the bottom of /docs/release-notes.
     url: 'https://github.com/gfazioli/findergit-website/releases',
     maxReleases: 10,
+    // Releases live on the website repo, which ALSO carries the website's
+    // own releases (the Mantine/Nextra template tags a `v6.x` release when
+    // its packages are bumped). release.sh names every FinderGit app
+    // release "FinderGit X.Y.Z"; the feed keeps only releases with this
+    // name prefix so a website-internal entry never appears in the app's
+    // release notes. (Cross-port: netfox-website would use 'Netfox'.)
+    appReleaseNamePrefix: 'FinderGit',
   },
   search: {
     queryKeyword: 'q',
