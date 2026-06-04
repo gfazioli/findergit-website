@@ -34,6 +34,7 @@ export const metadata = {
             const prefix = config.releaseNotes.appReleaseNamePrefix;
             return releases
                 .filter((release) => typeof release?.name === 'string' && release.name.startsWith(prefix))
+                .slice(0, config.releaseNotes.displayCount)
                 .map((release) => ({
                 value: `${release.tag_name} - ${new Date(release.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).replace(' ', ', ')}`,
                 depth: '3',
