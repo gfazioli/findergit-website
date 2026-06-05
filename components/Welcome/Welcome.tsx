@@ -100,6 +100,7 @@ function FeatureRow({
           w="fit-content"
           px={0}
           c="white"
+          aria-label={`Learn more about ${title}`}
         >
           Learn more
         </Button>

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Group } from '@mantine/core';
 import {
   IconBook2,
   IconRocket,
@@ -16,15 +17,17 @@ import {
 } from '@tabler/icons-react';
 
 // Sidebar entry with a leading icon. The icon inherits `currentColor`, so it
-// tracks the link's active/hover colour automatically. Kept as a small
-// helper so every page entry reads as `nav(Icon, 'Label')`.
+// tracks the link's active/hover colour automatically — which is why the
+// label stays a bare string (a Mantine `Text` would impose its own colour
+// token and break that inheritance). Kept as a small helper so every page
+// entry reads as `nav(Icon, 'Label')`.
 function nav(Icon: typeof IconBook2, label: string): { title: ReactNode } {
   return {
     title: (
-      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-        <Icon size={16} stroke={1.8} style={{ flexShrink: 0 }} />
+      <Group component="span" gap={8} wrap="nowrap" align="center">
+        <Icon size={16} stroke={1.8} />
         {label}
-      </span>
+      </Group>
     ),
   };
 }
