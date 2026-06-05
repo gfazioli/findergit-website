@@ -17,6 +17,7 @@ import {
   IconSparkles,
   IconGitCompare,
   IconDatabase,
+  IconShieldHalfFilled,
 } from '@tabler/icons-react';
 import {
   Box,
@@ -59,6 +60,7 @@ function FeatureRow({
   description,
   image,
   imageAlt,
+  href,
   reverse = false,
 }: {
   icon: typeof IconMarkdown;
@@ -67,6 +69,8 @@ function FeatureRow({
   description: string;
   image: string;
   imageAlt: string;
+  /** Optional "Learn more" link to the feature's docs page. */
+  href?: string;
   /** When true, copy is on the left and screenshot on the right at md+. */
   reverse?: boolean;
 }) {
@@ -85,6 +89,21 @@ function FeatureRow({
       <Text c="gray.4" size="md" lh={1.65}>
         {description}
       </Text>
+      {href && (
+        <Button
+          component={Link}
+          href={href}
+          variant="subtle"
+          color="gray"
+          size="compact-md"
+          rightSection={<IconArrowRight size={16} />}
+          w="fit-content"
+          px={0}
+          c="white"
+        >
+          Learn more
+        </Button>
+      )}
     </Stack>
   );
 
@@ -253,6 +272,15 @@ const features = [
     href: '/docs/file-browser#quick-look',
   },
   {
+    icon: IconShieldHalfFilled,
+    title: 'Repo Trust',
+    description:
+      'Surface the hooks that run code automatically in any repo — and get alerted when they change after a pull.',
+    color: 'indigo',
+    href: '/docs/repo-trust',
+    badge: 'New',
+  },
+  {
     icon: IconDatabase,
     title: 'Repo Maintenance',
     description: 'See how much disk space each repo eats, then reclaim it with one-click cleanup.',
@@ -407,54 +435,63 @@ export function Welcome() {
       <SolutionSection />
 
       {/* ─── Features ─── */}
-      <Container size="lg">
-        <Stack align="center" gap="md" mt={80} mb={48}>
-          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="orange">
-            Features
-          </Text>
-          <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
-            Everything you need, nothing you don&apos;t
-          </Title>
-        </Stack>
+      <Box py={80} className={classes.sectionBand}>
+        <Container size="lg">
+          <Stack align="center" gap="md" mb={48}>
+            <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="orange">
+              Features
+            </Text>
+            <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
+              Everything you need, nothing you don&apos;t
+            </Title>
+          </Stack>
 
-        <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg" mb={80}>
-          {features.map((feature) => (
-            // Whole card is a Next.js Link via Mantine's polymorphic
-            // `component` prop — keeps the Paper/Raycast card styling while
-            // making the entire card clickable, keyboard-focusable, and
-            // prefetched. `cardLink` resets the anchor's default text color /
-            // underline and adds a focus-visible ring matching the hover tint.
-            <Paper
-              key={feature.title}
-              component={Link}
-              href={feature.href}
-              p="lg"
-              className={`${classes.featureCard} ${classes.cardLink}`}
-              // Per-card accent: resolve the feature's Mantine palette hex
-              // into the --card-color CSS var the card's tint/border/glow read.
-              style={{ '--card-color': `var(--mantine-color-${feature.color}-5)` } as CSSProperties}
-            >
-              <Stack gap={10} align="flex-start">
-                <ThemeIcon
-                  size={48}
-                  radius="md"
-                  color={feature.color}
-                  variant="light"
-                  className={classes.featureIcon}
-                >
-                  <feature.icon size={26} />
-                </ThemeIcon>
-                <Text fw={700} fz={18}>
-                  {feature.title}
-                </Text>
-                <Text c="dimmed" size="sm" lh={1.55}>
-                  {feature.description}
-                </Text>
-              </Stack>
-            </Paper>
-          ))}
-        </SimpleGrid>
-      </Container>
+          <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
+            {features.map((feature) => (
+              // Whole card is a Next.js Link via Mantine's polymorphic
+              // `component` prop — keeps the Paper/Raycast card styling while
+              // making the entire card clickable, keyboard-focusable, and
+              // prefetched. `cardLink` resets the anchor's default text color /
+              // underline and adds a focus-visible ring matching the hover tint.
+              <Paper
+                key={feature.title}
+                component={Link}
+                href={feature.href}
+                p="lg"
+                className={`${classes.featureCard} ${classes.cardLink}`}
+                // Per-card accent: resolve the feature's Mantine palette hex
+                // into the --card-color CSS var the card's tint/border/glow read.
+                style={
+                  { '--card-color': `var(--mantine-color-${feature.color}-5)` } as CSSProperties
+                }
+              >
+                {'badge' in feature && feature.badge && (
+                  <Badge className={classes.newBadge} variant="filled" size="sm" radius="sm">
+                    {feature.badge}
+                  </Badge>
+                )}
+                <Stack gap={10} align="flex-start">
+                  <ThemeIcon
+                    size={48}
+                    radius="md"
+                    color={feature.color}
+                    variant="light"
+                    className={classes.featureIcon}
+                  >
+                    <feature.icon size={26} />
+                  </ThemeIcon>
+                  <Text fw={700} fz={18}>
+                    {feature.title}
+                  </Text>
+                  <Text c="dimmed" size="sm" lh={1.55}>
+                    {feature.description}
+                  </Text>
+                </Stack>
+              </Paper>
+            ))}
+          </SimpleGrid>
+        </Container>
+      </Box>
 
       {/* ─── Diff Viewer ─── */}
       <DiffViewerSection />
@@ -482,11 +519,21 @@ export function Welcome() {
               Built around the way you actually work
             </Title>
             <Text c="gray.4" ta="center" size="lg" maw={640}>
-              Four touches that make Git feel native to the file browser — not bolted on top.
+              Five touches that make Git feel native to the file browser — not bolted on top.
             </Text>
           </Stack>
 
           <Stack gap={96}>
+            <FeatureRow
+              icon={IconShieldHalfFilled}
+              iconColor="indigo"
+              title="Know what a repo runs before you trust it"
+              description="Cloning or pulling a repo can quietly arm it to run code — on folder open, on agent load, on npm install. The Trust tab surfaces that auto-run surface in plain language, shows you exactly what each hook runs, and flags it in the browser when it changes after a pull. It only ever reads — FinderGit never executes anything it finds."
+              image="/screenshot-feature-trust.png"
+              imageAlt="The Repo Trust tab listing a repository's auto-run hooks with a plain-language explanation of what each one runs"
+              href="/docs/repo-trust"
+            />
+
             <FeatureRow
               icon={IconEye}
               iconColor="blue"
@@ -494,6 +541,8 @@ export function Welcome() {
               description="Press Space (or ⌘Y) on any file and FinderGit previews it inline — source code with full syntax highlighting, rendered Markdown, images, PDFs and media. Space or Escape closes it again, Finder-style. No app switch, no terminal round-trip when you're just trying to remember what a folder contains."
               image="/screenshot-feature-code-preview.png"
               imageAlt="Source code preview with syntax highlighting inside FinderGit"
+              href="/docs/file-browser#quick-look"
+              reverse
             />
 
             <FeatureRow
@@ -503,7 +552,7 @@ export function Welcome() {
               description="Click the ✨ button next to the commit field — get a properly-formatted message in about a second. Conventional Commits, optional emoji prefix, four tone presets. Free for everyone, no account, no API key to manage."
               image="/screenshot-feature-ai-commit.png"
               imageAlt="AI-generated commit message in the FinderGit detail panel"
-              reverse
+              href="/docs/ai-commit-messages"
             />
 
             <FeatureRow
@@ -513,6 +562,8 @@ export function Welcome() {
               description="Click any modified file and the detail panel shows the patch — additions in green, deletions in red, line numbers preserved. The Stage button right above adds the file to the index without dropping into a shell."
               image="/screenshot-feature-diff.png"
               imageAlt="File-level diff view in the FinderGit detail panel"
+              href="/docs/diff-viewer"
+              reverse
             />
 
             <FeatureRow
@@ -522,7 +573,7 @@ export function Welcome() {
               description="The Maintenance tab shows exactly where a repository's Git data goes — packs, loose objects, undo history. A one-click Optimize tidies it up, and a careful Deep Clean frees the rest while your stashes stay safe. And the Size column gives you every repo's footprint at a glance, so you always know which one to clean first."
               image="/screenshot-feature-maintenance.png"
               imageAlt="Repo Maintenance tab showing Git disk-space breakdown with Optimize and Deep Clean actions in FinderGit"
-              reverse
+              href="/docs/repo-maintenance"
             />
           </Stack>
         </Container>
