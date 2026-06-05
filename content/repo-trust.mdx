@@ -1,0 +1,109 @@
+# Repo Trust
+
+Cloning or pulling a repository can quietly arm it to run code on your machine — the moment you open the folder in your editor, the first time an AI coding agent loads it, or as soon as you run `npm install`. That's exactly how recent supply-chain attacks have spread: a compromised package gains an innocuous-looking hook that executes automatically, before you've reviewed a single line.
+
+FinderGit's **Repo Trust** surfaces that **auto-run surface** for every repository — the files that can run code without you asking — so you can review it before you trust an unfamiliar repo. It's a read-only surfacer: **FinderGit never executes, installs, or evaluates anything it finds.** It only reads and shows you what's there.
+
+![The Trust tab — auto-run hooks with a plain-language "what runs" for each](/screenshot-feature-trust.png)
+
+## Why this exists
+
+This feature was prompted by a real incident. The maintainer of a widely-used open-source library — a package trusted and installed by countless projects — had their account compromised. The attacker didn't deface the code or open a noisy pull request. They did something quieter: they slipped a small script into the repository and wired it to run **automatically**.
+
+The clever part was *where* they wired it. Not only in the obvious `package.json` install script, but inside the configuration files for **AI coding agents** and the editor — the `.claude`, `.cursor`, and `.gemini` configs, a `.vscode` task set to run on folder-open. Those files told the agent (or the editor) to execute the script the instant the project was loaded. So the payload ran the moment a developer opened the folder or let their assistant pick up the workspace — **before anyone read a single line of the change** — and reached straight for credentials and tokens.
+
+<Callout type="warning">
+  Nobody *ran* anything they thought was untrusted. They opened a project they'd used for months
+  and pulled the latest changes, exactly as always. The danger was never in the source they'd
+  review — it was in the config files nobody thinks to read.
+</Callout>
+
+## A new surface needs a new check
+
+For years the advice was simple: read the diff, don't run code you don't trust, let your antivirus catch the rest. That advice quietly stopped being enough.
+
+Two things changed the shape of the attack:
+
+- **Per-project automation grew.** Editors run tasks on folder-open, package managers run install hooks, and a repo now carries config that executes on its own — in files developers treat as settings, not as code, and rarely review.
+- **AI coding agents arrived.** We now hand assistants a project and trust them to load its context automatically — including instruction and hook files an attacker can write to. A compromised `.claude` or `.cursor` config is a direct line to code execution, and it lives nowhere near the source you'd scrutinise.
+
+The result is an **auto-run surface** that didn't meaningfully exist a few years ago: code that runs with your privileges, triggered by an everyday action, hidden in plain config. Reviewing the diff doesn't catch it, because the execution is automatic and the trigger isn't in the code you're reading.
+
+Repo Trust is the control that matches this new shape. It can't make a repo safe for you — but it makes the auto-run surface **visible**, explains in plain language what each entry point would run, and — most importantly — **tells you when that surface changes after a pull**, which is exactly the moment a trusted repo turns into the attack above.
+
+### What it actually checks, and what's at stake
+
+- **What it checks** — every place a repo can run code without you asking: editor auto-tasks, AI-agent configs and their hooks, and package-manager install/test scripts. (See [What counts as an auto-run hook](#what-counts-as-an-auto-run-hook).)
+- **Why those** — they all fire on an everyday action (opening the folder, loading the agent, installing dependencies), with no deliberate "run this" on your part.
+- **What's at stake** — anything that runs automatically runs with *your* permissions: it can read your SSH keys and tokens, exfiltrate secrets, tamper with other projects, or pull down a further payload. The blast radius is your whole machine, not just the repo.
+
+None of this means auto-run hooks are bad — most are perfectly legitimate (a build task, a formatter hook, a setup script). The point isn't to alarm you about every repo; it's to make a surface you couldn't easily see **reviewable**, so *you* decide what to trust.
+
+## The Trust tab
+
+Select any repository and open the **Trust** tab in the [Detail Panel](/docs/detail-panel). FinderGit scans the repo's auto-run surface and lists each entry point it finds, scariest first:
+
+- **What triggers it** — a plain-language line such as *"Runs when you open this folder in your editor"* or *"Runs when an AI coding agent loads this folder."*
+- **What runs** — the actual command pulled out of the (often minified) config, so the row reads as *the command that executes*, not a wall of raw JSON.
+- **A full-file preview** — click the **eye** button on any finding to read the complete file in place (read-only; the only action offered is *Reveal in Finder*, never "Open", so a script is never handed to something that would run it).
+
+![The full-file preview popover open on an agent config](/screenshot-trust-preview.png)
+
+If nothing in the repo runs code automatically, the tab says so plainly.
+
+![The clean state — nothing in this repo runs code automatically](/screenshot-trust-clean.png)
+
+## What counts as an auto-run hook
+
+Repo Trust is deliberately **high-signal**. It flags the things that genuinely run on their own, and stays quiet about the everyday config that doesn't — so a badge means *look at this*, not *here's noise*.
+
+It surfaces:
+
+- **Editor auto-tasks** — a `.vscode/tasks.json` task set to run on **folderOpen**, which fires the instant the folder is opened in VS Code.
+- **AI-agent configs** — `.claude`, `.gemini`, `.cursor`, `.aider`, and `.continue` configurations that are wired to run a command or hook when the agent loads the workspace.
+- **Package install scripts** — `npm`/`pnpm`/`yarn` lifecycle scripts (`preinstall`, `install`, `postinstall`, `prepare`, `prepublishOnly`) and the `test` script — but only when they do something a normal script never does: download a payload, pipe into a shell, or evaluate a string.
+
+It does **not** flag a routine `husky` setup, a chained test pipeline (`npm run lint && jest`), or a plain build task — those are everywhere, and flagging them would bury the real signal.
+
+## The badge in the file browser
+
+You don't have to open the Trust tab to know which repos deserve a look. The [File Browser](/docs/file-browser) shows a shield badge on a repo's name:
+
+- **Yellow** — the repo has auto-run hooks you haven't trusted yet.
+- **Orange** — the auto-run surface **changed since you last saw it** (see below). Orange takes priority — it's the higher-signal alert.
+
+A repo with a clean surface shows no badge at all.
+
+## Changed since last seen
+
+Presence alone isn't always the signal — a `postinstall` that's been in a repo since you cloned it is part of its normal shape. The real red flag is a hook that **appears or changes after a pull**, which is precisely the supply-chain pattern.
+
+FinderGit records a fingerprint of each repo's auto-run surface the first time it sees the repo clean, and again whenever you review it. When a later scan differs, the Trust tab shows a **Changed since last seen** panel listing exactly what's **new**, **modified**, or **removed**, and the orange badge appears in the browser — even on repos you've trusted, because trust covered the *old* surface.
+
+When you've looked and you're satisfied, click **Mark as reviewed** to accept the current surface as the new baseline. The alert returns only if it drifts again.
+
+<Callout type="info" emoji="💡">
+  This is the highest-signal moment Repo Trust gives you. A hook that's been in a repo since you
+  cloned it is part of its normal shape; a hook that **appears or changes after a pull** is the
+  exact moment a trusted dependency can turn into the attack above — and the one the orange badge
+  is built to catch.
+</Callout>
+
+## Trust this repo
+
+Most auto-run hooks are perfectly legitimate — your own build task, a setup hook, an agent config you wrote. When a repo is one you recognise and trust, click **Trust this repo** in the Trust tab. The yellow badge disappears for that repository, while the hooks stay listed in the tab for reference. You can undo it any time with **Untrust**.
+
+Trusting a repo records its current surface as reviewed, so the **Changed since last seen** alert still fires later if that surface drifts — trusting silences the *presence* badge, never the *drift* one.
+
+## What FinderGit never does
+
+<Callout type="info" emoji="🔒">
+  Repo Trust only ever **reads and parses**. It never executes, installs, or evaluates anything it
+  finds — so it's safe to point at a repository you don't trust yet.
+</Callout>
+
+Repo Trust is built to be safe to point at a hostile repository:
+
+- It **never executes, installs, or evaluates** anything it finds — it only reads and parses.
+- Reads are **size-capped** and **confined to the repository** (symlinks that try to point outside the repo are not followed), so a crafted repo can't redirect the scan or balloon memory.
+- An oversized or flooded config that tries to hide a hook past those limits is itself surfaced for review, rather than silently skipped.

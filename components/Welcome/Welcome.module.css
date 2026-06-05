@@ -75,9 +75,82 @@
     0 0 0 3px color-mix(in srgb, var(--card-color) 45%, transparent);
 }
 
-/* Rounded tinted icon square with a faint matching glow. */
+/* Rounded tinted icon square with a faint matching glow + a crisp accent
+ * hairline so the tile keeps a defined edge against any section background
+ * (otherwise the light-variant fill melts into a flat dark band). */
 .featureIcon {
+  border: 1px solid color-mix(in srgb, var(--card-color) 32%, transparent);
   box-shadow: 0 6px 18px -6px color-mix(in srgb, var(--card-color) 55%, transparent);
+}
+
+/*
+ * Subtle section band: a soft indigo wash from the top so the feature cards
+ * and their icon tiles lift off the page instead of sitting on a flat fill.
+ * Theme-aware via light-dark() and deliberately faint — atmosphere, not a
+ * coloured block.
+ */
+.sectionBand {
+  background: radial-gradient(
+    100% 70% at 50% -10%,
+    light-dark(
+      color-mix(in srgb, var(--mantine-color-indigo-3) 28%, transparent),
+      color-mix(in srgb, var(--mantine-color-indigo-9) 30%, transparent)
+    ),
+    transparent 62%
+  );
+}
+
+/*
+ * "NEW" sticker on a highlighted feature card. A hot red→pink→orange
+ * gradient, tilted like a peel-off sticker, with a gentle breathing scale
+ * and an expanding "ping" ring (the second box-shadow layer) so it pulls the
+ * eye without being obnoxious. The CSS-module class sits outside Mantine's
+ * @layer, so its background/transform win over the Badge's filled variant.
+ */
+.newBadge {
+  position: absolute;
+  top: rem(14px);
+  right: rem(14px);
+  z-index: 2;
+  border: none;
+  color: var(--mantine-color-white);
+  font-weight: 800;
+  letter-spacing: rem(0.6px);
+  background: linear-gradient(
+    135deg,
+    var(--mantine-color-red-6) 0%,
+    var(--mantine-color-pink-5) 55%,
+    var(--mantine-color-orange-5) 100%
+  );
+  transform: rotate(8deg);
+  transform-origin: center;
+  animation: new-badge-pulse 2.4s ease-in-out infinite;
+  will-change: transform, box-shadow;
+}
+
+@keyframes new-badge-pulse {
+  0%,
+  100% {
+    transform: rotate(8deg) scale(1);
+    box-shadow:
+      0 4px 14px -2px color-mix(in srgb, var(--mantine-color-red-6) 60%, transparent),
+      0 0 0 0 color-mix(in srgb, var(--mantine-color-pink-5) 55%, transparent);
+  }
+
+  50% {
+    transform: rotate(8deg) scale(1.09);
+    box-shadow:
+      0 7px 20px -2px color-mix(in srgb, var(--mantine-color-red-6) 78%, transparent),
+      0 0 0 7px color-mix(in srgb, var(--mantine-color-pink-5) 0%, transparent);
+  }
+}
+
+/* Opt out of motion: keep the tilt + gradient + glow, drop the animation. */
+@media (prefers-reduced-motion: reduce) {
+  .newBadge {
+    animation: none;
+    box-shadow: 0 4px 14px -2px color-mix(in srgb, var(--mantine-color-red-6) 60%, transparent);
+  }
 }
 
 /* Respect users who opt out of motion: keep tint/border, drop the lift. */

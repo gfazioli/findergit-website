@@ -41,9 +41,24 @@
     0 0 0 1px color-mix(in srgb, var(--card-color) 20%, transparent);
 }
 
-/* Tinted icon square keeps its tint plus a faint matching glow. */
+/* Tinted icon square keeps its tint, a crisp accent hairline so the edge
+ * stays defined against the section band, plus a faint matching glow. */
 .problemIcon {
+  border: 1px solid color-mix(in srgb, var(--card-color) 32%, transparent);
   box-shadow: 0 6px 18px -6px color-mix(in srgb, var(--card-color) 55%, transparent);
+}
+
+/* Subtle section band so the cards lift off a flat fill (mirrors
+ * Welcome.module.css .sectionBand). */
+.sectionBand {
+  background: radial-gradient(
+    100% 70% at 50% -10%,
+    light-dark(
+      color-mix(in srgb, var(--mantine-color-indigo-3) 28%, transparent),
+      color-mix(in srgb, var(--mantine-color-indigo-9) 30%, transparent)
+    ),
+    transparent 62%
+  );
 }
 
 /* Respect users who opt out of motion: keep tint/border, drop the lift. */

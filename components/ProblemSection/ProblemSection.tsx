@@ -39,7 +39,7 @@ const problems = [
 
 export function ProblemSection() {
   return (
-    <Box py={80}>
+    <Box py={80} className={classes.sectionBand}>
       <Container size="lg">
         <Stack align="center" gap="md" mb={48}>
           <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="orange">
