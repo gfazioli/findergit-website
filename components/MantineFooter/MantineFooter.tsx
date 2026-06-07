@@ -196,8 +196,8 @@ export const MantineFooter = () => {
 
         <Divider my={16} className={classes.lastDivider} />
 
-        <Group justify="flex-end">
-          <Group justify="right">
+        <Group justify="center">
+          <Group justify="center">
             <Text fz={12} inline>
               Made with ❤️ by{' '}
               <Anchor fz={13} href="https://gfazioli.github.io/">
