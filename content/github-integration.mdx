@@ -89,6 +89,8 @@ A small branch glyph sits next to a fork's name in the file browser. When the fo
 
 Git itself has no concept of a "fork", so this comes from GitHub: FinderGit reads whether the repo is a fork, what it was forked from, and how far its default branch is ahead of / behind the parent's.
 
+![Fork badge in the file browser and the fork's Overview banner showing where it was forked from](/screenshot-fork-badge.png)
+
 ### Sync a fork
 
 When a fork is behind, **Sync** brings it up to date in one step — from the **Overview** tab, or by right-clicking the repo → **Sync Fork**. FinderGit:
@@ -99,6 +101,8 @@ When a fork is behind, **Sync** brings it up to date in one step — from the **
 One click and the fork is current both on GitHub and on disk — no opening the repo in a browser to hit "Sync fork".
 
 A fork whose history has **diverged** (it has its own commits *and* is missing upstream commits) can't be fast-forwarded. FinderGit says so and leaves it to you to merge or rebase from upstream deliberately.
+
+![A fork's Overview showing its upstream-sync state, with the rest of the repos in the list](/screenshot-fork-sync.png)
 
 ## Caching and freshness
 
