@@ -8,6 +8,7 @@ The integration powers:
 
 - The **Overview**, **Issues**, and **Pull Requests** tabs in the [Detail Panel](/docs/detail-panel)
 - Three columns in the [File Browser](/docs/file-browser): **Issues**, **PRs**, and **Stars**
+- **Fork awareness** — a badge on forks, how far they trail their upstream, and one-click sync
 
 ## How FinderGit talks to GitHub
 
@@ -48,6 +49,7 @@ Once stored, the token lives in the Keychain under the entry for `github.com`. U
 ### Overview tab
 
 - Description, stars, forks
+- For a fork: a **Forked from owner/parent** line (clickable → the upstream on github.com), how many commits it's behind upstream, and a **Sync** button (see [Fork awareness](#fork-awareness))
 - Latest release tag (clickable → opens the release on github.com)
 - Homepage URL (clickable)
 - Repository topics
@@ -77,12 +79,34 @@ Numbers use the compact format (`1.2K` instead of `1234`). Click any column head
 
 For repos without a GitHub remote (local-only, or pointing at GitLab / Bitbucket), the cells stay empty. GitLab and Bitbucket integration is a planned follow-up.
 
+## Fork awareness
+
+Many of the repos you keep locally are GitHub **forks**, and it's easy to lose track of which ones have fallen behind their upstream. FinderGit surfaces that without a trip to github.com.
+
+### Fork badge
+
+A small branch glyph sits next to a fork's name in the file browser. When the fork is up to date with its upstream it stays muted; when it's behind, it turns orange and shows **↓N** — the number of commits the fork trails its upstream's default branch. Hover for the upstream's name and the exact count.
+
+Git itself has no concept of a "fork", so this comes from GitHub: FinderGit reads whether the repo is a fork, what it was forked from, and how far its default branch is ahead of / behind the parent's.
+
+### Sync a fork
+
+When a fork is behind, **Sync** brings it up to date in one step — from the **Overview** tab, or by right-clicking the repo → **Sync Fork**. FinderGit:
+
+1. Fast-forwards the fork's default branch from its upstream **on GitHub**, then
+2. **pulls** your local clone so the working copy matches.
+
+One click and the fork is current both on GitHub and on disk — no opening the repo in a browser to hit "Sync fork".
+
+A fork whose history has **diverged** (it has its own commits *and* is missing upstream commits) can't be fast-forwarded. FinderGit says so and leaves it to you to merge or rebase from upstream deliberately.
+
 ## Caching and freshness
 
 To respect GitHub's rate limits and keep the UI snappy:
 
 - **Issues** and **Pull Requests** lists cache for **60 seconds** — fast enough that the tab strip can be flipped without re-fetching, slow enough to suppress redundant calls in the same browsing session.
 - **File-browser counts** cache for **5 minutes** — these numbers change slowly and the file browser may show dozens of repos at once, so a 60-second TTL would churn the network on every scroll.
+- **Fork status** caches for **5 minutes** too — fork drift moves slowly. The toolbar **Refresh** re-checks every loaded repo, and syncing a fork re-checks that one immediately.
 
 Each tab has a **Refresh** button that bypasses the cache when you want immediate fresh data.
 

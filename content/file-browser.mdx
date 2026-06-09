@@ -53,6 +53,10 @@ Repositories (directories containing `.git/`) show inline status. The badge refl
 
 Hover the badge for a tooltip with the exact meaning. Ahead/behind counts are only accurate after a `git fetch` has brought the latest remote refs — Settings → Git → **Fetch on launch** (on by default) runs one fetch at startup so the counts are correct from the first moment.
 
+### Fork badge
+
+GitHub **forks** carry a small branch glyph next to their name. It stays muted when the fork is in sync, and turns orange with **↓N** when the fork is behind its upstream — so you can spot at a glance which forks need syncing. When one does, **Sync Fork** (from the context menu or the Overview tab) updates it on GitHub and pulls your local clone in one step. See [Fork awareness](/docs/github-integration#fork-awareness) for the full story.
+
 ### Sub-directory indicators
 
 Directories inside a repository show an orange dot with a number if they contain modified files. This lets you trace dirty files without expanding every folder.
