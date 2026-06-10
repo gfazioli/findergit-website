@@ -6,13 +6,16 @@ When you select a repository in the file browser, the right-hand detail panel sp
 
 ![Detail panel showing the Overview tab — description, stars, topics, contributors, with Fetch/Pull/Push/Refresh docked at the bottom](/screenshot-hero.png)
 
-The five tabs:
+The tabs:
 
-- **Overview** — at-a-glance facts about the repo (description, stars, topics, contributors, latest release) when it has a GitHub remote
+- **Overview** — at-a-glance facts about the repo (description, stars, topics, contributors, latest release) when it has a GitHub remote, plus the [fork banner](/docs/github-integration#fork-awareness) when the repo is a fork
 - **Unstage** — working-tree changes, the diff, the commit form (including the AI commit button)
 - **Commits** — recent local history from `git log`
+- **Branches** — local and remote branches, with one-click checkout
 - **Issues** — open issues on the GitHub repo
 - **Pull Requests** — open pull requests on the GitHub repo
+- **Maintenance** — disk-space breakdown and cleanup (see [Repo Maintenance](/docs/repo-maintenance))
+- **Trust** — the repo's auto-run surface (see [Repo Trust](/docs/repo-trust))
 
 The active tab is remembered across selections and across app launches, so the panel always opens where you left it.
 
@@ -48,6 +51,15 @@ This is where the working-tree affordances live. The Unstage tab holds:
 
 This was previously folded into Overview; splitting it out keeps the informational and operational concerns separate.
 
+### Discard changes
+
+Every unstaged row also carries a red **Discard**, and the section header a **Discard All** — the complement to Stage/Unstage when you want changes *gone* rather than staged:
+
+- **Modified or deleted files** are reverted to the last staged/committed version.
+- **Untracked files** are moved to the **Trash** — recoverable from Finder with "Put Back" — never deleted outright.
+
+Both run behind a confirmation that states exactly what will happen, including the file count for Discard All. Discarding is destructive by nature; the Trash routing for untracked files is the safety net.
+
 ![Unstage tab with changes list, inline diff, and the commit form](/screenshot-detail-unstage.png)
 
 ## Commits
@@ -61,6 +73,16 @@ A scrollable list of recent commits from local `git log`. Each row shows:
 Hover any row to highlight it. The number of commits shown defaults to **4** to keep the panel skim-friendly; you can raise it up to **50** in [Settings → Git → Commit History](/docs/settings#commit-history).
 
 ![Commits tab with recent commit rows — subject, short SHA, author, relative date, copy button](/screenshot-detail-commits.png)
+
+## Branches
+
+Switch branches without leaving the app — no more discovering mid-task that you were on the wrong one. Three ways in:
+
+- **The branch chip** in the panel header shows the current branch; click it for a dropdown of the repo's local branches and switch with one click.
+- **The Branches tab** is the full view: **Local** and **Remote** sections, the current branch marked, and a **Checkout** button on every other row. Checking out a remote branch creates a local branch tracking exactly that remote — unambiguous even when several remotes carry the same branch name.
+- **Right-click a repo** in the file browser → **Switch Branch** for the same quick switch from the list.
+
+After a checkout the file tree, status badge, and branch chip all update automatically. If Git refuses the switch (typically uncommitted changes that would be overwritten), the error appears in the action-bar feedback — nothing is forced.
 
 ## Issues and Pull Requests
 

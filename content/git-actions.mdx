@@ -61,6 +61,8 @@ Each file in either section has a **Stage** or **Unstage** button:
 
 The per-file buttons appear intelligently: "Stage" only shows for files with unstaged changes, "Unstage" only for staged files.
 
+Unstaged rows additionally carry a red **Discard** (and the section header a **Discard All**): modified files are reverted to the last staged/committed version, untracked files are moved to the **Trash** (recoverable from Finder) — always behind a confirmation. See [Discard changes](/docs/detail-panel#discard-changes).
+
 ### Committing
 
 Below the changes list, a commit section appears when there are changes:
@@ -72,6 +74,8 @@ Below the changes list, a commit section appears when there are changes:
 
 Right-click on a repository directory for quick access to:
 - Fetch, Pull, Push, Stage All
+- **Switch Branch** — a submenu of the repo's local branches (see [Branches](/docs/detail-panel#branches))
+- **Sync Fork** — shown when the repo is a GitHub fork that's behind its upstream (see [Fork awareness](/docs/github-integration#fork-awareness))
 - Open in Terminal (uses your preferred terminal app from Settings)
 
 Right-click on a file inside a repo for:
