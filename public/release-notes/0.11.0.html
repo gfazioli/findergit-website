@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.11.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.11.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p><strong>FinderGit 0.11.0 — Forks, branches, and a tidy working tree</strong></p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>Fork awareness</strong> — GitHub forks now carry a badge showing how many commits they trail their upstream, with the parent repo one click away. When a fork is behind, <strong>Sync Fork</strong> fast-forwards it on GitHub <em>and</em> pulls your local clone — no more checking github.com repo by repo. Diverged forks are called out honestly instead of offering a sync that can't apply.</li>
+<li><strong>Branch switcher</strong> — a new <strong>Branches</strong> tab lists local and remote branches with one-click checkout (remote branches get a proper local tracking branch), plus a branch dropdown in the panel header and a <strong>Switch Branch</strong> submenu in the right-click menu. No more discovering mid-task you were on the wrong branch.</li>
+<li><strong>Discard changes</strong> — the Unstage tab gains a per-file <strong>Discard</strong> and a <strong>Discard All</strong>: modified files revert to the last committed version, untracked files go to the <strong>Trash</strong> (recoverable from Finder), always behind a confirmation.</li>
+</ul>
+<h2>Under the hood</h2>
+<ul>
+<li>Branch and ref names are validated before reaching git, closing an argument-injection edge case in the new checkout paths.</li>
+<li>Background refreshes that return unchanged data no longer touch UI state — fixes the open branch menu visibly resizing a moment after opening.</li>
+<li>The fork badge, branch list, and the other per-repo columns all refresh with the toolbar Refresh and stay cancellation-safe under rapid re-triggering.</li>
+</ul>
+<h2>Install</h2>
+<p>Download <code class="notranslate">FinderGit-0.11.0.dmg</code> below, open it, and drag FinderGit to Applications. Signed and notarized by Apple — no Gatekeeper bypass needed. Existing users update automatically in-app.</p>
+<h2>Requirements</h2>
+<p>macOS 15 (Sequoia) or later. Universal (Apple silicon + Intel).</p>
+</body>
+</html>
