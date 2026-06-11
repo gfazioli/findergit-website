@@ -1,6 +1,6 @@
 # Repo Trust
 
-Cloning or pulling a repository can quietly arm it to run code on your machine — the moment you open the folder in your editor, the first time an AI coding agent loads it, or as soon as you run `npm install`. That's exactly how recent supply-chain attacks have spread: a compromised package gains an innocuous-looking hook that executes automatically, before you've reviewed a single line.
+Cloning or pulling a repository can quietly arm it to run code on your machine — the moment you open the folder in your editor, the first time an AI coding agent loads it, or as soon as you run `npm install`. That's exactly how recent supply-chain worms — **Shai-Hulud** and its **Miasma** variant — have spread: a hijacked maintainer account commits an innocuous-looking hook, plus an obfuscated dropper payload, that executes automatically before you've reviewed a single line.
 
 FinderGit's **Repo Trust** surfaces that **auto-run surface** for every repository — the files that can run code without you asking — so you can review it before you trust an unfamiliar repo. It's a read-only surfacer: **FinderGit never executes, installs, or evaluates anything it finds.** It only reads and shows you what's there.
 
@@ -8,7 +8,7 @@ FinderGit's **Repo Trust** surfaces that **auto-run surface** for every reposito
 
 ## Why this exists
 
-This feature was prompted by a real incident. The maintainer of a widely-used open-source library — a package trusted and installed by countless projects — had their account compromised. The attacker didn't deface the code or open a noisy pull request. They did something quieter: they slipped a small script into the repository and wired it to run **automatically**.
+This feature was prompted by a real incident — the **Shai-Hulud / Miasma** supply-chain worm. The maintainer of a widely-used open-source library — a package trusted and installed by countless projects — had their account compromised. The attacker didn't deface the code or open a noisy pull request. They did something quieter: they slipped a small script into the repository and wired it to run **automatically**.
 
 The clever part was *where* they wired it. Not only in the obvious `package.json` install script, but inside the configuration files for **AI coding agents** and the editor — the `.claude`, `.cursor`, and `.gemini` configs, a `.vscode` task set to run on folder-open. Those files told the agent (or the editor) to execute the script the instant the project was loaded. So the payload ran the moment a developer opened the folder or let their assistant pick up the workspace — **before anyone read a single line of the change** — and reached straight for credentials and tokens.
 
@@ -33,7 +33,7 @@ Repo Trust is the control that matches this new shape. It can't make a repo safe
 
 ### What it actually checks, and what's at stake
 
-- **What it checks** — every place a repo can run code without you asking: editor auto-tasks, AI-agent configs and their hooks, and package-manager install/test scripts. (See [What counts as an auto-run hook](#what-counts-as-an-auto-run-hook).)
+- **What it checks** — every place a repo can run code without you asking: editor auto-tasks, dev-container lifecycle hooks, AI-agent configs and their hooks, and package-manager install/test scripts — plus the **dropper scripts themselves**, even when they're hidden on a branch you haven't checked out. (See [What counts as an auto-run hook](#what-counts-as-an-auto-run-hook).)
 - **Why those** — they all fire on an everyday action (opening the folder, loading the agent, installing dependencies), with no deliberate "run this" on your part.
 - **What's at stake** — anything that runs automatically runs with *your* permissions: it can read your SSH keys and tokens, exfiltrate secrets, tamper with other projects, or pull down a further payload. The blast radius is your whole machine, not just the repo.
 
@@ -59,18 +59,21 @@ Repo Trust is deliberately **high-signal**. It flags the things that genuinely r
 
 It surfaces:
 
+- **Dropper artifacts** — a script shaped like a known supply-chain payload: an obfuscated file at a known indicator path, or a setup/bootstrap script that's abnormally large or single-line packed. FinderGit looks for these in the working tree **and across every branch**, because the most recent worms hide a back-dated copy on a side branch you'd never open. This is the highest-severity finding — it flags even on repos you've trusted, because trust can't whitelist malware.
 - **Editor auto-tasks** — a `.vscode/tasks.json` task set to run on **folderOpen**, which fires the instant the folder is opened in VS Code.
-- **AI-agent configs** — `.claude`, `.gemini`, `.cursor`, `.aider`, and `.continue` configurations that are wired to run a command or hook when the agent loads the workspace.
+- **Dev-container hooks** — a `devcontainer.json` lifecycle command (`postCreateCommand`, `initializeCommand`, …) that runs when the folder is reopened in a container; `initializeCommand` runs on your host machine, before any sandbox exists.
+- **AI-agent configs** — `.claude`, `.gemini`, `.cursor`, `.aider`, and `.continue` configurations wired to run a command or hook when the agent loads the workspace — including an **always-applied** Cursor rule (one forced into every session) that points at a setup script.
 - **Package install scripts** — `npm`/`pnpm`/`yarn` lifecycle scripts (`preinstall`, `install`, `postinstall`, `prepare`, `prepublishOnly`) and the `test` script — but only when they do something a normal script never does: download a payload, pipe into a shell, or evaluate a string.
 
-It does **not** flag a routine `husky` setup, a chained test pipeline (`npm run lint && jest`), or a plain build task — those are everywhere, and flagging them would bury the real signal.
+It does **not** flag a routine `husky` setup, a chained test pipeline (`npm run lint && jest`), a small hand-written `setup.js`, or a plain build task — those are everywhere, and flagging them would bury the real signal.
 
 ## The badge in the file browser
 
 You don't have to open the Trust tab to know which repos deserve a look. The [File Browser](/docs/file-browser) shows a shield badge on a repo's name:
 
+- **Red** — a **dropper artifact** was found, in the working tree or on any branch. This is the loudest alert and outranks the others; it shows even on trusted repos.
+- **Orange** — the auto-run surface **changed since you last saw it** (see below) — the higher-signal of the two ordinary alerts.
 - **Yellow** — the repo has auto-run hooks you haven't trusted yet.
-- **Orange** — the auto-run surface **changed since you last saw it** (see below). Orange takes priority — it's the higher-signal alert.
 
 A repo with a clean surface shows no badge at all.
 
@@ -94,6 +97,21 @@ When you've looked and you're satisfied, click **Mark as reviewed** to accept th
 Most auto-run hooks are perfectly legitimate — your own build task, a setup hook, an agent config you wrote. When a repo is one you recognise and trust, click **Trust this repo** in the Trust tab. The yellow badge disappears for that repository, while the hooks stay listed in the tab for reference. You can undo it any time with **Untrust**.
 
 Trusting a repo records its current surface as reviewed, so the **Changed since last seen** alert still fires later if that surface drifts — trusting silences the *presence* badge, never the *drift* one.
+
+## If a repo looks compromised
+
+When FinderGit finds a dropper artifact, the Trust tab swaps its usual "most of these are legitimate" summary for a short **incident runbook** — because at that point the advice is no longer "review it", it's "don't run it, and clean it up". The danger is *running* the repo: opening it in an editor or running an install/test script. Don't, until it's clean.
+
+The runbook walks two steps, and it's pure guidance — FinderGit hands you the right links and the exact commands, but never runs a destructive command for you:
+
+- **Rotate your credentials.** These worms harvest tokens. The catch most people miss: rotating a token isn't enough — you have to **revoke the whole authorization**, because a single grant can have many tokens stacked under it, and reinstalling your machine doesn't clear it. FinderGit deep-links you straight to the right settings pages, and reminds you to rotate npm and cloud keys too, then confirm the revocation actually went through.
+- **Clean the repository.** Back up an evidence copy first, then **reset** the infected branches to the commit *before* the dropper — reset, not revert, because a revert leaves the payload reachable by its commit ID. FinderGit generates the exact commands with your repo path and the infected branch names already filled in, ready to copy; the commit ID to reset stays a placeholder you confirm yourself before force-pushing.
+
+<Callout type="warning">
+  Treat a dropper finding as "this machine may already be exposed", not just "this repo is dirty".
+  Rotate credentials **first** — the repo cleanup matters, but a harvested token outlives the
+  branch you delete.
+</Callout>
 
 ## What FinderGit never does
 

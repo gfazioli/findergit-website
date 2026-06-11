@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.12.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.12.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<h2>Catch a supply-chain worm before it runs 🛡️</h2>
+<p>FinderGit 0.12.0 hardens <strong>Repo Trust</strong> against the <strong>Shai-Hulud / Miasma</strong> supply-chain worm — the family that hijacks a maintainer's account and commits an obfuscated <code class="notranslate">setup.js</code> dropper that runs the moment you open the repo in an editor, let an AI agent load it, or run <code class="notranslate">npm install</code>.</p>
+<h3>Repo Trust now catches the payload, not just the trigger</h3>
+<ul>
+<li><strong>Dropper detection</strong> — FinderGit flags the obfuscated dropper itself (by known indicator path, or by its packed shape), not only the hooks that launch it.</li>
+<li><strong>Every branch, not just your checkout</strong> — the worm hides a back-dated copy on a side branch, invisible to a clean working tree. Repo Trust scans all refs with read-only git plumbing, so it can't slip past — and still never runs anything.</li>
+<li><strong>A wider net</strong> — dev-container lifecycle commands (which can run on your host) and always-applied AI-agent rules are surfaced too.</li>
+</ul>
+<h3>An incident runbook when a repo looks compromised</h3>
+<ul>
+<li><strong>Rotate credentials the right way</strong> — revoke the whole OAuth authorization (a token rotation isn't enough — the grant stacks tokens under it), with direct links.</li>
+<li><strong>Clean the repo safely</strong> — copy-paste commands with your repo and the infected branches filled in: back up evidence, then <strong>reset</strong> (not revert — a revert leaves the payload reachable by its SHA).</li>
+</ul>
+<h3>Clearer failures, with the fix in hand</h3>
+<ul>
+<li>Git errors now read in plain language instead of a raw error dump — shown as a tidy icon + popover you can copy.</li>
+<li>For known causes like a <strong>missing git-lfs</strong>, FinderGit explains why and hands you the one-line fix to copy.</li>
+</ul>
+<h3>A refreshed detail panel</h3>
+<ul>
+<li>Each tab has its own colour, and the Trust tab tints itself by risk — green when clean through to red when a dropper is present — so a problem stands out at a glance.</li>
+<li>A new <strong>Buy me a coffee</strong> option in About &amp; Support, alongside sponsorship.</li>
+</ul>
+<h2>Install</h2>
+<p>Download the DMG below, drag <strong>FinderGit</strong> into Applications, and launch it normally — the app is signed with Apple Developer ID and notarized by Apple, so Gatekeeper accepts it on first open. Already running FinderGit? Update in place from <strong>FinderGit → Check for Updates</strong> (or relaunch — the auto-updater will offer it).</p>
+<h2>Requirements</h2>
+<ul>
+<li>macOS 15 (Sequoia) or later</li>
+<li>Xcode Command Line Tools for the system <code class="notranslate">git</code> (<code class="notranslate">xcode-select --install</code>)</li>
+<li>Repositories that use Git LFS need <code class="notranslate">git-lfs</code> installed — FinderGit now detects when it's missing and shows the one-line fix</li>
+</ul>
+<hr>
+<p>Repo Trust is <strong>read-only</strong> — FinderGit never executes, installs, or evaluates anything it inspects, so it's safe to point at a repo you don't trust yet.</p>
+</body>
+</html>
