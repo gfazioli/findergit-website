@@ -37,6 +37,8 @@ FinderGit is a native macOS app that combines file browsing with Git intelligenc
 - **Auto-fetch** — optional background `git fetch` at a user-chosen interval to keep the ahead/behind counter fresh
 - **Diff viewer** — click any modified file to see a colored inline diff
 - **Git actions** — stage, unstage, commit, push, pull, fetch, branch switch, all from the UI
+- **Repo Trust — supply-chain safety** — surface a repo's *auto-run surface* (editor tasks, AI-agent configs, dev-container and npm hooks) and get alerted when it changes after a pull. FinderGit also detects the committed **dropper** behind supply-chain worms like **Shai-Hulud / Miasma** — the obfuscated `.github/setup.js`-style payload — across *every* branch, not just the checkout, and never runs anything it finds. When a repo looks compromised it shows an incident runbook: revoke the OAuth authorization, then reset (not revert) the infected branches
+- **Repo Maintenance** — a per-repo disk-usage breakdown and one-click cleanup (Optimize / Deep Clean) to reclaim Git space, with a sortable Size column in the browser
 - **Native Markdown preview** — press Space on any `.md` file for a rendered preview
 - **Smart context menus** — adapts to whether you're on a regular file, a tracked file, or a repository
 - **Multiple root folders** — add as many as you want; drop folders from the macOS Finder into the sidebar to add them as roots
@@ -57,6 +59,7 @@ After downloading, open the DMG and drag FinderGit into your Applications folder
   xcode-select --install
   sudo xcodebuild -license
   ```
+- Repositories that use [Git LFS](https://git-lfs.com) need `git-lfs` installed (`brew install git-lfs && git lfs install`). FinderGit detects when it's missing and tells you exactly how to fix it instead of failing silently.
 
 ## Documentation
 

@@ -276,7 +276,7 @@ const features = [
     icon: IconShieldHalfFilled,
     title: 'Repo Trust',
     description:
-      'Surface the hooks that run code automatically in any repo — and get alerted when they change after a pull.',
+      'Catch the obfuscated dropper behind supply-chain worms like Shai-Hulud / Miasma — across every branch — plus the hooks that auto-run a repo, with an alert when they change after a pull.',
     color: 'indigo',
     href: '/docs/repo-trust',
     badge: 'New',
@@ -528,8 +528,8 @@ export function Welcome() {
             <FeatureRow
               icon={IconShieldHalfFilled}
               iconColor="indigo"
-              title="Know what a repo runs before you trust it"
-              description="Cloning or pulling a repo can quietly arm it to run code — on folder open, on agent load, on npm install. The Trust tab surfaces that auto-run surface in plain language, shows you exactly what each hook runs, and flags it in the browser when it changes after a pull. It only ever reads — FinderGit never executes anything it finds."
+              title="Catch a supply-chain worm before it runs"
+              description="Cloning or pulling a repo can quietly arm it to run code — on folder open, on agent load, on npm install. Repo Trust surfaces that auto-run surface in plain language and detects the obfuscated dropper behind supply-chain worms like Shai-Hulud / Miasma — across every branch, not just the one you checked out. It flags changes after a pull, walks you through cleanup if a repo looks compromised, and never runs anything it finds."
               image="/screenshot-feature-trust.png"
               imageAlt="The Repo Trust tab listing a repository's auto-run hooks with a plain-language explanation of what each one runs"
               href="/docs/repo-trust"
