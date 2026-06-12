@@ -200,9 +200,12 @@ export const MantineFooter = () => {
               rel="noopener noreferrer"
               variant="filled"
               color="yellow"
-              autoContrast
               leftSection={<IconCoffee size={16} />}
               radius="xl"
+              styles={{
+                label: { color: 'var(--mantine-color-white)' },
+                section: { color: 'var(--mantine-color-white)' },
+              }}
             >
               Buy me a coffee
             </Button>
