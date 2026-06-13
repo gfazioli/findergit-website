@@ -42,6 +42,41 @@ const faqItems: { value: string; question: string; answer: ReactNode }[] = [
       'Not entirely — but it covers more ground every release. Day-to-day work happens without leaving the app: status across many repos at once, stage/unstage and discard, commit (with AI-generated messages), push/pull/fetch, branch switching, and keeping forks in sync with their upstream. For advanced surgery (interactive rebase, cherry-pick, complex merges) you’ll still want a full Git client or the terminal.',
   },
   {
+    value: 'github-account',
+    question: 'Do I need to connect a GitHub account?',
+    answer: (
+      <>
+        Only for the GitHub-powered extras — the{' '}
+        <Anchor href="/docs/account" size="sm">
+          Account
+        </Anchor>{' '}
+        dashboard, the issue / pull-request / star counts in the file browser, and new-star alerts.
+        FinderGit reuses the GitHub CLI if it&apos;s already set up, or a personal access token you
+        paste into Settings — kept in your Keychain, never written to disk. Plain browsing, Git
+        status, diffs and commit / push / pull all work with no GitHub connection at all. See{' '}
+        <Anchor href="/docs/github-integration" size="sm">
+          GitHub Integration
+        </Anchor>{' '}
+        for setup.
+      </>
+    ),
+  },
+  {
+    value: 'star-alerts',
+    question: 'Can FinderGit tell me when one of my repos gets a star?',
+    answer: (
+      <>
+        Yes. The{' '}
+        <Anchor href="/docs/account#new-star-notifications" size="sm">
+          Account
+        </Anchor>{' '}
+        view shows a badge the moment a repository earns a star — naming which repo, not just
+        bumping a number — and you can optionally turn on desktop notifications in Settings → Git. It
+        checks periodically in the background while the app is running.
+      </>
+    ),
+  },
+  {
     value: 'detect',
     question: 'How does FinderGit detect repositories?',
     answer:
