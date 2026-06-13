@@ -139,6 +139,71 @@ function FeatureRow({
 }
 
 /**
+ * Fullscreen image lightbox shared by `ZoomableScreenshot` and the hero
+ * carousel: a transparent fullScreen Modal that centres the image at
+ * 95vw/95vh (`object-fit: contain`) on a near-black backdrop, closing on
+ * backdrop click, the system close button, and Escape (Mantine default).
+ */
+function FullscreenImageModal({
+  opened,
+  onClose,
+  src,
+  alt,
+}: {
+  opened: boolean;
+  onClose: () => void;
+  src: string;
+  alt: string;
+}) {
+  return (
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      fullScreen
+      withCloseButton
+      padding={0}
+      radius={0}
+      transitionProps={{ transition: 'fade', duration: 180 }}
+      styles={{
+        content: { backgroundColor: 'transparent', boxShadow: 'none' },
+        body: {
+          padding: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'rgba(0, 0, 0, 0.92)',
+          minHeight: '100vh',
+        },
+        header: {
+          position: 'absolute',
+          top: 16,
+          right: 16,
+          background: 'transparent',
+          zIndex: 10,
+          padding: 0,
+          minHeight: 0,
+        },
+        close: { color: 'white' },
+      }}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        onClick={onClose}
+        style={{
+          maxWidth: '95vw',
+          maxHeight: '95vh',
+          width: 'auto',
+          height: 'auto',
+          cursor: 'zoom-out',
+          objectFit: 'contain',
+        }}
+      />
+    </Modal>
+  );
+}
+
+/**
  * Click-to-zoom screenshot. The thumbnail uses a `drop-shadow` filter so
  * the soft halo follows the rounded macOS chrome already baked into each
  * PNG's alpha channel; clicking opens a fullscreen Modal where the same
@@ -182,50 +247,7 @@ function ZoomableScreenshot({
           }}
         />
       </UnstyledButton>
-      <Modal
-        opened={opened}
-        onClose={() => setOpened(false)}
-        fullScreen
-        withCloseButton
-        padding={0}
-        radius={0}
-        transitionProps={{ transition: 'fade', duration: 180 }}
-        styles={{
-          content: { backgroundColor: 'transparent', boxShadow: 'none' },
-          body: {
-            padding: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.92)',
-            minHeight: '100vh',
-          },
-          header: {
-            position: 'absolute',
-            top: 16,
-            right: 16,
-            background: 'transparent',
-            zIndex: 10,
-            padding: 0,
-            minHeight: 0,
-          },
-          close: { color: 'white' },
-        }}
-      >
-        <Image
-          src={src}
-          alt={alt}
-          onClick={() => setOpened(false)}
-          style={{
-            maxWidth: '95vw',
-            maxHeight: '95vh',
-            width: 'auto',
-            height: 'auto',
-            cursor: 'zoom-out',
-            objectFit: 'contain',
-          }}
-        />
-      </Modal>
+      <FullscreenImageModal opened={opened} onClose={() => setOpened(false)} src={src} alt={alt} />
     </>
   );
 }
@@ -309,50 +331,12 @@ function HeroCarousel({ shots }: { shots: { src: string; alt: string }[] }) {
         </Group>
       </Center>
 
-      <Modal
+      <FullscreenImageModal
         opened={zoomed}
         onClose={() => setZoomed(false)}
-        fullScreen
-        withCloseButton
-        padding={0}
-        radius={0}
-        transitionProps={{ transition: 'fade', duration: 180 }}
-        styles={{
-          content: { backgroundColor: 'transparent', boxShadow: 'none' },
-          body: {
-            padding: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.92)',
-            minHeight: '100vh',
-          },
-          header: {
-            position: 'absolute',
-            top: 16,
-            right: 16,
-            background: 'transparent',
-            zIndex: 10,
-            padding: 0,
-            minHeight: 0,
-          },
-          close: { color: 'white' },
-        }}
-      >
-        <Image
-          src={active.src}
-          alt={active.alt}
-          onClick={() => setZoomed(false)}
-          style={{
-            maxWidth: '95vw',
-            maxHeight: '95vh',
-            width: 'auto',
-            height: 'auto',
-            cursor: 'zoom-out',
-            objectFit: 'contain',
-          }}
-        />
-      </Modal>
+        src={active.src}
+        alt={active.alt}
+      />
     </Box>
   );
 }
@@ -370,7 +354,16 @@ const heroShots = [
   { src: '/screenshot-hero-browser.png', alt: 'FinderGit — a Git-aware file browser for macOS' },
 ];
 
-const features = [
+interface Feature {
+  icon: typeof IconMarkdown;
+  title: string;
+  description: string;
+  color: string;
+  href: string;
+  badge?: string;
+}
+
+const features: Feature[] = [
   {
     icon: IconLayoutGrid,
     title: 'Overview Dashboard',
