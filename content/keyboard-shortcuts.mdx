@@ -20,6 +20,7 @@ FinderGit supports many keyboard shortcuts for fast navigation and Git operation
 
 <ShortcutsTable shortcuts={[
   { keys: ['⌘', 'T'], action: 'Open a new tab — each tab gets its own sidebar selection and drill-down history' },
+  { keys: ['⌘', 'F'], action: 'Focus the filter field — start typing to narrow the current tree by name' },
   { keys: ['⌘', '['], action: 'Back — pop the drill-down history' },
   { keys: ['⌘', ']'], action: 'Forward — replay the most recent back' },
 ]} />
@@ -27,6 +28,8 @@ FinderGit supports many keyboard shortcuts for fast navigation and Git operation
 ## View
 
 <ShortcutsTable shortcuts={[
+  { keys: ['⌘', '⇧', '.'], action: 'Show hidden files — toggle dotfiles in the tree (Finder-style)' },
+  { keys: ['⌥', '⌘', 'D'], action: 'Detail at Bottom — move the detail panel below the tree instead of beside it' },
   { keys: ['⌘', '+'], action: 'Zoom in (increase tree font size)' },
   { keys: ['⌘', '−'], action: 'Zoom out (decrease tree font size)' },
   { keys: ['⌘', '0'], action: 'Reset to actual size (13pt)' },

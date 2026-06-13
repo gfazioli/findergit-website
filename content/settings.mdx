@@ -8,6 +8,7 @@ Open Settings with <Kbd>⌘</Kbd> <Kbd>,</Kbd> or from the menu **FinderGit → 
 
 ### Startup
 - **Launch FinderGit at login** — automatically start FinderGit when you log in to your Mac
+- **Show the support window at launch** — show the About & Support window (sponsors and the developer's other apps) each time FinderGit starts. Off by default; you can also toggle it from that window.
 
 ### Updates
 - **Check for updates on launch** — run a background check every time FinderGit starts. Silent unless a newer version is available.
@@ -16,8 +17,9 @@ Open Settings with <Kbd>⌘</Kbd> <Kbd>,</Kbd> or from the menu **FinderGit → 
 
 ### File Browser
 - **Show hidden files** — display dotfiles (files starting with `.`) in the tree view
+- **Show labels under compact action buttons** — show text labels beneath the toolbar's compact action buttons instead of icons alone
 - **Scan depth** — maximum folder depth when scanning root folders for `.git` directories (1–10, default 5)
-- **Font size** — tree view font size in points (10–20, default 13). Also adjustable via <Kbd>⌘</Kbd> <Kbd>+</Kbd> / <Kbd>⌘</Kbd> <Kbd>−</Kbd> / <Kbd>⌘</Kbd> <Kbd>0</Kbd>
+- **Tree font size** — tree view font size in points (10–20, default 13). Also adjustable via <Kbd>⌘</Kbd> <Kbd>+</Kbd> / <Kbd>⌘</Kbd> <Kbd>−</Kbd> / <Kbd>⌘</Kbd> <Kbd>0</Kbd>
 
 ### Excluded Folders
 Comma-separated list of directory names to skip during scanning. Default:
@@ -44,8 +46,6 @@ Periodically fetch from all remotes in the background. Options: Disabled (defaul
 
 Keeps ahead/behind counts and remote branches up-to-date without modifying your working tree.
 
-![Settings → Git showing Commit History stepper and GitHub Token panel](/screenshot-settings-git.png)
-
 ### Commit History
 How many recent commits the **Commits** tab lists in the [Detail Panel](/docs/detail-panel#commits). Default: **4** — keeps the tab skim-friendly. Range: 1 to 50. Takes effect on next refresh or repo selection.
 
@@ -58,6 +58,12 @@ A Personal Access Token used as a fallback when the `gh` CLI isn't installed or 
 Click **Remove** to delete the stored token. The token lives in the macOS Keychain under `github.com`; FinderGit never writes it to disk in its own files.
 
 See [GitHub Integration](/docs/github-integration#option-2-personal-access-token) for the full setup and scope guidance.
+
+### Star Notifications
+- **Notify me when a repo gains a star** — show a desktop notification the moment one of your repositories earns a star, naming the repository. Off by default.
+- **Check interval** — how often FinderGit polls for new stars: every 10 / 30 / 60 minutes.
+
+The in-app **(+) badge** on the Account view's Stars tile works regardless of this setting — turning notifications off doesn't hide your new stars, it only silences the desktop banner. See [Account → New-star notifications](/docs/account#new-star-notifications) for the full picture.
 
 ## AI
 

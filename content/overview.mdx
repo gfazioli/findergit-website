@@ -1,0 +1,41 @@
+# Overview
+
+The **Overview** is FinderGit's default landing view: a single dashboard that aggregates **every repository under all your root folders** — so the moment you open the app you know what needs attention, without clicking into a single repo.
+
+![The Overview dashboard — stat cards, working-tree health, and highlight lists across every repository](/screenshot-hero-overview.png)
+
+## Why this exists
+
+Once you're watching more than a handful of repositories, the per-repo view stops scaling: you don't want to click through twenty folders to find the three with uncommitted work or the one that fell behind upstream. The Overview answers *"what across everything needs me right now?"* at a glance.
+
+## The stat cards
+
+A grid of at-a-glance counters across your whole workspace:
+
+- **Repositories** — how many were discovered, across how many root folders.
+- **Clean / Modified / Unpushed** — working-tree state, summed.
+- **On Disk** — the total git footprint of every repo.
+- **Stars / Forks** — your GitHub social proof, with a "behind upstream" count for forks.
+- **Critical Findings** — supply-chain dropper artifacts surfaced by [Repo Trust](/docs/repo-trust).
+
+Each card shows a small spinner while its data is still loading, so you can tell live numbers from ones still being fetched.
+
+## Working-tree health
+
+A donut ring sums your repositories into **clean / modified / unpushed / pending**, with the percentage that's clean front and centre — a quick pulse on how much uncommitted or unpushed work is scattered across your machine.
+
+## Needs attention
+
+The list you'll actually act on: every repo that is dirty, ahead of its remote, behind upstream, or carries a critical finding — sorted so the most urgent sits on top. Click any row to jump straight to that repository in the file browser.
+
+## Top starred & Largest on disk
+
+Two more highlight lists: your most-starred repositories, and the ones eating the most disk (a quick path to [Repo Maintenance](/docs/repo-maintenance)). Every row is clickable.
+
+## Make it yours
+
+The lower panels — **Needs attention**, **Top starred**, **Largest on disk** — are **drag-and-drop reorderable**: grab the handle in a panel's header and drop it where you want. Each section also has its own refresh button, and a general refresh at the top re-runs everything.
+
+<Callout type="info" emoji="⚡">
+The Overview is built for big workspaces. Git status is read from the watchers that already run in the background, and disk / GitHub data is fetched with bounded concurrency, so even hundreds of repositories fill in progressively rather than freezing the app.
+</Callout>

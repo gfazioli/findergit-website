@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.13.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.13.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<h1>FinderGit 0.13.0</h1>
+<p><strong>Two new dashboards</strong> — and FinderGit now tells you the moment your work gets noticed.</p>
+<h2>🗂️ Overview — your whole workspace at a glance</h2>
+<p>FinderGit's new default view aggregates <strong>every repository under all your root folders</strong> into one dashboard, so you see what needs you before opening anything:</p>
+<ul>
+<li><strong>Stat cards</strong> across the whole workspace: repositories discovered, clean / modified / unpushed counts, total disk footprint, stars and forks, and critical Repo Trust findings.</li>
+<li>A <strong>working-tree health</strong> ring — at a glance, how much of your work is clean vs. uncommitted or unpushed.</li>
+<li><strong>Needs attention</strong> — every repo that's dirty, ahead, behind its upstream, or carrying a security finding, sorted most-urgent-first. Click a row to jump to it.</li>
+<li><strong>Top starred</strong> and <strong>Largest on disk</strong> highlight lists.</li>
+<li>Panels are <strong>drag-and-drop reorderable</strong>, each refreshes independently, and the whole view stays smooth across hundreds of repositories.</li>
+</ul>
+<h2>👤 Account — your GitHub profile, without a browser</h2>
+<p>A second global view turns FinderGit into a window onto your GitHub identity:</p>
+<ul>
+<li>Profile header plus stat tiles: followers, stars, <strong>public <em>and</em> private</strong> repo counts, forks, pull requests (with merged count), issues, a year of commits, and organizations.</li>
+<li>A full year of <strong>contributions</strong>, switchable between the classic <strong>heatmap</strong> and a <strong>line graph</strong>.</li>
+<li>Your top repositories, languages, and organizations.</li>
+</ul>
+<h2>⭐ New-star alerts</h2>
+<p>Know the moment one of your repositories earns a star — by name, not just a number:</p>
+<ul>
+<li>A pulsing <strong>(+) badge</strong> on the Account view's Stars tile, with a popover listing exactly which repos were starred — click through to open any of them.</li>
+<li>Optional <strong>desktop notifications</strong> (off by default) under Settings → Git, with a configurable check interval.</li>
+<li>One shared baseline means you're never alerted about the same star twice, and a relaunch won't re-announce stars earned while FinderGit was closed.</li>
+</ul>
+<h2>⚙️ Refreshed Settings</h2>
+<p>Every preference now sits on its own labelled tile with an inline help affordance — cleaner and more legible across all tabs.</p>
+<h2>🛠️ Fixes &amp; polish</h2>
+<ul>
+<li>Clearer error messages when a GitHub profile can't be fetched.</li>
+<li>Numerous stability and consistency fixes across the new dashboards.</li>
+</ul>
+</body>
+</html>
