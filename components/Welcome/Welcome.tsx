@@ -1,6 +1,6 @@
 'use client';
 
-import { type CSSProperties, useState } from 'react';
+import { type CSSProperties, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Scene } from '@gfazioli/mantine-scene';
 import { TextAnimate } from '@gfazioli/mantine-text-animate';
@@ -18,6 +18,9 @@ import {
   IconGitCompare,
   IconDatabase,
   IconShieldHalfFilled,
+  IconLayoutGrid,
+  IconUserCircle,
+  IconStar,
 } from '@tabler/icons-react';
 import {
   Box,
@@ -227,7 +230,169 @@ function ZoomableScreenshot({
   );
 }
 
+/**
+ * Hero carousel: cross-fades through several screenshots on a timer, with
+ * clickable dots to jump between them. Auto-advance pauses on hover. The
+ * active shot keeps the click-to-zoom affordance (opens a fullscreen Modal,
+ * same as `ZoomableScreenshot`). Built without a carousel dependency — a
+ * stack of absolutely-positioned images whose opacity we cross-fade.
+ */
+function HeroCarousel({ shots }: { shots: { src: string; alt: string }[] }) {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [zoomed, setZoomed] = useState(false);
+
+  useEffect(() => {
+    if (paused || zoomed || shots.length < 2) return;
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % shots.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [paused, zoomed, shots.length]);
+
+  const active = shots[index];
+
+  return (
+    <Box>
+      {/* Fixed-ratio stage so the fade doesn't jolt the layout when shots
+          differ slightly in height; each shot is contained within it. */}
+      <UnstyledButton
+        onClick={() => setZoomed(true)}
+        aria-label={`Open enlarged screenshot: ${active.alt}`}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        style={{ display: 'block', width: '100%', cursor: 'zoom-in' }}
+      >
+        <Box pos="relative" style={{ width: '100%', aspectRatio: '16 / 13' }}>
+          {shots.map((shot, i) => (
+            <Image
+              key={shot.src}
+              src={shot.src}
+              alt={shot.alt}
+              aria-hidden={i !== index}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                opacity: i === index ? 1 : 0,
+                transition: 'opacity 800ms ease',
+                pointerEvents: 'none',
+                filter: 'drop-shadow(0 30px 60px rgba(0, 0, 0, 0.7))',
+              }}
+            />
+          ))}
+        </Box>
+      </UnstyledButton>
+
+      {/* Dots */}
+      <Center mt="lg" mb={56}>
+        <Group gap={10}>
+          {shots.map((shot, i) => (
+            <UnstyledButton
+              key={shot.src}
+              onClick={() => setIndex(i)}
+              aria-label={`Show screenshot ${i + 1} of ${shots.length}: ${shot.alt}`}
+              aria-current={i === index}
+              style={{
+                width: i === index ? 26 : 9,
+                height: 9,
+                borderRadius: 999,
+                backgroundColor: i === index
+                  ? 'var(--mantine-color-findergit-5)'
+                  : 'var(--mantine-color-gray-5)',
+                opacity: i === index ? 1 : 0.5,
+                transition: 'width 250ms ease, opacity 250ms ease, background-color 250ms ease',
+              }}
+            />
+          ))}
+        </Group>
+      </Center>
+
+      <Modal
+        opened={zoomed}
+        onClose={() => setZoomed(false)}
+        fullScreen
+        withCloseButton
+        padding={0}
+        radius={0}
+        transitionProps={{ transition: 'fade', duration: 180 }}
+        styles={{
+          content: { backgroundColor: 'transparent', boxShadow: 'none' },
+          body: {
+            padding: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.92)',
+            minHeight: '100vh',
+          },
+          header: {
+            position: 'absolute',
+            top: 16,
+            right: 16,
+            background: 'transparent',
+            zIndex: 10,
+            padding: 0,
+            minHeight: 0,
+          },
+          close: { color: 'white' },
+        }}
+      >
+        <Image
+          src={active.src}
+          alt={active.alt}
+          onClick={() => setZoomed(false)}
+          style={{
+            maxWidth: '95vw',
+            maxHeight: '95vh',
+            width: 'auto',
+            height: 'auto',
+            cursor: 'zoom-out',
+            objectFit: 'contain',
+          }}
+        />
+      </Modal>
+    </Box>
+  );
+}
+
+// The hero rotation — the two new dashboards lead, the file browser anchors.
+const heroShots = [
+  { src: '/screenshot-hero-overview.png', alt: 'FinderGit Overview — an at-a-glance dashboard across every repository' },
+  { src: '/screenshot-hero-account.png', alt: 'FinderGit Account — your GitHub profile and contributions at a glance' },
+  { src: '/screenshot-hero-browser.png', alt: 'FinderGit — a Git-aware file browser for macOS' },
+];
+
 const features = [
+  {
+    icon: IconLayoutGrid,
+    title: 'Overview Dashboard',
+    description:
+      'Your whole workspace at a glance \u2014 clean/dirty/unpushed counts, disk usage, stars, and a "needs attention" list across every repository.',
+    color: 'blue',
+    href: '/docs/overview',
+    badge: 'New',
+  },
+  {
+    icon: IconUserCircle,
+    title: 'GitHub Account',
+    description:
+      'Your profile, stat tiles, top repos, languages, and a full year of contributions \u2014 as a heatmap or a line graph \u2014 without leaving the app.',
+    color: 'cyan',
+    href: '/docs/account',
+    badge: 'New',
+  },
+  {
+    icon: IconStar,
+    title: 'New-Star Alerts',
+    description:
+      'Know the moment one of your repositories earns a star \u2014 named, with an in-app badge and optional desktop notifications.',
+    color: 'yellow',
+    href: '/docs/account#new-star-notifications',
+    badge: 'New',
+  },
   {
     icon: IconGitBranch,
     title: 'Live Git Status',
@@ -279,7 +444,6 @@ const features = [
       'Catch the obfuscated dropper behind supply-chain worms like Shai-Hulud / Miasma — across every branch — plus the hooks that auto-run a repo, with an alert when they change after a pull.',
     color: 'indigo',
     href: '/docs/repo-trust',
-    badge: 'New',
   },
   {
     icon: IconDatabase,
@@ -418,13 +582,9 @@ export function Welcome() {
             </Center>
           </Stack>
 
-          {/* ─── Screenshot ─── */}
+          {/* ─── Screenshot carousel ─── */}
           <Box mt={32}>
-            <ZoomableScreenshot
-              src="/screenshot-hero.png"
-              alt="FinderGit — Git-aware file browser for macOS"
-              shadowOpacity={0.7}
-            />
+            <HeroCarousel shots={heroShots} />
           </Box>
         </Container>
       </Box>
