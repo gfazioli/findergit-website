@@ -299,9 +299,8 @@ function HeroCarousel({ shots }: { shots: { src: string; alt: string }[] }) {
                 width: i === index ? 26 : 9,
                 height: 9,
                 borderRadius: 999,
-                backgroundColor: i === index
-                  ? 'var(--mantine-color-findergit-5)'
-                  : 'var(--mantine-color-gray-5)',
+                backgroundColor:
+                  i === index ? 'var(--mantine-color-findergit-5)' : 'var(--mantine-color-gray-5)',
                 opacity: i === index ? 1 : 0.5,
                 transition: 'width 250ms ease, opacity 250ms ease, background-color 250ms ease',
               }}
@@ -360,8 +359,14 @@ function HeroCarousel({ shots }: { shots: { src: string; alt: string }[] }) {
 
 // The hero rotation — the two new dashboards lead, the file browser anchors.
 const heroShots = [
-  { src: '/screenshot-hero-overview.png', alt: 'FinderGit Overview — an at-a-glance dashboard across every repository' },
-  { src: '/screenshot-hero-account.png', alt: 'FinderGit Account — your GitHub profile and contributions at a glance' },
+  {
+    src: '/screenshot-hero-overview.png',
+    alt: 'FinderGit Overview — an at-a-glance dashboard across every repository',
+  },
+  {
+    src: '/screenshot-hero-account.png',
+    alt: 'FinderGit Account — your GitHub profile and contributions at a glance',
+  },
   { src: '/screenshot-hero-browser.png', alt: 'FinderGit — a Git-aware file browser for macOS' },
 ];
 

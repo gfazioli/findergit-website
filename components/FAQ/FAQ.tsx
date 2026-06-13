@@ -71,8 +71,8 @@ const faqItems: { value: string; question: string; answer: ReactNode }[] = [
           Account
         </Anchor>{' '}
         view shows a badge the moment a repository earns a star — naming which repo, not just
-        bumping a number — and you can optionally turn on desktop notifications in Settings → Git. It
-        checks periodically in the background while the app is running.
+        bumping a number — and you can optionally turn on desktop notifications in Settings → Git.
+        It checks periodically in the background while the app is running.
       </>
     ),
   },
@@ -97,10 +97,10 @@ const faqItems: { value: string; question: string; answer: ReactNode }[] = [
         <Anchor href="/docs/repo-trust" size="sm">
           Repo Trust
         </Anchor>{' '}
-        is for. FinderGit scans each repository&apos;s auto-run surface — hooks and
-        configuration that could execute code when you open, build, or install — without ever
-        running any of it. Repos with findings are flagged in the list, and you get an alert when
-        that surface changes after a pull.
+        is for. FinderGit scans each repository&apos;s auto-run surface — hooks and configuration
+        that could execute code when you open, build, or install — without ever running any of it.
+        Repos with findings are flagged in the list, and you get an alert when that surface changes
+        after a pull.
       </>
     ),
   },
@@ -114,8 +114,8 @@ const faqItems: { value: string; question: string; answer: ReactNode }[] = [
         <Anchor href="/docs/ai-commit-messages" size="sm">
           AI commit message
         </Anchor>{' '}
-        feature: when you click ✨ AI, your staged diff is sent to generate the message —
-        nothing is stored, and nothing is sent unless you ask.
+        feature: when you click ✨ AI, your staged diff is sent to generate the message — nothing is
+        stored, and nothing is sent unless you ask.
       </>
     ),
   },
