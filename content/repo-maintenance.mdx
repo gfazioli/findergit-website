@@ -1,5 +1,5 @@
 ---
-description: "Reclaim disk space in FinderGit: see where each repository's Git data goes, then free it with a one-click Optimize or a careful, configurable Deep Clean."
+description: "Reclaim disk space in FinderGit: see where each repository's Git data goes, analyze why its history is heavy, then free it with a one-click Optimize or a careful, configurable Deep Clean."
 ---
 
 # Repo Maintenance
@@ -22,6 +22,19 @@ Select any repository and open the **Maintenance** tab in the [Detail Panel](/do
 Below the report, FinderGit shows an **estimated reclaimable** figure — for example *at least ~21.8 MB*. The wording is deliberate. FinderGit only counts space it can be **certain** to recover (clearly loose and redundant data). The actual savings are usually larger, because repacking and pruning frequently compress history further than a conservative pre-flight estimate can promise.
 
 Treat the number as a **floor, not a ceiling**: it's the minimum you'll get back, never an overstatement. When there's nothing loose to reclaim, the estimate simply says so (for example *nothing loose*), so you're never nudged into a cleanup that wouldn't help.
+
+## Analyze history — why is a repo *really* big?
+
+Optimize and Deep Clean reclaim loose objects and redundant packs. But sometimes a repository's `.git` is huge for a different reason: its **history** holds far more than your working copy needs — a stale branch left behind after a big merge, or a clone that pulled in a much larger upstream. A routine cleanup can't help there, because Git can't drop history a branch still points to.
+
+The Maintenance tab's **Analyze** button (under *History & bloat*) diagnoses exactly this. It's **read-only** — it never changes anything, it just shows you where the weight is:
+
+- **A verdict** — whether the repo's history looks bloated, with an estimate of how much space is held beyond what your current branch actually needs.
+- **The skew** — how many files you have checked out versus how many commits the whole history carries. A few dozen files against tens of thousands of commits is the tell-tale sign of foreign history riding along.
+- **The heaviest branches** — each branch ranked by how much history it reaches, with the suspects (the ones reaching far more than your current branch) flagged.
+- **Caveats up front** — if acting on the findings would be risky (an in-progress rebase or merge, uncommitted changes, linked worktrees, or a pinned pack), it says so before you'd touch anything.
+
+It's a fast, on-demand read of *why* a repo is heavy — the step before deciding what's safe to reclaim.
 
 ## Two ways to clean up
 
