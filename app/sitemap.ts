@@ -30,8 +30,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       return { url, lastModified, changeFrequency: 'weekly', priority };
     });
 
-  return [
-    { url: `${base}/`, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
-    ...docs,
-  ];
+  // No `lastModified` on the homepage: there's no single content file to
+  // stat, and a build-time `new Date()` would report it as changed on every
+  // deploy, nudging needless recrawls. Omitting it is the honest signal.
+  return [{ url: `${base}/`, changeFrequency: 'weekly', priority: 1 }, ...docs];
 }
