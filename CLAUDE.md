@@ -94,7 +94,7 @@ In `app/layout.tsx`, CSS imports must follow this order:
 - The app is described as: "A Git-aware file browser for macOS"
 - Key selling points: sortable columns, live git status, inline diff viewer, git actions, search & filter, native macOS app
 - Target audience: developers who use Git and want a better file browsing experience on macOS
-- Download links point to GitHub Releases: `https://github.com/gfazioli/FinderGit/releases/latest`
+- Download links point to GitHub Releases on the **website** repo (the FinderGit app repo is private, so releases are published here): `https://github.com/gfazioli/findergit-website/releases/latest` — matches `config.app.downloadUrl`.
 
 ### No infrastructure leaks in user-facing copy
 
