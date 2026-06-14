@@ -14,6 +14,7 @@ import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/c
 // !! End of important imports !!
 
 import { MantineFooter, MantineNavBar } from '@/components';
+import { WebsiteJsonLd } from '@/components/StructuredData/StructuredData';
 import config from '@/config';
 import { theme } from '../theme';
 
@@ -36,10 +37,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
-        />
+        {/*
+          No manual viewport meta: Next emits `width=device-width,
+          initial-scale=1` by default. The previous override added
+          `user-scalable=no`, which blocks pinch-zoom — an accessibility
+          regression (and a Lighthouse flag). Let the default stand so
+          users can zoom.
+        */}
       </Head>
       <body>
         <MantineProvider theme={theme} defaultColorScheme={head.mantine.defaultColorScheme}>
@@ -68,6 +72,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             {children}
           </Layout>
         </MantineProvider>
+        <WebsiteJsonLd />
         <Analytics />
       </body>
     </html>
