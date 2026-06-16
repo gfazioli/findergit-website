@@ -1,5 +1,5 @@
 ---
-description: "Reclaim disk space in FinderGit: see where each repository's Git data goes, analyze why its history is heavy, then free it with a one-click Optimize or a careful, configurable Deep Clean."
+description: "Reclaim disk space in FinderGit: see where each repository's Git data goes, analyze why its history is heavy, then free it — a one-click Optimize, a configurable Deep Clean, or a guided cleanup that removes the stale branches and over-wide remotes inflating your history."
 ---
 
 # Repo Maintenance
@@ -37,6 +37,29 @@ The Maintenance tab's **Analyze** button (under *History & bloat*) diagnoses exa
 It's a fast, on-demand read of *why* a repo is heavy — the step before deciding what's safe to reclaim.
 
 ![History & bloat — the verdict, the checked-out-files-vs-commits skew, the reclaimable estimate, and the heaviest branches ranked](/screenshot-maintenance-analyze.png)
+
+## Clean up history — reclaim what a routine cleanup can't
+
+When Analyze finds that stale branches or an over-wide remote are anchoring history your working copy doesn't need, the **Clean up history…** button — right under the diagnosis — walks you through removing them safely. A routine Optimize or Deep Clean can't touch this, because Git won't drop history a branch or remote still points to. This is the step that actually frees it.
+
+It's deliberately a guided, multi-step flow, because removing refs is destructive:
+
+1. **Pick the culprits.** FinderGit lists the removable branches and remotes, with the suspects — the ones reaching far more history than you keep — pre-selected. Your current branch, and `main`/`master`, are never offered.
+2. **See what each removal really frees.** Before anything changes, FinderGit measures each target's *unique* history: the data reachable from it but from nothing you're keeping. A branch that was already merged shares its history with your work, so removing it frees nothing — those are shown but **skipped**, never deleted. (When *everything* you picked turns out to be intertwined like that, FinderGit tells you a per-branch cleanup can't help and points you to a full history rewrite instead.)
+3. **Keep an undo record.** Before removing anything, FinderGit saves how to put it back — remote URLs and their configuration, branch commit IDs — to a recovery file inside the repository's `.git` folder.
+4. **Confirm, then reclaim.** Only after you confirm does it remove the selected refs and run the cleanup that frees their space.
+
+![Clean up history — picking culprits: the suspect branch is flagged “Reaches 263 commits — likely anchoring extra history” and pre-selected, while a small branch is left unchecked](/screenshot-maintenance-cleanup.png)
+
+![Clean up history — the review step: “legacy-migration (branch) — Frees about 66.1 MB”, with a note that the undo record is saved to .git before anything is removed](/screenshot-maintenance-cleanup-review.png)
+
+When it finishes you get the same honest accounting as every other cleanup — the on-disk **before → after** — plus an integrity check confirming the repository is still sound.
+
+A few guarantees worth stating plainly:
+
+- **Your branch is never rewritten.** This removes *other* refs (stale branches, an over-wide remote's tracking refs); it never touches the history of the branch you have checked out.
+- **Over-wide remotes are always recoverable.** The history still lives on the remote — re-add it and fetch, and it's back. A purely-local stale branch is recoverable only while its objects survive, which is why the undo record is saved first.
+- **It won't act mid-operation.** If a rebase or merge is in progress, the cleanup stays blocked until you finish or abort it.
 
 ## Two ways to clean up
 
