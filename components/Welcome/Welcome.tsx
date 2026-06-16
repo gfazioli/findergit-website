@@ -564,7 +564,7 @@ export function Welcome() {
               </Button>
             </Group>
 
-            <Center mt="sm">
+            <Group justify="center" gap="md" mt="sm">
               <a
                 href="https://www.producthunt.com/products/findergit/launches/findergit?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-findergit"
                 target="_blank"
@@ -577,7 +577,22 @@ export function Welcome() {
                   height={54}
                 />
               </a>
-            </Center>
+              <a
+                href="https://launchpadly.co/startup/findergit"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-launchpadly-badge="findergit"
+                data-launchpadly-badge-variant="listed-on"
+              >
+                <img
+                  src="https://launchpadly.co/embed/badges/startup/findergit.svg?variant=listed-on"
+                  alt="Launchpadly Startup Directory"
+                  width={260}
+                  height={48}
+                  style={{ display: 'block', border: 0 }}
+                />
+              </a>
+            </Group>
           </Stack>
 
           {/* ─── Screenshot carousel ─── */}
