@@ -93,7 +93,7 @@ export const MantineFooter = () => {
                 <ActionIcon
                   variant="subtle"
                   component="a"
-                  href="https://www.undolog.com/s/findergit"
+                  href="https://findergit.substack.com"
                 >
                   <IconMailHeart size={24} />
                 </ActionIcon>
