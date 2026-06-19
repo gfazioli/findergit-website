@@ -24,7 +24,7 @@ export default {
       },
       issues: {
         title: 'Report an Issue',
-        href: 'https://github.com/gfazioli/findergit-website/issues',
+        href: 'mailto:feedback@findergit.app?subject=FinderGit%20feedback',
       },
     },
   },
