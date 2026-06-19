@@ -1,9 +1,30 @@
 * {
   --marquee-fade-edge-color: var(--mantine-color-gray-1);
 
+  /*
+   * ── FinderGit homepage design tokens ──
+   * Git-state semantic colours are the only saturated colours on the page
+   * besides the brand accent, so colour carries meaning at a glance:
+   * clean / changes / ahead — plus the brand accent and the "needs attention"
+   * signal. Referenced everywhere (hero dashboard mock, repo list, feature
+   * grid) instead of ad-hoc per-spot colours. Dark overrides below keep
+   * contrast in both schemes.
+   */
+  --fg-accent: var(--mantine-color-findergit-6);
+  --fg-clean: var(--mantine-color-teal-7);
+  --fg-changes: var(--mantine-color-orange-6);
+  --fg-ahead: var(--mantine-color-blue-6);
+  --fg-attention: var(--mantine-color-orange-7);
+
   @mixin dark {
     --marquee-fade-edge-color: var(--mantine-color-dark-9);
     --mantine-color-body: var(--mantine-color-dark-9);
+
+    --fg-accent: var(--mantine-color-findergit-4);
+    --fg-clean: var(--mantine-color-teal-4);
+    --fg-changes: var(--mantine-color-orange-4);
+    --fg-ahead: var(--mantine-color-blue-4);
+    --fg-attention: var(--mantine-color-orange-5);
   }
 }
 
