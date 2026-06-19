@@ -24,6 +24,7 @@ import {
   Title,
 } from '@mantine/core';
 import { Logo } from '@/components/Logo/Logo';
+import { NewsletterSignup } from '@/components/NewsletterSignup/NewsletterSignup';
 import { AnimateBadge } from './AnimateBadge';
 import { ecosystem, highlights, resources, sponsors } from './links';
 import classes from './MantineFooter.module.css';
@@ -59,6 +60,8 @@ const VerticalLinks = ({ list }: { list: VerticalLink[] }) => {
 export const MantineFooter = () => {
   return (
     <div className={classes.contentFooter}>
+      <NewsletterSignup />
+      <Divider my="md" className={classes.lastDivider} />
       <Container className={classes.footer} size="lg">
         <Grid grow>
           <Grid.Col span={{ base: 12, sm: 4 }}>
