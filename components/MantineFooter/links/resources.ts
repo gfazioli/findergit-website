@@ -17,8 +17,7 @@ export const resources = [
   {
     key: 'issues',
     title: 'Report an Issue',
-    href: 'https://github.com/gfazioli/findergit-website/issues',
-    newWindow: true,
+    href: 'mailto:feedback@findergit.app?subject=FinderGit%20feedback',
   },
   {
     key: 'undolog',
