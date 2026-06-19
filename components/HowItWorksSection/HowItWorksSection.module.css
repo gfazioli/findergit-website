@@ -1,0 +1,40 @@
+.section {
+  background-color: var(--mantine-color-gray-0);
+
+  @mixin dark {
+    background-color: var(--mantine-color-dark-8);
+  }
+}
+
+/* One move per row, hairline-separated, with generous vertical rhythm. */
+.step {
+  padding-block: 40px;
+  border-top: 1px solid var(--mantine-color-gray-3);
+
+  @mixin dark {
+    border-top-color: var(--mantine-color-dark-5);
+  }
+}
+
+.step:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+/* Big monospace step number in the brand accent — the only colour in the band. */
+.stepNumber {
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--fg-accent);
+  font-variant-numeric: tabular-nums;
+  min-width: 92px;
+}
+
+@media (max-width: 48em) {
+  .stepNumber {
+    font-size: 40px;
+    min-width: 52px;
+  }
+}

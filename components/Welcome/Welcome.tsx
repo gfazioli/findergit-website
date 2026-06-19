@@ -45,6 +45,7 @@ import config from '@/config';
 import { FAQ } from '../FAQ/FAQ';
 import { ProblemSection } from '../ProblemSection/ProblemSection';
 import { SolutionSection } from '../SolutionSection/SolutionSection';
+import { HowItWorksSection } from '../HowItWorksSection/HowItWorksSection';
 import { DiffViewerSection } from '../DiffViewerSection/DiffViewerSection';
 import { AICommitSection } from '../AICommitSection/AICommitSection';
 import { BuiltForMacSection } from '../BuiltForMacSection/BuiltForMacSection';
@@ -520,8 +521,19 @@ export function Welcome() {
               }}
             />
 
+            {/*
+              HERO COPY — two A/B variants. Variant A (control / at-a-glance) is
+              LIVE below; Variant B (problem-first) is kept here as a commented
+              alternative so we can swap and compare.
+
+              ── Variant B (problem-first) ──
+              Headline: Your repos look like any other folder.{' '}
+                        <gradient>FinderGit makes Git visible.</gradient>
+              Subhead:  Branch, status, unpushed commits, and diffs for every
+                        repository — at a glance, in one native macOS window.
+            */}
             <Title maw="90vw" mx="auto" className={classes.title} ta="center">
-              Your repositories were never meant to be{' '}
+              Every Git repo. One window.{' '}
               <TextAnimate
                 animate="in"
                 by="character"
@@ -534,13 +546,14 @@ export function Welcome() {
                 animateProps={{ scaleAmount: 2 }}
                 gradient={{ from: 'blue', to: 'cyan' }}
               >
-                invisible.
+                Always live.
               </TextAnimate>
             </Title>
 
             <Text c="dimmed" ta="center" size="xl" maw={640} mx="auto">
-              FinderGit is a Git-aware file browser for macOS. See branch, status, changes, and
-              diffs for all your repositories at a glance — without switching apps.
+              FinderGit is a native macOS file browser that shows branch, status, changes, and
+              diffs for all your repositories at a glance — no app-switching, no terminal
+              round-trips.
             </Text>
 
             <Group justify="center" mt="md">
@@ -604,16 +617,23 @@ export function Welcome() {
       {/* ─── The Solution ─── */}
       <SolutionSection />
 
+      {/* ─── How it works (Detect → Surface → Act) ─── */}
+      <HowItWorksSection />
+
       {/* ─── Features ─── */}
       <Box py={80} className={classes.sectionBand}>
         <Container size="lg">
           <Stack align="center" gap="md" mb={48}>
             <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="orange">
-              Features
+              And there&apos;s more
             </Text>
             <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
-              Everything you need, nothing you don&apos;t
+              Beyond the at-a-glance overview
             </Title>
+            <Text c="dimmed" ta="center" size="lg" maw={620}>
+              The control center is the core. Around it, a handful of extras for when you go deeper
+              into a repo.
+            </Text>
           </Stack>
 
           <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
@@ -769,10 +789,10 @@ export function Welcome() {
               Get Started
             </Text>
             <Title order={2} ta="center" fz={{ base: 36, sm: 48 }} fw={900} c="white">
-              Your repos were never meant to be invisible.
+              Every repo, under control.
             </Title>
             <Text c="dimmed" ta="center" size="lg" maw={500}>
-              Download FinderGit and see everything, everywhere, all at once.
+              Download FinderGit and see — and manage — every repository from one native window.
             </Text>
 
             <Button
