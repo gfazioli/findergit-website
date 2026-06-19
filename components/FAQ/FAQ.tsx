@@ -130,14 +130,14 @@ const faqItems: { value: string; question: string; answer: ReactNode }[] = [
     question: 'I found a bug. How do I report it?',
     answer: (
       <>
-        Please open a{' '}
+        Please send us a{' '}
         <Anchor
-          href="https://github.com/gfazioli/findergit-website/issues/new?template=bug_report.yml"
+          href="mailto:feedback@findergit.app?subject=FinderGit%20bug%20report"
           size="sm"
         >
-          Bug Report
+          bug report
         </Anchor>{' '}
-        on GitHub. Include your FinderGit version, macOS version, and steps to reproduce the issue.
+        by email. Include your FinderGit version, macOS version, and steps to reproduce the issue.
         Screenshots are very helpful!
       </>
     ),
@@ -147,14 +147,14 @@ const faqItems: { value: string; question: string; answer: ReactNode }[] = [
     question: 'I have an idea for a new feature. Where can I suggest it?',
     answer: (
       <>
-        We&apos;d love to hear your ideas! Open a{' '}
+        We&apos;d love to hear your ideas! Send us a{' '}
         <Anchor
-          href="https://github.com/gfazioli/findergit-website/issues/new?template=feature_request.yml"
+          href="mailto:feedback@findergit.app?subject=FinderGit%20feature%20request"
           size="sm"
         >
-          Feature Request
+          feature request
         </Anchor>{' '}
-        on GitHub and describe what you&apos;d like FinderGit to do. The more detail you provide,
+        by email and describe what you&apos;d like FinderGit to do. The more detail you provide,
         the better we can evaluate and prioritize it.
       </>
     ),
