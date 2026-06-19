@@ -1,28 +1,38 @@
 'use client';
 
-import { Container, Stack } from '@mantine/core';
+import { IconMail } from '@tabler/icons-react';
+import { Button, Container, Stack, Text, Title } from '@mantine/core';
 
 /**
- * Newsletter signup band.
+ * Newsletter signup CTA.
  *
- * Embeds the FinderGit Substack publication's subscribe form
- * (findergit.substack.com). Substack hosts the form — double opt-in and bot
- * protection are handled on their side, so no API token or custom subscribe
- * endpoint lives on ours. The macOS app links to the same publication's
- * /subscribe page, so web and app feed one list.
+ * Links to the FinderGit Substack publication (findergit.substack.com), which
+ * hosts the subscribe form (double opt-in + bot protection on Substack's side).
+ * A button rather than the raw Substack embed: the cross-origin embed renders
+ * an opaque white card (its `transparent` param is ignored) that can't be
+ * restyled to fit the dark footer. The macOS app links to the same publication.
  */
 export function NewsletterSignup() {
   return (
     <Container size="sm" py="xl">
-      <Stack align="center">
-        <iframe
-          src="https://findergit.substack.com/embed?transparent=1&light=1"
-          title="Subscribe to FinderGit"
-          width={480}
-          height={320}
-          scrolling="no"
-          style={{ border: 0, background: 'transparent', maxWidth: '100%' }}
-        />
+      <Stack gap="xs" align="center">
+        <Title order={3} ta="center">
+          Get release updates
+        </Title>
+        <Text c="dimmed" ta="center" size="sm" maw={420}>
+          New version of FinderGit? Be the first to know — straight to your inbox.
+        </Text>
+        <Button
+          component="a"
+          href="https://findergit.substack.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          leftSection={<IconMail size={16} />}
+          radius="xl"
+          mt="xs"
+        >
+          Subscribe for updates
+        </Button>
       </Stack>
     </Container>
   );
