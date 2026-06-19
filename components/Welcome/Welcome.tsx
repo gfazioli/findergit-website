@@ -588,21 +588,6 @@ export function Welcome() {
                   height={54}
                 />
               </a>
-              <a
-                href="https://launchpadly.co/startup/findergit"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-launchpadly-badge="findergit"
-                data-launchpadly-badge-variant="listed-on"
-              >
-                <img
-                  src="https://launchpadly.co/embed/badges/startup/findergit.svg?variant=listed-on"
-                  alt="Launchpadly Startup Directory"
-                  width={260}
-                  height={48}
-                  style={{ display: 'block', border: 0 }}
-                />
-              </a>
             </Group>
           </Stack>
 
