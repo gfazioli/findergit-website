@@ -119,7 +119,7 @@ export const MantineFooter = () => {
           <Grid.Col className={classes.column} span={2}>
             <Stack gap="xs">
               <Title className={classes.title} order={6}>
-                ECOSYSTEM
+                OTHER PROJECTS
               </Title>
               <VerticalLinks list={ecosystem} />
             </Stack>
