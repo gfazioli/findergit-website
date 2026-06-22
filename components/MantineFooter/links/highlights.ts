@@ -2,8 +2,9 @@ export const highlights = [
   {
     key: 'download',
     title: 'Download FinderGit',
-    href: 'https://github.com/gfazioli/findergit-website/releases/latest',
-    newWindow: true,
+    // `/download` redirects straight to the latest macOS .dmg (same route the
+    // hero + CTA Download buttons use), instead of the GitHub Releases page.
+    href: '/download',
   },
   {
     key: 'release-notes',
