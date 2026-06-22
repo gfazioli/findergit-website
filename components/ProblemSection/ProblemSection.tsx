@@ -2,7 +2,7 @@
 
 import type { CSSProperties } from 'react';
 import { IconFolder, IconGitMerge, IconTerminal2 } from '@tabler/icons-react';
-import { Box, Container, Paper, SimpleGrid, Stack, Text, ThemeIcon, Title } from '@mantine/core';
+import { Box, Container, Group, Paper, SimpleGrid, Stack, Text, ThemeIcon, Title } from '@mantine/core';
 import classes from './ProblemSection.module.css';
 
 // Icon colours pick a vivid, distinct hue per tool so each card has a
@@ -36,6 +36,11 @@ const problems = [
     color: 'grape',
   },
 ];
+
+// The same five folders the Solution section then lights up — shown here in
+// plain Finder (names only) so the Problem → Solution flow reads as one
+// before/after, with no dedicated comparison section needed.
+const finderRepos = ['my-ios-app', 'api-server', 'design-system', 'landing-page', 'cli-tools'];
 
 export function ProblemSection() {
   return (
@@ -84,6 +89,54 @@ export function ProblemSection() {
             </Paper>
           ))}
         </SimpleGrid>
+
+        {/* The standard Finder — the "before": the same folders, just names and
+            no Git state. Sets up the Solution's lit-up window right below. */}
+        <Stack align="center" gap="sm" mt={56}>
+          <Paper
+            radius="lg"
+            bg="var(--mantine-color-dark-7)"
+            maw={680}
+            w="100%"
+            style={{ overflow: 'hidden', border: '1px solid var(--mantine-color-dark-5)' }}
+          >
+            <Group
+              px="md"
+              py="sm"
+              bg="var(--mantine-color-dark-6)"
+              style={{ borderBottom: '1px solid var(--mantine-color-dark-5)' }}
+            >
+              <Group gap={8}>
+                <Box w={12} h={12} style={{ borderRadius: '50%', backgroundColor: '#ff5f57' }} />
+                <Box w={12} h={12} style={{ borderRadius: '50%', backgroundColor: '#febc2e' }} />
+                <Box w={12} h={12} style={{ borderRadius: '50%', backgroundColor: '#28c840' }} />
+              </Group>
+              <Text size="sm" c="dimmed" style={{ fontFamily: 'monospace' }}>
+                Finder — ~/Developer
+              </Text>
+            </Group>
+            <Stack gap={0} px="lg" py="md">
+              {finderRepos.map((name) => (
+                <Group
+                  key={name}
+                  gap="sm"
+                  wrap="nowrap"
+                  py="sm"
+                  style={{ borderBottom: '1px solid var(--mantine-color-dark-6)' }}
+                >
+                  <IconFolder size={18} color="var(--mantine-color-dark-2)" />
+                  <Text size="sm" c="gray.5" style={{ fontFamily: 'monospace' }}>
+                    {name}
+                  </Text>
+                </Group>
+              ))}
+            </Stack>
+          </Paper>
+          <Text c="dimmed" fz="sm" ta="center" maw={520}>
+            Your ~/Developer in Finder today: just folders &mdash; no branch, no status,
+            no idea which repo needs you.
+          </Text>
+        </Stack>
       </Container>
     </Box>
   );

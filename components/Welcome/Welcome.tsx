@@ -45,7 +45,6 @@ import config from '@/config';
 import { FAQ } from '../FAQ/FAQ';
 import { ProblemSection } from '../ProblemSection/ProblemSection';
 import { SolutionSection } from '../SolutionSection/SolutionSection';
-import { HowItWorksSection } from '../HowItWorksSection/HowItWorksSection';
 import { DiffViewerSection } from '../DiffViewerSection/DiffViewerSection';
 import { AICommitSection } from '../AICommitSection/AICommitSection';
 import { BuiltForMacSection } from '../BuiltForMacSection/BuiltForMacSection';
@@ -616,9 +615,6 @@ export function Welcome() {
 
       {/* ─── The Solution ─── */}
       <SolutionSection />
-
-      {/* ─── How it works (Detect → Surface → Act) ─── */}
-      <HowItWorksSection />
 
       {/* ─── Features ─── */}
       <Box py={80} className={classes.sectionBand}>
