@@ -26,7 +26,7 @@ import {
 import { Logo } from '@/components/Logo/Logo';
 import { NewsletterSignup } from '@/components/NewsletterSignup/NewsletterSignup';
 import { AnimateBadge } from './AnimateBadge';
-import { ecosystem, highlights, resources, sponsors } from './links';
+import { apps, highlights, resources, sponsors } from './links';
 import classes from './MantineFooter.module.css';
 
 type VerticalLink = {
@@ -119,9 +119,9 @@ export const MantineFooter = () => {
           <Grid.Col className={classes.column} span={2}>
             <Stack gap="xs">
               <Title className={classes.title} order={6}>
-                OTHER PROJECTS
+                APPS
               </Title>
-              <VerticalLinks list={ecosystem} />
+              <VerticalLinks list={apps} />
             </Stack>
           </Grid.Col>
         </Grid>
