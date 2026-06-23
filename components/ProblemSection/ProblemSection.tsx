@@ -2,7 +2,17 @@
 
 import type { CSSProperties } from 'react';
 import { IconFolder, IconGitMerge, IconTerminal2 } from '@tabler/icons-react';
-import { Box, Container, Group, Paper, SimpleGrid, Stack, Text, ThemeIcon, Title } from '@mantine/core';
+import {
+  Box,
+  Container,
+  Group,
+  Paper,
+  SimpleGrid,
+  Stack,
+  Text,
+  ThemeIcon,
+  Title,
+} from '@mantine/core';
 import classes from './ProblemSection.module.css';
 
 // Icon colours pick a vivid, distinct hue per tool so each card has a
@@ -133,8 +143,8 @@ export function ProblemSection() {
             </Stack>
           </Paper>
           <Text c="dimmed" fz="sm" ta="center" maw={520}>
-            Your ~/Developer in Finder today: just folders &mdash; no branch, no status,
-            no idea which repo needs you.
+            Your ~/Developer in Finder today: just folders &mdash; no branch, no status, no idea
+            which repo needs you.
           </Text>
         </Stack>
       </Container>

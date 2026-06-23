@@ -550,9 +550,8 @@ export function Welcome() {
             </Title>
 
             <Text c="dimmed" ta="center" size="xl" maw={640} mx="auto">
-              FinderGit is a native macOS file browser that shows branch, status, changes, and
-              diffs for all your repositories at a glance — no app-switching, no terminal
-              round-trips.
+              FinderGit is a native macOS file browser that shows branch, status, changes, and diffs
+              for all your repositories at a glance — no app-switching, no terminal round-trips.
             </Text>
 
             <Group justify="center" mt="md">
@@ -579,8 +578,8 @@ export function Welcome() {
 
             <Stack gap={4} align="center" mt={8}>
               <Text c="dimmed" ta="center" size="sm">
-                Free &middot; v{config.app.version} &middot; macOS 15+ &middot; Universal (Apple Silicon + Intel) &middot;
-                Signed &amp; notarized
+                Free &middot; v{config.app.version} &middot; macOS 15+ &middot; Universal (Apple
+                Silicon + Intel) &middot; Signed &amp; notarized
               </Text>
               <Anchor href="/docs/release-notes" c="dimmed" size="sm">
                 Release notes

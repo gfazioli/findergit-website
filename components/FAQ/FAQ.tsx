@@ -131,10 +131,7 @@ const faqItems: { value: string; question: string; answer: ReactNode }[] = [
     answer: (
       <>
         Please send us a{' '}
-        <Anchor
-          href="mailto:feedback@findergit.app?subject=FinderGit%20bug%20report"
-          size="sm"
-        >
+        <Anchor href="mailto:feedback@findergit.app?subject=FinderGit%20bug%20report" size="sm">
           bug report
         </Anchor>{' '}
         by email. Include your FinderGit version, macOS version, and steps to reproduce the issue.
@@ -154,8 +151,8 @@ const faqItems: { value: string; question: string; answer: ReactNode }[] = [
         >
           feature request
         </Anchor>{' '}
-        by email and describe what you&apos;d like FinderGit to do. The more detail you provide,
-        the better we can evaluate and prioritize it.
+        by email and describe what you&apos;d like FinderGit to do. The more detail you provide, the
+        better we can evaluate and prioritize it.
       </>
     ),
   },

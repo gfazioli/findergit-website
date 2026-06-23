@@ -20,7 +20,10 @@ export async function GET() {
   const fallback = config.app.downloadUrl; // GitHub Releases page
 
   const redirect = (location: string) =>
-    new Response(null, { status: 302, headers: { Location: location, 'Cache-Control': 'no-store' } });
+    new Response(null, {
+      status: 302,
+      headers: { Location: location, 'Cache-Control': 'no-store' },
+    });
 
   try {
     const url = `${config.gitHub.releasesUrl}?per_page=${config.releaseNotes.maxReleases}`;
