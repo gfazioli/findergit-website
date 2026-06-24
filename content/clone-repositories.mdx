@@ -1,0 +1,47 @@
+---
+description: "Clone many of your GitHub repositories at once: open the Clone Repositories window, filter and multi-select, pick a destination, and clone the lot with per-repo progress."
+---
+
+# Clone Repositories
+
+The **Clone Repositories** window lists every repository your GitHub account can reach and lets you clone any number of them at once into a folder you choose — no copy-pasting URLs, no cloning one at a time.
+
+## Opening it
+
+Cloning is an action, not a place you live in, so it opens in its own window — reachable three ways:
+
+- **File → Clone Repositories…** (`⌘⇧K`)
+- The **Clone from GitHub…** button on the [Overview](/docs/overview) dashboard
+- The **Clone…** button on the [Account](/docs/account) dashboard
+
+It uses the same GitHub access as the rest of FinderGit — see [GitHub Integration](/docs/github-integration) for setup. If neither the GitHub CLI nor a token is configured, the window shows a **Connect to GitHub** prompt with a shortcut to Settings.
+
+![The Clone Repositories window — your account's repositories with filters, multi-select checkboxes, and a destination picker](/screenshot-clone-repos.png)
+
+## Finding the repositories you want
+
+The window lists everything you can reach — repositories you **own**, ones you **collaborate** on, and ones from your **organizations**.
+
+- **Search** by name, owner, or description.
+- **Owner** — narrow to a single account or organization.
+- **Type** — Sources, Forks, Private, Public, or Archived.
+- **Sort** — by Updated, Name, or Stars.
+
+Each row shows the repository name, a one-line description, its primary language, stargazer count, and when it was last updated, plus small badges for **private**, **fork**, and **archived** repos. The counter in the top-right (e.g. *39 of 368*) tells you how many match the current filter.
+
+## Selecting and cloning
+
+1. **Click a row** to select it; click again to deselect. The checkmark on the left shows what's picked. **Select All** grabs everything currently filtered, and your selection sticks even as you change filters.
+2. **Choose a destination** — click the folder button at the bottom to pick where the clones land. You can make a new folder right there with **New Folder**, and the choice is remembered for next time.
+3. **Pick a transport** — **Auto** reuses however FinderGit is already signed in to GitHub (see [GitHub Integration](/docs/github-integration)), so private repos clone with nothing extra to set up; choose **SSH** to clone with your own SSH keys instead.
+4. Click **Clone N Repositories**. FinderGit confirms the destination first — spelling out the full path, so a forgotten or default folder can't catch you out — then starts.
+
+Each repository clones into its own folder inside the destination, a few at a time, with a live status beside it: a spinner, then a green check or a red ✗ (hover for the error). You can **close the window while it's working** — reopen it and the run is still in progress.
+
+When the batch finishes, the destination is added to your [Root Folders](/docs/file-browser) (or rescanned if it's already one), so the fresh checkouts appear in the file browser right away.
+
+## Notes
+
+- Cloning a few repositories at a time keeps a large selection from flooding the network.
+- A repository that already exists in the destination is skipped rather than overwritten.
+- For one-off clones you can keep using `git clone` or your favourite tool — this window is for pulling down many repositories in a single pass.

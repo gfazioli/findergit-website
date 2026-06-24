@@ -1,5 +1,5 @@
 ---
-description: "Stage, commit, push, pull, fetch, switch branches and discard changes from FinderGit — via the docked action bar, the Unstage tab and context menus, each with a keyboard shortcut."
+description: "Stage, commit, push, pull, fetch, switch branches and discard changes from FinderGit — via the docked action bar, the Unstage tab and context menus — and run Fetch, Pull or Push across many selected repositories at once."
 ---
 
 # Git Actions
@@ -84,6 +84,23 @@ Right-click on a repository directory for quick access to:
 
 Right-click on a file inside a repo for:
 - Stage / Unstage (only when applicable)
+
+## Bulk actions across repositories
+
+Select **more than one repository** in the file browser — ⌘-click or ⇧-click to build a selection, even across different root folders — and FinderGit can Fetch, Pull, or Push all of them in one go.
+
+- **Right-click** the selection → **Fetch N Repos** / **Pull N Repos** / **Push N Repos**
+- Or the **Repository menu** → **Fetch / Pull / Push Selected Repos**
+
+A small progress card appears while the batch runs, with one row per repository — a spinner while it works, then a green check, a red ✗ (hover for the error), or a *skipped* note. It tidies itself away after a fully clean run and stays put if anything failed, so you can read what happened.
+
+- **Fetch** runs on every selected repo.
+- **Pull** and **Push** skip repos with no upstream branch (marked *skipped*, not failed).
+- **Push** asks for confirmation first, listing how many repos it will push — it writes to remotes, so it's the one bulk action behind a prompt.
+
+Repositories are processed a few at a time, so a large selection doesn't flood the network.
+
+![Fetch, Pull and Push across a multi-repo selection, with per-repo progress](/screenshot-bulk-fetch.png)
 
 ## From the menu bar
 
