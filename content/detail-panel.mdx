@@ -36,6 +36,7 @@ Because the bar is docked outside the scroll area, the actions stay reachable fr
 
 The Overview tab paints the GitHub-side identity of the repo:
 
+- An **Open on GitHub** button — opens the repo's page in your browser. The label follows the remote's host (GitHub, GitLab, or Bitbucket) and it appears for any repo with a recognized remote, even before the rest of the metadata loads.
 - **Description** at the top
 - A row of stat pills: ★ stars · ⎇ forks · 🏷 latest release · 🔗 homepage. Stars and forks are read-only; the release tag opens the GitHub release page in your browser, and the homepage pill opens the configured homepage URL.
 - **Topic chips** (wrapping onto multiple lines when there are many)
@@ -44,6 +45,8 @@ The Overview tab paints the GitHub-side identity of the repo:
 If the selected repo doesn't have a GitHub remote (or the panel can't reach GitHub), the section silently disappears and the tab shows a short hint pointing at where the operational view moved.
 
 See [GitHub Integration](/docs/github-integration) for how to enable the GitHub-driven tabs.
+
+![Overview tab — the Open on GitHub button, stars and forks, and contributors for the selected repo](/screenshot-detail-overview.png)
 
 ## Unstage
 
@@ -102,10 +105,10 @@ Both tabs share the same row shape:
 - Coloured label chips
 - The author's avatar on the right
 
-Click anywhere on a row to open the issue or PR on github.com. Each tab has a **New Issue / New Pull Request** button in the header that opens the corresponding "new" page in your browser, plus a **Refresh** button that bypasses the 60-second cache when you want fresh data.
+Click anywhere on a row to open the issue or PR on github.com. Each tab's header has a **New Issue / New Pull Request** button (opens the corresponding "new" page), an **Open on GitHub** button (opens the full Issues / Pull Requests list page — the label follows the remote's host), and a **Refresh** button that bypasses the 60-second cache when you want fresh data.
 
 Both tabs need either a working `gh` CLI (see [GitHub Integration](/docs/github-integration)) or a Personal Access Token in Settings; on repos with no recognised GitHub remote (or no remote at all), the tabs show a short explanation instead of an empty list.
 
-![Issues tab — green open-issue icon, number, title, labels, author avatar, with New Issue and Refresh in the header](/screenshot-detail-issues.png)
+![Issues tab — green open-issue icon, number, title, labels, author avatar, with New Issue, Open on GitHub, and Refresh in the header](/screenshot-detail-issues.png)
 
-![Pull Requests tab — pull-request icon per state, number, title, labels, author, with New Pull Request in the header](/screenshot-detail-prs.png)
+![Pull Requests tab — pull-request icon per state, number, title, labels, author, with New Pull Request, Open on GitHub, and Refresh in the header](/screenshot-detail-prs.png)
