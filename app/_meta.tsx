@@ -18,9 +18,9 @@ export default {
     title: 'Community',
     type: 'menu',
     items: {
-      blog: {
-        title: 'Blog',
-        href: 'https://undolog.com/',
+      newsletter: {
+        title: 'Newsletter',
+        href: 'https://findergit.substack.com',
       },
       issues: {
         title: 'Report an Issue',
