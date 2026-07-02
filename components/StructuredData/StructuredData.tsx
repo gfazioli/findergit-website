@@ -102,6 +102,11 @@ const FAQ_ENTRIES: { question: string; answer: string }[] = [
       'macOS 15 (Sequoia) or later. FinderGit is built with SwiftUI and uses APIs available from macOS 15+.',
   },
   {
+    question: 'Which languages does FinderGit speak?',
+    answer:
+      'English, Italian, French, German, and Spanish. FinderGit follows your Mac’s system language automatically — there is no in-app switcher.',
+  },
+  {
     question: 'Does FinderGit replace my Git client?',
     answer:
       'Not entirely — but it covers more ground every release. Day-to-day work happens without leaving the app: status across many repos at once, stage/unstage and discard, commit (with AI-generated messages), push/pull/fetch, branch switching, and keeping forks in sync with their upstream. For advanced surgery (interactive rebase, cherry-pick, complex merges) you’ll still want a full Git client or the terminal.',

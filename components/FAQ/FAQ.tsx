@@ -36,6 +36,12 @@ const faqItems: { value: string; question: string; answer: ReactNode }[] = [
       'macOS 15 (Sequoia) or later. FinderGit is built with SwiftUI and uses APIs available from macOS 15+.',
   },
   {
+    value: 'languages',
+    question: 'Which languages does FinderGit speak?',
+    answer:
+      'English, Italian, French, German, and Spanish. FinderGit follows your Mac’s system language automatically — there is no in-app switcher. To use a different language, reorder your preferred languages in System Settings → General → Language & Region.',
+  },
+  {
     value: 'replace',
     question: 'Does FinderGit replace my Git client?',
     answer:

@@ -21,6 +21,7 @@ import {
   IconLayoutGrid,
   IconUserCircle,
   IconStar,
+  IconLanguage,
 } from '@tabler/icons-react';
 import {
   Box,
@@ -365,6 +366,15 @@ interface Feature {
 }
 
 const features: Feature[] = [
+  {
+    icon: IconLanguage,
+    title: 'Speaks Your Language',
+    description:
+      'Fully localized into English, Italian, French, German, and Spanish — FinderGit follows your Mac’s system language automatically.',
+    color: 'grape',
+    href: '/docs/getting-started#language',
+    badge: 'New',
+  },
   {
     icon: IconLayoutGrid,
     title: 'Overview Dashboard',
