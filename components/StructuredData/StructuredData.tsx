@@ -104,7 +104,7 @@ const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: 'Which languages does FinderGit speak?',
     answer:
-      'English, Italian, French, German, and Spanish. FinderGit follows your Mac’s system language automatically — there is no in-app switcher.',
+      'English, Italian, French, German, and Spanish. FinderGit follows your Mac’s system language automatically — there is no in-app switcher. To use a different language, reorder your preferred languages in System Settings → General → Language & Region.',
   },
   {
     question: 'Does FinderGit replace my Git client?',
