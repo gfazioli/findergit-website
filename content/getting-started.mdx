@@ -41,7 +41,7 @@ After these two steps, `git` works system-wide and FinderGit stops complaining.
 
 ## Adding your first root folder
 
-When you launch FinderGit for the first time, the sidebar is empty. You need to add at least one root folder — this is a directory that FinderGit will scan for Git repositories.
+When you launch FinderGit for the first time, the Repository List is empty. Add at least one root folder — a directory that FinderGit will scan for Git repositories.
 
 1. Click the **+** button in the toolbar, or go to **File → Add Root Folder** (<Kbd>⌘</Kbd> <Kbd>⇧</Kbd> <Kbd>O</Kbd>)
 2. Select a directory that contains your projects (e.g., `~/Projects` or `~/Developer`)
@@ -51,35 +51,23 @@ You can add multiple root folders. Each one appears in the sidebar and can be se
 
 ## Understanding the interface
 
-FinderGit has three main areas:
+FinderGit opens on the **[Repository List](/docs/repository-list)** — a flat, sortable table of every repository you track. The window has four areas:
 
 ### Sidebar (left)
-Lists your root folders. Click one to show only its contents, or deselect to see everything.
+The control panel. It's organized into **Dashboards** (Overview, Account), **Library** (All Repositories, Favorites, Recents), **Smart Views** (Changes, Ahead, Behind, Dirty, Clean — status filters with live counts), **Filters** (GitHub, GitLab, Bitbucket, Local Only), and **Root Folders** (the directories you scan, and the groups you organize them into). Picking an entry changes what the main area shows. See [Repository List → The sidebar](/docs/repository-list#the-sidebar).
 
-You can **drag** roots to reorder them and **group** related projects together — Tower-style virtual containers that organise roots without touching anything on disk. See [File Browser → Sidebar](/docs/file-browser#sidebar) for the full breakdown.
+### Main area (center)
+Either the **Repository List** — one sortable row per repo (Repository, Branch, Status, Ahead/Behind, Files, Size) — or, when you select a Root Folder (or double-click a repo), the Finder-style **[File Browser](/docs/file-browser)** tree.
 
-### File Browser (center)
-An expandable tree view with sortable columns:
-- **Name** — file/directory name with system icon
-- **Branch** — current Git branch (for repositories)
-- **Status** — CLEAN, DIRTY, or an ahead/behind indicator (↑N, ↓N, ↑N ↓N) — see [File Browser → Repository badges](/docs/file-browser#repository-badges) for all five states
-- **Changes** — number of modified files
-- **Size** — file size
-- **Date Modified** — last modification date
+### Detail Panel (right or bottom)
+Select a repository to reveal its detail — an eight-tab panel (Overview · Unstage · Commits · Branches · Issues · Pull Requests · Maintenance · Trust) with the global Fetch / Pull / Push / Refresh actions docked at its edge, reachable from any tab. See [Detail Panel](/docs/detail-panel). For a file you get its info and an inline diff; for a non-git file, basic info (size, date, type).
 
-Click any column header to sort. Click again to reverse the order.
-
-### Detail Panel (right)
-Shows details for the selected item.
-
-- **Repository selected** — a five-tab view (Overview · Unstage · Commits · Issues · Pull Requests) with the global Fetch / Pull / Push / Refresh actions docked at the bottom edge, reachable from any tab. See [Detail Panel](/docs/detail-panel) for the full breakdown.
-- **Sub-directory selected** — filtered changes for that directory only.
-- **File selected** — file info + inline diff (if modified).
-- **Non-git file** — basic file info (size, date, type).
+### Summary bar (bottom)
+A live tally across the whole list — repository count, clean / dirty / ahead / behind, and total size.
 
 ## Language
 
-FinderGit ships in **English, Italian, French, German, and Spanish** and follows your Mac's system language automatically — there is no in-app language switcher. To run FinderGit in a different language, reorder your preferred languages in **System Settings → General → Language & Region** (macOS applies the first language an app supports). Counts and labels inflect correctly in every language, and the post-update "What's New" panel arrives localized too.
+FinderGit ships in 🇬🇧 **English**, 🇮🇹 **Italian**, 🇫🇷 **French**, 🇩🇪 **German**, and 🇪🇸 **Spanish**, and follows your Mac's system language automatically — there is no in-app language switcher. To run FinderGit in a different language, reorder your preferred languages in **System Settings → General → Language & Region** (macOS applies the first language an app supports). Counts and labels inflect correctly in every language, and the post-update "What's New" panel arrives localized too.
 
 ## Tips
 
@@ -92,7 +80,8 @@ FinderGit ships in **English, Italian, French, German, and Spanish** and follows
 
 ## Next steps
 
-- **[Detail Panel](/docs/detail-panel)** — what each of the five tabs (Overview, Unstage, Commits, Issues, Pull Requests) shows when a repo is selected.
+- **[Repository List](/docs/repository-list)** — the flat all-repos table, the status sidebar (Smart Views + Filters), Favorites/Recents, and the summary bar.
+- **[Detail Panel](/docs/detail-panel)** — what each of the eight tabs (Overview, Unstage, Commits, Branches, Issues, Pull Requests, Maintenance, Trust) shows when a repo is selected.
 - **[GitHub Integration](/docs/github-integration)** — turn on the Issues, Pull Requests and Overview tabs, plus the file-browser Issues / PRs / Stars columns, by pointing FinderGit at your GitHub auth (`gh` CLI or a token).
 - **[Git Actions](/docs/git-actions)** — the operations available from the docked action bar, the Unstage tab, and the context menus, with their keyboard shortcuts.
 - **[AI Commit Messages](/docs/ai-commit-messages)** — the ✨ button inside the Unstage tab's commit form.

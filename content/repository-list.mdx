@@ -1,0 +1,87 @@
+---
+description: "See every repository at once in a flat, sortable list — with a status-driven sidebar (Library, Smart Views, provider Filters), a bottom summary bar, and one click into the file browser or the detail panel."
+---
+
+# Repository List
+
+The **Repository List** is FinderGit's home. Instead of drilling into one folder at a time, it shows **every repository you track in a single flat, sortable table** — branch, status, sync state, file count and size, side by side. The left sidebar slices that list by status or remote host, and a summary bar along the bottom keeps the whole picture in view.
+
+![The Repository List — a flat table of every repo, with the status sidebar and the summary bar](/screenshot-portfolio.png)
+
+## The sidebar
+
+The sidebar is the control panel for the list. Picking an entry changes *what the table shows*; it's organized into five sections.
+
+### Dashboards
+
+The two global dashboards, pinned at the top:
+
+- **[Overview](/docs/overview)** — an aggregate dashboard across every repository (clean/dirty/unpushed counts, disk usage, a "needs attention" list).
+- **[Account](/docs/account)** — your GitHub profile, stat tiles, and contribution graph.
+
+### Library
+
+- **All Repositories** — every repo you track, the default landing view.
+- **Favorites** — repos you've starred for quick access (see [Favorites & Recents](#favorites--recents)).
+- **Recents** — the repositories you opened most recently, newest first.
+
+Each row carries a live count.
+
+### Smart Views
+
+Dynamic, status-driven filters — each shows a running count and updates in real time as your repositories change. No setup; they read the Git status FinderGit already computes for every repo.
+
+- **Changes** — repos with uncommitted changes in the working tree.
+- **Ahead** — repos with local commits to push.
+- **Behind** — repos with upstream commits to pull.
+- **Dirty** — anything that isn't pristine: uncommitted changes *or* an out-of-sync branch.
+- **Clean** — fully in sync: working tree matches HEAD and the branch is level with (or has no) upstream.
+
+![The Smart Views section filtering the list to repositories that need attention](/screenshot-smart-views.png)
+
+### Filters
+
+Group the list by where each repository's `origin` remote points:
+
+- **GitHub**, **GitLab**, **Bitbucket** — recognized from the remote URL.
+- **Local Only** — repositories with no recognized remote.
+
+> Live GitHub data (Issues, PRs, Stars, fork status) is populated for GitHub remotes only; GitLab and Bitbucket are recognized for grouping and "Open on…" links. See [GitHub Integration](/docs/github-integration).
+
+### Root Folders
+
+The directories you've added for scanning, plus the Tower-style **groups** you organize them into. Selecting a root folder (rather than a Library/Smart View entry) switches the main area to the **[File Browser](/docs/file-browser)** — the Finder-style tree, for drilling into that folder's files. Adding, removing, reordering and grouping roots is covered in [File Browser → Root Folders](/docs/file-browser#root-folders).
+
+## The table
+
+One row per repository. Every column is sortable — click a header to sort, click again to reverse.
+
+- **Repository** — icon, name, and home-relative path (`~/Projects/App`). A ⭐ marks favorites.
+- **Branch** — the current branch.
+- **Status** — a pill: green **Clean**, or orange **N changes** when the working tree is dirty.
+- **Ahead/Behind** — **↑ ahead N** / **↓ behind N** relative to upstream, or **—** when in sync.
+- **Files** — number of tracked files (`git ls-files`).
+- **Size** — the repository's Git-data footprint on disk (see [Repo Maintenance](/docs/repo-maintenance)).
+
+Selecting a repository reveals the **[Detail Panel](/docs/detail-panel)** beside (or below) the table — the same eight-tab panel, with the docked Fetch / Pull / Push / Refresh actions. **Double-click** a row (or **Browse Files** from its context menu) to open that repository in the [File Browser](/docs/file-browser).
+
+### Row actions
+
+Right-click any row for: **Add to / Remove from Favorites**, **Browse Files**, **Open in Finder**, **Open in Terminal**, **Open on GitHub** (or GitLab / Bitbucket), and **Fetch / Pull / Push**.
+
+## Favorites & Recents
+
+- **Favorites** — right-click a repository → **Add to Favorites** (or use the ⭐). Favorites get their own Library entry so the repos you touch daily are always one click away.
+- **Recents** — populated automatically as you open repositories, newest first — no bookkeeping.
+
+Both lists persist across launches.
+
+## The summary bar
+
+A bar along the bottom of the list keeps the workspace total in view at all times:
+
+**N repositories · ✓ clean · ● dirty · ↑ ahead · ↓ behind · Total size**
+
+The counts and total size are live — they track the same status data the Smart Views count, so the bar always agrees with the sidebar.
+
+![The bottom summary bar with repository count, clean/dirty/ahead/behind tallies and total size](/screenshot-status-bar.png)

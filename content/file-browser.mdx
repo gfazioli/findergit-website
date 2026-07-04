@@ -4,7 +4,7 @@ description: "Browse files in a Finder-style outline with live Git status badges
 
 # File Browser
 
-The file browser is the heart of FinderGit. It presents your files in an expandable outline table, similar to Finder's list view, but enriched with Git information.
+The file browser presents a root folder's contents in an expandable outline table, similar to Finder's list view, but enriched with Git information. Open it by selecting a **root folder** in the sidebar, or by double-clicking a repository in the [Repository List](/docs/repository-list) — FinderGit's flat, all-repos home view.
 
 ## Tree navigation
 
@@ -50,7 +50,7 @@ You can customize this list in **Settings → General → Excluded Folders**.
 Repositories (directories containing `.git/`) show inline status. The badge reflects both the working-tree state and the local branch's position relative to its upstream:
 
 - **CLEAN** (green) — working tree matches HEAD and the branch is in sync with upstream (or has no upstream)
-- **DIRTY** (orange) — uncommitted changes in the working tree (takes priority over any sync state)
+- **N changes** (orange) — count of uncommitted changes in the working tree (takes priority over any sync state)
 - **↑N** (blue) — N commits ahead of upstream (push to sync)
 - **↓N** (purple) — N commits behind upstream (pull to sync)
 - **↑N ↓N** (red) — diverged: commits on both sides (pull then push, or rebase)
@@ -69,17 +69,17 @@ Directories inside a repository show an orange dot with a number if they contain
 
 Modified files inside a repository show their `git status` porcelain code (e.g., `M.` for modified-unstaged, `A.` for added-staged, `??` for untracked).
 
-## Sidebar
+## Root folders
 
-The sidebar on the left lists every **root folder** you've added — directories where FinderGit scans for Git repositories. Pinned above them are two global dashboards — **[Overview](/docs/overview)** and **[Account](/docs/account)** — that aren't tied to any single repository.
+The sidebar is shared with the [Repository List](/docs/repository-list#the-sidebar): its **Library**, **Smart Views** and **Filters** sections drive the flat list, while the **Root Folders** section drives *this* file browser. Root folders are the directories FinderGit scans for Git repositories; the tree opens when you select a root (or a group), or when you double-click a repository in the Repository List.
 
-![The sidebar — Overview and Account pinned above your root folders and virtual groups](/screenshot-sidebar-groups.png)
+![The sidebar — Dashboards, Library, Smart Views, Filters, and your Root Folders](/screenshot-sidebar.png)
 
 ### Adding and removing roots
 
 - **Drag a folder** from Finder onto the sidebar to add it as a root
 - **+** popup menu in the sidebar toolbar — choose **Add Root Folder…** to pick a directory from the macOS Open panel, or **Add Group…** to create a virtual container (see below)
-- **−** button removes the currently selected root (its repos drop out of the file browser; the actual files on disk are untouched)
+- **−** button removes the currently selected root (its repos drop out of the browser; the actual files on disk are untouched)
 - **↻** button rescans every root for new or removed repositories
 
 ### Reordering and organising roots
@@ -89,14 +89,16 @@ The sidebar on the left lists every **root folder** you've added — directories
 - **+ → Add Group…** (in the sidebar's `+` popup menu) opens a small dialog to create a virtual group — Tower-style containers that hold roots without changing anything on disk. Useful when you want to keep work, side projects, and dotfiles visually separated
 - Groups can be renamed or deleted from their own right-click menu; expanded/collapsed state is sticky like Finder
 
-### Sub-directory tree
+### Focusing the tree
 
 Click a root to focus the file browser on its contents. Click the row again (or click empty space) to deselect and show every root's contents merged into a single tree.
 
 ## Sorting
 
 Click any column header to sort the tree by that column. Supported columns:
-- Name, Branch, Status, Changes, Issues, PRs, Stars, Size, Date Modified
+- Name, Branch, Status, Issues, PRs, Stars, Size, Date Modified
+
+The count of uncommitted changes now lives inside the **Status** pill (**N changes**) rather than in a separate column.
 
 Click the same header again to reverse the sort order.
 

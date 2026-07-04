@@ -3,6 +3,7 @@ import { Group } from '@mantine/core';
 import {
   IconBook2,
   IconRocket,
+  IconLayoutList,
   IconFolders,
   IconLayoutSidebarRight,
   IconLayoutGrid,
@@ -39,6 +40,7 @@ export default {
   index: nav(IconBook2, 'Introduction'),
   '---get-started': { type: 'separator', title: 'Get Started' },
   'getting-started': nav(IconRocket, 'Getting Started'),
+  'repository-list': nav(IconLayoutList, 'Repository List'),
   'file-browser': nav(IconFolders, 'File Browser'),
   'detail-panel': nav(IconLayoutSidebarRight, 'Detail Panel'),
   '---dashboards': { type: 'separator', title: 'Dashboards' },
