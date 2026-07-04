@@ -42,6 +42,8 @@ The website serves as:
 | `yarn storybook` | Storybook dev server on port 6006 |
 | `yarn analyze` | Bundle analysis with `@next/bundle-analyzer` |
 
+> **If `yarn <cmd>` fails with `command not found: oxfmt` / `next`** the Yarn PATH shim isn't wired on this machine — run the binary directly instead: `./node_modules/.bin/oxfmt`, `./node_modules/.bin/next dev`, `./node_modules/.bin/next build`. `yarn test` / `yarn jest` route through the npm-run shim and work regardless.
+
 ## Architecture
 
 ### Routing & Content
