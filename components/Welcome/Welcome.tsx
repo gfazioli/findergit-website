@@ -343,8 +343,13 @@ function HeroCarousel({ shots }: { shots: { src: string; alt: string }[] }) {
   );
 }
 
-// The hero rotation — the two new dashboards lead, the file browser anchors.
+// The hero rotation — the Repository List leads, the dashboards follow, the
+// file browser anchors.
 const heroShots = [
+  {
+    src: '/screenshot-portfolio.png',
+    alt: 'FinderGit — every repository at a glance in the flat Repository List',
+  },
   {
     src: '/screenshot-hero-overview.png',
     alt: 'FinderGit Overview — an at-a-glance dashboard across every repository',
@@ -642,7 +647,7 @@ export function Welcome() {
           </Stack>
 
           <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
-            {features.map((feature) => (
+            {features.map((feature, i) => (
               // Whole card is a Next.js Link via Mantine's polymorphic
               // `component` prop — keeps the Paper/Raycast card styling while
               // making the entire card clickable, keyboard-focusable, and
@@ -657,7 +662,14 @@ export function Welcome() {
                 // Per-card accent: resolve the feature's Mantine palette hex
                 // into the --card-color CSS var the card's tint/border/glow read.
                 style={
-                  { '--card-color': `var(--mantine-color-${feature.color}-5)` } as CSSProperties
+                  {
+                    '--card-color': `var(--mantine-color-${feature.color}-5)`,
+                    // A lone leftover card (odd count) spans the whole row so
+                    // the grid ends flush instead of lopsided.
+                    ...(i === features.length - 1 && features.length % 3 === 1
+                      ? { gridColumn: '1 / -1' }
+                      : {}),
+                  } as CSSProperties
                 }
               >
                 {'badge' in feature && feature.badge && (
