@@ -38,6 +38,8 @@ export default {
     },
     twitter: {
       card: 'summary_large_image',
+      site: '@gfazioli',
+      creator: '@gfazioli',
     },
     alternates: {
       canonical: './',
