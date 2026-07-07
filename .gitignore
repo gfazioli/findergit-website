@@ -141,3 +141,6 @@ next-env.d.ts
 
 # Local announcement drafts
 POST.md
+# Local, temporary advisor / improve plans — never committed
+plans/
+advisor-plans/
