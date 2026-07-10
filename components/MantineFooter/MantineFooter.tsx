@@ -95,10 +95,6 @@ export const MantineFooter = () => {
                   <IconMailHeart size={24} />
                 </ActionIcon>
               </Group>
-              <Text tt="uppercase" fz={11} fw={600} c="dimmed" mt={6}>
-                Share this page
-              </Text>
-              <ShareButtons />
             </Stack>
           </Grid.Col>
           <Grid.Col className={classes.column} span={2}>
@@ -214,6 +210,14 @@ export const MantineFooter = () => {
               Buy me a coffee
             </Button>
           </Group>
+        </Stack>
+
+        {/* Share this page */}
+        <Stack gap="xs" align="center" mt="md">
+          <Text tt="uppercase" fz={11} fw={600} c="dimmed">
+            Share this page
+          </Text>
+          <ShareButtons />
         </Stack>
 
         <Divider my={16} className={classes.lastDivider} />
