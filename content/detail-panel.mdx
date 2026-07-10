@@ -75,13 +75,15 @@ Both run behind a confirmation that states exactly what will happen, including t
 
 A scrollable list of recent commits from local `git log`. Each row shows:
 
+- The author's avatar on the left — resolved from their GitHub account (via the commit email) with a Gravatar fallback, or a colored monogram of their initials when neither is available
 - The commit subject (up to two lines)
+- Tag and branch badges when a ref points at the commit — **tags in gold**, branches and remote-tracking refs (`origin/main`, …) in grey, the current branch in the accent color
 - The short SHA, author, and a relative date
 - A copy button on the right that copies the full SHA to the clipboard — the icon flips to a green ✓ for ~1 second so the action has visual feedback
 
-Hover any row to highlight it. The number of commits shown defaults to **4** to keep the panel skim-friendly; you can raise it up to **50** in [Settings → Git → Commit History](/docs/settings#commit-history).
+Hover any row to highlight it. Avatars and badges can each be turned off, and the number of commits shown (default **4**, up to **50**) set, in [Settings → Detail View](/docs/settings#detail-view).
 
-![Commits tab with recent commit rows — subject, short SHA, author, relative date, copy button](/screenshot-detail-commits.png)
+![Commits tab — each row leads with the author's avatar on the left; commits pointed at by a ref show badges above the subject (gold tag, accent current branch, grey origin/master and origin/HEAD), followed by subject, short SHA, author, relative date, and a copy button](/screenshot-detail-commits.png)
 
 ## Branches
 

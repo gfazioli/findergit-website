@@ -1,5 +1,5 @@
 ---
-description: "Configure FinderGit: startup and updates, file-browser scan depth, the Git binary path and fetch behavior, AI commit messages, star notifications, terminal and advanced options."
+description: "Configure FinderGit: startup and updates, file-browser scan depth, the Git binary path and fetch behavior, the detail panel's commit list, avatars and badges, AI commit messages, star notifications, terminal and advanced options."
 ---
 
 # Settings
@@ -50,9 +50,6 @@ Periodically fetch from all remotes in the background. Options: Disabled (defaul
 
 Keeps ahead/behind counts and remote branches up-to-date without modifying your working tree.
 
-### Commit History
-How many recent commits the **Commits** tab lists in the [Detail Panel](/docs/detail-panel#commits). Default: **4** — keeps the tab skim-friendly. Range: 1 to 50. Takes effect on next refresh or repo selection.
-
 ### Commit Template
 A default message pre-filled in the commit text field. Leave empty for no template.
 
@@ -68,6 +65,21 @@ See [GitHub Integration](/docs/github-integration#option-2-personal-access-token
 - **Check interval** — how often FinderGit polls for new stars: every 10 / 30 / 60 minutes.
 
 The in-app **(+) badge** on the Account view's Stars tile works regardless of this setting — turning notifications off doesn't hide your new stars, it only silences the desktop banner. See [Account → New-star notifications](/docs/account#new-star-notifications) for the full picture.
+
+## Detail View
+
+![Settings — Detail View tab](/screenshot-settings-detail-view.png)
+
+Options for the repository [Detail Panel](/docs/detail-panel) — the tabbed right-hand pane. Currently focused on the **Commits** tab.
+
+### Commit history count
+How many recent commits the **Commits** tab lists. Default: **4** — keeps the tab skim-friendly. Range: 1 to 50. Takes effect on next refresh or repo selection.
+
+### Show author avatars
+Show each commit author's avatar to the left of the row. Avatars are resolved from the author's GitHub account (via their commit email), with a Gravatar fallback; when neither is available, a colored monogram of the author's initials is shown instead. On by default.
+
+### Show tag and branch badges
+Mark commits that a tag or branch points at with a badge — **tags in gold**, branches and remote-tracking refs (`origin/main`, …) in grey. On by default.
 
 ## AI
 
