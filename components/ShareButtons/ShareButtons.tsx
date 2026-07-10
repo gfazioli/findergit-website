@@ -114,7 +114,6 @@ export const ShareButtons = () => {
         <Tooltip key={key} label={label} withArrow>
           <ActionIcon
             variant="subtle"
-            color="gray"
             component="a"
             href={href(url, title)}
             target="_blank"
@@ -128,7 +127,7 @@ export const ShareButtons = () => {
       <Tooltip label={clipboard.copied ? 'Copied!' : 'Copy link'} withArrow>
         <ActionIcon
           variant="subtle"
-          color={clipboard.copied ? 'teal' : 'gray'}
+          color={clipboard.copied ? 'teal' : undefined}
           onClick={() => clipboard.copy(url)}
           aria-label="Copy link to this page"
         >
