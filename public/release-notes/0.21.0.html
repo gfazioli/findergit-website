@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.21.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.21.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<h2>Highlights</h2>
+<h3>🔍 Discover nested repositories</h3>
+<p>FinderGit can now count repositories <strong>nested inside another repository</strong>. If a folder you track is itself a Git repo <em>and</em> holds independent clones inside it — a collection of related projects that also happens to be under version control — those inner repos used to be invisible to your counts, Smart Views, and Overview. Now they're all counted.</p>
+<ul>
+<li><strong>Off by default</strong> — scanning still stops at the outermost repository on each path unless you opt in. Turning it on can meaningfully change your totals (one workspace jumped from 7 to 63 repositories).</li>
+<li>Toggle it three ways: <strong>Settings → General → File Browser</strong>, the <strong>View menu</strong> (⌘⇧N), or a <strong>toolbar toggle</strong> next to Refresh. The Overview subtitle shows when nested counting is on.</li>
+<li>Stays bounded by your scan depth and excluded folders. Submodules are never counted.</li>
+</ul>
+<h3>✨ A clearer Overview header</h3>
+<p>The <strong>Clone from GitHub</strong> and <strong>Refresh</strong> actions are now grouped into one prominent control cluster — easier to spot at a glance.</p>
+<h3>🌍 Fully localized</h3>
+<p>All the new text is translated in <strong>Italian, French, German, and Spanish</strong>, including the What's New notes.</p>
+<h2>Under the hood</h2>
+<ul>
+<li>The root-folder scanner can now descend past a discovered repository to find nested working copies, still bounded by the configured scan depth and excluded-folder list. Submodules (a <code class="notranslate">.git</code> file rather than a directory) are excluded by construction.</li>
+<li>All entry points (Settings, View menu, toolbar) drive a single centralized rescan trigger, so discovery re-runs exactly once no matter where you flip the toggle.</li>
+<li>Repository discovery now publishes its results only when they actually change, avoiding redundant view rebuilds.</li>
+</ul>
+<h2>Install</h2>
+<p>Download the DMG from the release below, drag FinderGit to your Applications folder, and launch it. First launch needs no Gatekeeper bypass — the app is signed with a Developer ID and notarized by Apple.</p>
+<h2>Requirements</h2>
+<p>macOS 15 (Sequoia) or later. Universal binary (Apple Silicon + Intel).</p>
+</body>
+</html>
