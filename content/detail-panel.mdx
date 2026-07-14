@@ -27,7 +27,7 @@ The active tab is remembered across selections and across app launches, so the p
 
 The bottom edge of the panel carries:
 
-- A compact **branch summary** — `branch · upstream · ↑N ↓M` (and stash count when non-zero)
+- A compact **branch summary** — `branch · upstream · ↑N ↓M` (and stash count when non-zero), ending with **"Last fetched Xm ago"** so the background auto-fetch has visible evidence it's keeping the repo current
 - The four repo-global actions: **Fetch · Pull · Push · Refresh**
 
 Because the bar is docked outside the scroll area, the actions stay reachable from every tab — you don't have to leave Commits to push, or leave Issues to pull.
@@ -80,6 +80,10 @@ A scrollable list of recent commits from local `git log`. Each row shows:
 - Tag and branch badges when a ref points at the commit — **tags in gold**, branches and remote-tracking refs (`origin/main`, …) in grey, the current branch in the accent color
 - The short SHA, author, and a relative date
 - A copy button on the right that copies the full SHA to the clipboard — the icon flips to a green ✓ for ~1 second so the action has visual feedback
+
+When the branch is **behind its upstream**, the commits a pull would bring in ride at the top in a distinct **"Incoming (N) · to pull"** card — each row marked with a ↓ — above your local history. So you see not just *that* you're behind, but *what* you're behind on. They're the commits from `git log HEAD..@{upstream}`, already on disk from the last fetch, so listing them costs nothing on the network. Pull, and the card folds away as they merge into the history below. Repos with no upstream — or already up to date — simply don't show it.
+
+![Commits tab with an "Incoming (3) · to pull" card at the top — three behind-upstream commits marked with a ↓ and origin/main badges, set off above the local history, and "Last fetched now" in the docked action bar](/screenshot-commits-incoming.png)
 
 Hover any row to highlight it. Avatars and badges can each be turned off, and the number of commits shown (default **4**, up to **50**) set, in [Settings → Detail View](/docs/settings#detail-view).
 
