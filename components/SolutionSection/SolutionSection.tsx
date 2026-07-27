@@ -1,6 +1,12 @@
 'use client';
 
-import { IconFolder, IconLayoutList, IconShieldHalfFilled, IconStar, IconStarFilled } from '@tabler/icons-react';
+import {
+  IconFolder,
+  IconLayoutList,
+  IconShieldHalfFilled,
+  IconStar,
+  IconStarFilled,
+} from '@tabler/icons-react';
 import { Badge, Box, Container, Group, Paper, Stack, Text, Title } from '@mantine/core';
 
 type Trust = 'none' | 'hooks' | 'changed';
@@ -87,7 +93,9 @@ const trustHelp: Record<Exclude<Trust, 'none'>, string> = {
 // The redesigned sidebar, in miniature: Library + status-driven Smart Views +
 // remote Filters. `active` marks the current scope; `dot` is the Smart View's
 // accent colour.
-type SidebarItem = { section: string } | { label: string; count?: number; active?: boolean; dot?: string };
+type SidebarItem =
+  | { section: string }
+  | { label: string; count?: number; active?: boolean; dot?: string };
 
 const sidebar: SidebarItem[] = [
   { section: 'Library' },
@@ -179,7 +187,9 @@ export function SolutionSection() {
                     py={4}
                     style={{
                       borderRadius: 6,
-                      backgroundColor: item.active ? 'var(--mantine-color-findergit-light)' : undefined,
+                      backgroundColor: item.active
+                        ? 'var(--mantine-color-findergit-light)'
+                        : undefined,
                     }}
                   >
                     <Group gap={7} wrap="nowrap" style={{ minWidth: 0 }}>
@@ -187,7 +197,11 @@ export function SolutionSection() {
                         <Box
                           w={7}
                           h={7}
-                          style={{ borderRadius: '50%', backgroundColor: `var(--mantine-color-${item.dot}-5)`, flexShrink: 0 }}
+                          style={{
+                            borderRadius: '50%',
+                            backgroundColor: `var(--mantine-color-${item.dot}-5)`,
+                            flexShrink: 0,
+                          }}
                         />
                       ) : item.label === 'All Repositories' ? (
                         <IconLayoutList size={14} color="var(--mantine-color-findergit-4)" />
@@ -196,7 +210,12 @@ export function SolutionSection() {
                       ) : (
                         <Box w={7} h={7} style={{ flexShrink: 0 }} />
                       )}
-                      <Text size="xs" c={item.active ? 'findergit.4' : 'gray.4'} fw={item.active ? 600 : 400} truncate>
+                      <Text
+                        size="xs"
+                        c={item.active ? 'findergit.4' : 'gray.4'}
+                        fw={item.active ? 600 : 400}
+                        truncate
+                      >
                         {item.label}
                       </Text>
                     </Group>
