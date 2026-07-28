@@ -1,5 +1,5 @@
 ---
-description: "Stage, commit, push, pull, fetch, switch branches and discard changes from FinderGit — via the docked action bar, the Unstage tab and context menus — and run Fetch, Pull or Push across many selected repositories at once."
+description: "Stage, commit, push, pull, fetch, switch branches and discard changes from FinderGit — via the docked action bar, the Unstage tab and context menus — reconcile a diverged branch with merge or rebase, resolve a stopped merge, and run Fetch, Pull or Push across many selected repositories at once."
 ---
 
 # Git Actions
@@ -25,7 +25,7 @@ The repository-level commands (Fetch / Pull / Push) all run against the upstream
 The bar sits at the bottom of the [Detail Panel](/docs/detail-panel) and stays reachable from every tab — you never leave Commits to push or leave Issues to pull.
 
 - **Fetch** — fetches from all remotes (`git fetch --all`)
-- **Pull** — pulls from the upstream (`git pull`)
+- **Pull** — pulls from the upstream using your [pull strategy](/docs/settings#pull-strategy), always passed explicitly (`--ff-only`, `--no-rebase` or `--rebase`), so pulling behaves the same on every machine. Turns into a menu when the branch has [diverged](#when-your-branch-has-diverged)
 - **Push** — pushes to the upstream. If no upstream is configured, automatically sets it with `--set-upstream origin <branch>`
 - **Refresh** — re-reads the repository status (local only, no network)
 
@@ -84,6 +84,51 @@ Right-click on a repository directory for quick access to:
 
 Right-click on a file inside a repo for:
 - Stage / Unstage (only when applicable)
+
+## When your branch has diverged
+
+Sooner or later a branch ends up with commits on **both** sides — you committed locally while the remote moved on (a teammate pushed, you synced a fork on the web, a bot bumped dependencies). The status pill shows it as **↑N ↓M** in red.
+
+This is the one state where a plain pull can't help: with no reconcile strategy configured, Git refuses outright —
+
+```
+fatal: Need to specify how to reconcile divergent branches.
+```
+
+— and exits without touching anything, which in most GUIs looks like a Pull button that does nothing.
+
+FinderGit says so instead. A **strip appears above the action bar** naming the upstream and both counts, and the **Pull button becomes a menu**. Both offer the same three ways out:
+
+- **Merge** (`git pull --no-rebase`) — brings the remote in and writes a merge commit. Keeps both histories, including any local merge commits.
+- **Rebase** (`git pull --rebase --autostash`) — replays your commits on top of the remote for a linear history. Auto-stashes uncommitted work first and restores it afterwards. Note it flattens local merge commits.
+- **Discard my commits and reset to `origin/<branch>`** — behind the menu's **⋯** and a confirmation that names how many commits you'd lose. Destructive: your branch becomes an exact copy of the remote, dropping local-only commits and uncommitted changes to tracked files. Git's reflog keeps them recoverable from a terminal for a while.
+
+The same choice appears **inside the error popover** if a Pull or Push already failed, so the fix is one click from the message that explains it.
+
+Repositories in this state also get their own **Diverged** smart view in the sidebar and a count in the status bar, so you can find every one of them at a glance.
+
+### When ↑N ↓N isn't what it looks like
+
+An ahead/behind count can't tell you whether those are really two sets of commits. `↑78 ↓78` looks like 78 commits of work on each side, but it's just as often **one history rewritten and force-pushed** — the same 78 changes carrying new IDs because something early in the history changed (a re-dated first commit, an amended old commit, a `filter-repo` run). Merging that duplicates every commit; git may refuse it outright.
+
+So FinderGit compares the actual changes, not the commit IDs, and says which case you're in:
+
+- **"All N of your local commits already exist on the remote as rewritten copies"** — nothing here is unpublished. Resetting onto the remote is the clean way out, and the reset button moves out of the overflow menu because it *is* the fix.
+- **"These two histories share no common ancestor"** — one side was rebuilt from its very first commit. **Merge is disabled**, because git refuses that (`refusing to merge unrelated histories`); keep the side that holds the work you want.
+- **"N of your M local commits carries work the remote doesn't already have"** — partly rewritten. Merge and rebase both apply; now you know how much is actually at stake.
+
+This is a common shape when you work from two machines: one of them rewrites and force-pushes, the other keeps the pre-rewrite copy and shows a scary symmetric count that no amount of pulling will fix.
+
+## When a merge or rebase stops on a conflict
+
+Git integrates what it can on its own and stops on the first real conflict, leaving the repository *mid-operation*. FinderGit detects that state — whether it started the operation or you did in a terminal — and the strip above the action bar switches to it:
+
+- The headline names what's open (**Merge in progress**, **Rebase in progress**, also cherry-pick, revert and bisect) and how many files still conflict.
+- **Abort** throws the whole operation away and puts you back where you started.
+- **Finish Merge** / **Continue Rebase** concludes it — enabled only once every conflicting file is staged.
+- **Pull and Push are disabled** while it's open, with a tooltip saying why. Git would refuse them anyway; this says it before the click.
+
+In the [Unstage tab](/docs/detail-panel#unstage) each unmerged file is tagged **CONFLICT** and sits in *Unstaged Changes* until you settle it. Edit it to keep the version you want, then **Mark Resolved** (that's `git add` — how you tell Git the conflict is settled). Per-file *Discard* is deliberately hidden for conflicted files: use Abort if you want out of the whole operation.
 
 ## Bulk actions across repositories
 

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.23.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.23.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<h1>FinderGit 0.23.0 — Pull that doesn't give up on a diverged branch</h1>
+<h2>Highlights</h2>
+<ul>
+<li><strong>Pull no longer stalls on a diverged branch.</strong> When your branch and the remote have <em>both</em> moved on, a plain pull simply refuses and changes nothing — which reads as a Pull button that does nothing at all. FinderGit now names the situation in a strip above the actions ("Diverged from origin/main ↑5 ↓8") and offers the two real ways out, <strong>Merge</strong> or <strong>Rebase</strong>, right there. The Pull button itself turns into a menu with the same choice, and if a Pull or Push already failed, the same two options appear inside the error popover — so the fix is one click from the message that explains it.</li>
+<li><strong>A Pull strategy setting.</strong> Settings → Git now decides how pulls reconcile: <strong>fast-forward only</strong> (the new default), merge, or rebase. FinderGit passes the choice explicitly every time, so pulling behaves identically on every machine regardless of what your git config happens to say — and nothing is ever merged or replayed behind your back.</li>
+<li><strong>A stopped merge or rebase is visible, and recoverable.</strong> Git integrates what it can and stops at the first real conflict, leaving the repository half-done. That state is now surfaced: the strip names what's open (merge, rebase, cherry-pick, revert, bisect), counts the files still in conflict, and offers <strong>Finish</strong> and <strong>Abort</strong>. Pull and Push are disabled while it's open, with a tooltip saying why instead of failing on click. It works even when you started the operation in a terminal.</li>
+<li><strong>It can tell a rewritten history from real work on both sides.</strong> Matching counts like ↑78 ↓78 look like two sets of commits, but they're just as often <em>one</em> history rewritten and force-pushed — the same commits wearing new identities. Merging that duplicates every one of them. FinderGit now compares the actual changes rather than the commit IDs and says which case you're in: when nothing local is genuinely new it says so and promotes the reset that fixes it; when the two histories share no ancestor at all it says that too and disables Merge, because git refuses it anyway.</li>
+<li><strong>Conflicts are called out where you work.</strong> Unmerged files are tagged <strong>CONFLICT</strong> in the changes list and stay in <em>Unstaged</em> until settled, with a <strong>Mark Resolved</strong> action — which is exactly what git wants next. Per-file Discard is deliberately hidden for them, and a bulk Discard leaves them alone.</li>
+<li><strong>Git failures explain themselves.</strong> A diverged branch, a rejected push, conflicts still open, local edits in the way, a missing upstream, credentials git couldn't get, an unreachable host: each now gets one line of plain language above git's own output, which stays visible underneath as the evidence.</li>
+<li><strong>Find them at a glance.</strong> A new <strong>Diverged</strong> smart view in the sidebar, plus a count in the status bar, so the repositories that need a decision are one click away.</li>
+</ul>
+<p>All of it is localized — Italian, French, German and Spanish, following your macOS language.</p>
+<p><strong>Worth knowing:</strong> Pull now defaults to <em>fast-forward only</em>. If you had <code class="notranslate">pull.rebase</code> set in your git config, FinderGit no longer follows it silently — it stops and asks, with both options in front of you. Settings → Git changes the default.</p>
+<h2>Bug fixes</h2>
+<ul>
+<li>The ↑N ↓M tooltip advised "pull then push" — the one sequence that cannot work on a diverged branch. It now names the two options that can.</li>
+<li><strong>Discard All</strong> no longer sweeps up conflicted files. Reverting an unmerged file doesn't mean what that label promises, so those are left for you to resolve or abort.</li>
+<li>Counts read correctly at one: "1 file still conflicting", not "1 conflicting files". Same fix in the reset confirmation and the diverged tooltip.</li>
+<li>Three status tooltips (dirty, clean, and the diverged one) were never translated and always appeared in English. They follow your language now.</li>
+<li>A hard reset can no longer land on the wrong branch: if you switch branch in a terminal while the confirmation is open, the reset refuses instead of resetting whatever is checked out at that moment.</li>
+</ul>
+<h2>Under the hood</h2>
+<ul>
+<li>Pull always passes its strategy on the command line (<code class="notranslate">--ff-only</code>, <code class="notranslate">--no-rebase</code>, or <code class="notranslate">--rebase --autostash</code>) instead of inheriting <code class="notranslate">pull.rebase</code> / <code class="notranslate">pull.ff</code>. With neither configured, git exits 128 on a diverged pull without touching the repository — that was the whole bug.</li>
+<li>In-progress operations are detected from the git-dir markers (<code class="notranslate">MERGE_HEAD</code>, <code class="notranslate">rebase-merge/</code>, <code class="notranslate">CHERRY_PICK_HEAD</code>, …), following the <code class="notranslate">gitdir:</code> pointer so linked worktrees and submodules count too. It's a couple of <code class="notranslate">stat</code> calls, no subprocess.</li>
+<li>Rewrite detection is <code class="notranslate">git cherry</code> (patch-id equivalence) plus a <code class="notranslate">merge-base</code> probe — two calls, run once per selection and only while diverged.</li>
+<li>Conflicted files are identified by the porcelain v2 line <em>kind</em> (<code class="notranslate">u</code>), not by the XY letters, so <code class="notranslate">DD</code> and <code class="notranslate">AA</code> conflicts aren't missed.</li>
+<li><code class="notranslate">merge --continue</code> / <code class="notranslate">rebase --continue</code> run with the editor suppressed, so they can't hang waiting on one that can never appear.</li>
+<li>264 framework tests and 26 app tests cover the new surface, including operation detection against real repositories and a linked worktree.</li>
+</ul>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.23.0.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications</li>
+<li>Launch normally — signed with Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 Sequoia or later.</p>
+</body>
+</html>
