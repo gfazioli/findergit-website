@@ -107,6 +107,8 @@ The same choice appears **inside the error popover** if a Pull or Push already f
 
 Repositories in this state also get their own **Diverged** smart view in the sidebar and a count in the status bar, so you can find every one of them at a glance.
 
+![A diverged repository: the strip above the action bar reads "Diverged from origin/main ↑2 ↓3" with Merge, Rebase and an overflow menu, the Pull button has become a split-menu, and the sidebar's Diverged smart view holds the count](/screenshot-diverged-branch.png)
+
 ### When ↑N ↓N isn't what it looks like
 
 An ahead/behind count can't tell you whether those are really two sets of commits. `↑78 ↓78` looks like 78 commits of work on each side, but it's just as often **one history rewritten and force-pushed** — the same 78 changes carrying new IDs because something early in the history changed (a re-dated first commit, an amended old commit, a `filter-repo` run). Merging that duplicates every commit; git may refuse it outright.
