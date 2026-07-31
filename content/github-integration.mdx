@@ -104,7 +104,23 @@ When a fork is behind, **Sync** brings it up to date in one step — from the **
 
 One click and the fork is current both on GitHub and on disk — no opening the repo in a browser to hit "Sync fork".
 
-A fork whose history has **diverged** (it has its own commits *and* is missing upstream commits) can't be fast-forwarded. FinderGit says so and leaves it to you to merge or rebase from upstream deliberately.
+### Update from upstream
+
+A fast-forward isn't always available. A fork whose history has **diverged** — it has its own commits *and* is missing upstream commits — can't be synced that way, on GitHub or anywhere else. And even a fork that is merely behind can't use the one-click Sync if your token can't push to it, or if you never set one up.
+
+Both cases have the same way out, and FinderGit does it for you. The **Update** menu on the fork's Overview banner offers:
+
+- **Merge** — brings the upstream commits in and creates a merge commit, keeping your own commits where they are.
+- **Rebase** — replays your commits on top of the upstream's, giving a linear history.
+
+FinderGit adds the `upstream` remote if your clone doesn't have one — a clone of a fork never does, which is why `git fetch` alone never had anything to fetch — then fetches it and integrates the parent's default branch.
+
+Two things it deliberately does *not* do:
+
+- **It never pushes.** After a rebase your history has been rewritten, so the next push needs a force — that's your call to make, not a decision to take on your behalf. FinderGit tells you which case you're in when it finishes.
+- **It never repoints an `upstream` you already configured.** If one exists and points somewhere other than the fork's parent, FinderGit stops and names both, rather than quietly fetching from a repository you didn't mean.
+
+If the merge or rebase stops on a conflict, it's left in place and the usual [conflict strip](/docs/git-actions#when-a-merge-or-rebase-stops-on-a-conflict) picks it up with **Finish** and **Abort** — the same path a conflicted pull already takes.
 
 ![A fork's Overview showing its upstream-sync state, with the rest of the repos in the list](/screenshot-fork-sync.png)
 

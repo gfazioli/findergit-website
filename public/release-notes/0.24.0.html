@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.24.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.24.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.24.0 — forks that had drifted, and filenames that had been unreachable</p>
+<h2>Highlights</h2>
+<p><strong>Update a fork from upstream — including one that has diverged.</strong> A fork that carries its own commits <em>and</em> is missing upstream commits can't be fast-forwarded, on GitHub or anywhere else. Until now FinderGit said so and stopped there, leaving you to finish the job in a terminal. It now offers an <strong>Update</strong> menu on the fork's Overview banner that does it: it sets up the connection to the original repository the first time, fetches it, and integrates the parent's default branch.</p>
+<p><strong>Merge or rebase, and you choose which.</strong> Merge keeps your commits where they are and records a merge commit; rebase replays them on top for a linear history. Both are offered every time rather than quietly following your Pull preference, so a one-off choice here doesn't change your default.</p>
+<p><strong>It stops before pushing, on purpose.</strong> After a rebase your history has been rewritten, so the next push needs a force — that's your call, not something to do on your behalf. FinderGit tells you which case you're in when it finishes.</p>
+<p><strong>It won't repoint a remote you configured.</strong> If your clone already has an upstream and it points somewhere other than the fork's parent, FinderGit stops and names both, rather than quietly pulling commits from a repository you didn't mean.</p>
+<p>The one-click <strong>Sync</strong> is still there for a fork that's merely behind — it also updates the fork on GitHub itself — and now sits on a split button, so the local route is available even when you have no token, or one that can't push to the fork.</p>
+<h2>Bug fixes</h2>
+<p><strong>Files with accents or non-Latin characters in their names could not be staged, unstaged or discarded.</strong> Any path containing a character outside plain ASCII — <code class="notranslate">café.txt</code>, Cyrillic, CJK, an emoji in a filename — came back from Git in an escaped form that FinderGit passed straight back without unescaping, so the action silently applied to a file that didn't exist. If you keep repositories with non-English filenames, those three actions now work.</p>
+<h2>Under the hood</h2>
+<ul>
+<li>Status is read with <code class="notranslate">git status --porcelain=v2 -z</code>, so paths arrive verbatim as NUL-terminated records instead of C-quoted strings. <code class="notranslate">core.quotePath</code> defaults to true, which is why every non-ASCII name was affected rather than an unlucky few.</li>
+<li>Output that isn't valid UTF-8 is now refused rather than lossily decoded. The replacement character is neither reversible nor injective, so two different filenames can decode to the same string — acting on one could have staged or discarded the other.</li>
+<li>The upstream URL is derived by substituting the owner/repo pair inside your existing <code class="notranslate">origin</code> URL rather than composing a fresh HTTPS one, which preserves the transport, host, port and path prefix you already use. An SSH clone stays SSH; a self-hosted forge keeps working.</li>
+<li>The checked-out-branch check runs again immediately before the merge or rebase, not just before the network fetch that precedes it, narrowing the window in which a checkout elsewhere could land the integration on the wrong branch.</li>
+<li>The test suite now runs green from a clean checkout. It had been failing on around 14 tests for a long time — a shared mock raced by parallel execution, plus assertions comparing against localized strings — which meant "did this change break anything" had no answer.</li>
+</ul>
+<h2>Install</h2>
+<p>Download the DMG below, drag FinderGit to Applications, and launch it. The app is signed with a Developer ID and notarized by Apple, so no Gatekeeper bypass is needed. Existing installations update themselves.</p>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
