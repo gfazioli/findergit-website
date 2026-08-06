@@ -21,6 +21,7 @@ A grid of at-a-glance counters across your whole workspace:
 - **On Disk** — the total git footprint of every repo.
 - **Stars / Forks** — your GitHub social proof, with a "behind upstream" count for forks.
 - **Critical Findings** — supply-chain dropper artifacts surfaced by [Repo Trust](/docs/repo-trust).
+- **GitHub** — how fast your own requests to GitHub are coming back right now (see [GitHub connection](#github-connection) below).
 
 Each card shows a small spinner while its data is still loading, so you can tell live numbers from ones still being fetched.
 
@@ -36,9 +37,26 @@ The list you'll actually act on: every repo that is dirty, ahead of its remote, 
 
 Two more highlight lists: your most-starred repositories, and the ones eating the most disk (a quick path to [Repo Maintenance](/docs/repo-maintenance)). Every row is clickable.
 
+## GitHub connection
+
+When GitHub is having a bad day, every symptom you see looks like FinderGit's fault: a fetch that crawls, a repository column that comes up empty, a dashboard that won't finish loading. This panel answers "is it me?" without leaving the app.
+
+It shows two different things, and the distinction matters:
+
+- **What your Mac is actually experiencing** — the median round-trip of FinderGit's own requests, shown on the **GitHub** stat card. This is measured, not reported, so it's true even when nothing has been announced anywhere.
+- **What GitHub says about itself** — the state of the four services FinderGit depends on: **Git Operations** (fetch, pull, push, clone), **API Requests** (repository columns and dashboards), **Issues**, and **Pull Requests**. When there's an open incident affecting one of them, its name and the latest official update appear in the panel, with a link to the full story.
+
+Only those four, deliberately. An outage of a service FinderGit never touches isn't news, and a warning that fires on everything is one you learn to ignore.
+
+<Callout type="warning" emoji="🔎">
+The panel never tells you GitHub is fine. If its status page can't be reached, or a service can't be read, that shows as **Unknown** rather than a reassuring green — and a slowdown nobody has declared yet still shows up, because your own requests are the first thing to know about it.
+</Callout>
+
+The check runs when you open FinderGit, when you hit refresh, and when a request fails — never on a timer, and never once per repository. If you haven't connected a GitHub account, it doesn't run at all.
+
 ## Make it yours
 
-The lower panels — **Needs attention**, **Top starred**, **Largest on disk** — are **drag-and-drop reorderable**: grab the handle in a panel's header and drop it where you want. Each section also has its own refresh button, and a general refresh at the top re-runs everything.
+The lower panels — **Needs attention**, **Top starred**, **Largest on disk**, **GitHub connection** — are **drag-and-drop reorderable**: grab the handle in a panel's header and drop it where you want. Each section also has its own refresh button, and a general refresh at the top re-runs everything.
 
 <Callout type="info" emoji="⚡">
 The Overview is built for big workspaces. Git status is read from the watchers that already run in the background, and disk / GitHub data is fetched with bounded concurrency, so even hundreds of repositories fill in progressively rather than freezing the app.

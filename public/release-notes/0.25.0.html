@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.25.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.25.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.25.0 — when GitHub is the problem, FinderGit says so</p>
+<h2>Highlights</h2>
+<p><strong>Know whether it's you or GitHub.</strong> When GitHub is having a bad day, every symptom you see looks like FinderGit's fault: a fetch that crawls, a repository column that comes up empty, a dashboard that won't finish loading. The Overview now carries a <strong>GitHub connection</strong> panel that answers it — how quickly your own requests are actually coming back, and whether GitHub is reporting trouble with the four services FinderGit depends on: Git operations, API requests, Issues and Pull Requests. When there's an open incident, its name and the latest official update appear right there, with a link to the full story.</p>
+<p><strong>Only those four, deliberately.</strong> An outage of something FinderGit never touches isn't news, and a warning that fires on everything is one you learn to ignore.</p>
+<p><strong>It never tells you GitHub is fine when it can't check.</strong> If the status page can't be reached, or a service can't be read, that shows as <em>Unknown</em> rather than a reassuring green. And a slowdown nobody has announced yet still shows up, because your own requests are the first thing to know about it — the more useful half, since a status page can only report what somebody chose to declare.</p>
+<p><strong>See how long an action has been running.</strong> Past three seconds, a running Fetch, Pull or Push shows its elapsed time on the button. A spinner tells you something is happening; it doesn't tell you whether the thing is working or wedged, and only the second question matters when a remote is answering slowly.</p>
+<h2>Bug fixes</h2>
+<p><strong>A slow remote could leave a repository's actions unusable for five minutes.</strong> Every action on a repository is disabled while one is running, and the time limit for a Fetch, Pull or Push was the one meant for a Git process wedged on your own machine. It's now far shorter for anything that talks to a server, while a first clone — which legitimately takes minutes on a large repository — keeps its own, longer allowance.</p>
+<p><strong>Opening the Overview with many repositories could bog the whole app down.</strong> Every repository asked "is GitHub reachable?" at the same moment, and none of them saw that the others were already asking, so the check ran once per repository instead of once. On a large workspace with a slow connection that was dozens of simultaneous checks. Now they share a single answer.</p>
+<p><strong>A rejected token would have read as GitHub being down.</strong> Caught before release: if your access token was revoked or lost its permissions, every request failed — and the new panel counted those as GitHub's failures, telling you <em>"Your GitHub requests are failing"</em> when the problem was your credential. A request that was refused is now kept separate from a request the server couldn't answer, so the dashboard points at the right place.</p>
+<p><strong>The Issues, PRs and Stars columns emptied silently when GitHub was unreachable</strong> — using the same blank cell that means "this repository isn't on GitHub". The columns still go quiet, but the Overview now says why.</p>
+<h2>Under the hood</h2>
+<ul>
+<li>
+<p>The status source reads <code class="notranslate">components.json</code> and <code class="notranslate">incidents/unresolved.json</code> <strong>unconditionally and in parallel</strong>. The obvious design — check the top-level indicator first, fetch the incident only if it's non-<code class="notranslate">none</code> — silently drops live incidents: measured on 2026-08-05, <code class="notranslate">status.json</code> reported <code class="notranslate">indicator: "none"</code> while an unresolved incident was open and every component still read <code class="notranslate">operational</code>. The three endpoints are peers, not a hierarchy.</p>
+</li>
+<li>
+<p>Components are matched on Statuspage's stable <code class="notranslate">id</code> with the display name as fallback, so a rename can't quietly drop one we depend on. An unrecognised status string, an unreachable page, or a component missing from the response all resolve to <code class="notranslate">unknown</code> — ordered <em>below</em> <code class="notranslate">operational</code> so it can never win a severity comparison, and tinted grey distinctly from green.</p>
+</li>
+<li>
+<p>Incidents that carry no component attribution are diagnostic-only: they can explain a call that actually failed, but they never raise a banner. GitHub declares these regularly, and one measured example was <em>"Incident With Blocked GitHub.com Traffic"</em> — precisely the class that breaks a desktop client while the dashboard stays green.</p>
+</li>
+<li>
+<p>The first-party signal leads because the published one has a hole: GitHub declared <strong>no incident at all on 2026-08-04</strong>, the day this was prompted by. The incident history spans 06-04 to 08-05 with entries either side and nothing in between.</p>
+</li>
+<li>
+<p>Time limits are now split by what a command is waiting on: 120s for fetch/pull/push, 900s for a clone, 300s for local plumbing. The <code class="notranslate">gh</code>-backed clone path had been capped at the 120s meant for metadata queries, so a large repository could clone fine one way and fail the other.</p>
+</li>
+<li>
+<p>The GitHub REST/GraphQL path gets a dedicated <code class="notranslate">URLSession</code> with a 10s inactivity limit and a 30s hard ceiling, replacing <code class="notranslate">URLSession.shared</code>'s default — whose 60s is an <em>inactivity</em> timeout, not a wall-clock cap, so a response trickling bytes had no ceiling at all.</p>
+</li>
+<li>
+<p>Provider resolution is collapsed through a single-flight actor. Swift actors are reentrant across <code class="notranslate">await</code>, so a TTL cache whose timestamp is written <em>after</em> the probe returns doesn't dedupe anything: every caller arriving during the probe reads the same empty cache and starts its own.</p>
+</li>
+<li>
+<p>Request timings are recorded in the gateway rather than in each provider, so the CLI and token paths are measured identically and the dashboard can name which one produced the numbers. Git transfers are deliberately excluded — folding a multi-megabyte clone into the same median would blur "the API is slow" into "that pull was big".</p>
+</li>
+<li>
+<p>Failures are classified by what they say about the forge rather than by whether they happened. A 4xx means the request was refused — no permission, not found, rate-limited — and says nothing about GitHub's health; a 5xx or a timeout does. Cancellations and decode errors are ours. Only the second group reaches the verdict.</p>
+</li>
+<li>
+<p>The status response is streamed with a declared-size refusal before the first byte and an absolute ceiling for a chunked or mis-declared body. A time budget bounds how long a third party can hold you, not how much it can make you allocate.</p>
+</li>
+<li>
+<p>The new panel and its four component descriptions are localized into Italian, French, German and Spanish, plural agreement included.</p>
+</li>
+</ul>
+<h2>Install</h2>
+<p>Download the DMG below, drag FinderGit to Applications, and launch it. The app is signed with a Developer ID and notarized by Apple, so no Gatekeeper bypass is needed. Existing installations update themselves.</p>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>

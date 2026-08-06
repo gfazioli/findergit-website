@@ -92,7 +92,7 @@ export default {
     defaultLanguage: 'en',
   },
   app: {
-    version: '0.24.0',
+    version: '0.25.0',
     minMacOS: '15.0',
     downloadUrl: 'https://github.com/gfazioli/findergit-website/releases/latest',
   },
