@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.25.1 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.25.1</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.25.1 — a way out to the full picture</p>
+<h2>Highlights</h2>
+<p><strong>The GitHub connection panel now links to GitHub's own status page.</strong> A <strong>Details</strong> link in the panel's footer opens it. The panel deliberately shows only the four services FinderGit depends on, and deliberately never renders a reassuring "all systems operational" banner — so when you want the rest (every service GitHub publishes, the 90-day uptime history, the full incident timeline), the honest answer is GitHub's page rather than a partial imitation of it.</p>
+<p>The link is there whether or not the check succeeded. If anything, a status page FinderGit couldn't reach is exactly when you most want to open it yourself.</p>
+<h2>Under the hood</h2>
+<ul>
+<li>The human-facing status page URL is now the single source of truth: the API base is derived from it rather than maintained separately, so the page you open and the data the panel reads cannot drift onto different services.</li>
+<li>GitLab and Bitbucket status pages are mapped too, ready for when those providers land. A host FinderGit can't identify — an enterprise install, a self-hosted forge — gets no link rather than a guessed one.</li>
+<li>Why a link rather than a copy of that page: the uptime bars are not exposed by the status API at all (every plausible endpoint returns 404). They exist only inside the rendered page as ~990 markup elements, so reproducing them would mean parsing a third party's private HTML and breaking silently the next time they restyle it.</li>
+</ul>
+<h2>Install</h2>
+<p>Download the DMG below, drag FinderGit to Applications, and launch it. The app is signed with a Developer ID and notarized by Apple, so no Gatekeeper bypass is needed. Existing installations update themselves.</p>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
