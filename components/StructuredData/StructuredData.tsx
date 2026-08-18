@@ -137,6 +137,11 @@ const FAQ_ENTRIES: { question: string; answer: string }[] = [
       'That’s what Repo Trust is for. FinderGit scans each repository’s auto-run surface — hooks and configuration that could execute code when you open, build, or install — without ever running any of it. Repos with findings are flagged in the list, and you get an alert when that surface changes after a pull.',
   },
   {
+    question: 'How do I verify a download — and what if a virus scanner flags it?',
+    answer:
+      'Every release is signed with an Apple Developer ID and notarized by Apple, and each release page publishes the SHA-256 of its DMG, so you can confirm the file you downloaded is byte-for-byte the one we shipped. Antivirus engines do sometimes flag a notarized Mac app on a machine-learning heuristic rather than an actual malware signature; if the checksum matches, that is what you are looking at, and we report those to the vendor. If it does not match, tell us.',
+  },
+  {
     question: 'Does FinderGit send my data anywhere?',
     answer:
       'No telemetry, ever. GitHub data (issues, pull requests, stars, fork status) is fetched directly from api.github.com using your own credentials. The only exception is the optional AI commit message feature: when you click ✨ AI, your staged diff is sent to generate the message — nothing is stored, and nothing is sent unless you ask.',
