@@ -139,7 +139,7 @@ const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: 'How do I verify a download — and what if a virus scanner flags it?',
     answer:
-      'Every release is signed with an Apple Developer ID and notarized by Apple, and each release page publishes the SHA-256 of its DMG, so you can confirm the file you downloaded is byte-for-byte the one we shipped. Antivirus engines do sometimes flag a notarized Mac app on a machine-learning heuristic rather than an actual malware signature; if the checksum matches, that is what you are looking at, and we report those to the vendor. If it does not match, tell us.',
+      'Every release is signed with an Apple Developer ID and notarized by Apple, and each release page publishes the SHA-256 of its DMG, so you can confirm the file you downloaded is byte-for-byte the one we shipped. Antivirus engines do sometimes flag a notarized Mac app on a machine-learning heuristic rather than an actual malware signature. A matching checksum can’t prove a detection wrong on its own, but together with Apple’s notarization scan and a clean spctl it makes a heuristic false positive much the likeliest reading, and we report those to the vendor. If the checksum doesn’t match, or macOS rejects the file, don’t open it — tell us.',
   },
   {
     question: 'Does FinderGit send my data anywhere?',
