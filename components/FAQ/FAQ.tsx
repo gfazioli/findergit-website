@@ -111,6 +111,30 @@ const faqItems: { value: string; question: string; answer: ReactNode }[] = [
     ),
   },
   {
+    value: 'verify',
+    question: 'How do I verify a download — and what if a virus scanner flags it?',
+    answer: (
+      <>
+        Every release is signed with an Apple Developer ID and notarized by Apple, and each release
+        page publishes the SHA-256 of its DMG, so you can confirm the file you downloaded is
+        byte-for-byte the one we shipped —{' '}
+        <Anchor href="/docs/getting-started#verifying-your-download" size="sm">
+          Verifying your download
+        </Anchor>{' '}
+        has the two commands. Antivirus engines do sometimes flag a notarized Mac app on a
+        machine-learning heuristic rather than an actual malware signature; if the checksum matches,
+        that is what you are looking at, and we report those to the vendor. If it does not match,{' '}
+        <Anchor
+          href="mailto:feedback@findergit.app?subject=FinderGit%20download%20verification"
+          size="sm"
+        >
+          tell us
+        </Anchor>
+        .
+      </>
+    ),
+  },
+  {
     value: 'privacy',
     question: 'Does FinderGit send my data anywhere?',
     answer: (

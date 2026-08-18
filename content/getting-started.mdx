@@ -17,6 +17,34 @@ FinderGit is signed with **Apple Developer ID** and **notarized by Apple**, so G
 
 When you first launch any app downloaded from the internet, macOS shows a one-time confirmation dialog ("*"FinderGit" is an app downloaded from the Internet. Are you sure you want to open it?*"). Click **Open** and you're done — every subsequent launch is silent.
 
+## Verifying your download
+
+Every release is signed with an Apple Developer ID and notarized by Apple, so macOS is already checking the app's integrity on your behalf. If you'd rather confirm the DMG yourself, every [release page](https://github.com/gfazioli/findergit-website/releases/latest) publishes the SHA-256 of its DMG. Compare it against the file you downloaded:
+
+```
+shasum -a 256 FinderGit-<version>.dmg
+```
+
+You can also ask macOS directly, without installing anything:
+
+```
+spctl -a -vv -t open --context context:primary-signature FinderGit-<version>.dmg
+```
+
+A genuine build answers:
+
+```
+accepted
+source=Notarized Developer ID
+origin=Developer ID Application: Giovambattista Fazioli (QWWPDQNH5L)
+```
+
+### If a virus scanner flags the download
+
+Worth knowing why before you worry about it. Antivirus engines increasingly classify files with machine-learning heuristics instead of signatures of known malware, and those heuristics produce false positives on legitimate software — disk images and installers especially. Apple's notarization, by contrast, includes an automated malware scan that every FinderGit release passes before it is published.
+
+So: if a scanner flags a DMG whose SHA-256 matches the one on its release page, that is a heuristic false positive, and we report those to the vendor. If the checksum does **not** match, the file you have is not the one we shipped — please [tell us](mailto:feedback@findergit.app?subject=FinderGit%20download%20verification) and download it again from the release page.
+
 ## Before first launch (fresh Mac)
 
 FinderGit uses the `git` binary that ships with the Xcode Command Line Tools. On a brand-new Mac you may need to install them and accept the Xcode license — otherwise every Git action inside FinderGit will surface a `nonZeroExit(status: 89, …)` error.
