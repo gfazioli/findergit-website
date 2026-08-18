@@ -22,19 +22,19 @@ When you first launch any app downloaded from the internet, macOS shows a one-ti
 Every release is signed with an Apple Developer ID and notarized by Apple, so macOS is already checking the app's integrity on your behalf. If you'd rather confirm the DMG yourself, every [release page](https://github.com/gfazioli/findergit-website/releases/latest) publishes the SHA-256 of its DMG. Compare it against the file you downloaded:
 
 ```
-shasum -a 256 FinderGit-<version>.dmg
+shasum -a 256 ~/Downloads/FinderGit-*.dmg
 ```
 
 You can also ask macOS directly, without installing anything:
 
 ```
-spctl -a -vv -t open --context context:primary-signature FinderGit-<version>.dmg
+spctl -a -vv -t open --context context:primary-signature ~/Downloads/FinderGit-*.dmg
 ```
 
-A genuine build answers:
+A genuine build answers with the file's own path, then:
 
 ```
-accepted
+/Users/you/Downloads/FinderGit-0.25.1.dmg: accepted
 source=Notarized Developer ID
 origin=Developer ID Application: Giovambattista Fazioli (QWWPDQNH5L)
 ```
@@ -43,7 +43,9 @@ origin=Developer ID Application: Giovambattista Fazioli (QWWPDQNH5L)
 
 Worth knowing why before you worry about it. Antivirus engines increasingly classify files with machine-learning heuristics instead of signatures of known malware, and those heuristics produce false positives on legitimate software — disk images and installers especially. Apple's notarization, by contrast, includes an automated malware scan that every FinderGit release passes before it is published.
 
-So: if a scanner flags a DMG whose SHA-256 matches the one on its release page, that is a heuristic false positive, and we report those to the vendor. If the checksum does **not** match, the file you have is not the one we shipped — please [tell us](mailto:feedback@findergit.app?subject=FinderGit%20download%20verification) and download it again from the release page.
+Be clear about what each check proves, though. A matching checksum tells you the file wasn't altered between our release page and your Mac; it cannot, on its own, tell you a detection is wrong. What makes a heuristic false positive the far likelier explanation is the three together: the bytes are the ones we published, Apple's notarization scan passed them, and `spctl` accepts them on your machine. When all three hold and a scanner still objects, that's one vendor's heuristic disagreeing with Apple's — and we report those.
+
+If any of them fail — the checksum differs, or `spctl` rejects the file — don't open it. The file you have is not the one we shipped: please [tell us](mailto:feedback@findergit.app?subject=FinderGit%20download%20verification) and download it again from the release page.
 
 ## Before first launch (fresh Mac)
 

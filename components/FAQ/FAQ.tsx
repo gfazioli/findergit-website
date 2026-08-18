@@ -122,8 +122,11 @@ const faqItems: { value: string; question: string; answer: ReactNode }[] = [
           Verifying your download
         </Anchor>{' '}
         has the two commands. Antivirus engines do sometimes flag a notarized Mac app on a
-        machine-learning heuristic rather than an actual malware signature; if the checksum matches,
-        that is what you are looking at, and we report those to the vendor. If it does not match,{' '}
+        machine-learning heuristic rather than an actual malware signature. A matching checksum
+        can't prove a detection wrong on its own, but together with Apple's notarization scan and a
+        clean spctl run it makes a heuristic false positive much the likeliest reading, and we
+        report those to the vendor. If the checksum doesn't match, or macOS rejects the file, don't
+        open it —{' '}
         <Anchor
           href="mailto:feedback@findergit.app?subject=FinderGit%20download%20verification"
           size="sm"
