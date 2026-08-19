@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.26.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.26.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.26.0 — a stop button, and what it leaves behind</p>
+<h2>Highlights</h2>
+<p><strong>A git operation that's taking too long can now be stopped.</strong> Once Fetch, Pull or Push has been running for three seconds, its button becomes a stop control — click it and the operation ends. Until now a slow remote left the whole action bar disabled with nothing to do but wait it out, which is exactly how a slow forge came to read as a frozen app.</p>
+<p>The three-second delay is deliberate: without it, a double-click on Fetch would cancel the fetch you just started.</p>
+<p><strong>Stopping is a real interruption, not the app looking away</strong> — the underlying Git process is ended. What that leaves behind depends on the action, so FinderGit tells you which:</p>
+<ul>
+<li>A stopped <strong>Fetch</strong> is harmless. Nothing in your working tree changed, and you can simply run it again.</li>
+<li>A stopped <strong>Push</strong> leaves the remote either updated or untouched, never half-way: Git updates each branch atomically.</li>
+<li>A stopped <strong>Pull</strong> is the one to know about. If it was still downloading, nothing has changed. If it had started merging, you may be left mid-merge — and FinderGit notices that, offering <strong>Finish</strong> and <strong>Abort</strong> in the strip above the action bar, the same way it does for a merge that stopped on a conflict.</li>
+</ul>
+<p><strong>A stop is your decision, so it isn't reported as a fault.</strong> The button shows a neutral grey stop icon rather than a red ✗, and the repository is re-read immediately — the reconcile banner appears at once instead of waiting on a filesystem event that may never come.</p>
+<p><strong>Refresh has no stop control</strong>, because it's a local re-read that finishes before you could click it.</p>
+<h2>Every release page now publishes its checksum</h2>
+<p>If a virus scanner ever flags a FinderGit download, the first question is whether the file really is the one we published — and until now the answer lived nowhere you could reach. Every release page now states the SHA-256 of its DMG: this one and every earlier release. <a href="https://findergit.app/docs/getting-started#verifying-your-download" rel="nofollow">Verifying your download</a> explains how to compare it, and what each check does and does not prove. Releases from 0.4.1 on can also be confirmed as notarized by Apple without installing anything.</p>
+<h2>Under the hood</h2>
+<ul>
+<li>Stopping and timing out are now distinguishable at the source. They had been collapsing into one: the timeout leg of the wait swallowed its own cancellation, so every stop was reported internally as "it ran too long" — harmless in itself, until a genuine timeout raced with a late stop and was misreported as something you had asked for.</li>
+<li>The elapsed counter runs on one clock per control instead of one per thing that wants the time, and it stops when the action does. An animation with no end keeps the display pipeline committing frames for the rest of the session.</li>
+<li>The cancellation tests no longer depend on the network to produce a stalled connection. They use a transport that hangs by construction, so a machine whose network answers an unreachable address can't quietly turn them green.</li>
+</ul>
+<h2>Install</h2>
+<p>Download the DMG below, drag FinderGit to Applications, and launch it. The app is signed with a Developer ID and notarized by Apple, so no Gatekeeper bypass is needed. Existing installations update themselves.</p>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>

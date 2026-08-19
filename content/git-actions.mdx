@@ -35,10 +35,24 @@ Every action button adapts its appearance to show you what's happening:
 
 - **Idle** — default icon and label
 - **In progress** — a spinner replaces the icon, the label becomes *"Fetching…"* / *"Pulling…"* / *"Pushing…"* / *"Refreshing…"*, and the other action buttons disable so you can't fire a second command while one is in flight
+- **Taking a while** — past three seconds the button also shows how long it has been running, because a spinner tells you something is happening but not whether it's working or stuck
 - **Success** — a green checkmark briefly flashes on the button that just finished (~1.5s), then fades back to the idle icon
 - **Failure** — a red x stays on the button; hover the button to see the underlying error message
+- **Stopped** — a neutral grey stop icon, not a red x. You asked for it, so it isn't reported as something going wrong
 
 A brief confirmation banner (green) or error banner (red) also appears just under the action bar for a few seconds.
+
+### Stopping something that's taking too long
+
+Once **Fetch**, **Pull** or **Push** has been running for three seconds, its button becomes a stop control — the label gains a stop icon next to the elapsed time, and clicking it ends the operation. The delay is deliberate: without it, a double-click on Fetch would cancel the fetch you just started.
+
+Stopping is a real interruption, not just the app looking away — the underlying Git process is ended. What that leaves behind depends on the action:
+
+- A stopped **Fetch** is harmless. Nothing in your working tree changes and you can simply run it again.
+- A stopped **Push** leaves the remote either updated or untouched, never half-way: Git updates each branch atomically.
+- A stopped **Pull** is the one to know about. If it was still downloading, nothing has changed. If it had started merging, you may be left mid-merge — and FinderGit notices that and offers **Finish** and **Abort** in the strip above the action bar, the same way it does for a merge that stopped on a conflict.
+
+**Refresh** has no stop control, because it's a local re-read that finishes before you could click it.
 
 ### Responsive compact mode
 
