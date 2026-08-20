@@ -56,7 +56,7 @@ export function ReleaseNotes() {
             title={<Badge size="xl">{release.tag_name}</Badge>}
           >
             <Text size="sm" fw={800} mb={16}>
-              {release.created_at}
+              {release.displayDate}
             </Text>
             <MDXRemote compiledSource={release.body} components={components} />
           </Timeline.Item>

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { compileMdx } from 'nextra/compile';
 import useSWR from 'swr';
 
+import { formatReleaseDate } from './format-release-date';
+
 export interface Author {
   login: string;
   id: number;
@@ -38,7 +40,10 @@ export interface Release {
   draft: boolean;
   prerelease: boolean;
   created_at: string;
-  published_at: string;
+  /** Null on a draft release, which is why every read of it needs a fallback. */
+  published_at: string | null;
+  /** `published_at` formatted for display. Set by `useReleaseNotes`. */
+  displayDate?: string;
   assets: any[];
   tarball_url: string;
   zipball_url: string;
@@ -76,11 +81,7 @@ export function useReleaseNotes() {
         const releases = await Promise.all(
           data.releases.map(async (release) => ({
             ...release,
-            created_at: new Date(release.created_at).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            }),
+            displayDate: formatReleaseDate(release.published_at, release.created_at),
             body: await compileMdx(release.body),
           }))
         );
