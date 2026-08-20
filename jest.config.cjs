@@ -5,6 +5,8 @@ const createJestConfig = nextJest({
 });
 
 const customJestConfig = {
+  // Pins the suite's time zone before any worker initialises ICU — see the file.
+  globalSetup: '<rootDir>/jest.global-setup.cjs',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.cjs'],
   moduleNameMapper: {
     '^@/components/(.*)$': '<rootDir>/components/$1',
