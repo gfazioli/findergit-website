@@ -1,9 +1,11 @@
 // AI commit-message proxy used by the FinderGit macOS app.
 //
 // Flow: FinderGit POSTs a `git diff` plus a small config object; we forward
-// it to Groq with a system prompt and stream the result back. The Groq API
-// key lives only on Vercel (`GROQ_API_KEY`), so end-users never need to
-// configure anything to use the free Auto provider.
+// it to Groq with a system prompt and return the whole answer in one JSON
+// response (no streaming -- a commit message is one shot). The Groq API key
+// lives only on Vercel (`GROQ_API_KEY`), so end-users never need to configure
+// anything to use the free Auto provider. Which model we ask for is
+// `GROQ_MODEL`, defaulting to the value in ./model.ts.
 //
 // Limits we enforce here:
 // - 100 KB max diff size — keeps Groq token usage bounded and free-tier
@@ -13,9 +15,17 @@
 //   below); upgrade to Vercel KV or Upstash Redis when abuse becomes real
 // - Bot user-agent rejection — the same heuristic we use for github-releases
 
+import { isReasoningModel, resolveModel, sanitizeMessage } from './model';
+
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
-const GROQ_MODEL = 'llama-3.3-70b-versatile';
 const MAX_DIFF_BYTES = 100_000;
+// Completion budgets. A reasoning model bills its thinking against the same
+// budget even when we ask for `reasoning_format: hidden`, so a budget sized
+// for a plain instruction model (180 / 400, which is what shipped) leaves
+// nothing for the answer: the reply comes back empty or cut off mid-thought,
+// and the app reports a provider failure. Sized to leave room for both.
+const MAX_TOKENS_SHORT = 1500;
+const MAX_TOKENS_LONG = 2500;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
 const RATE_LIMIT_MAX = 30;
 
@@ -208,6 +218,7 @@ export async function POST(request: Request): Promise<Response> {
 
   const config = parseConfig(body.config);
   const systemPrompt = buildSystemPrompt(config);
+  const model = resolveModel();
 
   let groqResponse: Response;
   try {
@@ -218,13 +229,17 @@ export async function POST(request: Request): Promise<Response> {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: GROQ_MODEL,
+        model,
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: body.diff },
         ],
         temperature: 0.3,
-        max_completion_tokens: config.length === 'long' ? 400 : 180,
+        max_completion_tokens: config.length === 'long' ? MAX_TOKENS_LONG : MAX_TOKENS_SHORT,
+        // Ask for the answer only. Groq's default `reasoning_format` is
+        // `raw`, which wraps the chain of thought in `<think>` tags inside
+        // `message.content` -- i.e. straight into the user's commit message.
+        ...(isReasoningModel(model) ? { reasoning_format: 'hidden' } : {}),
       }),
     });
   } catch (error: any) {
@@ -236,9 +251,26 @@ export async function POST(request: Request): Promise<Response> {
   if (!groqResponse.ok) {
     const text = await groqResponse.text().catch(() => '');
     // eslint-disable-next-line no-console
-    console.error('Groq returned non-2xx:', groqResponse.status, text);
+    console.error('Groq returned non-2xx:', model, groqResponse.status, text);
+
+    // A 4xx from Groq means OUR request is wrong -- a decommissioned model, a
+    // revoked key, an unsupported parameter -- and no amount of retrying will
+    // fix it. Reporting that as 502 is what let a dead model masquerade as a
+    // passing outage for eight days (FinderGit#154), so it gets its own status
+    // and a machine-readable code the client can act on.
+    if (groqResponse.status >= 400 && groqResponse.status < 500) {
+      return Response.json(
+        {
+          error: 'The AI service is misconfigured and needs an update. Please report this.',
+          code: 'upstream_request_rejected',
+          status: groqResponse.status,
+        },
+        { status: 424 }
+      );
+    }
+
     return Response.json(
-      { error: 'Upstream provider error', status: groqResponse.status },
+      { error: 'Upstream provider error', code: 'upstream_error', status: groqResponse.status },
       { status: 502 }
     );
   }
@@ -251,19 +283,24 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const message: unknown = groqJson?.choices?.[0]?.message?.content;
-  if (typeof message !== 'string' || message.trim().length === 0) {
+  if (typeof message !== 'string') {
     return Response.json({ error: 'Empty response from provider' }, { status: 502 });
   }
 
-  // Strip surrounding code fences or quotes the model sometimes adds despite
-  // being told not to. The TextField will display this verbatim.
-  const cleaned = message
-    .trim()
-    .replace(/^```(?:[a-zA-Z]+)?\n?/, '')
-    .replace(/```$/, '')
-    .trim()
-    .replace(/^["'`]+|["'`]+$/g, '')
-    .trim();
+  // The app displays this verbatim in the commit field, so the emptiness check
+  // belongs AFTER the cleanup: an answer that is nothing but a code fence, or
+  // nothing but truncated reasoning, must be reported as a failure rather than
+  // pasted into a commit.
+  const cleaned = sanitizeMessage(message);
+  if (cleaned.length === 0) {
+    // eslint-disable-next-line no-console
+    console.error(
+      'Nothing usable in the provider response:',
+      model,
+      JSON.stringify(message.slice(0, 300))
+    );
+    return Response.json({ error: 'Empty response from provider' }, { status: 502 });
+  }
 
   return Response.json({ message: cleaned });
 }
