@@ -57,21 +57,46 @@ describe('reasoningOptions', () => {
 });
 
 describe('sanitizeMessage', () => {
-  it('drops a reasoning block and keeps the commit message after it', () => {
+  it('drops a matched reasoning block and keeps the commit message after it', () => {
     const raw =
       '<think>\nThe diff adds a README line, so this is docs.\n</think>\ndocs: mention the new flag';
     expect(sanitizeMessage(raw)).toBe('docs: mention the new flag');
   });
 
+  it('drops reasoning whose opening tag never arrived', () => {
+    // Some providers emit only the closing tag; everything before it is
+    // thinking, and returning it would put the model's reasoning in a commit.
+    expect(sanitizeMessage('Let me analyse the diff.\n</think>\nfeat: add thing')).toBe(
+      'feat: add thing'
+    );
+  });
+
   it('returns nothing when the answer is reasoning cut off mid-thought', () => {
-    // The completion budget ran out inside the `<think>` block, so there is no
-    // message at all -- the caller must report a provider failure rather than
-    // paste half a thought into a commit.
     expect(sanitizeMessage('<think>Let me look at what changed here and')).toBe('');
   });
 
   it('returns nothing when reasoning is all there was', () => {
     expect(sanitizeMessage('<think>done thinking</think>')).toBe('');
+  });
+
+  it('takes the final channel out of GPT-OSS Harmony output', () => {
+    // The family this endpoint defaults to does not use <think> at all.
+    const raw =
+      '<|start|>assistant<|channel|>analysis<|message|>weighing the diff<|end|>' +
+      '<|start|>assistant<|channel|>final<|message|>fix: guard the nil case<|return|>';
+    expect(sanitizeMessage(raw)).toBe('fix: guard the nil case');
+  });
+
+  it('refuses Harmony output with no final channel rather than guessing', () => {
+    expect(sanitizeMessage('<|channel|>analysis<|message|>thinking out loud<|end|>feat: y')).toBe(
+      ''
+    );
+  });
+
+  it('refuses a message that still carries a marker, at the cost of a retry', () => {
+    // A legitimate message mentioning the marker literally is refused too. That
+    // costs one retry; guessing costs a commit with reasoning inside it.
+    expect(sanitizeMessage('feat: x\n\n- explains <think> tags in the parser')).toBe('');
   });
 
   it('keeps a bulleted body intact', () => {
@@ -81,8 +106,6 @@ describe('sanitizeMessage', () => {
   });
 
   it('strips an opening fence whatever its info string', () => {
-    // ```commit-message is a legal fence, and an alphabetic-only match stops at
-    // the hyphen -- leaving "-message" at the head of the commit message.
     expect(sanitizeMessage('```commit-message\nfeat: add thing\n```')).toBe('feat: add thing');
     expect(sanitizeMessage('```\nfeat: add thing\n```')).toBe('feat: add thing');
   });

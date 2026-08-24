@@ -16,6 +16,7 @@
 // - Bot user-agent rejection — the same heuristic we use for github-releases
 
 import { reasoningOptions, resolveModel, sanitizeMessage } from './model';
+import { classifyUpstreamFailure } from './upstream';
 
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const MAX_DIFF_BYTES = 100_000;
@@ -265,60 +266,50 @@ export async function POST(request: Request): Promise<Response> {
     // eslint-disable-next-line no-console
     console.error('Groq returned non-2xx:', model, groqResponse.status, text);
 
-    // Groq's own rate limit. The only 4xx that really does clear on its own,
-    // so it must not fall into the branch below: measured in production, a
-    // spent Groq quota was being reported as "the AI service needs an update",
-    // which is the same class of wrong advice -- in the other direction -- as
-    // the bug this endpoint was just fixed for. Pass it through as a 429 so
-    // the app says how long to wait, honouring Groq's own Retry-After when it
-    // sends one.
-    if (groqResponse.status === 429) {
-      const upstreamRetry = Number(groqResponse.headers.get('retry-after'));
-      const retryAfterSec =
-        Number.isFinite(upstreamRetry) && upstreamRetry > 0 ? Math.ceil(upstreamRetry) : 60;
-      return Response.json(
-        { error: 'Rate limit exceeded', code: 'upstream_rate_limited', retryAfter: retryAfterSec },
-        { status: 429, headers: { 'Retry-After': String(retryAfterSec) } }
-      );
+    switch (classifyUpstreamFailure(groqResponse.status)) {
+      // The only 4xx that clears on its own. Measured in production, a spent
+      // Groq allowance was being reported as "the AI service needs an update",
+      // which is the same class of wrong advice -- in the other direction -- as
+      // the bug this endpoint was fixed for. Pass it through as a 429 so the
+      // app says how long to wait, honouring Groq's own Retry-After.
+      case 'rate_limited': {
+        const upstreamRetry = Number(groqResponse.headers.get('retry-after'));
+        const retryAfterSec =
+          Number.isFinite(upstreamRetry) && upstreamRetry > 0 ? Math.ceil(upstreamRetry) : 60;
+        return Response.json(
+          {
+            error: 'Rate limit exceeded',
+            code: 'upstream_rate_limited',
+            retryAfter: retryAfterSec,
+          },
+          { status: 429, headers: { 'Retry-After': String(retryAfterSec) } }
+        );
+      }
+
+      // Our request is wrong -- a decommissioned model, a revoked key, an
+      // unsupported parameter -- and no amount of retrying will fix it.
+      // Reporting that as 502 is what let a dead model masquerade as a passing
+      // outage for eight days (FinderGit#154).
+      case 'request_rejected':
+        return Response.json(
+          {
+            error: 'The AI service is misconfigured and needs an update. Please report this.',
+            code: 'upstream_request_rejected',
+            status: groqResponse.status,
+          },
+          { status: 424 }
+        );
+
+      case 'provider_error':
+        return Response.json(
+          {
+            error: 'Upstream provider error',
+            code: 'upstream_error',
+            status: groqResponse.status,
+          },
+          { status: 502 }
+        );
     }
-
-    // Any other 4xx from Groq means OUR request is wrong -- a decommissioned
-    // model, a revoked key, an unsupported parameter -- and no amount of
-    // retrying will fix it. Reporting that as 502 is what let a dead model
-    // masquerade as a passing outage for eight days (FinderGit#154), so it
-    // gets its own status and a machine-readable code the client can act on.
-    if (groqResponse.status >= 400 && groqResponse.status < 500) {
-      return Response.json(
-        {
-          error: 'The AI service is misconfigured and needs an update. Please report this.',
-          code: 'upstream_request_rejected',
-          status: groqResponse.status,
-        },
-        { status: 424 }
-      );
-    }
-
-    return Response.json(
-      { error: 'Upstream provider error', code: 'upstream_error', status: groqResponse.status },
-      { status: 502 }
-    );
-  }
-
-  const remainingTokens = Number(groqResponse.headers.get('x-ratelimit-remaining-tokens'));
-  const limitTokens = Number(groqResponse.headers.get('x-ratelimit-limit-tokens'));
-  // A quarter of whatever this model's per-minute allowance actually is: a
-  // fixed number means something different on every plan and every model.
-  const warnBelow = Number.isFinite(limitTokens) && limitTokens > 0 ? limitTokens * 0.25 : 2000;
-  if (Number.isFinite(remainingTokens) && remainingTokens < warnBelow) {
-    // eslint-disable-next-line no-console
-    console.warn(
-      'Groq token allowance nearly spent:',
-      remainingTokens,
-      'of',
-      Number.isFinite(limitTokens) ? limitTokens : 'unknown',
-      'left for',
-      model
-    );
   }
 
   let groqJson: any;
