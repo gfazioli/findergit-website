@@ -61,7 +61,7 @@ Once stored, the token lives in the Keychain under the entry for `github.com`. U
 
 ### Issues tab
 
-Open issues for the repo, with state icon, number, title, labels, and author avatar. Click any row to open the issue on GitHub.com. The **New Issue** button opens the new-issue form, and **Open on GitHub** opens the full Issues page in your browser (the label follows the remote's host — GitHub, GitLab, or Bitbucket).
+Open issues for the repo, with state icon, number, title, labels, and author avatar. Click any row to open the issue on GitHub.com. The **New Issue** button opens the new-issue form, and **Open on GitHub** opens the full Issues page in your browser (the label follows the remote's host — GitHub, GitLab, Bitbucket, or Codeberg).
 
 ![Issues tab populated on a Mantine extension repo](/screenshot-detail-issues.png)
 
@@ -81,7 +81,7 @@ In the table, three columns appear next to **Changes**:
 
 Numbers use the compact format (`1.2K` instead of `1234`). Click any column header to sort by it — popular repos to the top, or busiest repos by open issues.
 
-For repos without a GitHub remote (local-only, or pointing at GitLab / Bitbucket), the cells stay empty. GitLab and Bitbucket integration is a planned follow-up.
+Codeberg repos fill these in too — see [Codeberg](#codeberg) below. For repos that are local-only or point at GitLab / Bitbucket, the cells stay empty; integration for those two is a planned follow-up.
 
 ## Fork awareness
 
@@ -139,3 +139,27 @@ Each tab has a **Refresh** button that bypasses the cache when you want immediat
 - All requests go directly to `api.github.com` from your Mac. FinderGit runs no proxy and stores no telemetry about the repos you open.
 - With `gh` CLI auth or a PAT, you get GitHub's authenticated rate limit (5000 requests/hour) — comfortably above what FinderGit consumes.
 - Unauthenticated traffic is *not* attempted; if neither `gh` nor a PAT is set up, FinderGit shows an empty state instead of hitting the 60-request/hour anonymous limit.
+
+## Codeberg
+
+Codeberg repos are enriched too, and unlike GitHub they need **no setup at all** — no account to connect, no token to paste. Codeberg runs [Forgejo](https://forgejo.org), whose API answers anonymous requests, so the moment FinderGit recognises a `codeberg.org` remote it can fill in the numbers.
+
+What works on a Codeberg repo:
+
+- The **Issues** and **Pull Requests** tabs, with labels, authors and state.
+- The **file-browser columns** — stars, open issues, open pull requests.
+- **Overview** metadata: description, stars, forks, topics, website, and the latest release.
+- The **fork badge** and its parent repository.
+- The sidebar **Codeberg** filter, and **Open on Codeberg** in the context menu.
+
+What does not, and why:
+
+| Not available | Reason |
+|---|---|
+| Contributor list in Overview | Forgejo has no public contributors endpoint |
+| "N behind" and **Sync Fork** | Comparing across two repositories is not something the API can answer, and there is no server-side fork sync to offer |
+| Forge status panel | Codeberg publishes its status through Uptime Kuma rather than the platform the panel reads; a link with no numbers behind it would be worse than none |
+| Account dashboard, Clone window | Both describe *your* account, which needs credentials Codeberg is not being asked for |
+
+GitLab and Bitbucket remain browse-only: FinderGit recognises their remotes, filters by them and opens them in a browser, but does not read their APIs. Their repos show empty columns rather than borrowed numbers.
+
