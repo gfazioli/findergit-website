@@ -23,9 +23,15 @@ const MAX_DIFF_BYTES = 100_000;
 // budget even when we ask for `reasoning_format: hidden`, so a budget sized
 // for a plain instruction model (180 / 400, which is what shipped) leaves
 // nothing for the answer: the reply comes back empty or cut off mid-thought,
-// and the app reports a provider failure. Sized to leave room for both.
-const MAX_TOKENS_SHORT = 1500;
-const MAX_TOKENS_LONG = 2500;
+// and the app reports a provider failure.
+//
+// The numbers come from what the model actually returns -- measured in
+// production, a `length=long` answer is a subject line plus five bullets,
+// roughly 180 tokens -- kept well clear of that, but no further: Groq's free
+// tier allows 8 K tokens per minute for the whole key, shared by every user of
+// the app, so headroom we ask for and never use still costs us throughput.
+const MAX_TOKENS_SHORT = 800;
+const MAX_TOKENS_LONG = 1600;
 // Deadline on the upstream call. The app gives up after 30 s, so answering
 // before that keeps the failure ours to describe -- a stalled Groq connection
 // otherwise surfaces as a bare client-side network error with nothing in our
@@ -245,7 +251,11 @@ export async function POST(request: Request): Promise<Response> {
         // Ask for the answer only. Groq's default `reasoning_format` is
         // `raw`, which wraps the chain of thought in `<think>` tags inside
         // `message.content` -- i.e. straight into the user's commit message.
-        ...(isReasoningModel(model) ? { reasoning_format: 'hidden' } : {}),
+        // `low` effort because summarising a diff is not a puzzle: reasoning
+        // tokens are billed against both our completion budget and the key's
+        // per-minute token allowance, and that allowance is what ran out
+        // during the production check of the model swap.
+        ...(isReasoningModel(model) ? { reasoning_format: 'hidden', reasoning_effort: 'low' } : {}),
       }),
     });
   } catch (error: any) {
@@ -259,11 +269,28 @@ export async function POST(request: Request): Promise<Response> {
     // eslint-disable-next-line no-console
     console.error('Groq returned non-2xx:', model, groqResponse.status, text);
 
-    // A 4xx from Groq means OUR request is wrong -- a decommissioned model, a
-    // revoked key, an unsupported parameter -- and no amount of retrying will
-    // fix it. Reporting that as 502 is what let a dead model masquerade as a
-    // passing outage for eight days (FinderGit#154), so it gets its own status
-    // and a machine-readable code the client can act on.
+    // Groq's own rate limit. The only 4xx that really does clear on its own,
+    // so it must not fall into the branch below: measured in production, a
+    // spent Groq quota was being reported as "the AI service needs an update",
+    // which is the same class of wrong advice -- in the other direction -- as
+    // the bug this endpoint was just fixed for. Pass it through as a 429 so
+    // the app says how long to wait, honouring Groq's own Retry-After when it
+    // sends one.
+    if (groqResponse.status === 429) {
+      const upstreamRetry = Number(groqResponse.headers.get('retry-after'));
+      const retryAfterSec =
+        Number.isFinite(upstreamRetry) && upstreamRetry > 0 ? Math.ceil(upstreamRetry) : 60;
+      return Response.json(
+        { error: 'Rate limit exceeded', code: 'upstream_rate_limited', retryAfter: retryAfterSec },
+        { status: 429, headers: { 'Retry-After': String(retryAfterSec) } }
+      );
+    }
+
+    // Any other 4xx from Groq means OUR request is wrong -- a decommissioned
+    // model, a revoked key, an unsupported parameter -- and no amount of
+    // retrying will fix it. Reporting that as 502 is what let a dead model
+    // masquerade as a passing outage for eight days (FinderGit#154), so it
+    // gets its own status and a machine-readable code the client can act on.
     if (groqResponse.status >= 400 && groqResponse.status < 500) {
       return Response.json(
         {
@@ -279,6 +306,12 @@ export async function POST(request: Request): Promise<Response> {
       { error: 'Upstream provider error', code: 'upstream_error', status: groqResponse.status },
       { status: 502 }
     );
+  }
+
+  const remainingTokens = Number(groqResponse.headers.get('x-ratelimit-remaining-tokens'));
+  if (Number.isFinite(remainingTokens) && remainingTokens < 2000) {
+    // eslint-disable-next-line no-console
+    console.warn('Groq token allowance nearly spent:', remainingTokens, 'tokens left', model);
   }
 
   let groqJson: any;
