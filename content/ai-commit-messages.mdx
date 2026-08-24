@@ -99,19 +99,21 @@ Your staged diff is sent to the AI in-flight only — **diffs are not logged or 
 |---|---|
 | Max diff size per request | 100 KB |
 | Max custom instructions length | 2 KB |
-| Rate limit | 30 requests / hour per IP |
+| Rate limit, per IP | 30 requests / hour |
+| Shared capacity | a few requests per minute, across everyone using the free mode |
 
 If you stage more than 100 KB of diff, the AI button surfaces an inline message asking you to stage fewer files — typically a sign that the commit is large enough to deserve splitting into multiple commits anyway.
 
-If you hit the per-IP rate limit (rare in normal use), the error banner shows a *retry-after* hint.
+The per-IP limit is rarely what you'll meet. The one you can actually run into is the **shared capacity**: the free mode runs on one pool for all users, so a burst of activity — yours or anyone else's — can briefly leave nothing in the tank, even on your first request of the day. When that happens the error banner tells you how many seconds to wait, and the wait is usually seconds rather than minutes. *Bring Your Own Key* (below) removes the shared pool from the picture entirely.
 
 ## Troubleshooting
 
 - **Button is disabled** — nothing is staged. Stage at least one file.
 - **"AI provider is temporarily unreachable"** — transient network glitch or warm-up delay. Click the **×** to dismiss the banner and retry; usually works on the second attempt.
+- **"The AI service needs an update"** — not something a retry fixes: the service behind the free mode needs attention on our side. Please [open an issue](https://github.com/gfazioli/findergit-website/issues/new) so it gets looked at.
 - **"Diff too large (max 100 KB)"** — stage fewer files, or split the change into multiple commits.
-- **"Hit the AI rate limit"** — wait the indicated number of seconds and try again. The 30/hour limit resets per IP.
+- **"Hit the AI rate limit"** — wait the number of seconds the banner names and try again. This is usually the shared capacity of the free mode rather than your own 30/hour allowance, so it often clears in seconds even if you have barely used the feature.
 
 ## Coming next
 
-The current implementation is **Phase 1**: the free zero-setup mode that just works. **Phase 2** (planned) adds *Bring Your Own Key* support — pick your preferred AI provider, supply your own API key (stored in macOS Keychain), and FinderGit calls that provider directly. Useful for privacy-sensitive repositories or to bypass the per-IP rate limit on the free tier.
+The current implementation is **Phase 1**: the free zero-setup mode that just works. **Phase 2** (planned) adds *Bring Your Own Key* support — pick your preferred AI provider, supply your own API key (stored in macOS Keychain), and FinderGit calls that provider directly. Useful for privacy-sensitive repositories, or to stop sharing capacity with every other user of the free mode.
