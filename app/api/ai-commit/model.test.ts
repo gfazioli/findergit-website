@@ -1,4 +1,4 @@
-import { isReasoningModel, resolveModel, sanitizeMessage } from './model';
+import { isReasoningModel, reasoningOptions, resolveModel, sanitizeMessage } from './model';
 
 // These are the rules that decide what lands in the user's commit field. The
 // `<think>` cases are the ones with teeth: with the tag-stripping removed,
@@ -26,6 +26,33 @@ describe('isReasoningModel', () => {
   it('leaves plain instruction models alone, since they 400 on the parameter', () => {
     expect(isReasoningModel('llama-3.1-8b-instant')).toBe(false);
     expect(isReasoningModel('llama-3.3-70b-versatile')).toBe(false);
+  });
+});
+
+describe('reasoningOptions', () => {
+  it('sends low effort only to the GPT-OSS family, which accepts those values', () => {
+    expect(reasoningOptions('openai/gpt-oss-120b')).toEqual({
+      reasoning_format: 'hidden',
+      reasoning_effort: 'low',
+    });
+    expect(reasoningOptions('openai/gpt-oss-20b')).toEqual({
+      reasoning_format: 'hidden',
+      reasoning_effort: 'low',
+    });
+  });
+
+  it('omits the effort for other reasoning families, which reject low', () => {
+    // Groq accepts only none/default for Qwen 3.6, and Qwen is the other
+    // replacement it recommends -- so sending `low` would break the GROQ_MODEL
+    // override exactly when it is being used to escape a dead model.
+    expect(reasoningOptions('qwen/qwen3.6-27b')).toEqual({ reasoning_format: 'hidden' });
+    expect(reasoningOptions('deepseek-r1-distill-llama-70b')).toEqual({
+      reasoning_format: 'hidden',
+    });
+  });
+
+  it('sends nothing at all for a plain instruction model', () => {
+    expect(reasoningOptions('llama-3.1-8b-instant')).toEqual({});
   });
 });
 
