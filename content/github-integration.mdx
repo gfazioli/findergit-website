@@ -157,7 +157,7 @@ What does not, and why:
 | Not available | Reason |
 |---|---|
 | Contributor list in Overview | Forgejo has no public contributors endpoint |
-| "N behind" and **Sync Fork** | Comparing across two repositories is not something the API can answer, and there is no server-side fork sync to offer |
+| "N behind" and **Sync Fork** | Both need an account. Forgejo *can* sync a fork and *can* report how far behind one is — it just won't tell an anonymous caller, and FinderGit has nowhere to sign in to Codeberg yet. A count we can't trust would badge a stale fork as up to date, so it shows nothing instead |
 | Forge status panel | Codeberg publishes its status through Uptime Kuma rather than the platform the panel reads; a link with no numbers behind it would be worse than none |
 | Account dashboard, Clone window | Both describe *your* account, which needs credentials Codeberg is not being asked for |
 
