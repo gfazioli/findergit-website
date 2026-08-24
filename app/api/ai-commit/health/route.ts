@@ -15,9 +15,12 @@ const GROQ_MODELS_URL = 'https://api.groq.com/openai/v1/models';
 
 // The check hits a third party, so a burst of requests (a monitor with a tight
 // interval, a crawler) shouldn't turn into a burst of upstream calls. Groq's
-// model list changes on the scale of weeks; 60 s of caching is invisible to a
-// monitor and bounds the fan-out.
-const CACHE_TTL_MS = 60 * 1000;
+// model list changes on the scale of weeks, and `/v1/models` spends the key's
+// requests-per-minute budget -- the same budget message generation needs -- so
+// this window is deliberately wider than a monitor's interval. Note the cache
+// is per lambda instance, so a warm region can still make one call per instance
+// per window.
+const CACHE_TTL_MS = 5 * 60 * 1000;
 // A monitor needs a verdict, not a hanging request: if Groq accepts the
 // connection and then stalls, an un-deadlined fetch turns "is the model
 // served?" into "the health check timed out", which is the same silence the
