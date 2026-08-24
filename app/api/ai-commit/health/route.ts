@@ -18,6 +18,11 @@ const GROQ_MODELS_URL = 'https://api.groq.com/openai/v1/models';
 // model list changes on the scale of weeks; 60 s of caching is invisible to a
 // monitor and bounds the fan-out.
 const CACHE_TTL_MS = 60 * 1000;
+// A monitor needs a verdict, not a hanging request: if Groq accepts the
+// connection and then stalls, an un-deadlined fetch turns "is the model
+// served?" into "the health check timed out", which is the same silence the
+// route was added to break. The signal covers reading the body too.
+const UPSTREAM_TIMEOUT_MS = 5000;
 let cached: { at: number; status: number; body: Record<string, unknown> } | null = null;
 
 function respond(status: number, body: Record<string, unknown>): Response {
@@ -43,6 +48,7 @@ export async function GET(): Promise<Response> {
   try {
     upstream = await fetch(GROQ_MODELS_URL, {
       headers: { Authorization: `Bearer ${process.env.GROQ_API_KEY}` },
+      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
     });
   } catch {
     return respond(503, { ok: false, reason: 'upstream_unreachable', model });
@@ -62,7 +68,10 @@ export async function GET(): Promise<Response> {
   let ids: string[];
   try {
     const json = (await upstream.json()) as { data?: Array<{ id?: unknown }> };
-    ids = (json.data ?? []).map((entry) => String(entry.id));
+    if (!Array.isArray(json.data)) {
+      throw new Error('no model list in the response');
+    }
+    ids = json.data.map((entry) => String(entry.id));
   } catch {
     return respond(503, { ok: false, reason: 'invalid_upstream_response', model });
   }

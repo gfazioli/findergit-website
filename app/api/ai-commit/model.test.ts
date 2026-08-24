@@ -53,6 +53,13 @@ describe('sanitizeMessage', () => {
     expect(sanitizeMessage(raw)).toBe(raw);
   });
 
+  it('strips an opening fence whatever its info string', () => {
+    // ```commit-message is a legal fence, and an alphabetic-only match stops at
+    // the hyphen -- leaving "-message" at the head of the commit message.
+    expect(sanitizeMessage('```commit-message\nfeat: add thing\n```')).toBe('feat: add thing');
+    expect(sanitizeMessage('```\nfeat: add thing\n```')).toBe('feat: add thing');
+  });
+
   it('still strips code fences and surrounding quotes', () => {
     expect(sanitizeMessage('```text\nfeat: add thing\n```')).toBe('feat: add thing');
     expect(sanitizeMessage('"fix: guard the nil case"')).toBe('fix: guard the nil case');

@@ -55,9 +55,11 @@ export function sanitizeMessage(raw: string): string {
   }
 
   // Code fences and surrounding quotes the model sometimes adds despite being
-  // told not to.
+  // told not to. The opening fence is matched to the end of its line rather
+  // than by info-string alphabet: ```commit-message is a legal fence, and an
+  // alphabetic-only match would leave "-message" heading the commit message.
   return text
-    .replace(/^```(?:[a-zA-Z]+)?\n?/, '')
+    .replace(/^```[^\r\n]*(?:\r?\n|$)/, '')
     .replace(/```$/, '')
     .trim()
     .replace(/^["'`]+|["'`]+$/g, '')
