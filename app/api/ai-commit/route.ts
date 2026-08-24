@@ -26,6 +26,11 @@ const MAX_DIFF_BYTES = 100_000;
 // and the app reports a provider failure. Sized to leave room for both.
 const MAX_TOKENS_SHORT = 1500;
 const MAX_TOKENS_LONG = 2500;
+// Deadline on the upstream call. The app gives up after 30 s, so answering
+// before that keeps the failure ours to describe -- a stalled Groq connection
+// otherwise surfaces as a bare client-side network error with nothing in our
+// logs to say what happened.
+const UPSTREAM_TIMEOUT_MS = 25_000;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
 const RATE_LIMIT_MAX = 30;
 
@@ -228,6 +233,7 @@ export async function POST(request: Request): Promise<Response> {
         Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
         'Content-Type': 'application/json',
       },
+      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
       body: JSON.stringify({
         model,
         messages: [
