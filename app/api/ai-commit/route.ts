@@ -15,7 +15,7 @@
 //   below); upgrade to Vercel KV or Upstash Redis when abuse becomes real
 // - Bot user-agent rejection — the same heuristic we use for github-releases
 
-import { isReasoningModel, resolveModel, sanitizeMessage } from './model';
+import { reasoningOptions, resolveModel, sanitizeMessage } from './model';
 
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const MAX_DIFF_BYTES = 100_000;
@@ -248,14 +248,10 @@ export async function POST(request: Request): Promise<Response> {
         ],
         temperature: 0.3,
         max_completion_tokens: config.length === 'long' ? MAX_TOKENS_LONG : MAX_TOKENS_SHORT,
-        // Ask for the answer only. Groq's default `reasoning_format` is
-        // `raw`, which wraps the chain of thought in `<think>` tags inside
-        // `message.content` -- i.e. straight into the user's commit message.
-        // `low` effort because summarising a diff is not a puzzle: reasoning
-        // tokens are billed against both our completion budget and the key's
-        // per-minute token allowance, and that allowance is what ran out
-        // during the production check of the model swap.
-        ...(isReasoningModel(model) ? { reasoning_format: 'hidden', reasoning_effort: 'low' } : {}),
+        // Reasoning parameters, chosen per model family -- see ./model.ts.
+        // Without them the chain of thought arrives inside `message.content`,
+        // i.e. in the user's commit message.
+        ...reasoningOptions(model),
       }),
     });
   } catch (error: any) {
@@ -309,9 +305,20 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const remainingTokens = Number(groqResponse.headers.get('x-ratelimit-remaining-tokens'));
-  if (Number.isFinite(remainingTokens) && remainingTokens < 2000) {
+  const limitTokens = Number(groqResponse.headers.get('x-ratelimit-limit-tokens'));
+  // A quarter of whatever this model's per-minute allowance actually is: a
+  // fixed number means something different on every plan and every model.
+  const warnBelow = Number.isFinite(limitTokens) && limitTokens > 0 ? limitTokens * 0.25 : 2000;
+  if (Number.isFinite(remainingTokens) && remainingTokens < warnBelow) {
     // eslint-disable-next-line no-console
-    console.warn('Groq token allowance nearly spent:', remainingTokens, 'tokens left', model);
+    console.warn(
+      'Groq token allowance nearly spent:',
+      remainingTokens,
+      'of',
+      Number.isFinite(limitTokens) ? limitTokens : 'unknown',
+      'left for',
+      model
+    );
   }
 
   let groqJson: any;

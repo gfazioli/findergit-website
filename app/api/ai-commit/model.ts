@@ -31,6 +31,30 @@ export function isReasoningModel(model: string): boolean {
   return REASONING_MODEL_PATTERN.test(model);
 }
 
+// `reasoning_effort` is not one parameter across families: Groq accepts
+// low/medium/high for GPT-OSS and only none/default for Qwen 3.6. Sending
+// `low` to a Qwen model is a rejected request, which would break the
+// GROQ_MODEL override at the exact moment it is needed -- Qwen being the other
+// replacement Groq recommends for the model that was switched off.
+const EFFORT_CAPABLE_PATTERN = /gpt-oss/i;
+
+/// Reasoning parameters to merge into the upstream request for this model.
+///
+/// `reasoning_format: 'hidden'` for every reasoning family, because the
+/// default (`raw`) puts the chain of thought inside `message.content`.
+/// `reasoning_effort` only where its values are the ones Groq accepts.
+export function reasoningOptions(model: string): Record<string, string> {
+  if (!isReasoningModel(model)) {
+    return {};
+  }
+  if (EFFORT_CAPABLE_PATTERN.test(model)) {
+    // Summarising a diff is not a puzzle, and every reasoning token is billed
+    // against both our completion budget and the key's per-minute allowance.
+    return { reasoning_format: 'hidden', reasoning_effort: 'low' };
+  }
+  return { reasoning_format: 'hidden' };
+}
+
 /// Cleans up the model's answer before it reaches the commit field.
 ///
 /// Returns an empty string when nothing usable survives, which the caller
