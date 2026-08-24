@@ -114,7 +114,7 @@ Big numbers use the compact format (`1.2K` instead of `1234`). Sort by Stars to 
 
 ![File browser with Issues, PRs and Stars columns populated for a folder of Mantine extensions](/screenshot-hero.png)
 
-The columns only populate for repos with a recognised GitHub remote. Local-only repos, GitLab and Bitbucket remotes leave the cells empty rather than showing a placeholder dash on every row.
+The columns populate for repos on **GitHub** and **Codeberg**. Codeberg needs no setup at all — it answers anonymously, so the numbers appear whether or not you have connected a GitHub account. Local-only repos, and repos on GitLab or Bitbucket, leave the cells empty rather than showing a placeholder dash on every row.
 
 See [GitHub Integration](/docs/github-integration) for how to enable these columns (either via the `gh` CLI or a Personal Access Token).
 
@@ -157,7 +157,7 @@ Grab the **icon** of any file or folder and drop it anywhere that accepts a file
 
 Right-click any item in the tree to get a context-sensitive menu with inline SF Symbol icons. On a single item the menu adapts to what you right-clicked:
 
-- **Repository folder** — Open in Finder / Terminal, Add to Root Folders, Quick Look, Get Info, Duplicate, Copy / Copy Path, Fetch / Pull / Push, **Open on GitHub** (or GitLab / Bitbucket — the label follows the remote's host; shown only when the repo has a recognized remote), Stage All, Move to Trash
+- **Repository folder** — Open in Finder / Terminal, Add to Root Folders, Quick Look, Get Info, Duplicate, Copy / Copy Path, Fetch / Pull / Push, **Open on GitHub** (or GitLab / Bitbucket / Codeberg — the label follows the remote's host; shown only when the repo has a recognized remote), Stage All, Move to Trash
 - **File inside a repo** — Open, Quick Look, Reveal in Finder, Get Info, Duplicate, Copy / Copy Path, Stage / Unstage (when applicable), Move to Trash
 
 ![Context menu on a repository folder](/screenshot-context-menu.png)
