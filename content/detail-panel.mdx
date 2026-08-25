@@ -44,7 +44,7 @@ The Overview tab paints the forge-side identity of the repo — GitHub or Codebe
 
 If the selected repo doesn't have a GitHub remote (or the panel can't reach GitHub), the section silently disappears and the tab shows a short hint pointing at where the operational view moved.
 
-See [GitHub Integration](/docs/github-integration) for how to enable the GitHub-driven tabs.
+See [GitHub Integration](/docs/github-integration) for how to enable these tabs on GitHub, and what Codeberg fills in without any setup.
 
 ![Overview tab — the Open on GitHub button, stars and forks, and contributors for the selected repo](/screenshot-detail-overview.png)
 
@@ -113,7 +113,7 @@ Both tabs share the same row shape:
 
 Click anywhere on a row to open the issue or PR on github.com. Each tab's header has a **New Issue / New Pull Request** button (opens the corresponding "new" page), an **Open on GitHub** button (opens the full Issues / Pull Requests list page — the label follows the remote's host), and a **Refresh** button that bypasses the 60-second cache when you want fresh data.
 
-Both tabs need either a working `gh` CLI (see [GitHub Integration](/docs/github-integration)) or a Personal Access Token in Settings; on repos with no recognised GitHub remote (or no remote at all), the tabs show a short explanation instead of an empty list.
+On GitHub repos both tabs need either a working `gh` CLI (see [GitHub Integration](/docs/github-integration)) or a Personal Access Token in Settings. On Codeberg they need nothing — its API answers anonymously. For a repo with no remote, or one on GitLab or Bitbucket, the tabs show a short explanation instead of an empty list.
 
 ![Issues tab — green open-issue icon, number, title, labels, author avatar, with New Issue, Open on GitHub, and Refresh in the header](/screenshot-detail-issues.png)
 

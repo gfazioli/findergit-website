@@ -21,7 +21,7 @@ There are two ways to authenticate, and FinderGit picks the right one automatica
 1. **GitHub CLI (`gh`)** — preferred. If you already use `gh` and have run `gh auth login`, FinderGit inherits that authentication and you don't need to manage a token.
 2. **Personal Access Token (PAT)** — fallback. If `gh` isn't installed or isn't authenticated, FinderGit reads a token you've pasted into Settings (stored in the macOS Keychain, never on disk in FinderGit's own files).
 
-If neither is configured, the GitHub-driven tabs and columns degrade gracefully: a short hint replaces the empty list, and the rest of FinderGit keeps working.
+If neither is configured, the tabs and columns for **GitHub** repos degrade gracefully: a short hint replaces the empty list, and the rest of FinderGit keeps working. Codeberg repos are unaffected — they need no credentials in the first place.
 
 ### Option 1: `gh` CLI (recommended)
 
