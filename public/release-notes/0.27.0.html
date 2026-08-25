@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.27.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.27.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<h2>Highlights</h2>
+<p><strong>Codeberg repositories are now first-class.</strong> They get their own filter in the sidebar, "Open on Codeberg" in the context menu, and — the part that matters — their Issues, Pull Requests and Stars columns fill in with <strong>nothing for you to set up</strong>. No account to connect, no token to paste. The Issues and Pull Requests tabs work the same way, as does the Overview panel with description, stars, forks, topics and latest release.</p>
+<p>That is not how GitHub works in FinderGit, and the difference is not an oversight: Codeberg answers questions about public repositories without asking who is asking, so FinderGit can simply ask.</p>
+<p><strong>A fork on Codeberg shows its parent</strong>, and the "Forked from" link opens on the right host.</p>
+<h2>Bug fixes</h2>
+<ul>
+<li><strong>Repositories on GitLab and Bitbucket no longer borrow another repository's numbers.</strong> A project mirrored under the same owner and name on two hosts could show counts, issues and pull requests belonging to the <em>other</em> one. Those columns now stay empty rather than confidently wrong, and the tabs say the data is not available for that host instead of asking you to connect an account that would not help.</li>
+<li><strong>The "Forked from" link went to GitHub whatever the host</strong> — correct while GitHub was the only host FinderGit could read, wrong the moment a second one arrived.</li>
+<li><strong>AI commit messages now distinguish "wait" from "this needs fixing".</strong> A temporary hiccup and a service that genuinely needs attention used to produce the same "try again in a moment", which is the wrong advice for one of them.</li>
+<li><strong>A refused anonymous request no longer counts against a host's health numbers</strong> in the connection panel.</li>
+</ul>
+<h2>Under the hood</h2>
+<ul>
+<li>New <code class="notranslate">ForgejoAPIProvider</code> speaking Forgejo/Gitea <code class="notranslate">/api/v1</code>, unauthenticated. <code class="notranslate">repoCounts</code> is a single GET — the same three numbers need a GraphQL query and a user token on GitHub. The instance URL is a parameter, so a self-hosted Forgejo needs a URL field rather than a new provider.</li>
+<li>Provider resolution is now per host (<code class="notranslate">ProviderRouting</code>), with GitHub's CLI-then-token resolution, its cache and its single-flight untouched. GitLab and Bitbucket route to no backend at all.</li>
+<li>New <code class="notranslate">RemoteProviderError.unsupported</code>, distinct from <code class="notranslate">notConfigured</code>, for operations no configuration can enable: fork sync, the account dashboard and repository listing on Codeberg. Forgejo <em>has</em> a sync-fork endpoint — it needs write access FinderGit cannot yet request.</li>
+<li>Measured against codeberg.org rather than assumed: <code class="notranslate">/contributors</code> 404s, cross-repo <code class="notranslate">/compare</code> 500s, and <code class="notranslate">GET /sync_fork</code> reports <code class="notranslate">commits_behind: 0, allowed: false</code> to an anonymous caller — so fork drift shows nothing rather than a zero it cannot vouch for. New-PR links use <code class="notranslate">/compare</code>; <code class="notranslate">/pulls/new</code> is a 404.</li>
+<li>392 tests, 40 of them new.</li>
+</ul>
+<h2>Install</h2>
+<p>Download the DMG below, drag FinderGit to Applications, and open it. Existing installs update themselves.</p>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon + Intel), signed and notarized.</p>
+</body>
+</html>
