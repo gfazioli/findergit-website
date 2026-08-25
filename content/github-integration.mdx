@@ -61,7 +61,7 @@ Once stored, the token lives in the Keychain under the entry for `github.com`. U
 
 ### Issues tab
 
-Open issues for the repo, with state icon, number, title, labels, and author avatar. Click any row to open the issue on GitHub.com. The **New Issue** button opens the new-issue form, and **Open on GitHub** opens the full Issues page in your browser (the label follows the remote's host — GitHub, GitLab, Bitbucket, or Codeberg).
+Open issues for the repo, with state icon, number, title, labels, and author avatar. Click any row to open the issue on the forge it lives on. The **New Issue** button opens the new-issue form, and **Open on GitHub** opens the full Issues page in your browser (the label follows the remote's host — GitHub, GitLab, Bitbucket, or Codeberg).
 
 ![Issues tab populated on a Mantine extension repo](/screenshot-detail-issues.png)
 
@@ -138,7 +138,7 @@ Each tab has a **Refresh** button that bypasses the cache when you want immediat
 
 - All requests go directly to `api.github.com` from your Mac. FinderGit runs no proxy and stores no telemetry about the repos you open.
 - With `gh` CLI auth or a PAT, you get GitHub's authenticated rate limit (5000 requests/hour) — comfortably above what FinderGit consumes.
-- Unauthenticated traffic is *not* attempted; if neither `gh` nor a PAT is set up, FinderGit shows an empty state instead of hitting the 60-request/hour anonymous limit.
+- Unauthenticated traffic to GitHub is *not* attempted; if neither `gh` nor a PAT is set up, FinderGit shows an empty state instead of hitting the 60-request/hour anonymous limit. (Codeberg is the exception, and by design — its API answers anonymously, so requests there carry no credentials at all. See [Codeberg](#codeberg).)
 
 ## Codeberg
 
