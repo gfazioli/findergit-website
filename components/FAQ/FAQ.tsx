@@ -59,11 +59,14 @@ const faqItems: { value: string; question: string; answer: ReactNode }[] = [
         dashboard, the issue / pull-request / star counts in the file browser, and new-star alerts.
         FinderGit reuses the GitHub CLI if it&apos;s already set up, or a personal access token you
         paste into Settings — kept in your Keychain, never written to disk. Plain browsing, Git
-        status, diffs and commit / push / pull all work with no GitHub connection at all. See{' '}
+        status, diffs and commit / push / pull all work with no GitHub connection at all.{' '}
+        <strong>Codeberg repositories need nothing at all</strong> — their issue, pull-request and
+        star counts fill in without an account or a token, because Codeberg answers questions about
+        public repositories anonymously. See{' '}
         <Anchor href="/docs/github-integration" size="sm">
           GitHub Integration
         </Anchor>{' '}
-        for setup.
+        for GitHub setup and what Codeberg covers.
       </>
     ),
   },
