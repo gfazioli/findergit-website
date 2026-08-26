@@ -1,0 +1,65 @@
+# Watches the AI commit-message endpoint's health check.
+#
+# WHY THIS EXISTS. Groq decommissioned the model the proxy asked for on
+# 2026-08-16. Every request failed from that moment, the app reported "the AI
+# provider is temporarily unreachable" — advice to wait, for something that
+# would never recover — and we found out from a user on the 24th. Groq had
+# emailed the deprecation notice two months earlier. Nothing was watching, so
+# nothing knew. (FinderGit#154, FinderGit#156.)
+#
+# The health route answers 200 only when the configured model is one the
+# provider will actually serve, so a non-2xx here means the feature is down.
+# It costs no tokens from the shared per-minute allowance: it asks for the
+# model list, never a completion.
+
+name: AI commit health
+
+on:
+  schedule:
+    # Every 30 minutes. The goal is "we know the same day", so the interval is
+    # not the point — having any at all is. Note GitHub disables scheduled
+    # workflows after 60 days without repository activity; this repo gets a
+    # commit on every release, so that has not been an issue, but a long quiet
+    # spell would silently stop the watch.
+    - cron: '*/30 * * * *'
+  # So a failure can be re-checked by hand without waiting for the next tick.
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ask the health route
+        run: |
+          set -euo pipefail
+
+          # `code`, not `status`: the latter is read-only in zsh, so pasting
+          # this into a terminal to debug the check fails instead of answering.
+          # -f makes curl exit non-zero on any 4xx/5xx, which is what turns a
+          # broken endpoint into a failed run and therefore an email. The body
+          # is captured either way: on failure its `reason` field says which
+          # half broke, and reading it here saves opening the endpoint by hand.
+          code=$(curl -s -o body.json -w '%{http_code}' \
+            --max-time 30 \
+            -H 'Accept: application/json' \
+            "https://findergit.app/api/ai-commit/health") || true
+
+          echo "HTTP $code"
+          echo "body: $(cat body.json)"
+
+          if [ "$code" != "200" ]; then
+            echo "::error::AI commit health check failed (HTTP $code): $(cat body.json)"
+            echo "reason values: missing_api_key | invalid_api_key | model_unavailable | upstream_error | upstream_unreachable"
+            exit 1
+          fi
+
+          # A 200 with ok:false should not exist, but assert it rather than
+          # trusting the status alone: the whole point of this file is not
+          # taking a green signal on faith.
+          if ! grep -q '"ok":true' body.json; then
+            echo "::error::HTTP 200 but the payload is not ok:true — $(cat body.json)"
+            exit 1
+          fi
+
+          echo "AI commit endpoint healthy: $(cat body.json)"
