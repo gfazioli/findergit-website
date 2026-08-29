@@ -16,12 +16,23 @@ name: AI commit health
 
 on:
   schedule:
-    # Every 30 minutes. The goal is "we know the same day", so the interval is
-    # not the point — having any at all is. Note GitHub disables scheduled
-    # workflows after 60 days without repository activity; this repo gets a
-    # commit on every release, so that has not been an issue, but a long quiet
-    # spell would silently stop the watch.
-    - cron: '*/30 * * * *'
+    # Once a day, early morning UTC, so a failure is waiting at the start of
+    # the day rather than arriving mid-afternoon.
+    #
+    # The interval was never the point: the outage this exists for lasted
+    # EIGHT DAYS and was reported by a user. Going from that to "by tomorrow
+    # morning" is the whole win; going from a day to half an hour buys back
+    # hours on a failure mode that takes weeks to appear, at the cost of 48
+    # upstream calls a day. Raise it again if the feature ever becomes
+    # something people depend on hour to hour.
+    #
+    # Two things worth knowing about a once-a-day schedule specifically:
+    # GitHub delays scheduled runs under load, and with a single daily tick a
+    # delay is the whole signal rather than a fraction of it — so treat the
+    # run time as approximate. And GitHub disables scheduled workflows after
+    # 60 days without repository activity; this repo gets a commit on every
+    # release, but a long quiet spell would stop the watch silently.
+    - cron: '0 6 * * *'
   # So a failure can be re-checked by hand without waiting for the next tick.
   workflow_dispatch:
 
