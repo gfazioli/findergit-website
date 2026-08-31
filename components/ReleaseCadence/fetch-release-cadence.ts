@@ -9,7 +9,11 @@ import {
 
 /** GitHub caps a releases page at 100. 47 app releases as of 0.28.0. */
 const PER_PAGE = 100;
-/** Enough for 500 releases. A bound, so a paging bug cannot loop the build. */
+/**
+ * Hard bound on the paging loop, so a bug cannot walk it forever during a
+ * build. It is NOT a claim that 500 releases are enough: past this many the
+ * function reports no count rather than a floor. 47 as of 0.28.0.
+ */
 const MAX_PAGES = 5;
 const TIMEOUT_MS = 10_000;
 
@@ -35,6 +39,10 @@ const TIMEOUT_MS = 10_000;
 export async function fetchReleaseCadence(now: Date = new Date()): Promise<ReleaseCadence> {
   try {
     const collected: ReleaseRecord[] = [];
+    // Only a short page proves there is nothing after it. Exhausting MAX_PAGES
+    // with a full one does not, and a floor presented as a total is exactly the
+    // wrong number this function refuses to print everywhere else.
+    let reachedTheEnd = false;
 
     for (let page = 1; page <= MAX_PAGES; page += 1) {
       const response = await fetch(
@@ -63,8 +71,18 @@ export async function fetchReleaseCadence(now: Date = new Date()): Promise<Relea
 
       collected.push(...(batch as ReleaseRecord[]));
       if (batch.length < PER_PAGE) {
+        reachedTheEnd = true;
         break;
       }
+    }
+
+    if (!reachedTheEnd) {
+      // MAX_PAGES * PER_PAGE releases with the last page still full: there may
+      // be more, and a page count of exactly the cap is indistinguishable from
+      // "more remain". Raising the cap only moves the boundary, so the honest
+      // answer is the same one every other failure gets - state the date, drop
+      // the count.
+      return fallbackReleaseCadence(now);
     }
 
     const summary = summariseReleases(collected, config.releaseNotes.appReleaseNamePrefix);
