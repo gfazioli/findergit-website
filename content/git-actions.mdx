@@ -81,6 +81,14 @@ The per-file buttons appear intelligently: "Stage" only shows for files with uns
 
 Unstaged rows additionally carry a red **Discard** (and the section header a **Discard All**): modified files are reverted to the last staged/committed version, untracked files are moved to the **Trash** (recoverable from Finder) — always behind a confirmation. See [Discard changes](/docs/detail-panel#discard-changes).
 
+### Stashing
+
+**Stash…** in the working-tree header runs `git stash push --include-untracked`, with the message you type or none at all (git then writes its own, `WIP on <branch>: <subject>`). Untracked files are included by default, which is what "stash everything" means when you reach for it.
+
+The list below the commit form runs `git stash pop`, `git stash apply` and `git stash drop` against the entry you pick. A conflicting pop behaves the way git does — the conflict lands in your files and the entry is kept — so the work is still recoverable. See [Stashed changes](/docs/detail-panel#stashed-changes) for what each row shows.
+
+The branch summary in the docked action bar carries the stash count whenever it is non-zero, so a stash you made and forgot is visible without opening the tab.
+
 ### Committing
 
 Below the changes list, a commit section appears when there are changes:

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.28.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.28.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<h2>New</h2>
+<p><strong>Stash — set the working tree aside without committing it.</strong></p>
+<p>The Unstage tab now carries a <strong>Stash…</strong> button beside Stage All and Discard All, because it is the third answer to the same question — what do I do with these changes right now — and the only one that is neither destructive nor a commitment. Give the stash a message, or leave it blank and let git name it after your last commit. Untracked files go along, so the tree is genuinely clean afterwards rather than half-stashed.</p>
+<p>Everything you have set aside is listed under the commit box as <strong>Stashed changes (N)</strong>, collapsed until you want it. Each entry shows the branch it came from, how long it has been waiting, and a quiet <strong>Automatic</strong> badge when the text is git's rather than yours — so a subject you never typed doesn't read as a description you chose. Three actions per row:</p>
+<ul>
+<li><strong>Pop</strong> — bring the work back and remove the stash</li>
+<li><strong>Apply</strong> — bring it back and keep the stash</li>
+<li><strong>Drop</strong> — delete it without applying, behind a confirmation that says plainly the changes are not applied first</li>
+</ul>
+<p>If a pop hits a conflict, the conflict lands in your files and <strong>the stash stays put</strong>. Nothing is lost, the entry is still on the list, and you can try again once you have resolved it. On a clean tree, stashing tells you <strong>"Nothing to stash"</strong> rather than claiming it saved something you would later go looking for.</p>
+<p>Dates and ages are shown in your language, and the whole feature is translated into Italian, French, German and Spanish along with the rest of the app.</p>
+<p><strong>File → Remove Root Folder.</strong> Removing a root folder used to be something only the pointer could do, through the ⊖ button in the sidebar. It now has a menu item, acting on the folder selected in the window you are actually using — so it does the right thing with more than one window open.</p>
+<h2>Fixed</h2>
+<p><strong>A failed action no longer goes quiet.</strong> When a git action failed, the red warning in the action bar could vanish a second or two later — on exactly the actions that had changed something on disk, because re-reading the repository overwrote the message with "nothing wrong here". The failure now outlives every refresh, which is what "Last action failed" always claimed to mean. Most visible with a stash that pops into a conflict, but it applies to pull and to updating a fork as well.</p>
+<h2>Under the hood</h2>
+<ul>
+<li>Update signatures are produced with the same auto-update toolchain the app ships, rather than whichever copy happened to be on the release machine (#161). No effect on installed copies; it removes a way for a release to be signed with a key the app would not accept.</li>
+<li>An action's failure and a status read's failure are now separate pieces of state. They shared one field, so any background refresh could clear the wrong one.</li>
+<li>A stash is identified by its own commit hash rather than its position in the list. Positions renumber the moment anything is removed, so a confirmation left open could have acted on a different stash than the one on screen.</li>
+<li>407 tests.</li>
+</ul>
+</body>
+</html>

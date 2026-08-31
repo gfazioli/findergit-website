@@ -71,6 +71,24 @@ Both run behind a confirmation that states exactly what will happen, including t
 
 ![Unstage tab with three unstaged changes — a red Discard on each row and Discard All next to Stage All in the header](/screenshot-discard.png)
 
+### Stashed changes
+
+Set the working tree aside without committing it. **Stash…** sits in the working-tree header beside Stage All and Discard All, because it is the third answer to the same question — what do I do with these changes right now — and the only one that is neither destructive nor a commitment.
+
+It asks for a message and takes an empty one: leave it blank and git names the stash after your last commit. Untracked files go too, so the tree is genuinely clean afterwards rather than half-stashed. On a clean tree it says **"Nothing to stash"** instead of claiming it saved something — the direction that matters, since the other way round leaves you believing your work is tucked away.
+
+Existing stashes appear underneath the commit form as **Stashed changes (N)**, collapsed until you open it. Each row carries the message, the branch it was made on, and how long ago — and a grey **Automatic** badge when the text is git's rather than yours, so a subject you never typed doesn't read as a description you chose.
+
+Three actions per row:
+
+- **Pop** — apply the changes and remove the stash
+- **Apply** — apply the changes and keep the stash
+- **Drop** — delete it without applying, behind a confirmation that says plainly that the changes are not applied first
+
+If a pop hits a conflict, git writes the conflict into your files and **keeps the stash** — nothing is lost, and the entry stays on the list so you can try again after resolving. The panel refreshes to show the conflicted files, and the failure stays on screen rather than flickering past.
+
+![The Unstage tab with the stash list open — two entries, one carrying a typed message and one badged Automatic, each showing its branch and age with Pop, Apply and Drop on the right](/screenshot-stash.png)
+
 ## Commits
 
 A scrollable list of recent commits from local `git log`. Each row shows:
