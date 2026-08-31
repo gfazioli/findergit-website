@@ -1,0 +1,47 @@
+/*
+ * Sits on the hero's Scene wash (mesh + two glows + dotgrid), so the surface
+ * is translucent with a blur behind it rather than a flat fill: an opaque
+ * pill would punch a hole in the atmosphere it sits on. light-dark() keeps
+ * it legible on the white light-mode page and on dark-7.
+ */
+.strip {
+  background: light-dark(rgb(255 255 255 / 65%), rgb(255 255 255 / 4%));
+  border-color: light-dark(rgb(0 0 0 / 8%), rgb(255 255 255 / 8%));
+  backdrop-filter: blur(6px);
+}
+
+/*
+ * Teal rather than the page's blue: the strip has to read as a status light,
+ * and blue would merge into the brand wash behind it.
+ */
+.dot {
+  flex: none;
+  width: rem(8px);
+  height: rem(8px);
+  border-radius: 50%;
+  background: var(--mantine-color-teal-5);
+  box-shadow: 0 0 0 rem(4px) color-mix(in srgb, var(--mantine-color-teal-5) 22%, transparent);
+  animation: cadence-pulse 2.4s ease-in-out infinite;
+}
+
+/*
+ * The halo breathes, the dot does not move: animating the box-shadow spread
+ * would relayout nothing but does force a paint on a blurred surface, and
+ * transform-scaling the dot makes the text baseline appear to wobble.
+ */
+@keyframes cadence-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rem(3px) color-mix(in srgb, var(--mantine-color-teal-5) 14%, transparent);
+  }
+
+  50% {
+    box-shadow: 0 0 0 rem(6px) color-mix(in srgb, var(--mantine-color-teal-5) 30%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    animation: none;
+  }
+}

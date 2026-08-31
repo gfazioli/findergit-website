@@ -68,6 +68,11 @@ export function SoftwareApplicationJsonLd() {
         url: `${SITE}/`,
         downloadUrl: config.app.downloadUrl,
         softwareVersion: config.app.version,
+        // The machine-readable half of the homepage release strip. Search
+        // engines get a 403 from /api/github-releases, so the config value
+        // release.sh writes is the only date they can see.
+        dateModified: config.app.releaseDate,
+        releaseNotes: `${SITE}/docs/release-notes`,
         image: `${SITE}/opengraph-image.jpeg`,
         screenshot: `${SITE}/screenshot-hero-overview.png`,
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
