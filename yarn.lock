@@ -2325,21 +2325,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gfazioli/mantine-marquee@npm:^4.1.4":
-  version: 4.1.4
-  resolution: "@gfazioli/mantine-marquee@npm:4.1.4"
+"@gfazioli/mantine-marquee@npm:^4.1.5":
+  version: 4.1.5
+  resolution: "@gfazioli/mantine-marquee@npm:4.1.5"
   peerDependencies:
     "@mantine/core": ">=9.0.0"
     "@mantine/hooks": ">=9.0.0"
     react: ^18.x || ^19.x
     react-dom: ^18.x || ^19.x
-  checksum: 10c0/4307e925f6c01667a3434b0d2763140f19bac790f663738cacc679d5c1d01ec03402759f9cf103d10f29f6e8ce65e34a4f23a4a2c79e42bd158bfd41f0f02e99
+  checksum: 10c0/b020a6c2c1eab10c43935708985ac5251df372b9dcdd9cde74122b01c63908cfd2cff65942ba1b0dde1078c1a23db03e879dcab153cfa00143f9df27162e8558
   languageName: node
   linkType: hard
 
-"@gfazioli/mantine-scene@npm:^2.2.8":
-  version: 2.2.8
-  resolution: "@gfazioli/mantine-scene@npm:2.2.8"
+"@gfazioli/mantine-scene@npm:^2.2.9":
+  version: 2.2.9
+  resolution: "@gfazioli/mantine-scene@npm:2.2.9"
   dependencies:
     cobe: "npm:^2.0.1"
   peerDependencies:
@@ -2347,19 +2347,19 @@ __metadata:
     "@mantine/hooks": ">=9.0.0"
     react: ^18.x || ^19.x
     react-dom: ^18.x || ^19.x
-  checksum: 10c0/764e987f10e333278e75527d22ef3667e9809cf03bba07d4571ed59f5270d95fdcee9245e3fd5ff82b86cecee5c84f83a103dac03fec0c89702ea2fb04876cf8
+  checksum: 10c0/c7ef264d9a7a33f061b577ab935d6b8cbf207ee868e5c559e2ffb6ad4e2c2d440de8636e1d7ce3e960f403365c101c394adbfff11d5c66f956b0bf5935a983c7
   languageName: node
   linkType: hard
 
-"@gfazioli/mantine-text-animate@npm:^4.0.8":
-  version: 4.0.8
-  resolution: "@gfazioli/mantine-text-animate@npm:4.0.8"
+"@gfazioli/mantine-text-animate@npm:^4.0.9":
+  version: 4.0.9
+  resolution: "@gfazioli/mantine-text-animate@npm:4.0.9"
   peerDependencies:
     "@mantine/core": ">=9.0.0"
     "@mantine/hooks": ">=9.0.0"
     react: ^18.x || ^19.x
     react-dom: ^18.x || ^19.x
-  checksum: 10c0/ceed57b9e3e52592f929496e27f031221b0f7ea6b04d887746c4c83d8cb2d6312e0a1b52be7e5f5f62b2179b8d759ecd8f5fd1b9cf7118f34e37a03de535c235
+  checksum: 10c0/5e145bc5a3b2bf2ffb3d7fda206191a570f8701d220dc9c6bd2b50110e4251ffd0753f43ee1d5d2cbc3e3ed53cc8bf776fc79bb73829e781f1d396fabec11b0b
   languageName: node
   linkType: hard
 
@@ -11607,9 +11607,9 @@ __metadata:
   resolution: "mantine-next-nextra-template@workspace:."
   dependencies:
     "@babel/core": "npm:^7.29.7"
-    "@gfazioli/mantine-marquee": "npm:^4.1.4"
-    "@gfazioli/mantine-scene": "npm:^2.2.8"
-    "@gfazioli/mantine-text-animate": "npm:^4.0.8"
+    "@gfazioli/mantine-marquee": "npm:^4.1.5"
+    "@gfazioli/mantine-scene": "npm:^2.2.9"
+    "@gfazioli/mantine-text-animate": "npm:^4.0.9"
     "@mantine/core": "npm:9.6.0"
     "@mantine/hooks": "npm:9.6.0"
     "@mdx-js/loader": "npm:^3.1.1"
