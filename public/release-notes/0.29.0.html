@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.29.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.29.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<h2>New</h2>
+<p><strong>If a row does something, it now says so.</strong></p>
+<p>Lists you can click light up under the pointer, everywhere: the branch list, the changed files, the stash entries, the clone picker, the settings, the breadcrumb. It sounds small and it is the difference between a list you read and a list you use — before this, several of those rows responded to a click with nothing on screen suggesting they would, and nothing telling you which one you were on.</p>
+<p>The same pass made whole rows clickable where only a word used to be. A file in the Unstage tab opens its diff from anywhere on the row, not just from the characters of its path.</p>
+<p><strong>Open a commit the way you open a folder.</strong></p>
+<p>Every commit in the Commits tab has a disclosure chevron. Open it and the files that commit touched unfold underneath, with a <strong>N files · +added −removed</strong> summary on top and, per file, git's own status letter, the path, the old name on a rename, and that file's own line counts. Binary files say <em>binary</em> rather than pretending to a count.</p>
+<p>Click a file and its diff <strong>for that commit</strong> opens in a sheet — the same viewer the working-tree diff uses, scoped to what this one commit did to this one file. It is read-only: nothing here stages, discards or reverts. What a commit removed is often the part worth reading, so deleted files open too.</p>
+<p>The list is fetched only when you open a row, so the tab costs the same however far you scroll. Merge commits list what they brought in rather than the nothing they used to.</p>
+<p><strong>The Branches tab was rebuilt.</strong></p>
+<p>The branch you are on is pinned at the top in its own card, with its upstream and how far ahead or behind it is, so it never scrolls away. <strong>Local</strong> and <strong>Remote</strong> are separate groups, each with a count and separated rows, instead of two captions over undifferentiated text. Checking a branch out is a click anywhere on its row.</p>
+<p><strong>Read an issue or a pull request without leaving FinderGit.</strong></p>
+<p>A row opens in place onto the full description, rendered as Markdown — headings, lists, links, code — under the author and when they filed it, followed by the discussion. A long description folds behind <strong>Show more</strong> so one verbose issue cannot push the rest of the list off screen.</p>
+<p>On a pull request that means the <em>whole</em> conversation: the body a reviewer submitted with their verdict and the notes pinned to lines of a file, each labelled for what it is, not just the comments tab. A pull request reviewed entirely inline — which is how most of them are — used to look as though nobody had said a word.</p>
+<p><strong>Open in browser</strong> and <strong>Copy link</strong> sit underneath for the parts FinderGit does not render. Images in a description are deliberately not downloaded: an issue body is written by anyone who can open an issue, and fetching an image it names would tell that person your IP address and when you read it.</p>
+<p>Everything above is translated into Italian, French, German and Spanish.</p>
+<h2>Fixed</h2>
+<p><strong>A way to lose work.</strong> Discarding a file whose name contains <code class="notranslate">*</code>, <code class="notranslate">?</code> or <code class="notranslate">[...]</code> could revert an unrelated file that happened to match — and Discard has no undo. The same slip made Stage act on more files than you picked, and made a single file's diff show its neighbours' changes under the wrong name. Every path FinderGit hands back to git is now taken literally. If you have never named a file that way this never touched you; if you have, it did so silently.</p>
+<p><strong>A branch that was not a branch.</strong> The Branches tab listed <code class="notranslate">origin</code> among the remote branches, with a Checkout button git would have refused. It was the remote's own name leaking through a filter that could never match.</p>
+<p><strong>Wrong grammar in four languages.</strong> The file-status badge in a commit shared a translation with the panel that counts how many repositories are dirty, so a tooltip about one file read as a plural in Italian, French and Spanish. English showed nothing wrong, which is why it survived until now.</p>
+<p><strong>A commit whose file list could not be trusted</strong> is now refused rather than shown. If a path in it cannot be decoded, clicking it would have opened another file's diff or none at all.</p>
+<h2>Under the hood</h2>
+<ul>
+<li>Comments merged from three sources keep distinct identities, so none is silently dropped from a discussion.</li>
+<li>Refresh on the Issues and Pull Requests tabs now reaches a thread you already have open, instead of only the list behind it.</li>
+<li>Expanding a commit cancels its file load when you collapse it, so walking a long history no longer leaves a screenful of git processes racing each other.</li>
+<li>Empty and space-only strings no longer enter the translation catalogue as keys nothing can translate. All three catalogues now read 100% in every supported language.</li>
+<li>453 tests.</li>
+</ul>
+</body>
+</html>

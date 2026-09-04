@@ -103,6 +103,16 @@ When the branch is **behind its upstream**, the commits a pull would bring in ri
 
 ![Commits tab with an "Incoming (3) · to pull" card at the top — three behind-upstream commits marked with a ↓ and origin/main badges, set off above the local history, and "Last fetched now" in the docked action bar](/screenshot-commits-incoming.png)
 
+### What a commit changed
+
+Every commit row opens like a folder. Click the row — or the chevron on its left — and the files that commit touched unfold underneath it, with a **"N files · +additions −deletions"** summary on top and, per file, git's own status letter (**A**dded, **M**odified, **D**eleted, **R**enamed), the path, and that file's own line counts. A renamed file carries its old name underneath. Binary files say **binary** rather than pretending to a line count.
+
+Click a file in that list and its diff for that commit opens in a sheet — the same viewer the working-tree diff uses, scoped to what this one commit did to this one file. That includes **deleted** files: what a commit removed is often the part most worth reading, and the whole deletion is there. Only binary files have no diff to show. It is read-only: nothing here stages, discards or reverts.
+
+The list is fetched only when you open a row, so the tab still costs one `git log` no matter how much history you scroll. Merge commits list what they brought in against their first parent, rather than the empty list `git show` gives them by default.
+
+![Commits tab with the newest commit opened onto its files — a "2 files +2" summary, then each path with git's status letter and its own line counts, tied to the commit above by a hairline](/screenshot-commit-files.png)
+
 Hover any row to highlight it. Avatars and badges can each be turned off, and the number of commits shown (default **4**, up to **50**) set, in [Settings → Detail View](/docs/settings#detail-view).
 
 ![Commits tab — each row leads with the author's avatar on the left; commits pointed at by a ref show badges above the subject (gold tag, accent current branch, grey origin/master and origin/HEAD), followed by subject, short SHA, author, relative date, and a copy button](/screenshot-detail-commits.png)
@@ -112,7 +122,7 @@ Hover any row to highlight it. Avatars and badges can each be turned off, and th
 Switch branches without leaving the app — no more discovering mid-task that you were on the wrong one. Three ways in:
 
 - **The branch chip** in the panel header shows the current branch; click it for a dropdown of the repo's local branches and switch with one click.
-- **The Branches tab** is the full view: **Local** and **Remote** sections, the current branch marked, and a **Checkout** button on every other row. Checking out a remote branch creates a local branch tracking exactly that remote — unambiguous even when several remotes carry the same branch name.
+- **The Branches tab** is the full view. The **checked-out branch is pinned at the top** in its own card, with its upstream and its ↑ahead ↓behind counts beside it, so the one branch you are actually on never scrolls away. Under it, **Local** and **Remote** are separate bounded groups, each with a count, each row separated and highlighted under the pointer. Every row is a target: click anywhere on it, or use its **Checkout** button. Checking out a remote branch creates a local branch tracking exactly that remote — unambiguous even when several remotes carry the same branch name.
 - **Right-click a repo** in the file browser → **Switch Branch** for the same quick switch from the list.
 
 After a checkout the file tree, status badge, and branch chip all update automatically. If Git refuses the switch (typically uncommitted changes that would be overwritten), the error appears in the action-bar feedback — nothing is forced.
@@ -129,10 +139,24 @@ Both tabs share the same row shape:
 - Coloured label chips
 - The author's avatar on the right
 
-Click anywhere on a row to open the issue or PR on github.com. Each tab's header has a **New Issue / New Pull Request** button (opens the corresponding "new" page), an **Open on GitHub** button (opens the full Issues / Pull Requests list page — the label follows the remote's host), and a **Refresh** button that bypasses the 60-second cache when you want fresh data.
+### Reading a thread without leaving the app
+
+Click anywhere on a row and it unfolds in place: the **description rendered as Markdown** — headings, lists, links, inline and fenced code — under the author and when they opened it, followed by the **comment thread**. A long description folds after the first stretch with a **Show more** link, so one verbose issue cannot push the rest of the list off screen. One row is open at a time.
+
+On a **pull request** the preview shows the whole discussion, not just the conversation tab: the body a reviewer submitted with their verdict, and the notes pinned to lines of a file, each labelled for what it is. A pull request reviewed entirely inline — which is how most of them are — would otherwise look as though nobody had said anything.
+
+The description costs nothing extra — every forge already returns it with the list. The comments are fetched only when you open a row, capped at the first 30, and cached for a minute like everything else in these tabs. Both work the same way on GitHub and on Codeberg.
+
+**Images in a description are not downloaded.** An issue body is written by anyone who can open an issue, so every image URL in it is chosen by someone else — and fetching one would tell them your IP address and when you read their issue, or reach a service only your Mac can see. FinderGit shows a placeholder and leaves the fetching to your browser, which is what the **Open in browser** button is for.
+
+Under the preview, **Open in browser** and **Copy link** are there for when you do want github.com — a permalink to paste into a message, or the parts FinderGit does not render yet.
+
+![An issue opened in place — labels, the author and when they filed it, then the description rendered as Markdown with headings, inline code and a fenced block, folded behind Show more, with Open in browser and Copy link underneath](/screenshot-issue-preview.png)
+
+Each tab's header has a **New Issue / New Pull Request** button (opens the corresponding "new" page), an **Open on GitHub** button (opens the full Issues / Pull Requests list page — the label follows the remote's host), and a **Refresh** button that bypasses the 60-second cache when you want fresh data.
 
 On GitHub repos both tabs need either a working `gh` CLI (see [GitHub Integration](/docs/github-integration)) or a Personal Access Token in Settings. On Codeberg they need nothing — its API answers anonymously. For a repo with no remote, or one on GitLab or Bitbucket, the tabs show a short explanation instead of an empty list.
 
 ![Issues tab — green open-issue icon, number, title, labels, author avatar, with New Issue, Open on GitHub, and Refresh in the header](/screenshot-detail-issues.png)
 
-![Pull Requests tab — pull-request icon per state, number, title, labels, author, with New Pull Request, Open on GitHub, and Refresh in the header](/screenshot-detail-prs.png)
+![Pull Requests tab on a Codeberg repository, needing no credentials — the top pull request opened in place with its description, the next one collapsed below, and New Pull Request / Open on Codeberg / Refresh in the header](/screenshot-detail-prs.png)
