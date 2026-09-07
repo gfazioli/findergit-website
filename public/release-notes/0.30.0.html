@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.30.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.30.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<h2>GitLab and Bitbucket, with nothing to set up</h2>
+<p>FinderGit already read GitHub with your own credentials and Codeberg with none at all. It now reads <strong>GitLab</strong> and <strong>Bitbucket</strong> the same way Codeberg is read — anonymously — so a folder of clones from any of the four fills in its columns on its own.</p>
+<p>Open a folder with a GitLab project in it and the <strong>Issues</strong>, <strong>Pull Requests</strong> and <strong>Stars</strong> columns populate. No account to connect, no token to paste. The <strong>Issues</strong> and <strong>Pull Requests</strong> tabs work there too, with labels, authors, drafts and state — merge requests included, since that is what GitLab calls them. The <strong>Overview</strong> tab fills in description, stars, forks, topics and the latest release, and the fork badge names the repository a fork came from.</p>
+<p>GitLab projects nested in <strong>subgroups</strong> — <code class="notranslate">group/team/project</code> — are recognised as the one repository they are, rather than being skipped.</p>
+<p>Bitbucket works the same way for pull requests, with the full comment thread in the preview, inline review notes included.</p>
+<h2>What each forge can honestly answer</h2>
+<p>The interesting part of adding two forges is what they refuse, and this release is careful about it in a way that is visible on screen:</p>
+<ul>
+<li><strong>Bitbucket has no issue tracker any more.</strong> Its API was retired in August 2026, so the Issues tab says so and the Issues column stays <strong>empty</strong> on Bitbucket repositories — not zero. An empty cell is the truth; a zero would be a claim about a tracker that no longer exists.</li>
+<li><strong>Bitbucket has no stars.</strong> The closest number it keeps is watchers, which appear on the Overview under their own name rather than borrowed into a column headed Stars.</li>
+<li><strong>A fork is never called up to date unless somebody measured it.</strong> Only GitHub reports how far a fork trails its upstream. On the other three the banner now says the drift is not available there, instead of showing a green check nobody earned — which is what it used to do.</li>
+<li><strong>GitLab shows comments only to a signed-in user</strong>, even on public projects, so the preview says so rather than failing.</li>
+</ul>
+<p>The same rule now runs through the columns generally: <strong>a count that could not be obtained shows nothing rather than zero</strong>, whatever the reason — a forge that has no such concept, a header the API omits past ten thousand results, or a request refused by a rate limit.</p>
+<h2>Also in this release</h2>
+<ul>
+<li><strong>Comment threads show the right faces.</strong> An author's picture comes from the forge the repository actually lives on, so the same username on two different forges is no longer drawn as the same person.</li>
+<li>The <strong>sidebar filters</strong> gain GitLab and Bitbucket beside GitHub and Codeberg, each with its count.</li>
+</ul>
+<h2>Known limits</h2>
+<ul>
+<li>Only the hosted services are recognised. A <strong>self-hosted GitLab</strong> or <strong>Bitbucket Server</strong> remote is treated as a repository with no forge, and its columns stay empty.</li>
+<li><strong>Bitbucket allows an anonymous caller 60 requests an hour</strong>, and a repository row costs three of them. Roughly twenty Bitbucket clones exhaust the hour on a single paint; the cells then wait and fill in later. GitLab is generous by comparison and Codeberg has never been a problem.</li>
+<li>Private repositories on GitLab and Bitbucket are invisible without an account — both answer "not found" to an anonymous caller, exactly as they do for a repository that does not exist.</li>
+</ul>
+<p>Signing in per forge would lift most of these; it is the next thing in this area.</p>
+<h2>Under the hood</h2>
+<p>Every capability above was measured against the live APIs rather than read off documentation, and the numbers are in the pull request. The release also carries a fix to the branch-pruning script the release pipeline runs, which could delete a local branch whose only copy of some work was local.</p>
+</body>
+</html>
