@@ -1,18 +1,20 @@
 ---
-description: "Connect FinderGit to GitHub with the GitHub CLI or a personal access token to enable the Issues, Pull Requests and Stars columns, the Account dashboard, and fork awareness."
+description: "Connect FinderGit to GitHub with the GitHub CLI or a personal access token, and read what Codeberg, GitLab and Bitbucket fill in with no setup at all: the Issues, Pull Requests and Stars columns, the Account dashboard, and fork awareness."
 ---
 
 import { Kbd } from '@/components/Kbd';
 
 # GitHub Integration
 
-FinderGit reads GitHub data — open issues, pull requests, repository metadata, stargazer counts — directly from your repositories' configured remotes. Nothing leaves your Mac except the requests to `api.github.com`; no FinderGit-side proxy or telemetry sits in the middle.
+FinderGit reads forge data — open issues, pull requests, repository metadata, stargazer counts — directly from your repositories' configured remotes: GitHub with your own credentials, and Codeberg, GitLab and Bitbucket anonymously. Nothing leaves your Mac except the requests to the forge a repo lives on; no FinderGit-side proxy or telemetry sits in the middle.
 
 The integration powers:
 
 - The **Overview**, **Issues**, and **Pull Requests** tabs in the [Detail Panel](/docs/detail-panel)
 - Three columns in the [File Browser](/docs/file-browser): **Issues**, **PRs**, and **Stars**
 - **Fork awareness** — a badge on forks, how far they trail their upstream, and one-click sync
+
+Everything below the GitHub setup applies to GitHub. **Codeberg, GitLab and Bitbucket get the same enrichment with no setup at all** — their sections are at the end of this page: [Codeberg](#codeberg), [GitLab](#gitlab), [Bitbucket](#bitbucket).
 
 ## How FinderGit talks to GitHub
 
@@ -21,7 +23,7 @@ There are two ways to authenticate, and FinderGit picks the right one automatica
 1. **GitHub CLI (`gh`)** — preferred. If you already use `gh` and have run `gh auth login`, FinderGit inherits that authentication and you don't need to manage a token.
 2. **Personal Access Token (PAT)** — fallback. If `gh` isn't installed or isn't authenticated, FinderGit reads a token you've pasted into Settings (stored in the macOS Keychain, never on disk in FinderGit's own files).
 
-If neither is configured, the tabs and columns for **GitHub** repos degrade gracefully: a short hint replaces the empty list, and the rest of FinderGit keeps working. Codeberg repos are unaffected — they need no credentials in the first place.
+If neither is configured, the tabs and columns for **GitHub** repos degrade gracefully: a short hint replaces the empty list, and the rest of FinderGit keeps working. Codeberg, GitLab and Bitbucket repos are unaffected — they need no credentials in the first place.
 
 ### Option 1: `gh` CLI (recommended)
 
@@ -138,7 +140,9 @@ Each tab has a **Refresh** button that bypasses the cache when you want immediat
 
 - All requests go directly to the forge a repo lives on — `api.github.com`, `codeberg.org`, `gitlab.com` or `api.bitbucket.org` — from your Mac. FinderGit runs no proxy and stores no telemetry about the repos you open.
 - With `gh` CLI auth or a PAT, you get GitHub's authenticated rate limit (5000 requests/hour) — comfortably above what FinderGit consumes.
-- Unauthenticated traffic to GitHub is *not* attempted; if neither `gh` nor a PAT is set up, FinderGit shows an empty state instead of hitting the 60-request/hour anonymous limit. (Codeberg is the exception, and by design — its API answers anonymously, so requests there carry no credentials at all. See [Codeberg](#codeberg).)
+- Unauthenticated traffic to GitHub is *not* attempted; if neither `gh` nor a PAT is set up, FinderGit shows an empty state instead of hitting the 60-request/hour anonymous limit.
+- Codeberg, GitLab and Bitbucket are read **anonymously, by design** — requests there carry no credentials at all, and the repo path is the only thing they learn. Codeberg and GitLab allow that generously (GitLab: 500 requests a minute). See [Codeberg](#codeberg), [GitLab](#gitlab) and [Bitbucket](#bitbucket) for what each one answers.
+- **Bitbucket allows an anonymous caller only 60 requests an hour**, and a repo row costs **three** of them (open pull requests, watchers, fork status) — so roughly **20 Bitbucket clones** exhaust the hour on a single paint, and opening the Overview dashboard walks every repo you track, not just the visible rows. Past the ceiling the cells stay empty and retry about once a minute, which cannot succeed until the hour rolls over. If you keep more than a handful of Bitbucket clones, that is the limit you will meet, and it is the argument for the per-host token work.
 
 ## Codeberg
 
@@ -157,13 +161,13 @@ What does not, and why:
 | Not available | Reason |
 |---|---|
 | Contributor list in Overview | Forgejo has no public contributors endpoint |
-| "N behind" and **Sync Fork** | Both need an account. Forgejo *can* sync a fork and *can* report how far behind one is — it just won't tell an anonymous caller, and FinderGit has nowhere to sign in to Codeberg yet. A count we can't trust would badge a stale fork as up to date, so it shows nothing instead |
+| "N behind" and **Sync Fork** | Both need an account. Forgejo *can* sync a fork and *can* report how far behind one is — it just won't tell an anonymous caller, and FinderGit has nowhere to sign in to Codeberg yet. Rather than guess, the fork banner says the drift isn't available on this forge, and the badge stays neutral — an unmeasured fork is never called up to date |
 | Forge status panel | Codeberg publishes its status through Uptime Kuma rather than the platform the panel reads; a link with no numbers behind it would be worse than none |
 | Account dashboard, Clone window | Both describe *your* account, which needs credentials Codeberg is not being asked for |
 
 ## GitLab
 
-GitLab repos are enriched with **no setup** as well: GitLab's public API answers anonymous requests for any public project, so the moment FinderGit recognises a `gitlab.com` remote it can fill in the numbers. Projects nested in **subgroups** (`group/team/project`) are recognised and addressed correctly.
+GitLab repos are enriched with **no setup** as well: GitLab's public API answers anonymous requests for any public project, so the moment FinderGit recognises a `gitlab.com` remote it can fill in the numbers. Projects nested in **subgroups** (`group/team/project`) are recognised and addressed correctly. **Self-hosted GitLab is not recognised yet** — only `gitlab.com`; a remote on your own instance is treated as a repo with no forge, and its columns stay empty.
 
 What works on a GitLab repo:
 
@@ -178,7 +182,7 @@ What does not, and why:
 | Not available | Reason |
 |---|---|
 | Comments in the issue / merge-request preview | GitLab shows notes only to a signed-in user, even on public projects. FinderGit has nowhere to store a GitLab token yet, so the preview says so instead of failing |
-| "N behind" and **Sync Fork** | Both need an account. To an anonymous caller the cross-project compare answers as if the fork were its own upstream — a zero that would badge a stale fork as current, so it shows nothing instead |
+| "N behind" and **Sync Fork** | Both need an account. To an anonymous caller the cross-project compare answers as if the fork were its own upstream — a zero nobody measured. The banner says the drift isn't available rather than showing it, so a stale fork is never called current |
 | Contributor list in Overview | GitLab lists contributors by name and email only, with no profile to link or avatar to show |
 | Private projects | Invisible to an anonymous caller — they answer "not found", exactly like a project that does not exist |
 | Account dashboard, Clone window | Both describe *your* account, which needs credentials GitLab is not being asked for |
@@ -191,8 +195,10 @@ Bitbucket Cloud repos are enriched anonymously too, within what the platform sti
 - The **Pull Requests** tab works — drafts, state, and the full comment thread in the preview, inline review comments included.
 - The **Stars** column shows **watchers**, the closest thing Bitbucket has to a star.
 - **Overview**: description, website, watchers and forks. Bitbucket has no topics or releases to show.
-- The **fork badge** and its parent repository. "N behind" is not available: Bitbucket has no cross-repository compare.
+- The **fork badge** and its parent repository. "N behind" is not available — Bitbucket has no cross-repository compare — so the banner says so instead of implying the fork is current.
 - The sidebar **Bitbucket** filter, and **Open on Bitbucket** in the context menu.
 
-One limit worth knowing: Bitbucket allows an anonymous caller **60 requests an hour**, and each repo's columns cost two of them. A folder with dozens of Bitbucket clones can hit that ceiling; the cells then wait and try again later. Private repositories are invisible without an account.
+As with GitLab, only the hosted service is recognised: a **Bitbucket Server / Data Center** remote on your own domain is treated as a repo with no forge.
+
+Bitbucket's anonymous budget is the tightest of the three — see [Privacy and rate limits](#privacy-and-rate-limits) for what that costs in practice. Private repositories are invisible without an account.
 

@@ -119,7 +119,7 @@ const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: 'Do I need to connect a GitHub account?',
     answer:
-      'Only for the GitHub-powered extras — the Account dashboard, the issue / pull-request / star counts in the file browser, and new-star alerts. FinderGit reuses the GitHub CLI if it’s already set up, or a personal access token you paste into Settings — kept in your Keychain, never written to disk. Plain browsing, Git status, diffs and commit / push / pull all work with no GitHub connection at all.',
+      'Only for the GitHub-powered extras — the Account dashboard, the issue / pull-request / star counts in the file browser, and new-star alerts. FinderGit reuses the GitHub CLI if it’s already set up, or a personal access token you paste into Settings — kept in your Keychain, never written to disk. Plain browsing, Git status, diffs and commit / push / pull all work with no GitHub connection at all. Codeberg, GitLab and Bitbucket repositories need nothing at all: their counts fill in without an account or a token, because those forges answer questions about public repositories anonymously. Bitbucket retired its issue tracker, so its Issues column stays empty, and its stars are watchers.',
   },
   {
     question: 'Can FinderGit tell me when one of my repos gets a star?',
@@ -149,7 +149,7 @@ const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: 'Does FinderGit send my data anywhere?',
     answer:
-      'No telemetry, ever. GitHub data (issues, pull requests, stars, fork status) is fetched directly from api.github.com using your own credentials. The only exception is the optional AI commit message feature: when you click ✨ AI, your staged diff is sent to generate the message — nothing is stored, and nothing is sent unless you ask.',
+      'No telemetry, ever. Forge data (issues, pull requests, stars, fork status) is fetched directly from the forge a repo lives on — GitHub with your own credentials; Codeberg, GitLab and Bitbucket anonymously, so all they learn is the repo path. The only other traffic is the optional AI commit message feature: when you click ✨ AI, your staged diff is sent to generate the message — nothing is stored, and nothing is sent unless you ask.',
   },
   {
     question: 'How does the live update work?',

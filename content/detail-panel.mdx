@@ -12,12 +12,12 @@ When you select a repository — in the [Repository List](/docs/repository-list)
 
 The tabs:
 
-- **Overview** — at-a-glance facts about the repo (description, stars, topics, contributors, latest release) when it has a GitHub remote, plus the [fork banner](/docs/github-integration#fork-awareness) when the repo is a fork
+- **Overview** — at-a-glance facts about the repo (description, stars, topics, contributors, latest release) when it has a remote on a forge FinderGit reads, plus the [fork banner](/docs/github-integration#fork-awareness) when the repo is a fork
 - **Unstage** — working-tree changes, the diff, the commit form (including the AI commit button)
 - **Commits** — recent local history from `git log`
 - **Branches** — local and remote branches, with one-click checkout
-- **Issues** — open issues on the GitHub repo
-- **Pull Requests** — open pull requests on the GitHub repo
+- **Issues** — open issues on the repo's forge
+- **Pull Requests** — open pull requests (merge requests on GitLab) on the repo's forge
 - **Maintenance** — disk-space breakdown and cleanup (see [Repo Maintenance](/docs/repo-maintenance))
 - **Trust** — the repo's auto-run surface (see [Repo Trust](/docs/repo-trust))
 
@@ -34,7 +34,7 @@ Because the bar is docked outside the scroll area, the actions stay reachable fr
 
 ## Overview
 
-The Overview tab paints the forge-side identity of the repo — GitHub or Codeberg; see [GitHub Integration → Codeberg](/docs/github-integration#codeberg) for what each one can fill in:
+The Overview tab paints the forge-side identity of the repo — GitHub, Codeberg, GitLab or Bitbucket; see [GitHub Integration](/docs/github-integration#what-populates-from-github) for what each forge can fill in:
 
 - An **Open on GitHub** button — opens the repo's page in your browser. The label follows the remote's host (GitHub, GitLab, Bitbucket, or Codeberg) and it appears for any repo with a recognized remote, even before the rest of the metadata loads.
 - **Description** at the top
@@ -42,9 +42,9 @@ The Overview tab paints the forge-side identity of the repo — GitHub or Codebe
 - **Topic chips** (wrapping onto multiple lines when there are many)
 - **Top contributors** — up to eight avatars, click an avatar to open that user's GitHub profile
 
-If the selected repo doesn't have a GitHub remote (or the panel can't reach GitHub), the section silently disappears and the tab shows a short hint pointing at where the operational view moved.
+If the selected repo doesn't have a remote on a forge FinderGit reads (or the panel can't reach it), the section silently disappears and the tab shows a short hint pointing at where the operational view moved.
 
-See [GitHub Integration](/docs/github-integration) for how to enable these tabs on GitHub, and what Codeberg fills in without any setup.
+See [GitHub Integration](/docs/github-integration) for how to enable these tabs on GitHub, and what Codeberg, GitLab and Bitbucket fill in without any setup.
 
 ![Overview tab — the Open on GitHub button, stars and forks, and contributors for the selected repo](/screenshot-detail-overview.png)
 
@@ -145,7 +145,7 @@ Click anywhere on a row and it unfolds in place: the **description rendered as M
 
 On a **pull request** the preview shows the whole discussion, not just the conversation tab: the body a reviewer submitted with their verdict, and the notes pinned to lines of a file, each labelled for what it is. A pull request reviewed entirely inline — which is how most of them are — would otherwise look as though nobody had said anything.
 
-The description costs nothing extra — every forge already returns it with the list. The comments are fetched only when you open a row, capped at the first 30, and cached for a minute like everything else in these tabs. Both work the same way on GitHub and on Codeberg.
+The description costs nothing extra — every forge already returns it with the list. The comments are fetched only when you open a row, capped at the first 30, and cached for a minute like everything else in these tabs. That is the same on GitHub, Codeberg and Bitbucket; GitLab shows comments only to a signed-in user, so its preview says so instead (see [GitLab](/docs/github-integration#gitlab)).
 
 **Images in a description are not downloaded.** An issue body is written by anyone who can open an issue, so every image URL in it is chosen by someone else — and fetching one would tell them your IP address and when you read their issue, or reach a service only your Mac can see. FinderGit shows a placeholder and leaves the fetching to your browser, which is what the **Open in browser** button is for.
 
