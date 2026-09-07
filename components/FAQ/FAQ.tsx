@@ -61,8 +61,9 @@ const faqItems: { value: string; question: string; answer: ReactNode }[] = [
         paste into Settings — kept in your Keychain, never written to disk. Plain browsing, Git
         status, diffs and commit / push / pull all work with no GitHub connection at all.{' '}
         <strong>Codeberg, GitLab and Bitbucket repositories need nothing at all</strong> — their
-        issue, pull-request and star counts fill in without an account or a token, because those
-        forges answer questions about public repositories anonymously. See{' '}
+        counts fill in without an account or a token, because those forges answer questions about
+        public repositories anonymously. (Bitbucket retired its issue tracker, so its Issues column
+        stays empty, and its &quot;stars&quot; are watchers.) See{' '}
         <Anchor href="/docs/github-integration" size="sm">
           GitHub Integration
         </Anchor>{' '}
@@ -145,8 +146,10 @@ const faqItems: { value: string; question: string; answer: ReactNode }[] = [
     question: 'Does FinderGit send my data anywhere?',
     answer: (
       <>
-        No telemetry, ever. GitHub data (issues, pull requests, stars, fork status) is fetched
-        directly from api.github.com using your own credentials. The only exception is the optional{' '}
+        No telemetry, ever. Forge data (issues, pull requests, stars, fork status) is fetched
+        directly from the forge a repo lives on — GitHub with your own credentials; Codeberg, GitLab
+        and Bitbucket anonymously, so all they learn is the repo path. The only other traffic is the
+        optional{' '}
         <Anchor href="/docs/ai-commit-messages" size="sm">
           AI commit message
         </Anchor>{' '}

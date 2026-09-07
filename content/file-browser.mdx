@@ -59,7 +59,7 @@ Hover the badge for a tooltip with the exact meaning. Ahead/behind counts are on
 
 ### Fork badge
 
-GitHub **forks** carry a small branch glyph next to their name. It stays muted when the fork is in sync, and turns orange with **↓N** when the fork is behind its upstream — so you can spot at a glance which forks need syncing. When one does, **Sync Fork** (from the context menu or the Overview tab) updates it on GitHub and pulls your local clone in one step; a fork that has [diverged](/docs/github-integration#update-from-upstream) — its own commits *and* missing upstream ones — can't be fast-forwarded, so the Overview banner offers a merge or a rebase from upstream instead. See [Fork awareness](/docs/github-integration#fork-awareness) for the full story.
+**Forks** carry a small branch glyph next to their name. It stays muted when the fork is in sync, and turns orange with **↓N** when the fork is behind its upstream — so you can spot at a glance which forks need syncing. Only GitHub reports how far behind a fork is; on the other three forges the glyph marks the fork and its tooltip says the drift isn't available, rather than implying it is current. When one does, **Sync Fork** (from the context menu or the Overview tab) updates it on GitHub and pulls your local clone in one step; a fork that has [diverged](/docs/github-integration#update-from-upstream) — its own commits *and* missing upstream ones — can't be fast-forwarded, so the Overview banner offers a merge or a rebase from upstream instead. See [Fork awareness](/docs/github-integration#fork-awareness) for the full story.
 
 ### Sub-directory indicators
 
@@ -104,7 +104,7 @@ Click the same header again to reverse the sort order.
 
 ## GitHub columns
 
-Three columns pull data from GitHub directly:
+Three columns pull data from each repo's own forge:
 
 - **Issues** — count of open issues
 - **PRs** — count of open pull requests
@@ -116,7 +116,7 @@ Big numbers use the compact format (`1.2K` instead of `1234`). Sort by Stars to 
 
 The columns populate for repos on **GitHub**, **Codeberg**, **GitLab** and **Bitbucket**. The last three need no setup at all — they answer anonymously, so the numbers appear whether or not you have connected a GitHub account. Bitbucket has no issue tracker any more, so its Issues cell stays empty; local-only repos leave every cell empty rather than showing a placeholder dash on every row.
 
-For **GitHub** repos the columns need credentials — see [GitHub Integration](/docs/github-integration) for the `gh` CLI or Personal Access Token setup. Codeberg repos need none of that; they populate on their own.
+For **GitHub** repos the columns need credentials — see [GitHub Integration](/docs/github-integration) for the `gh` CLI or Personal Access Token setup. The other three forges need none of that; they populate on their own.
 
 ## Size column
 
