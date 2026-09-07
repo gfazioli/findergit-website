@@ -148,7 +148,8 @@ const faqItems: { value: string; question: string; answer: ReactNode }[] = [
       <>
         No telemetry, ever. Forge data (issues, pull requests, stars, fork status) is fetched
         directly from the forge a repo lives on — GitHub with your own credentials; Codeberg, GitLab
-        and Bitbucket anonymously, so all they learn is the repo path. The only other traffic is the
+        and Bitbucket without credentials, so they are not told who you are — though, like any
+        direct request, it reaches them from your own IP address. The only other traffic is the
         optional{' '}
         <Anchor href="/docs/ai-commit-messages" size="sm">
           AI commit message
