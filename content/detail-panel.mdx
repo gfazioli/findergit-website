@@ -155,7 +155,7 @@ Under the preview, **Open in browser** and **Copy link** are there for when you 
 
 Each tab's header has a **New Issue / New Pull Request** button (opens the corresponding "new" page), an **Open on GitHub** button (opens the full Issues / Pull Requests list page — the label follows the remote's host), and a **Refresh** button that bypasses the 60-second cache when you want fresh data.
 
-On GitHub repos both tabs need either a working `gh` CLI (see [GitHub Integration](/docs/github-integration)) or a Personal Access Token in Settings. On Codeberg they need nothing — its API answers anonymously. For a repo with no remote, or one on GitLab or Bitbucket, the tabs show a short explanation instead of an empty list.
+On GitHub repos both tabs need either a working `gh` CLI (see [GitHub Integration](/docs/github-integration)) or a Personal Access Token in Settings. On Codeberg and GitLab they need nothing — both APIs answer anonymously. On Bitbucket only Pull Requests apply: its issue tracker was retired, and the Issues tab says so. For a repo with no remote, the tabs show a short explanation instead of an empty list.
 
 ![Issues tab — green open-issue icon, number, title, labels, author avatar, with New Issue, Open on GitHub, and Refresh in the header](/screenshot-detail-issues.png)
 
