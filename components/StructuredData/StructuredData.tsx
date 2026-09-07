@@ -149,7 +149,7 @@ const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: 'Does FinderGit send my data anywhere?',
     answer:
-      'No telemetry, ever. Forge data (issues, pull requests, stars, fork status) is fetched directly from the forge a repo lives on — GitHub with your own credentials; Codeberg, GitLab and Bitbucket anonymously, so all they learn is the repo path. The only other traffic is the optional AI commit message feature: when you click ✨ AI, your staged diff is sent to generate the message — nothing is stored, and nothing is sent unless you ask.',
+      'No telemetry, ever. Forge data (issues, pull requests, stars, fork status) is fetched directly from the forge a repo lives on — GitHub with your own credentials; Codeberg, GitLab and Bitbucket without credentials, so they are not told who you are — though, like any direct request, it reaches them from your own IP address. The only other traffic is the optional AI commit message feature: when you click ✨ AI, your staged diff is sent to generate the message — nothing is stored, and nothing is sent unless you ask.',
   },
   {
     question: 'How does the live update work?',
