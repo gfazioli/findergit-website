@@ -1,5 +1,5 @@
 ---
-description: "Connect FinderGit to GitHub with the GitHub CLI or a personal access token, and read what Codeberg, GitLab and Bitbucket fill in with no setup at all: the Issues, Pull Requests and Stars columns, the Account dashboard, and fork awareness."
+description: "Connect FinderGit to GitHub with the GitHub CLI or a personal access token for the Issues, Pull Requests and Stars columns, the Account dashboard and fork awareness — and read what Codeberg, GitLab and Bitbucket fill in with no setup at all, and what only GitHub can answer."
 ---
 
 import { Kbd } from '@/components/Kbd';
@@ -14,7 +14,9 @@ The integration powers:
 - Three columns in the [File Browser](/docs/file-browser): **Issues**, **PRs**, and **Stars**
 - **Fork awareness** — a badge on forks, how far they trail their upstream, and one-click sync
 
-Everything below the GitHub setup applies to GitHub. **Codeberg, GitLab and Bitbucket get the same enrichment with no setup at all** — their sections are at the end of this page: [Codeberg](#codeberg), [GitLab](#gitlab), [Bitbucket](#bitbucket).
+Everything below the GitHub setup applies to GitHub. **Codeberg, GitLab and Bitbucket fill in their Issues, Pull Requests and Stars columns, their Overview metadata and their fork badge with no setup at all** — their sections are at the end of this page: [Codeberg](#codeberg), [GitLab](#gitlab), [Bitbucket](#bitbucket).
+
+Two things stay GitHub-only, on every one of them, because they need an account: the **Account dashboard** and the **measured half of fork awareness** — how far a fork trails its upstream, and the one-click sync. The other three name a fork's parent but cannot say how far behind it is.
 
 ## How FinderGit talks to GitHub
 
@@ -192,7 +194,7 @@ What does not, and why:
 Bitbucket Cloud repos are enriched anonymously too, within what the platform still offers — and around one thing it no longer does:
 
 - **Bitbucket retired its issue tracker.** The API endpoints behind it were removed in August 2026, so the **Issues** tab says so and the Issues column stays empty, rather than showing a zero for a tracker that does not exist.
-- The **Pull Requests** tab works — drafts, state, and the full comment thread in the preview, inline review comments included.
+- The **Pull Requests** tab works — drafts, state, and the comment thread in the preview (the first 30, like every other forge), inline review comments included.
 - The **Stars** column shows **watchers**, the closest thing Bitbucket has to a star.
 - **Overview**: description, website, watchers and forks. Bitbucket has no topics or releases to show.
 - The **fork badge** and its parent repository. "N behind" is not available — Bitbucket has no cross-repository compare — so the banner says so instead of implying the fork is current.
