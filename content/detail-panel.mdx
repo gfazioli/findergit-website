@@ -208,7 +208,11 @@ Rows are ordered **newest first, in one sequence**, whichever side supplies the 
 
 ### Acting on many tags at once
 
-Click a tag to select it, ⇧-click to extend the range, ⌘-click to add or remove one. A bar appears above the list with **Push**, **Delete Locally…** and **Delete on Remote…**, and nothing changes until you use it.
+Click a tag to select it, ⇧-click to extend the range, ⌘-click to add or remove one. A bar appears above the list with **Fetch**, **Push** and a **Delete** menu, and nothing changes until you use it. Each action applies to the part of the selection it can touch, and says how many that is — Push over five tags of which two are already on origin acts on three, and says three.
+
+The three deletions live behind one menu rather than as buttons in a row: **Delete locally**, **Delete on the remote**, and **Delete everywhere**. The last one does both sides in one go, and it runs **the remote first** — deliberately. If the remote deletion fails, a protected tag or a permission denied, your local tag has not been touched and nothing is lost. The other order would destroy the only remaining reference to that commit and only then discover it could not reach origin. When a run does stop half way, the result says **which side** it stopped on, because the recovery differs: a tag still on origin needs the whole thing again, one already gone from origin only needs deleting here.
+
+**The header and that bar stay put while the list scrolls.** On a repository with seven hundred tags you will often build a selection near the bottom, and chrome that scrolls away with the rows takes the actions for that selection with it.
 
 The selection covers the tag, never the release beside it. **A tag and its release are two separate objects with an optional link**, in both directions: deleting a release leaves its tag standing, and a release can even be created for a tag that does not exist yet.
 
@@ -224,6 +228,16 @@ Worth knowing before you use it, because it is not what most people expect:
 - **Pushing the tag back does not undo that.** The release stays a draft until someone re-publishes it by hand.
 
 FinderGit says which of these applies before you confirm, and it knows because the tab already pairs each tag with its release. A tag with no release gets the shorter, calmer sentence.
+
+### Right-click
+
+Both halves of a row carry a context menu, and they are different menus, because a tag and a release are different objects.
+
+On the **tag** you get the same actions as the ⋯ button — Fetch, Push, Delete Locally…, Delete on Remote…, each only where it applies — plus **Copy Tag Name** and, when the tag is in your clone, **Copy Commit SHA**.
+
+Right-clicking a tag that is part of a **multi-selection** gives you the actions for the selection, each labelled with the number it will act on. The deletions for the one row under the pointer are *not* repeated below them: two sets of delete items in one menu is not a scope you can read at a glance. What stays under the tag's own name is Copy, which cannot be ambiguous. This is also what macOS already does — right-clicking inside a selection in Finder acts on the selection.
+
+On the **release** you get **Open Release in Browser**, **Copy Release Link** and **Copy Tag Name**. Nothing appears on a row that has no release.
 
 ### Releases
 

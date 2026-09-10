@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.32.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.32.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>Everything you can do to a tag, where you can reach it — and one action that does both sides at once.</p>
+<h2>The actions stay where you can see them</h2>
+<p>The tag header and the selection bar are now pinned to the top of the panel while the list scrolls.</p>
+<p>That sounds like tidying and it was not. On a repository with hundreds of tags you build a selection near the bottom of the list, which is exactly where the bar carrying <strong>Fetch</strong>, <strong>Push</strong> and the deletions had scrolled off the top. You could select ten tags and have no way to see what you could do with them, short of scrolling back up and losing your place.</p>
+<h2>Right-click</h2>
+<p>Both halves of a row have a context menu, and they are different menus, because a tag and a release are different objects with an optional link between them.</p>
+<p>On a <strong>tag</strong>: fetch it, push it, delete it — each offered only where it can do something — plus copy its name, and copy the commit it points at.</p>
+<p>On a <strong>release</strong>: open it in your browser, copy its link, copy the tag it was cut from.</p>
+<p>Right-click a tag that is part of a selection and the menu is about the <strong>selection</strong>, each item saying how many tags it will act on. That number is what the action applies to, not how many rows are lit up: Push over five tags of which two are already on origin acts on three, and says three.</p>
+<h2>Delete a tag everywhere, in one action</h2>
+<p>Getting rid of a tag for good used to be two actions with two confirmations. It is now one, and it runs <strong>the remote first</strong> — deliberately, because that is what decides how much a half-failure costs.</p>
+<p>If the remote deletion fails — a protected tag, a permission denied — your local tag has not been touched. Nothing is lost, the run stops there for that tag, and retrying costs nothing. The other order would destroy the last reference naming that commit and only then discover it could not reach origin.</p>
+<p>When a run does stop half way, the result says <strong>which side</strong> it stopped on, because the recovery differs: a tag still on origin needs the whole thing again, one already gone from origin only needs deleting here.</p>
+<p>The confirmation says both consequences before you commit to them, including the one people do not expect and that this app measured rather than assumed: on GitHub, deleting a tag does not delete the release cut from it. It becomes a draft, disappears from the public releases page, and pushing the tag back does not bring it back.</p>
+<h2>One Delete menu</h2>
+<p>The three deletions now live behind a single <strong>Delete</strong> menu rather than as buttons in a row. Three destructive controls side by side are crowded and too easy to hit; these should cost a deliberate second gesture. Each item still carries the number of tags it applies to, and an item that applies to none is not drawn at all.</p>
+<h2>Fixes</h2>
+<ul>
+<li><strong>A count that never agreed with its sentence.</strong> Selecting a single tag read "1 tag selezionati" in Italian, and the equivalent in French, German and Spanish. The phrase inflects itself in English and not in the translations, so every count got the plural form. Fixed here, with a test that resolves each language and compares the rendering at one against the rendering at five.</li>
+</ul>
+<h2>Under the hood</h2>
+<p>The pinned chrome is a pinned section header rather than a nested scroll view: the Release tab renders into a scroll view that belongs to the detail panel and is shared by all nine tabs, so a second one would leave the list with an indefinite height and two scrollers on one wheel. The header's background is opaque rather than translucent, because rows pass under it.</p>
+<p><code class="notranslate">scripts/uiprobe/</code> is new: a small program that puts a container in a real window and photographs it at the top and scrolled into, which is how the pinning above was settled before it was written into the app rather than after.</p>
+</body>
+</html>
