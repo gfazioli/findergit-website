@@ -82,6 +82,12 @@ The sidebar is shared with the [Repository List](/docs/repository-list#the-sideb
 - **−** button removes the currently selected root (its repos drop out of the browser; the actual files on disk are untouched)
 - **↻** button rescans every root for new or removed repositories
 
+### Linked worktrees
+
+A checkout created with `git worktree add` appears in the tree beside its own checkout, each with its own branch and status. Live updates reach it too: commit or switch branch from a terminal inside the worktree and the row keeps up, even though those changes land in the main repository's folder rather than the worktree's.
+
+Worktrees are also counted in the [Repository List](/docs/repository-list#linked-worktrees), which is where the rest of the detail lives.
+
 ### Reordering and organising roots
 
 - **Drag** any root to reorder it within the sidebar — position is persisted across launches

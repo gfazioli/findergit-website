@@ -66,6 +66,20 @@ The file browser always lists the nested repositories in the tree, each with its
 
 ![A container repository expanded in the file browser, each nested clone showing its own branch and status](/screenshot-nested-tree.png)
 
+### Linked worktrees
+
+A checkout created with `git worktree add` is counted as a repository of its own. Keep it beside its checkout — `myproject` and `myproject--feature` under the same root folder — and both appear in the list, each with its own branch, status and ahead/behind.
+
+The distinction is the same one nested repositories have: the **file browser** always showed a worktree in the tree, while the list, the Smart Views and the Overview did not count it. Now they do.
+
+A worktree keeps its git state in two places — its own folder holds `HEAD` and the index, while refs, objects and the stash stay with the main checkout — and FinderGit follows both, so:
+
+- **Live updates reach it.** Commit, switch branch or fetch from a terminal inside the worktree and the row updates in place, even though those changes land in the main repository's folder rather than the worktree's.
+- **The stash is the repository's.** `git stash list` shows the same entries from every worktree, and so does FinderGit: the Stash section is there whichever one you open.
+- **Sibling worktrees stay out of each other's way.** A dozen worktrees on one repository do not refresh each other.
+
+The **Size** column shows what that worktree occupies — tens of kilobytes, since the history is shared with the checkout — not the repository's full history.
+
 ## The table
 
 One row per repository. Every column is sortable — click a header to sort, click again to reverse.

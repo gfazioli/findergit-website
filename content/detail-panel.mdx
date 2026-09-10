@@ -1,5 +1,5 @@
 ---
-description: "The FinderGit detail panel for the selected repository: tabbed views for Overview, staging and discard, commits, branches, and GitHub issues and pull requests, with docked Fetch, Pull and Push actions."
+description: "The FinderGit detail panel for the selected repository: tabbed views for Overview, staging and discard, commits, branches, tags and releases, and GitHub issues and pull requests, with docked Fetch, Pull and Push actions."
 ---
 
 import { Kbd } from '@/components/Kbd';
@@ -16,12 +16,15 @@ The tabs:
 - **Unstage** — working-tree changes, the diff, the commit form (including the AI commit button)
 - **Commits** — recent local history from `git log`
 - **Branches** — local and remote branches, with one-click checkout
+- **Release** — every tag beside the release cut from it, and what only exists on one side
 - **Issues** — open issues on the repo's forge
 - **Pull Requests** — open pull requests (merge requests on GitLab) on the repo's forge
 - **Maintenance** — disk-space breakdown and cleanup (see [Repo Maintenance](/docs/repo-maintenance))
 - **Trust** — the repo's auto-run surface (see [Repo Trust](/docs/repo-trust))
 
-The active tab is remembered across selections and across app launches, so the panel always opens where you left it.
+They read left to right by what they are about: what you are doing right now, then this repository's refs, then what the forge says about it, then looking after the place. Release sits beside Branches because a tag is a ref and the two answer the same kind of question.
+
+The selected tab is filled with the colour its panel starts from, so the two read as one surface rather than a button above a card. The active tab is remembered across selections and across app launches, so the panel always opens where you left it.
 
 ## Docked action bar
 
@@ -129,6 +132,18 @@ After a checkout the file tree, status badge, and branch chip all update automat
 
 ![Branches tab — Local and Remote sections with per-row Checkout, the current branch marked, and the branch chip in the header](/screenshot-branches.png)
 
+### Worktrees
+
+Under Local and Remote, the same tab lists the repository's **linked worktrees** — the folders `git worktree add` creates, each holding a second branch checked out on its own. They live here because a worktree *is* a branch checked out somewhere else, and because this is where you end up when Git refuses to delete a branch one of them is holding.
+
+Each row shows the folder, where it is, and the branch it carries — or `detached` when it is not on one. A padlock marks a worktree you have locked, and a **missing** badge marks one whose folder is gone. The row menu offers **Add to Root Folders** (start working in it here), **Reveal in Finder**, and **Remove…**.
+
+**Add** creates one. Give it a branch — new or existing — and the folder is created **beside** this repository, named `<repo>--<branch>`: the layout `git worktree list` expects, and the one that keeps `git status` clean, since a worktree nested inside its own repository shows up as untracked files.
+
+**Prune** appears only when there is something to clear: a worktree whose folder you deleted by hand stays registered, and that registration is what keeps `git branch -D` failing on its branch.
+
+Removal is never forced. Git refuses to remove a worktree holding uncommitted changes, and FinderGit shows you that refusal rather than overriding it — the branch is always kept, only the folder goes.
+
 ## Issues and Pull Requests
 
 Both tabs share the same row shape:
@@ -160,3 +175,63 @@ On GitHub repos both tabs need either a working `gh` CLI (see [GitHub Integratio
 ![Issues tab — green open-issue icon, number, title, labels, author avatar, with New Issue, Open on GitHub, and Refresh in the header](/screenshot-detail-issues.png)
 
 ![Pull Requests tab on a Codeberg repository, needing no credentials — the top pull request opened in place with its description, the next one collapsed below, and New Pull Request / Open on Codeberg / Refresh in the header](/screenshot-detail-prs.png)
+
+## Release
+
+![The Release tab — tags on the left with their presence, releases on the right, a filter and the tag count in the header](/screenshot-detail-release.png)
+
+Tags and releases side by side, because the states worth seeing are the ones where they disagree: a tag nobody cut a release from, a release whose tag is not in your clone, a tag that exists here and not on the remote.
+
+**One row is one version.** The tag is on the left, the release cut from it on the right. They are cells of the same row rather than two lists, so they cannot drift apart as tag messages wrap — which is exactly what happens on a repository whose tag messages run to a paragraph.
+
+A tag row shows whether it is **annotated** (a filled tag icon, with its message underneath — its own object, carrying a tagger and a date) or **lightweight** (an outline icon, no message — just a name pointing at a commit). Releases are cut from annotated tags. The row ends with the date, the short commit id, and a ⋯ menu.
+
+### Where each tag actually is
+
+`git tag` lists what is in **your clone**, which is not the same set as what is on `origin` — and the difference is invisible in every tool that shows you one list. A tag you made and never pushed looks identical to one everybody has. A tag a colleague pushed this morning does not appear at all until you fetch.
+
+So every row says which of the three it is:
+
+- **on both** — nothing to do; Push would be a no-op and deleting locally leaves origin's copy
+- **local only** — it exists here and not on origin. This is the one Push is for
+- **not fetched** — origin has it and you do not. There is no local tag to delete, and **Fetch** on the row brings it down
+
+**Check remote** is what asks `origin`, and it is a separate button because it is the one thing here that touches the network — the tag list itself is local git and answers instantly. Until it has answered, no row claims either way: FinderGit will not tell you a tag is unpushed on the strength of a lookup it never made.
+
+When the answer comes back with tags you are missing, the header offers **Fetch N tag** to bring all of them down at once. And each action is offered only where it can do something: Push appears on local-only rows, Fetch on not-fetched ones, and neither is drawn on a row where it would be meaningless.
+
+### Finding one tag among hundreds
+
+A long-lived repository can carry hundreds of tags — the count in the header is the honest number, and on a repository measured while building this it was over seven hundred. The **filter** field matches the tag name and, for an annotated tag, its message, so typing `rc` finds the release candidates and a word from a tag message finds the tag that carries it. The header says how many of the total are shown.
+
+Rows are ordered **newest first, in one sequence**, whichever side supplies the date: a tag in your clone is dated by the tag itself, one you have not fetched by the release cut from it. So a tag pushed last week that you have never fetched sits at the top where it belongs, rather than in a block of its own after everything else.
+
+### Acting on many tags at once
+
+Click a tag to select it, ⇧-click to extend the range, ⌘-click to add or remove one. A bar appears above the list with **Push**, **Delete Locally…** and **Delete on Remote…**, and nothing changes until you use it.
+
+The selection covers the tag, never the release beside it. **A tag and its release are two separate objects with an optional link**, in both directions: deleting a release leaves its tag standing, and a release can even be created for a tag that does not exist yet.
+
+Deletions run one at a time and report **an outcome per tag**, not per run. Ten pushes where three fail will tell you which three and what Git said about each — "already exists" and "denied" are different problems with different fixes. The ones that did not go through stay selected, so retrying does not mean picking them again. **Stop** ends the run, and whatever had not been attempted is reported as exactly that rather than as a failure.
+
+### What deleting a tag on the remote actually does
+
+Worth knowing before you use it, because it is not what most people expect:
+
+- Your **local** tag stays. Only the copy on `origin` goes.
+- Anyone who has already fetched the tag keeps theirs.
+- **If a release was cut from that tag, GitHub does not delete it — it turns it into a draft.** The release disappears from the public releases page and moves to an `untagged-…` URL.
+- **Pushing the tag back does not undo that.** The release stays a draft until someone re-publishes it by hand.
+
+FinderGit says which of these applies before you confirm, and it knows because the tab already pairs each tag with its release. A tag with no release gets the shorter, calmer sentence.
+
+### Releases
+
+The right-hand column is read from the forge: the release title, **draft** and **pre-release** badges, an attachment count, when it was published, and a button to open it in a browser.
+
+A badge appears only when the forge actually reported it. GitLab has no draft or pre-release concept at all, so nothing is drawn there rather than "published" being implied by a flag it never sent. **Bitbucket has no releases**, and the tab says so instead of showing an empty list under a heading.
+
+A release whose tag is not in your clone is **not** an orphan: it gets an ordinary row, marked "not fetched", because the tag does exist — just not here. What lands in the separate section at the top is the genuinely stranded kind, typically a release left as a draft after its tag was deleted.
+
+**"No release" is only ever said when it can be proved.** If the list came back short, or a refresh is in flight, or it failed, the count carries a **+** and no row asserts an absence — because the sentence matters: deleting a tag on GitHub turns its release into a draft, and a wrong "nothing else is affected" is how you find that out afterwards.
+

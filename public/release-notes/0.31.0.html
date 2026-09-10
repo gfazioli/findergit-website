@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.31.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.31.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>Two new sections in the detail panel, and a tab strip you can read at a glance.</p>
+<h2>Release — tags and the releases cut from them, side by side</h2>
+<p>A new tab pairs every tag in your repository with the release cut from it, one row per version. The states worth seeing are the ones where the two disagree: a tag nobody cut a release from, a release whose tag isn't in your clone, a tag that exists here and not on the remote.</p>
+<p><strong>Every tag now says where it actually is.</strong> <code class="notranslate">git tag</code> lists what's in <em>your</em> clone, which is not the same set as what's on <code class="notranslate">origin</code> — and that difference is invisible in most tools. A tag you made and never pushed looks identical to one everybody has; a tag a colleague pushed this morning doesn't appear at all. Each row is now marked <strong>on both</strong>, <strong>local only</strong>, or <strong>not fetched</strong>, and the actions follow: Push appears where there's something to push, Fetch where there's something to bring down, and neither is drawn where it would do nothing. One press fetches the whole backlog.</p>
+<p><strong>Select many, act on them, and see what happened to each.</strong> ⇧-click and ⌘-click to build a selection, then Push, Delete Locally or Delete on Remote. Ten pushes where three fail tell you <em>which three</em> and what Git said about each — "already exists" and "denied" are different problems. Stop ends a run, and what was never attempted is reported as exactly that rather than as a failure.</p>
+<p><strong>And it says what deleting a tag really does</strong>, before you confirm. Deleting a tag on GitHub doesn't delete its release: it turns it into a draft, which disappears from the public releases page — and pushing the tag back does not bring it back. The dialog tells you which case you're in, and when it <em>can't</em> know, it says that instead of guessing.</p>
+<p>Long-lived repositories are handled: a filter over tag names and messages, and one list ordered newest-first whichever side supplies the date, so a tag pushed last week that you've never fetched sits at the top where it belongs.</p>
+<h2>Worktrees</h2>
+<p>A linked worktree is now a repository like any other: it appears in the browser, carries its own status, and the Branches tab gains a Worktrees section listing every worktree of the repository with the branch each one holds. Both Overviews count them.</p>
+<h2>A detail panel you can read</h2>
+<p>The tab strip was nine coloured pills competing for attention, with the selected one differing only in saturation, inside a box that sat apart from the panel it labelled. Now the unselected tabs are quiet and the selected one is filled with the colour its panel starts from, so tab and content read as one surface. The tabs are also in a more sensible order — what you're doing now, then this repository's refs, then what the forge says, then looking after the place.</p>
+<h2>Fixes</h2>
+<ul>
+<li><strong>Issues and Pull Requests could show a stale answer.</strong> When two loads overlapped, the older one could land last and overwrite the newer. The newest load now wins in both tabs.</li>
+<li><strong>Italian called a linked worktree "alberi di lavoro".</strong> Corrected, along with a footnote's plural.</li>
+<li><strong>189 user-facing strings were never in the translation catalogue</strong>, so they stayed English in every language while coverage read 100% — an absent string can't be reported missing. They're in, and translated.</li>
+<li>Tags and releases in Italian, French, German and Spanish, including every confirmation dialog.</li>
+</ul>
+</body>
+</html>
