@@ -184,7 +184,9 @@ Tags and releases side by side, because the states worth seeing are the ones whe
 
 **One row is one version.** The tag is on the left, the release cut from it on the right. They are cells of the same row rather than two lists, so they cannot drift apart as tag messages wrap — which is exactly what happens on a repository whose tag messages run to a paragraph.
 
-A tag row shows whether it is **annotated** (a filled tag icon, with its message underneath — its own object, carrying a tagger and a date) or **lightweight** (an outline icon, no message — just a name pointing at a commit). Releases are cut from annotated tags. The row ends with the date, the short commit id, and a ⋯ menu.
+A tag row shows whether it is **annotated** (a filled tag icon — its own object, carrying a message, a tagger and a date) or **lightweight** (an outline icon — just a name pointing at a commit). Releases are cut from annotated tags. The row ends with the date, the short commit id, a button to open the tag on its forge, and a ⋯ menu.
+
+The line under the name is **not always the same sentence**, and which one it is matters. An annotated tag shows its own message. A lightweight tag has none, so it shows the subject of the **commit** it points at, behind a small commit mark and in a lighter grey. They were written by different people at different times, and a commit subject printed under the heading "tag message" is a caption that lies — so the row labels which one you are reading rather than quietly filling the gap.
 
 ### Where each tag actually is
 
@@ -202,9 +204,24 @@ When the answer comes back with tags you are missing, the header offers **Fetch 
 
 ### Finding one tag among hundreds
 
-A long-lived repository can carry hundreds of tags — the count in the header is the honest number, and on a repository measured while building this it was over seven hundred. The **filter** field matches the tag name and, for an annotated tag, its message, so typing `rc` finds the release candidates and a word from a tag message finds the tag that carries it. The header says how many of the total are shown.
+A long-lived repository can carry hundreds of tags — the count in the header is the honest number, and on a repository measured while building this it was over seven hundred. The **filter** field matches the tag name and **exactly what the row's second line says** — an annotated tag's message, or the commit subject a lightweight tag shows instead. So typing `rc` finds the release candidates, a word from a tag message finds the tag carrying it, and a word from a merge commit finds the lightweight tag sitting on it. The header says how many of the total are shown.
+
+Both halves of that are deliberate. A filter that hides a row whose visible text contains what you typed is the worst shape a search can have — the words are on screen and the box says there is nothing there. Matching text the row does *not* show is the same fault wearing a friendlier face, and it returns rows with no visible reason to be there.
+
+### Date or version — and why there is a choice
 
 Rows are ordered **newest first, in one sequence**, whichever side supplies the date: a tag in your clone is dated by the tag itself, one you have not fetched by the release cut from it. So a tag pushed last week that you have never fetched sits at the top where it belongs, rather than in a block of its own after everything else.
+
+That is the default, and on most repositories it is all you need. But "when was this tag made" is **two different questions** depending on the kind, and nothing on screen used to say so:
+
+- an **annotated** tag is an object with a creation date, and that is the date you see;
+- a **lightweight** tag is only a name. Git records nothing about when it was made — there is no such field — so the date shown is the **commit's**.
+
+Which means a lightweight tag put on an older commit sorts below tags that look newer, and the list is correct while reading as though it were broken. On a real repository `v1.0.2` sat at the very bottom of two hundred rows, under `v1.0.1`, because the commit it names predates the `v1.0.1` tag object by six days.
+
+So the header carries a **Date / Version** picker. Version order reads the names and nothing else, which also fixes the ordering that pure alphabetical gets backwards: `v26.10` belongs above `v26.2`, and a release belongs **above its own release candidates** — `v24.6.3` over `v24.6.3-rc.0`, not under it. Tags that are not version-shaped at all, a `latest` or a `stable`, are kept together at the end rather than interleaved among the numbers.
+
+Hovering the date tells you which of the two it is, so a surprising position always has a visible explanation.
 
 ### Acting on many tags at once
 
@@ -233,7 +250,9 @@ FinderGit says which of these applies before you confirm, and it knows because t
 
 Both halves of a row carry a context menu, and they are different menus, because a tag and a release are different objects.
 
-On the **tag** you get the same actions as the ⋯ button — Fetch, Push, Delete Locally…, Delete on Remote…, each only where it applies — plus **Copy Tag Name** and, when the tag is in your clone, **Copy Commit SHA**.
+On the **tag** you get the same actions as the ⋯ button — Fetch, Push, Delete Locally…, Delete on Remote…, each only where it applies — plus **Open Tag on GitHub** (or GitLab, Codeberg, Bitbucket), **Copy Tag Link**, **Copy Tag Name** and, when the tag is in your clone, **Copy Commit SHA**. The same page is one click away on the row itself.
+
+Those three appear only when the forge can be expected to *have* that page. On a tag marked **local only** — which is a measured answer, `origin` was asked and did not have it — they are not drawn at all, because a link into a 404 is worse than no link.
 
 Right-clicking a tag that is part of a **multi-selection** gives you the actions for the selection, each labelled with the number it will act on. The deletions for the one row under the pointer are *not* repeated below them: two sets of delete items in one menu is not a scope you can read at a glance. What stays under the tag's own name is Copy, which cannot be ambiguous. This is also what macOS already does — right-clicking inside a selection in Finder acts on the selection.
 
