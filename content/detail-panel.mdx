@@ -235,6 +235,10 @@ The selection covers the tag, never the release beside it. **A tag and its relea
 
 Deletions run one at a time and report **an outcome per tag**, not per run. Ten pushes where three fail will tell you which three and what Git said about each — "already exists" and "denied" are different problems with different fixes. The ones that did not go through stay selected, so retrying does not mean picking them again. **Stop** ends the run, and whatever had not been attempted is reported as exactly that rather than as a failure.
 
+While a run is going, the bar shows how far it has got — how many tags are **finished** out of how many, and the name of the one Git is holding right now, which is what tells a run wedged on an unreachable ref from a run that is merely slow. Every tag in the run says the same thing on its own row: waiting, running, done, failed. Switching to another tab or another repository does not lose any of it: the run belongs to the repository, and coming back shows where it got to.
+
+When the run ends, the bar does not simply disappear — it becomes the **result**, which stays there to be read, and stays until you dismiss it whenever something did not go through. That matters most for the fastest case: deleting ten tags locally is over in about a tenth of a second, and rows vanishing is not by itself a report of what happened to them.
+
 ### What deleting a tag on the remote actually does
 
 Worth knowing before you use it, because it is not what most people expect:

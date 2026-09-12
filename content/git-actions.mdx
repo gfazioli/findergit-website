@@ -171,6 +171,38 @@ Repositories are processed a few at a time, so a large selection doesn't flood t
 
 ![Fetch, Pull and Push across a multi-repo selection, with per-repo progress](/screenshot-bulk-fetch.png)
 
+## Activity — what happened while you were looking elsewhere
+
+Button feedback only helps while you are watching the button, and a bulk run
+deliberately keeps going when you move to another repository. So every outcome
+is also reported in one place.
+
+**A card appears in the bottom-right corner** when something you started
+finishes — a fetch, a pull, a push, a commit, a stage, a checkout, a stash, a
+tag action or a worktree action, whether it worked or not. It carries the
+repository name and, when something failed, git's own message. A successful
+card leaves on its own after a few seconds; one reporting a problem is given
+longer, and the countdown stops while the pointer rests on it. Three at most
+are ever on screen, and the same outcome arriving repeatedly folds into one
+card with a counter rather than stacking.
+
+**The bell in the toolbar keeps them.** Cards are transient by design — nothing
+ever piles up demanding to be dismissed — so the record lives behind the bell,
+newest first, for as long as the app is open. **Failures** arrive unread and
+light the badge; successes do not, and neither does an action you stopped
+yourself — so the badge means "something needs your attention" rather than
+"something happened". Opening the panel clears the badge for the rows you
+actually see, and still shows you which of them were new.
+
+The one thing never reported is the automatic refresh: FinderGit runs that
+itself, on a timer and whenever a file changes on disk, so a card for each
+would be the app talking to itself.
+
+Bulk actions across repositories keep their own progress card, which lists
+every repository and stays until you dismiss it when something failed. The
+panel holds the summary, so dismissing that card no longer loses what
+happened.
+
 ## From the menu bar
 
 The **Repository** menu provides the same actions with keyboard shortcuts:

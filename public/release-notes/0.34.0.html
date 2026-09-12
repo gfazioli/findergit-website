@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.34.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.34.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.34.0 — every action says how it went, and keeps saying it</p>
+<p>Two things ship together here, and they are halves of one idea: an action you start should tell you how it ended, and it should still be telling you when you have moved on.</p>
+<h2>Highlights</h2>
+<ul>
+<li>
+<p><strong>Acting on many tags at once now shows its progress.</strong> A bar says how many are through and which tag is in flight; each row takes its own outcome as it lands — a green check, a red mark, or "not attempted" for the ones a Stop never reached. Before this, deleting twenty tags looked exactly like the app doing nothing, and the only evidence it had happened was that the list was shorter afterwards.</p>
+</li>
+<li>
+<p><strong>A bulk run survives leaving it.</strong> It always kept going when you switched tab or repository — what is new is that it is still there to tell you where it got to when you come back, instead of having quietly finished into an empty room.</p>
+</li>
+<li>
+<p><strong>A run you stopped says what it does not know.</strong> A tag whose deletion had already been handed to git is reported as exactly that: not a success, not a failure. It is the one you may have to check by hand, and calling it either would be a guess. When a delete-everywhere stops between its two halves, it says which half went through.</p>
+</li>
+<li>
+<p><strong>Every action now reports itself, in one place.</strong> A card appears in the corner when a fetch, a pull, a push, a commit, a stage, a checkout, a stash, a tag action or a worktree action finishes — carrying the repository's name and, when something failed, git's own words. Actions that had never reported anything at all are in there too: deleting a single tag from its row, creating a worktree, clearing away stale ones.</p>
+</li>
+<li>
+<p><strong>Failures wait for you; nothing else does.</strong> A card leaves on its own after a few seconds, and nothing ever piles up demanding to be dismissed. But a failure stays <strong>unread</strong> behind the new bell in the toolbar until you open it, so the one thing you needed to see is the one thing that cannot quietly disappear. A success does not light the badge, and neither does an action you stopped yourself: it means "something needs you", not "something happened".</p>
+</li>
+<li>
+<p><strong>The Activity panel is the session's record.</strong> Newest first, failures still carrying git's message, with the repository each belongs to. The same outcome arriving repeatedly folds into one row with a counter rather than filling the list, and a bulk run across many repositories files one summary instead of one row per repository.</p>
+</li>
+</ul>
+<h2>Under the hood</h2>
+<p>The outcome record is an app-level store rather than view state, and that is the whole design: an action outlives the view that started it, so a card owned by the panel that started it disappears exactly when the user goes to look at something else. The countdown timers live with the state for the same reason.</p>
+<p>Cards are deliberately transient and the badge is not. A stack of cards that accumulates until dismissed gets cleared reflexively and unread, which fails the one thing such a surface is for; what cannot be lost is the unread count behind the bell. Which of the two carries a given outcome is decided per event: anything you are demonstrably already watching goes to the record and raises no card, and the automatic refresh — fired on a timer and on every file-system event — is not recorded at all.</p>
+<p>Reading the panel marks read only the rows that were actually on screen, at the occurrence they were on screen at. Both halves of that sentence are load-bearing: a list is longer than its viewport, and a failure that repeats after you scrolled past it is a new occurrence of something you have not seen.</p>
+<p>The bulk tag run holds a monotonic ownership token, because a cancelled run keeps draining its queue to report each remaining tag as not attempted, and without an owner those late writes landed on the run that had replaced it.</p>
+<p>Two localisation traps were worth the rework. Composing an action's name into "%@ failed" reuses keys that are <em>button labels</em>, whose translations are imperatives — it would have read "Metti in stage non riuscito" in Italian and nothing wrong at all in English. And with real nouns the genders are mixed, so one key cannot carry both <em>échoué</em> and <em>échouée</em>: putting the participle first, behind a colon, makes it modify nothing and stay invariable in all four languages.</p>
+<h2>Install</h2>
+<p>Download the DMG below, drag FinderGit to Applications, and open it. The app is signed with an Apple Developer ID and notarized by Apple, so no Gatekeeper bypass is needed. Existing installs update themselves.</p>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
