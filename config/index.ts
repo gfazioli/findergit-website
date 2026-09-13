@@ -92,13 +92,13 @@ export default {
     defaultLanguage: 'en',
   },
   app: {
-    version: '0.34.0',
+    version: '0.34.1',
     // Publication date of `version`, UTC, written by release.sh next to the
     // version itself. It is the OFFLINE FALLBACK for the homepage release
     // strip: the live date and the release count come from the GitHub
     // releases API, and this is what the strip shows when that call is
     // rate-limited or down. Also the JSON-LD `dateModified`.
-    releaseDate: '2026-09-12',
+    releaseDate: '2026-09-13',
     minMacOS: '15.0',
     downloadUrl: 'https://github.com/gfazioli/findergit-website/releases/latest',
   },

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.34.1 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.34.1</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.34.1 — a popover that fits, and controls that mean what they show</p>
+<p>A patch over 0.34.0, from using it: one thing that ran off the screen, one set of controls that stayed live when they could do nothing, and a rule this project believed about SwiftUI that turned out not to be true.</p>
+<h2>Fixed</h2>
+<ul>
+<li>
+<p><strong>The recent-stars list no longer runs off the screen.</strong> FinderGit keeps up to fifty "this repo gained a star" events, and the popover behind the Stars tile drew every one of them at once — so after a busy week it was taller than the display, clipped at both ends, with the rows at the bottom simply out of reach. Measured on the account that reported it: fifty events, about 2000 points of content in a window around 1100 tall. It now stops at a readable height and scrolls.</p>
+</li>
+<li>
+<p><strong>During a bulk tag run, the controls that cannot act say so.</strong> Fetch, New Tag and the per-row ⋯ menu were gated on a flag that only single-row actions set, so a bulk run left every one of them live. Worse, a confirmation dialog opened <em>before</em> a run started would still fire afterwards — the identity of the repository was re-checked at that moment, its state was not. Nothing was ever corrupted (every mutation for a repository already goes through one queue), but an action you asked for could sit waiting a minute with nothing on screen explaining why.</p>
+</li>
+</ul>
+<h2>Under the hood</h2>
+<p>The two gates are now one derived predicate rather than two flags that could disagree. The obvious alternative — setting the "busy" flag when a run starts — is the trap: a one-tag action finishing mid-run clears it unconditionally and would unlock everything while the run carried on. Two owners of one boolean was the bug underneath.</p>
+<p>And a correction worth making in public, because it is the kind of thing that propagates. 0.34.0's Activity panel shipped clipped to its header; the repair changed two things at once and credited one of them, generalising it into a rule — that a scroll view has no height of its own and reports nothing to its container. Every popover fixed since has cited that sentence, including the first draft of the fix above.</p>
+<p>It is not true. A probe that puts each shape into the sizing path a popover actually uses reports the same height with the modifier and without — two rows and forty, lazy and plain. What does the work is the maximum height; the modifier credited for it changes no number at all. The probe is now part of the repository, so the next time a popover is the wrong size the answer comes from running something rather than from remembering a sentence. The comments that stated the wrong mechanism have been corrected, and an issue filed on the strength of it has been closed with the measurement.</p>
+<h2>Install</h2>
+<p>Download the DMG below, drag FinderGit to Applications, and open it. The app is signed with an Apple Developer ID and notarized by Apple, so no Gatekeeper bypass is needed. Existing installs update themselves.</p>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
