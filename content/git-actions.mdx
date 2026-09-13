@@ -83,9 +83,9 @@ Unstaged rows additionally carry a red **Discard** (and the section header a **D
 
 ### Stashing
 
-**Stash…** in the working-tree header runs `git stash push --include-untracked`, with the message you type or none at all (git then writes its own, `WIP on <branch>: <subject>`). Untracked files are included by default, which is what "stash everything" means when you reach for it.
+**Stash…** in the action bar runs `git stash push --include-untracked`, with the message you type or none at all (git then writes its own, `WIP on <branch>: <subject>`). Untracked files are included by default, which is what "stash everything" means when you reach for it.
 
-The list below the commit form runs `git stash pop`, `git stash apply` and `git stash drop` against the entry you pick. A conflicting pop behaves the way git does — the conflict lands in your files and the entry is kept — so the work is still recoverable. See [Stashed changes](/docs/detail-panel#stashed-changes) for what each row shows.
+The list below the commit form runs `git stash pop`, `git stash apply` and `git stash drop` against the entry you pick, and reports what it is doing above the rows while it works — with a Stop once it has been running a few seconds. A conflicting pop behaves the way git does — the conflict lands in your files and the entry is kept — so the work is still recoverable. If the entry you picked has been applied or dropped somewhere else since the panel last read the list, the action says so rather than acting on whatever moved into its place. See [Stashed changes](/docs/detail-panel#stashed-changes) for what each row shows.
 
 The branch summary in the docked action bar carries the stash count whenever it is non-zero, so a stash you made and forgot is visible without opening the tab.
 

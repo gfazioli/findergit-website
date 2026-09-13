@@ -76,7 +76,7 @@ Both run behind a confirmation that states exactly what will happen, including t
 
 ### Stashed changes
 
-Set the working tree aside without committing it. **Stash…** sits in the working-tree header beside Stage All and Discard All, because it is the third answer to the same question — what do I do with these changes right now — and the only one that is neither destructive nor a commitment.
+Set the working tree aside without committing it. **Stash…** sits in the action bar with Fetch, Pull and Push, because it acts on the whole repository the way they do — staged work included. It also has to be reachable when nothing is unstaged, which is exactly the moment after Stage All when setting everything aside is what you want. While it runs the button says so, and after a few seconds it turns into Stop.
 
 It asks for a message and takes an empty one: leave it blank and git names the stash after your last commit. Untracked files go too, so the tree is genuinely clean afterwards rather than half-stashed. On a clean tree it says **"Nothing to stash"** instead of claiming it saved something — the direction that matters, since the other way round leaves you believing your work is tucked away.
 

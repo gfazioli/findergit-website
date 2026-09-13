@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.35.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.35.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.35.0 — Stash, where you actually reach for it</p>
+<p>Three issues on one small panel, and they turned out to be one decision: where the stash action lives, and what a row's buttons are allowed to act on.</p>
+<h2>Highlights</h2>
+<ul>
+<li>
+<p><strong>Stash… has moved to the bar at the bottom</strong>, beside Fetch, Pull and Push. It belongs with them because it does what they do — it acts on the whole repository, staged work included. Where it used to sit, in the header above the unstaged files, it stopped existing the moment you pressed Stage All, which is exactly when setting everything aside is what you want. And under a directory filter that header read “Unstaged Changes (4) in src/” while the action took the entire repository; the dialog now states the scope outright instead of contradicting the heading two inches to its left.</p>
+</li>
+<li>
+<p><strong>Stashing says what it is doing, and can be stopped.</strong> The button reads “Stashing…” while it runs and turns into Stop after the same few seconds Fetch uses. Pop, Apply and Drop report above the rows rather than inside the list, so an action stays readable even if you collapse the list while it is running — those three had no progress and no way out at all before this. On a clean tree the button says so in its tooltip rather than after the click.</p>
+</li>
+<li>
+<p><strong>The stash list keeps itself current.</strong> Refresh in the toolbar now reaches it, and so does a stash you make in a terminal. Before, the list was read once per panel and noticed a change only when a separate count happened to move — and that count comes from a file which, in some repository layouts, cannot be read at all. The list itself now decides whether the section exists, so it no longer depends on a second source that can be blind.</p>
+</li>
+<li>
+<p><strong>Pop, Apply and Drop act on the row you clicked.</strong> A stash is identified by its own commit now, not by its position. Positions renumber the moment anything is removed, so a list read a moment earlier could aim a button at a different stash than the one under it — and because the changes applied looked plausible either way, nothing on screen would have said so. If the entry you picked has been applied or dropped elsewhere in the meantime, FinderGit tells you instead of acting on whatever took its place.</p>
+</li>
+</ul>
+<h2>Fixed</h2>
+<ul>
+<li>Stash… was unreachable in the one state where you most want it: immediately after Stage All, when the header holding it is no longer drawn.</li>
+<li>The stash confirmation described a scope narrower than the action's. It takes the whole repository, untracked files included, whatever filter the panel is showing.</li>
+<li>The stash panel did not survive a repository opened as a linked worktree in every case: the badge that decided whether to draw it could answer zero where git lists the entries perfectly well.</li>
+</ul>
+<h2>Under the hood</h2>
+<p>The list is now a per-repository store like every other data source in the app, so one fetch serves every panel showing that repository, a re-listing that finds nothing new does not disturb an open disclosure group, and the toolbar Refresh and file-system events both reach it.</p>
+<p>The interesting part was the review. Five consecutive findings were the same defect wearing different hats — a drop that renumbered the rest, a view parked on another tab while the list moved, a refresh still in flight behind live rows — and each fix closed one window while a sixth appeared. The question that ended it was not <em>where is a check missing</em> but <em>which decision here is made on data nobody validated</em>, and the answer was the index itself. Verified by disabling the fix and watching the tests: a Pop aimed at a vanished stash reported <strong>success</strong> after applying the survivor's changes and destroying the entry that held them.</p>
+<p>A sixth round then found that a commit does not identify a reflog entry either. The stash reflog refuses a duplicate only at its tip, so the same commit stored from lower down becomes a genuine second entry — measured, not assumed. The row's own position is therefore preferred whenever it still holds the expected commit, and relocation by commit is the fallback it was written to be.</p>
+<p>One pre-existing defect found while reviewing has been filed rather than folded in, and a defect in the screenshot pipeline itself was fixed: two hand-maintained lists of which captures need a tall panel had drifted apart, so one recipe photographed a short one and reported success.</p>
+<h2>Install</h2>
+<p>Download the DMG below, drag FinderGit to Applications, and open it. The app is signed with an Apple Developer ID and notarized by Apple, so no Gatekeeper bypass is needed. Existing installs update themselves.</p>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
