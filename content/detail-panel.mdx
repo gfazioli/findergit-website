@@ -146,7 +146,7 @@ Removal is never forced. Git refuses to remove a worktree holding uncommitted ch
 
 ## Issues and Pull Requests
 
-Each tab carries its open count in the strip — **Issues 13**, **Pull Requests 2** — so a repository says what is waiting on it before you open either tab. The number is the forge's own count of open items — the same one behind the Issues and PRs columns in the list, read from the same place, so it costs nothing extra for a repository already on screen. A tab with nothing open shows no badge at all (the column still prints its `0`: a column with a heading needs a cell, a tab is quieter without one), and neither does a forge that has no such counter — Bitbucket retired its issue tracker, so its Issues tab stays bare rather than claiming zero.
+Each tab carries its open count in the strip — a small badge beside the tab's name — so a repository says what is waiting on it before you open either tab. The number is the forge's own count of open items — the same one behind the Issues and PRs columns in the list, read from the same place, so it costs nothing extra for a repository already on screen. A tab with nothing open shows no badge at all (the column still prints its `0`: a column with a heading needs a cell, a tab is quieter without one), and neither does a forge that has no such counter — Bitbucket retired its issue tracker, so its Issues tab stays bare rather than claiming zero.
 
 Both tabs share the same row shape:
 
@@ -174,9 +174,9 @@ Each tab's header has a **New Issue / New Pull Request** button (opens the corre
 
 On GitHub repos both tabs need either a working `gh` CLI (see [GitHub Integration](/docs/github-integration)) or a Personal Access Token in Settings. On Codeberg and GitLab they need nothing — both APIs answer anonymously. On Bitbucket only Pull Requests apply: its issue tracker was retired, and the Issues tab says so. For a repo with no remote, the tabs show a short explanation instead of an empty list.
 
-![Issues tab — green open-issue icon, number, title, labels, author avatar, with New Issue, Open on GitHub, and Refresh in the header](/screenshot-detail-issues.png)
+![Issues tab — the strip above badges the open counts on both Issues and Pull Requests; below, each row carries a green open-issue icon, number, title, labels and author avatar, with New Issue, Open on GitHub, and Refresh in the header](/screenshot-detail-issues.png)
 
-![Pull Requests tab on a Codeberg repository, needing no credentials — the top pull request opened in place with its description, the next one collapsed below, and New Pull Request / Open on Codeberg / Refresh in the header](/screenshot-detail-prs.png)
+![Pull Requests tab on a Codeberg repository, needing no credentials — the strip badges both open counts, the top pull request is opened in place with its description, the next one collapsed below, and New Pull Request / Open on Codeberg / Refresh in the header](/screenshot-detail-prs.png)
 
 ## Release
 
