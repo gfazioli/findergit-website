@@ -3,6 +3,9 @@
   font-size: rem(100px);
   font-weight: 900;
   letter-spacing: rem(-2px);
+  /* Balance the two lines so the headline never strands "window." alone:
+     at 1440px it broke as "Every Git repo. One / window." */
+  text-wrap: balance;
 
   @media (max-width: $mantine-breakpoint-md) {
     font-size: rem(50px);

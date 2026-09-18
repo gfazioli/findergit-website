@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react';
 import { Accordion, Anchor, Text } from '@mantine/core';
 
-const faqItems: { value: string; question: string; answer: ReactNode }[] = [
+export const faqItems: { value: string; question: string; answer: ReactNode }[] = [
   {
     value: 'what',
     question: 'What is FinderGit?',
@@ -45,7 +45,25 @@ const faqItems: { value: string; question: string; answer: ReactNode }[] = [
     value: 'replace',
     question: 'Does FinderGit replace my Git client?',
     answer:
-      'Not entirely — but it covers more ground every release. Day-to-day work happens without leaving the app: status across many repos at once, stage/unstage and discard, commit (with AI-generated messages), push/pull/fetch, branch switching, and keeping forks in sync with their upstream. For advanced surgery (interactive rebase, cherry-pick, complex merges) you’ll still want a full Git client or the terminal.',
+      'Not entirely — but it covers more ground every release. Day-to-day work happens without leaving the app: status across many repos at once, stage/unstage and discard, commit (with AI-generated messages), push/pull/fetch, stash, creating, renaming, merging, rebasing and deleting branches, worktrees, tags and releases, and keeping forks in sync with their upstream. When a merge or rebase stops on a conflict, FinderGit lists the conflicted files and lets you mark them resolved, then finish or abort. For interactive rebase and cherry-pick you’ll still want a full Git client or the terminal.',
+  },
+  {
+    value: 'kaleidoscope',
+    question: 'Can I open a diff in Kaleidoscope?',
+    answer: (
+      <>
+        Yes. With Kaleidoscope installed, an <strong>Open in Kaleidoscope</strong> button appears
+        beside <em>Refresh Diff</em> in a file&apos;s detail. It opens the committed version against
+        your working copy in a tab named for the file, binary files intact. Nothing to configure:
+        FinderGit finds Kaleidoscope by bundle identifier, then by its <code>ksdiff</code> tool,
+        then at the conventional path &mdash; and without Kaleidoscope the button is simply not
+        drawn. See{' '}
+        <Anchor href="/docs/diff-viewer#open-in-kaleidoscope" size="sm">
+          Open in Kaleidoscope
+        </Anchor>
+        .
+      </>
+    ),
   },
   {
     value: 'github-account',
