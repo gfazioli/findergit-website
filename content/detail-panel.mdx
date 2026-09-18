@@ -128,6 +128,8 @@ Switch branches without leaving the app — no more discovering mid-task that yo
 - **The Branches tab** is the full view. The **checked-out branch is pinned at the top** in its own card, with its upstream and its ↑ahead ↓behind counts beside it, so the one branch you are actually on never scrolls away. Under it, **Local** and **Remote** are separate bounded groups, each with a count, each row separated and highlighted under the pointer. Every row is a target: click anywhere on it, or use its **Checkout** button. Checking out a remote branch creates a local branch tracking exactly that remote — unambiguous even when several remotes carry the same branch name.
 - **Right-click a repo** in the file browser → **Switch Branch** for the same quick switch from the list.
 
+Every row also carries a **context menu** for the things that are not a switch — rename, merge, rebase, delete — and **New branch…** sits at the top of the dropdown. See [Managing branches](/docs/git-actions#managing-branches).
+
 After a checkout the file tree, status badge, and branch chip all update automatically. If Git refuses the switch (typically uncommitted changes that would be overwritten), the error appears in the action-bar feedback — nothing is forced.
 
 ![Branches tab — Local and Remote sections with per-row Checkout, the current branch marked, and the branch chip in the header](/screenshot-branches.png)

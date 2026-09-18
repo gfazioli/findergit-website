@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.38.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.38.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.38.0 — branches without a terminal, and a diff you can send out</p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>Create, rename, merge, rebase and delete branches without leaving the app.</strong> The switcher already listed branches and checked them out; this is the rest of it. <strong>New branch…</strong> sits at the top of the branch dropdown, with a starting point and a <em>check out after creating</em> toggle, and every row in the Branches tab carries the other four on a right-click. The name is checked as you type, so <strong>Create</strong> stays disabled and the field says <code class="notranslate">"name" already exists</code> rather than letting the command fail after you have committed to it.</li>
+<li><strong>A remote row offers Merge alone</strong>, on purpose: renaming or deleting <code class="notranslate">origin/foo</code> is a push to a remote somebody else owns. And the rebase confirmation says the part nothing on screen would suggest — Git <em>checks out</em> the branch being rebased, so you right-click a branch you are not standing on and end up standing on it.</li>
+<li><strong>Open a file's diff in Kaleidoscope.</strong> A button beside <em>Refresh Diff</em> sends the committed version and your working copy over, in a tab named for the file. Binary files arrive intact, which is rather the point of sending them out at all. A new file shows an empty left side instead of an error, and when Kaleidoscope is not installed the button is not drawn at all.</li>
+<li><strong>The action bar stops losing its buttons.</strong> On a narrow panel the actions that do not fit now move into an overflow menu instead of being clipped off the edge — and a control that is disabled says why when you hover it, rather than leaving you to work out which state of the repository is in the way.</li>
+</ul>
+<h2>Bug fixes</h2>
+<ul>
+<li><strong>Two actions can no longer collide on one repository.</strong> Pressing Refresh during a fetch left that fetch running with nothing watching it, and its result would land on a panel that had moved on. It is one action at a time per repository now — and a refresh across many repositories reports which ones it could not reach, instead of letting you assume it managed them all. Three destructive confirmations also re-check whether the repository has become busy since the dialog opened.</li>
+<li><strong>Counts agree with their number in all four translations.</strong> Twenty-eight count-bearing strings were handing Italian, French, German and Spanish one English sentence to cover both one and many, so every one of them read as a plural at one; in French and Spanish the adjective was wrong besides.</li>
+<li><strong>Selecting the same path in another repository no longer shows the previous one's diff.</strong> A README, a lock file, anything two projects both have: the panel recognised the path and not the repository it belongs to.</li>
+<li><strong>A change of account reaches the Issues, Pull Requests and Overview panels</strong>, instead of leaving them showing what the previous one could see. A request already in flight when the credentials change can no longer land afterwards and overwrite what the new account fetched.</li>
+<li><strong>Branch and stash actions act on what the row was showing.</strong> A branch is resolved by the commit it carried and a stash by its own commit rather than its position in the list, so an entry that moved, or was applied or dropped elsewhere, is reported rather than acted on in place of the one you picked.</li>
+</ul>
+<h2>Under the hood</h2>
+<p>Two of these are nets rather than repairs, and both run on every build. One fails when a string carries a count and has no plural rule; the other fails when a <code class="notranslate">FinderGitCore</code> string would be looked up in the app's catalogue instead of the framework's own — a defect invisible by construction, because the translation really is present and the test run forces English.</p>
+<p>Force-deleting a branch no longer goes through <code class="notranslate">git branch -D</code>. It compares the branch against the object ID the row was showing and refuses if it has moved, and it refuses outright while a rebase, a bisect or another worktree holds that branch — which the plumbing command, unlike the porcelain one, will not do on your behalf.</p>
+<p>Kaleidoscope is found by bundle identifier, by the <code class="notranslate">ksdiff</code> symlink and by the conventional path, never by a <code class="notranslate">PATH</code> lookup: an app launched from the Finder inherits the system <code class="notranslate">PATH</code>, which does not include <code class="notranslate">/usr/local/bin</code>, so a lookup that works in every terminal you test it from fails in the shipped app.</p>
+<p>The suite stands at 747 cases.</p>
+<h2>Install</h2>
+<p>Download the DMG below, drag FinderGit to Applications, and open it. The app is signed with an Apple Developer ID and notarized by Apple, so no Gatekeeper bypass is needed. Existing installs update themselves.</p>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>

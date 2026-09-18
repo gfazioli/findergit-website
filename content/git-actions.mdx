@@ -1,5 +1,5 @@
 ---
-description: "Stage, commit, push, pull, fetch, switch branches and discard changes from FinderGit — via the docked action bar, the Unstage tab and context menus — reconcile a diverged branch with merge or rebase, resolve a stopped merge, and run Fetch, Pull or Push across many selected repositories at once."
+description: "Stage, commit, push, pull, fetch, switch branches and discard changes from FinderGit — via the docked action bar, the Unstage tab and context menus — create, rename, merge, rebase and delete branches, reconcile a diverged branch with merge or rebase, resolve a stopped merge, and run Fetch, Pull or Push across many selected repositories at once."
 ---
 
 # Git Actions
@@ -106,6 +106,31 @@ Right-click on a repository directory for quick access to:
 
 Right-click on a file inside a repo for:
 - Stage / Unstage (only when applicable)
+
+## Managing branches
+
+Switching between branches is covered in [Branches](/docs/detail-panel#branches). Everything else a branch needs — creating one, renaming it, merging it, rebasing it, deleting it — lives here, and none of it needs a terminal.
+
+### Creating one
+
+**New branch…** sits at the top of the branch dropdown. The sheet asks for a name, a starting point (the current branch by default, though any local or remote branch will do) and whether to check the new branch out once it exists.
+
+The name is checked as you type: **Create stays disabled** and the field says why — `"name" already exists`, or the character Git will not take — rather than letting the command fail after you have committed to it.
+
+### Renaming, merging, rebasing and deleting
+
+**Right-click any branch row** in the Branches tab:
+
+- **Rename** — also on the checked-out branch's own card at the top of the tab, which is where you actually notice a typo: you create a branch, you are already standing on it, and what it has is a card rather than a row.
+- **Merge into `<current>`** — brings that branch into the one you are on.
+- **Rebase onto `<current>`** — replays it on top of the current branch. The confirmation says the part nothing on screen would suggest: Git **checks out the branch being rebased**, so you right-click a branch you are not on and you end up standing on it. That is Git's own behaviour rather than something FinderGit adds, which is exactly why it is said before you agree to it.
+- **Delete** — offers both exits in the same dialog: the ordinary delete, and the forced one for a branch whose work is not merged anywhere. Reporting Git's refusal and stopping there is a dead end you would have to leave the app to get out of.
+
+**A remote row offers Merge only.** Renaming or deleting `origin/foo` is a push to the remote — a different operation with a different blast radius, and one that belongs to whoever owns that remote.
+
+Neither delete frees a branch a **worktree** is holding, and the forced one does not override that either. The Branches tab lists worktrees under the branch groups for exactly that reason — see [Worktrees](/docs/detail-panel#worktrees).
+
+Every one of these acts on **the commit the row was showing**. If the branch has moved since the panel last read it — you committed in a terminal, another window pushed — the action says so instead of acting on whatever has taken its place.
 
 ## When your branch has diverged
 

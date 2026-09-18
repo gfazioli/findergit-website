@@ -1,5 +1,5 @@
 ---
-description: "Review changes in FinderGit's inline diff viewer: colored, line-numbered diffs for any modified file, themed for light and dark mode."
+description: "Review changes in FinderGit's inline diff viewer: colored, line-numbered diffs for any modified file, themed for light and dark mode — or send the same file to Kaleidoscope, with binary files intact and a new or deleted file showing an empty side."
 ---
 
 # Diff Viewer
@@ -43,3 +43,20 @@ FinderGit tries multiple diff strategies to show the most useful view:
 ## Text selection
 
 You can select and copy text from the diff view for use in commit messages or code reviews.
+
+## Open in Kaleidoscope
+
+When [Kaleidoscope](https://kaleidoscope.app) is installed, an **Open in Kaleidoscope** button appears beside *Refresh Diff*. It opens the file's committed version against the one in your working tree, in a tab named for the file.
+
+When Kaleidoscope is not installed the button is **not drawn at all**. A permanently greyed control advertising an app you have not bought carries nothing you can act on — a disabled control is for an obstacle you can remove.
+
+### What each side holds
+
+- **Left** — the file as it stands at `HEAD`, written out byte for byte. Binary files survive the trip intact, which is rather the point of sending them out at all: images are exactly what a dedicated viewer handles better than an inline one.
+- **Right** — the file as it stands in your working tree.
+
+The two cases where one side does not exist are handled rather than reported as an error. A **new** file has no committed version and a **deleted** one has nothing left in the working tree, so the missing side opens **empty**.
+
+### Finding Kaleidoscope
+
+FinderGit looks in three places, so a copy that does not live in `/Applications` is still found: by bundle identifier wherever macOS has registered it, then the `ksdiff` command-line tool if you installed it, then the conventional application path.
