@@ -92,6 +92,21 @@ describe('GET /download', () => {
     expect(String((fetchMock as unknown as jest.Mock).mock.calls[0][0])).toContain('per_page=5');
   });
 
+  it('keys the releases fetch on the published version', async () => {
+    const fetchMock = serve(releasesWithDmg());
+    global.fetch = fetchMock;
+
+    await GET();
+
+    // The data cache survives deploys, so without the version in the key the
+    // first invocation after a release can reuse an entry fetched before it -
+    // and a CDN-cacheable response then pins that stale answer for an hour.
+    // GitHub ignores the parameter; its only job is to move the key.
+    expect(String((fetchMock as unknown as jest.Mock).mock.calls[0][0])).toContain(
+      `v=${config.app.version}`
+    );
+  });
+
   it('skips a non-app release sitting on top of the list', async () => {
     global.fetch = serve([
       { name: 'v6.1.0', assets: [{ name: 'template.dmg', browser_download_url: 'https://no' }] },
