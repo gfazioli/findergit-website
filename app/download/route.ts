@@ -23,10 +23,13 @@ const RELEASES_PER_PAGE = 5;
 /**
  * CDN lifetime of a RESOLVED redirect.
  *
- * An hour is safe because this redirect can only go stale when a release ships,
- * and `release.sh` commits and pushes the website repo in the same motion - so
- * the deploy that publishes a release also invalidates this entry. The hour is
- * the ceiling for the case that invariant ever breaks, not the expected lag.
+ * An hour is safe because this redirect can only change when a release ships,
+ * and two things happen then. `release.sh` commits and pushes the website repo
+ * in the same motion, so the deploy invalidates this CDN entry; and the version
+ * it bumps is part of the releases fetch's cache key below, so the answer that
+ * replaces this one is built from fresh data rather than from a data-cache
+ * entry written before the release. The hour is the ceiling for a release
+ * published WITHOUT a website deploy, not the expected lag.
  *
  * `max-age=0` keeps the BROWSER out of it: a redirect pinned in someone's cache
  * survives the deploy that would have corrected it. Vercel strips `s-maxage`
@@ -70,7 +73,15 @@ export async function GET() {
     });
 
   try {
-    const url = `${config.gitHub.releasesUrl}?per_page=${RELEASES_PER_PAGE}`;
+    // `v` is ignored by GitHub - verified, the response is byte-identical with
+    // and without it - and exists only to put the published version into the
+    // DATA CACHE key. That cache survives deploys, so without it the first
+    // invocation after a release can reuse an entry fetched BEFORE the release,
+    // hand back the previous DMG, and now that the response is CDN-cacheable
+    // pin that wrong answer for an hour. release.sh bumps config.app.version in
+    // the same commit that publishes the release, so the key moves exactly when
+    // the answer does.
+    const url = `${config.gitHub.releasesUrl}?per_page=${RELEASES_PER_PAGE}&v=${config.app.version}`;
     const baseHeaders: Record<string, string> = {
       Accept: 'application/vnd.github+json',
       'User-Agent': config.gitHub.repo.split('/')[1] || 'website',
