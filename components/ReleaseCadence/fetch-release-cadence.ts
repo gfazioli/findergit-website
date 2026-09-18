@@ -18,6 +18,20 @@ const MAX_PAGES = 5;
 const TIMEOUT_MS = 10_000;
 
 /**
+ * How long the releases payload stays warm in the data cache.
+ *
+ * It has to MATCH the homepage's `revalidate`, and matching is not cosmetic: a
+ * segment's effective revalidate is the MINIMUM of its own export and every
+ * fetch revalidate used while rendering it, so a smaller number here silently
+ * clamps the page while the export still reads as though it had taken effect.
+ * Measured on 2026-09-18 - with the page at 21600 and this at 3600, the build
+ * wrote `initialRevalidateSeconds: 3600` into the prerender manifest.
+ *
+ * `home-revalidate.test.ts` pins the two together.
+ */
+export const CADENCE_REVALIDATE_SECONDS = 21_600;
+
+/**
  * The release count and dates behind the homepage strip, read straight from
  * the GitHub releases API on the server.
  *
@@ -31,7 +45,7 @@ const TIMEOUT_MS = 10_000;
  * Deliberately UNAUTHENTICATED even where GITHUB_TOKEN is set: an
  * authenticated read can see draft releases, and a draft must not be counted.
  * Next's data cache plus the page's `revalidate` keep this to roughly one
- * request an hour, well inside the 60/hr anonymous budget.
+ * request every six hours, well inside the 60/hr anonymous budget.
  *
  * Never throws. Any failure returns the config-derived fallback, so the strip
  * renders a correct date with no count rather than disappearing.
@@ -52,7 +66,7 @@ export async function fetchReleaseCadence(now: Date = new Date()): Promise<Relea
             Accept: 'application/vnd.github+json',
             'User-Agent': 'findergit-website',
           },
-          next: { revalidate: 3600 },
+          next: { revalidate: CADENCE_REVALIDATE_SECONDS },
           signal: AbortSignal.timeout(TIMEOUT_MS),
         }
       );
