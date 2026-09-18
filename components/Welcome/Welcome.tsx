@@ -22,6 +22,8 @@ import {
   IconUserCircle,
   IconStar,
   IconLanguage,
+  IconGitMerge,
+  IconLayoutColumns,
 } from '@tabler/icons-react';
 import {
   Box,
@@ -54,6 +56,7 @@ import { SolutionSection } from '../SolutionSection/SolutionSection';
 import { DiffViewerSection } from '../DiffViewerSection/DiffViewerSection';
 import { AICommitSection } from '../AICommitSection/AICommitSection';
 import { BuiltForMacSection } from '../BuiltForMacSection/BuiltForMacSection';
+import { isRecent } from './recent';
 import classes from './Welcome.module.css';
 
 /**
@@ -372,10 +375,35 @@ interface Feature {
   description: string;
   color: string;
   href: string;
-  badge?: string;
+  /** The release that introduced the feature. Drives the "New" badge through
+   *  `isRecent`, so the sticker comes off by itself instead of staying on for
+   *  25 releases, which is what happened to the four that carried it. */
+  since?: string;
+  /** A raster icon in place of a Tabler glyph: a third-party app's own icon,
+   *  which no glyph set carries. */
+  image?: string;
 }
 
 const features: Feature[] = [
+  {
+    icon: IconGitMerge,
+    title: 'Branch Management',
+    description:
+      'Create, rename, merge, rebase and delete branches from the Branches tab. The rebase confirmation says the part nothing on screen would suggest — Git checks out the branch it rebases — before you agree to it.',
+    color: 'lime',
+    href: '/docs/git-actions#managing-branches',
+    since: '0.38.0',
+  },
+  {
+    icon: IconLayoutColumns,
+    image: '/kaleidoscope-icon.png',
+    title: 'Open in Kaleidoscope',
+    description:
+      'Send any file’s diff to Kaleidoscope — the committed version against your working copy, binaries intact. Nothing to set up: the button appears when Kaleidoscope is installed.',
+    color: 'orange',
+    href: '/docs/diff-viewer#open-in-kaleidoscope',
+    since: '0.38.0',
+  },
   {
     icon: IconLanguage,
     title: 'Speaks Your Language',
@@ -383,7 +411,7 @@ const features: Feature[] = [
       '🇬🇧 🇮🇹 🇫🇷 🇩🇪 🇪🇸 — fully localized into English, Italian, French, German, and Spanish. FinderGit follows your Mac’s system language automatically.',
     color: 'grape',
     href: '/docs/getting-started#language',
-    badge: 'New',
+    since: '0.18.0',
   },
   {
     icon: IconLayoutGrid,
@@ -392,7 +420,7 @@ const features: Feature[] = [
       'Your whole workspace at a glance \u2014 clean/dirty/unpushed counts, disk usage, stars, and a "needs attention" list across every repository.',
     color: 'blue',
     href: '/docs/overview',
-    badge: 'New',
+    since: '0.13.0',
   },
   {
     icon: IconUserCircle,
@@ -401,7 +429,7 @@ const features: Feature[] = [
       'Your profile, stat tiles, top repos, languages, and a full year of contributions \u2014 as a heatmap or a line graph \u2014 without leaving the app.',
     color: 'cyan',
     href: '/docs/account',
-    badge: 'New',
+    since: '0.13.0',
   },
   {
     icon: IconStar,
@@ -410,7 +438,7 @@ const features: Feature[] = [
       'Know the moment one of your repositories earns a star \u2014 named, with an in-app badge and optional desktop notifications.',
     color: 'yellow',
     href: '/docs/account#new-star-notifications',
-    badge: 'New',
+    since: '0.13.0',
   },
   {
     icon: IconGitBranch,
@@ -437,7 +465,8 @@ const features: Feature[] = [
   {
     icon: IconBolt,
     title: 'Git Actions',
-    description: 'Stage, commit, push, pull, fetch, and switch branches without leaving the app.',
+    description:
+      'Stage, commit, push, pull, fetch and stash — and reconcile a diverged branch with merge or rebase — without leaving the app.',
     color: 'violet',
     href: '/docs/git-actions',
   },
@@ -576,8 +605,9 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
             </Title>
 
             <Text c="dimmed" ta="center" size="xl" maw={640} mx="auto">
-              FinderGit is a native macOS file browser that shows branch, status, changes, and diffs
-              for all your repositories at a glance — no app-switching, no terminal round-trips.
+              FinderGit is a native macOS file browser that shows branch, status, changes and diffs
+              for all your repositories at a glance — and lets you commit, push, branch and diff
+              right there. No app-switching, no terminal round-trips.
             </Text>
 
             <Group justify="center" mt="md">
@@ -673,8 +703,8 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
               Beyond the at-a-glance overview
             </Title>
             <Text c="dimmed" ta="center" size="lg" maw={620}>
-              The control center is the core. Around it, a handful of extras for when you go deeper
-              into a repo.
+              The control center is the core. Around it, the tools for when you go deeper into a
+              repo.
             </Text>
           </Stack>
 
@@ -704,21 +734,32 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
                   } as CSSProperties
                 }
               >
-                {'badge' in feature && feature.badge && (
+                {feature.since && isRecent(feature.since, config.app.version) && (
                   <Badge className={classes.newBadge} variant="filled" size="sm" radius="sm">
-                    {feature.badge}
+                    New
                   </Badge>
                 )}
                 <Stack gap={10} align="flex-start">
-                  <ThemeIcon
-                    size={48}
-                    radius="md"
-                    color={feature.color}
-                    variant="light"
-                    className={classes.featureIcon}
-                  >
-                    <feature.icon size={26} />
-                  </ThemeIcon>
+                  {feature.image ? (
+                    <Image
+                      src={feature.image}
+                      alt=""
+                      w={48}
+                      h={48}
+                      radius="md"
+                      className={classes.featureIcon}
+                    />
+                  ) : (
+                    <ThemeIcon
+                      size={48}
+                      radius="md"
+                      color={feature.color}
+                      variant="light"
+                      className={classes.featureIcon}
+                    >
+                      <feature.icon size={26} />
+                    </ThemeIcon>
+                  )}
                   <Text fw={700} fz={18}>
                     {feature.title}
                   </Text>

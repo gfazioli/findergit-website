@@ -85,7 +85,7 @@ export function SoftwareApplicationJsonLd() {
 // Plain-text mirror of the visible answers in `components/FAQ/FAQ.tsx`.
 // Google requires the schema text to match what's on the page — keep these
 // in sync with FAQ.tsx whenever an answer changes.
-const FAQ_ENTRIES: { question: string; answer: string }[] = [
+export const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: 'What is FinderGit?',
     answer:
@@ -114,7 +114,12 @@ const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: 'Does FinderGit replace my Git client?',
     answer:
-      'Not entirely — but it covers more ground every release. Day-to-day work happens without leaving the app: status across many repos at once, stage/unstage and discard, commit (with AI-generated messages), push/pull/fetch, branch switching, and keeping forks in sync with their upstream. For advanced surgery (interactive rebase, cherry-pick, complex merges) you’ll still want a full Git client or the terminal.',
+      'Not entirely — but it covers more ground every release. Day-to-day work happens without leaving the app: status across many repos at once, stage/unstage and discard, commit (with AI-generated messages), push/pull/fetch, stash, creating, renaming, merging, rebasing and deleting branches, worktrees, tags and releases, and keeping forks in sync with their upstream. When a merge or rebase stops on a conflict, FinderGit lists the conflicted files and lets you mark them resolved, then finish or abort. For interactive rebase and cherry-pick you’ll still want a full Git client or the terminal.',
+  },
+  {
+    question: 'Can I open a diff in Kaleidoscope?',
+    answer:
+      'Yes. With Kaleidoscope installed, an Open in Kaleidoscope button appears beside Refresh Diff in a file’s detail. It opens the committed version against your working copy in a tab named for the file, binary files intact. Nothing to configure: FinderGit finds Kaleidoscope by bundle identifier, then by its ksdiff tool, then at the conventional path — and without Kaleidoscope the button is simply not drawn.',
   },
   {
     question: 'Do I need to connect a GitHub account?',
@@ -159,12 +164,12 @@ const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: 'I found a bug. How do I report it?',
     answer:
-      'Please open a Bug Report on GitHub. Include your FinderGit version, macOS version, and steps to reproduce the issue. Screenshots are very helpful!',
+      'Please send us a bug report by email. Include your FinderGit version, macOS version, and steps to reproduce the issue. Screenshots are very helpful!',
   },
   {
     question: 'I have an idea for a new feature. Where can I suggest it?',
     answer:
-      'We’d love to hear your ideas! Open a Feature Request on GitHub and describe what you’d like FinderGit to do. The more detail you provide, the better we can evaluate and prioritize it.',
+      'We’d love to hear your ideas! Send us a feature request by email and describe what you’d like FinderGit to do. The more detail you provide, the better we can evaluate and prioritize it.',
   },
 ];
 

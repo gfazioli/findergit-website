@@ -76,7 +76,7 @@ export const MantineFooter = () => {
                 </Anchor>
                 . Follow me on{' '}
                 <Anchor fz={13} href="https://twitter.com/gfazioli">
-                  Twitter
+                  X
                 </Anchor>{' '}
                 or{' '}
                 <Anchor fz={13} href="https://github.com/sponsors/gfazioli">
