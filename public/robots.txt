@@ -8,18 +8,22 @@ Allow: /
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 10
 
 User-agent: DuckDuckBot
 Allow: /
 
 User-agent: Slurp
 Allow: /
+Crawl-delay: 10
 
 User-agent: Baiduspider
 Allow: /
+Crawl-delay: 10
 
 User-agent: YandexBot
 Allow: /
+Crawl-delay: 10
 
 User-agent: Applebot
 Allow: /
@@ -115,9 +119,78 @@ User-agent: omgilibot
 Disallow: /
 
 # ─────────────────────────────────────────────────────────────
+# Site-audit crawlers - allowed on purpose.
+# Unlike the backlink crawlers below, these only run when the site owner
+# starts an audit, so they cost nothing while idle and blocking them would
+# break a tool we may want later. This block sits BEFORE the deny list
+# deliberately: Google resolves the longest matching token, but not every
+# crawler does - Python's own urllib.robotparser puts SemrushBot-SA in the
+# SemrushBot group - and a first-match parser needs the allow to come first.
+# ─────────────────────────────────────────────────────────────
+User-agent: AhrefsSiteAudit
+Allow: /
+
+User-agent: SemrushBot-SA
+Allow: /
+
+# ─────────────────────────────────────────────────────────────
+# SEO / backlink crawlers - blocked.
+# These re-crawl the whole site continuously to build third-party link
+# indexes. They send no visitors and they are not search engines, so every
+# fetch is a CDN miss paid for as an ISR read. Measured 2026-09-20: the
+# four sites served ~206,000 page reads from durable storage against 7,052
+# human pageviews over 30 days.
+# ─────────────────────────────────────────────────────────────
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: rogerbot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: Barkrowler
+Disallow: /
+
+User-agent: serpstatbot
+Disallow: /
+
+User-agent: SEOkicks
+Disallow: /
+
+User-agent: SearchmetricsBot
+Disallow: /
+
+User-agent: spbot
+Disallow: /
+
+User-agent: Lumar
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: Sogou web spider
+Disallow: /
+
+# ─────────────────────────────────────────────────────────────
 # Everything else — allowed.
 # ─────────────────────────────────────────────────────────────
 User-agent: *
 Allow: /
+Crawl-delay: 10
 
 Sitemap: https://findergit.app/sitemap.xml
