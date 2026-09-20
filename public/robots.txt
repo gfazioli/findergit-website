@@ -137,9 +137,10 @@ Allow: /
 # SEO / backlink crawlers - blocked.
 # These re-crawl the whole site continuously to build third-party link
 # indexes. They send no visitors and they are not search engines, so every
-# fetch is a CDN miss paid for as an ISR read. Measured 2026-09-20: the
-# four sites served ~206,000 page reads from durable storage against 7,052
-# human pageviews over 30 days.
+# fetch is a CDN miss paid for as an ISR read. Measured 2026-09-20 across
+# all ten projects on the Vercel team: ~206,000 page reads out of durable
+# storage against 3,832 human pageviews over 30 days, or about 54 reads per
+# human visit.
 # ─────────────────────────────────────────────────────────────
 User-agent: AhrefsBot
 Disallow: /
