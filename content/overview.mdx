@@ -18,7 +18,7 @@ A grid of at-a-glance counters across your whole workspace:
 
 - **Repositories** — how many were discovered, across how many root folders.
 - **Clean / Modified / Unpushed** — working-tree state, summed.
-- **On Disk** — the total git footprint of every repo.
+- **On Disk** — the total git footprint of every repo. Once any repository is found to be *bloated* rather than merely large, the card says how many.
 - **Stars / Forks** — your GitHub social proof, with a "behind upstream" count for forks.
 - **Critical Findings** — supply-chain dropper artifacts surfaced by [Repo Trust](/docs/repo-trust).
 - **GitHub** — how fast your own requests to GitHub are coming back right now (see [GitHub connection](#github-connection) below).
@@ -32,6 +32,14 @@ A donut ring sums your repositories into **clean / modified / unpushed / pending
 ## Needs attention
 
 The list you'll actually act on: every repo that is dirty, ahead of its remote, behind upstream, or carries a critical finding — sorted so the most urgent sits on top. Click any row to jump straight to that repository in the file browser.
+
+## Bloated, not just big
+
+**Largest on disk** ranks repositories by `.git` size, which answers a different question from the one you're asking when you look at it: a monorepo is legitimately gigabytes, and a fork whose `.git` swallowed one weighs the same and is a mistake.
+
+Repositories holding far more history than their checkout needs get a warning marker in that list, with an estimate of how much is reclaimable in the tooltip. From there, the repository's [Maintenance tab](/docs/repo-maintenance) has the diagnosis and the cleanup.
+
+The check runs only on repositories big enough for the answer to be able to be yes, so the dashboard doesn't pay for it on the small ones.
 
 ## Top starred & Largest on disk
 

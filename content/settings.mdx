@@ -104,11 +104,19 @@ Configures the **✨ AI** commit-message generator added in 0.5.0. See the dedic
 - **Tone** — Professional / Casual / Friendly
 - **Length** — Short (subject only) / Normal (subject + brief body) / Long (subject + bulleted body)
 
+### Provider
+- **Generate with** — *FinderGit (no key needed)* (default), *Anthropic*, or *OpenAI-compatible*
+- **Base URL** — for an OpenAI-compatible endpoint: the API root the provider documents. FinderGit appends `/chat/completions`
+- **Model** — required for a direct provider, and never defaulted
+- **API key** — validated against the provider before it is stored in the macOS Keychain; optional for a local server such as Ollama
+
+See [Bring your own key](/docs/ai-commit-messages#bring-your-own-key) for the full guide.
+
 ### Custom Instructions
 Free-form textarea (max 2 KB) appended to the AI prompt as authoritative house style. Use to enforce conventions the defaults can't express — ban specific words, always reference an issue number, sign with your initials, force a specific scope vocabulary.
 
 ### Privacy
-Your staged diff is sent to the AI in-flight only — **diffs are not logged or stored**, and no personal credentials are required. Capped at 100 KB per request, with an additional 2 KB cap on custom instructions.
+On the default provider your staged diff is sent to the AI in-flight only — **diffs are not logged or stored**, and no personal credentials are required. With a provider of your own the diff goes straight from your Mac to it and FinderGit's servers never see it. Capped at 100 KB per request either way, with an additional 2 KB cap on custom instructions.
 
 ## Terminal
 

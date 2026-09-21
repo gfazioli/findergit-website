@@ -114,6 +114,22 @@ The per-IP limit is rarely what you'll meet. The one you can actually run into i
 - **"Diff too large (max 100 KB)"** — stage fewer files, or split the change into multiple commits.
 - **"Hit the AI rate limit"** — wait the number of seconds the banner names and try again. This is usually the shared capacity of the free mode rather than your own 30/hour allowance, so it often clears in seconds even if you have barely used the feature.
 
-## Coming next
+## Bring your own key
 
-The current implementation is **Phase 1**: the free zero-setup mode that just works. **Phase 2** (planned) adds *Bring Your Own Key* support — pick your preferred AI provider, supply your own API key (stored in macOS Keychain), and FinderGit calls that provider directly. Useful for privacy-sensitive repositories, or to stop sharing capacity with every other user of the free mode.
+The free mode is a managed key with capacity shared by everyone using it, and a diff that travels through findergit.app to get there. **Settings → AI → Provider** offers the other half: a provider you choose, under a key of your own, with the diff going straight from your Mac to it.
+
+Three choices:
+
+- **FinderGit (no key needed)** — what shipped first, and still the default. Nothing to set up, nothing changes.
+- **Anthropic** — a model name and your key.
+- **OpenAI-compatible** — a base URL, a model name, and a key when the server wants one. That covers OpenAI itself (`https://api.openai.com/v1`), a local [Ollama](https://ollama.com) or LM Studio (`http://localhost:11434/v1`), or a gateway of your own. FinderGit appends `/chat/completions`.
+
+A few things worth knowing:
+
+- **A local server needs no key.** Leave the field empty and no authorization header is sent at all. Plain `http` works for `localhost`, `.local` names and private-network addresses; anything on the public internet needs `https`.
+- **The key is checked before it is stored.** *Save & Validate* asks the provider for its model list first, so a key it refuses never enters your Keychain. If the check can't reach a verdict — a gateway with no model list, a server that's off right now — the key is saved anyway and the status line says it wasn't confirmed.
+- **The model is required, and FinderGit never picks one for you.** A model ID hardcoded as a silent default is how a service keeps working right up until the day the model is retired. The placeholder in the field is a suggestion, nothing more.
+- **The message reads the same either way.** The prompt and the cleanup of the answer are the same ones the free mode uses, so switching providers doesn't change the house style.
+- **Your key stays in the macOS Keychain**, filed under its own entry, and FinderGit never writes it to disk itself.
+
+With a direct provider the Privacy section changes its sentence to match: the diff goes to the provider you chose, under your key, and FinderGit's servers never see it. What that provider logs or keeps is governed by their terms.

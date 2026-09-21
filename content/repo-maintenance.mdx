@@ -38,6 +38,33 @@ It's a fast, on-demand read of *why* a repo is heavy — the step before decidin
 
 ![History & bloat — the verdict, the checked-out-files-vs-commits skew, the reclaimable estimate, and the heaviest branches ranked](/screenshot-maintenance-analyze.png)
 
+## Largest objects in history — the smoking gun
+
+Analyze tells you *how much* history is riding along and *which branch* anchors it. It doesn't tell you *what* — and the branch's name is usually no help, because the culprit is typically an over-wide remote whose name says nothing about the 400 MB of vendored binaries behind it.
+
+**Find them** (under *Largest objects in history*) reads every object in the repository and lists the twenty biggest, with the path each one was stored under:
+
+- **The path, not just the size.** A file listed here is in the *history* — it may have been deleted from your working tree years ago, which is exactly why you can't find it by looking at your files.
+- **Two numbers per object.** What it occupies in the object store, which is what fills `.git`, and the size of the content itself. They're often not even in the same order: a large file that compresses well can sit below a smaller one that doesn't.
+- **Foreign paths flagged.** An object stored under a top-level folder your working tree doesn't have is marked — that's the signature of a clone that swallowed a larger upstream.
+- **Objects nothing points at.** A blob no branch or tag reaches is listed with no path. It still takes up space, and it's the kind a routine Optimize reclaims.
+
+It's behind its own button rather than part of Analyze because it's the one read here that gets slower on a big repository: it walks every object, which on the repositories this feature exists for is millions of them.
+
+## Rewriting history — the runbook
+
+When every culprit turns out to be intertwined with the history you're keeping, no per-branch cleanup can help. The only thing that can is a **history rewrite**, and FinderGit's answer to that is a runbook rather than a button.
+
+**Show the rewrite runbook…** opens the exact `git filter-repo` commands for dropping the paths you choose, with:
+
+- **What it costs, first.** Every commit from the first changed one onward gets a new ID. Everyone else has to re-clone. Open pull requests point at commits that no longer exist. Forks keep the old objects.
+- **Whether you have the tool.** `git filter-repo` isn't part of Git. The sheet says whether it found it, and the runbook's second step installs it if not.
+- **Your choice of paths.** Tick the objects from the list above that should never have been committed; the commands rewrite themselves as you choose. A path Git could not print whole — one with a newline in it — is not offered, because the shortened version names a different file.
+- **A copy taken from the remote.** The runbook clones the remote rather than your folder, so a branch that was published but never checked out here is rewritten too. Without that, the remote would go on serving the objects the whole exercise was meant to remove.
+- **A Copy button** for the whole thing.
+
+**FinderGit never runs these.** That's the design, not a missing feature: a rewrite isn't undoable, its blast radius reaches every clone, and a tool that destructive belongs behind a command you read before you run it — not behind a button you can click by accident.
+
 ## Clean up history — reclaim what a routine cleanup can't
 
 When Analyze finds that stale branches or an over-wide remote are anchoring history your working copy doesn't need, the **Clean up history…** button — right under the diagnosis — walks you through removing them safely. A routine Optimize or Deep Clean can't touch this, because Git won't drop history a branch or remote still points to. This is the step that actually frees it.

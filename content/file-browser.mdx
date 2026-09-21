@@ -18,7 +18,7 @@ Double-click a directory (or press <Kbd>↩</Kbd>) to **re-root the tree** on th
 - <Kbd>⌘</Kbd> <Kbd>]</Kbd> — forward
 - Click any segment in the breadcrumb to jump directly to that depth
 
-![Folder drill-down with back/forward capsule and breadcrumb](/screenshot-drilldown.png)
+![A repository drilled into — the back/forward capsule and the breadcrumb sit above the table, and the folder's own files are top-level rows rather than children of an expanded one](/screenshot-drilldown.png)
 
 ### Tabs
 
@@ -116,7 +116,7 @@ Three columns pull data from each repo's own forge:
 
 Big numbers use the compact format (`1.2K` instead of `1234`). Sort by Stars to find your most-popular repo at a glance; sort by Issues to surface the busiest.
 
-![File browser with Issues, PRs and Stars columns populated for a folder of Mantine extensions](/screenshot-hero.png)
+![A root folder sorted by Stars: Issues, PRs and Stars are filled in for the repositories whose forge answers, and left empty on the local-only ones rather than showing a dash](/screenshot-hero.png)
 
 The columns populate for repos on **GitHub**, **Codeberg**, **GitLab** and **Bitbucket**. The last three need no setup at all — they answer anonymously, so the numbers appear whether or not you have connected a GitHub account. Bitbucket has no issue tracker any more, so its Issues cell stays empty; local-only repos leave every cell empty rather than showing a placeholder dash on every row.
 
@@ -151,7 +151,7 @@ When you have multiple files selected, the context menu collapses to a shorter l
 
 Press <Kbd>⌫</Kbd> (Delete) to trash the whole selection in one go. <Kbd>⌘</Kbd> <Kbd>Z</Kbd> restores every file to its original path — if a path has been reclaimed in the meantime, the trashed copy is revealed in Finder so nothing silently disappears.
 
-![Multi-selection with the bulk-action context menu](/screenshot-multiselect.png)
+![Three files selected inside one repository, with the shortened menu that acts on the whole set — Open, Reveal in Finder, Copy, Copy Paths, Stage 2 Files, and Move 3 Items to Trash at the bottom](/screenshot-multiselect.png)
 
 ## Drag files out
 
@@ -161,10 +161,10 @@ Grab the **icon** of any file or folder and drop it anywhere that accepts a file
 
 Right-click any item in the tree to get a context-sensitive menu with inline SF Symbol icons. On a single item the menu adapts to what you right-clicked:
 
-- **Repository folder** — Open in Finder / Terminal, Add to Root Folders, Quick Look, Get Info, Duplicate, Copy / Copy Path, Fetch / Pull / Push, **Open on GitHub** (or GitLab / Bitbucket / Codeberg — the label follows the remote's host; shown only when the repo has a recognized remote), Stage All, Move to Trash
+- **Repository folder** — Open in Finder / Terminal, Add to Root Folders, Quick Look, Get Info, Duplicate, Copy / Copy Path, Fetch / Pull / Push, **Open on GitHub** (or GitLab / Bitbucket / Codeberg — the label follows the remote's host; shown only when the repo has a recognized remote), **Switch Branch** (a submenu of the repository's local branches), Stage All, Move to Trash
 - **File inside a repo** — Open, Quick Look, Reveal in Finder, Get Info, Duplicate, Copy / Copy Path, Stage / Unstage (when applicable), Move to Trash
 
-![Context menu on a repository folder](/screenshot-context-menu.png)
+![The context menu on a single repository folder. Open on GitHub is not drawn here: this repository's remote is not a forge FinderGit recognises, and a link into a 404 is worse than no link](/screenshot-context-menu.png)
 
 **Finder-parity actions**:
 

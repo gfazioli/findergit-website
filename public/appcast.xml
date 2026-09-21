@@ -7,6 +7,19 @@
         <language>en</language>
         <!-- release.sh inserts new <item> entries right below this marker -->
 <item>
+            <title>Version 0.39.0</title>
+            <pubDate>Mon, 21 Sep 2026 17:14:56 +0000</pubDate>
+            <sparkle:version>658</sparkle:version>
+            <sparkle:shortVersionString>0.39.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.39.0.html</sparkle:releaseNotesLink>
+            <enclosure
+                url="https://github.com/gfazioli/findergit-website/releases/download/v0.39.0/FinderGit-0.39.0.dmg"
+                sparkle:edSignature="nziN6CNrZ5WzHht7u72IykgYS9INhxGymF5lpfeyasd+b5o5r7mij0lUeurAiXiMnrsRSfR1g0i5kJTuaw0rCA==" length="21724538"
+                type="application/octet-stream" />
+        </item>
+
+<item>
             <title>Version 0.38.0</title>
             <pubDate>Fri, 18 Sep 2026 07:14:37 +0000</pubDate>
             <sparkle:version>608</sparkle:version>

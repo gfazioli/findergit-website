@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.39.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.39.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.39.0 — your own AI key, a whole changeset in Kaleidoscope, and the file that made your repository heavy</p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>Commit messages can be written by a provider of your own, under your own key.</strong> Settings → AI keeps the free built-in mode as the default — nothing to set up, nothing changes — and offers the other half beside it: your key, kept in the macOS Keychain under an entry of its own, with the diff going straight from your Mac to the service you picked instead of passing through FinderGit at all. A server running on your own Mac needs no key, and nothing leaves the machine. The key is checked before it is stored, so one that would be refused never gets saved — and when the check cannot reach a verdict, the status line says the key was saved unconfirmed rather than claiming more than it knows.</li>
+<li><strong>Every change in a repository can go to Kaleidoscope as one changeset</strong>, instead of a tab per file. <strong>Diff All</strong> sits at the top of the file list on the Unstage tab and sends staged and unstaged changes together; filter the tab to a directory and only that directory goes. Every comparison is pinned to the same commit, so a commit landing while the files are being prepared cannot mix two baselines into one review. What cannot be sent — a directory, a submodule, a file git will not hand over — is listed underneath with the reason, rather than quietly missing from the changeset.</li>
+<li><strong>A heavy repository can now name the file responsible.</strong> <strong>Largest objects in history</strong> lists the twenty biggest objects with the path each one was stored under — including files deleted from your working tree years ago, which is exactly why you could never find them by looking at your folder. An object sitting under a top-level folder your checkout does not have is flagged: that is the signature of a clone that swallowed a larger upstream. The Overview does the same job one level up, separating a repository that is bloated from one that is merely big — a monorepo is legitimately gigabytes, while a fork whose history swallowed one weighs the same and is a mistake.</li>
+<li><strong>Removing that history for good comes as a runbook, not a button.</strong> <strong>Show the rewrite runbook…</strong> gives you the exact commands for dropping the paths you tick, run against a fresh clone rather than your own folder — taken from the remote where there is one, so a branch that was published but never checked out here is rewritten too. It opens with what it costs, before a single command: every commit from the first changed one onward gets a new identity, everyone else has to clone again, and open pull requests point at commits that no longer exist. FinderGit never runs them, on purpose — a rewrite cannot be undone and its blast radius reaches every clone, so it belongs behind a command you read before you run it.</li>
+<li><strong>Every release the app carries is readable in one window.</strong> Help → Release Notes… lists them all, newest first, with the ones you have not read still marked — so an update that arrived while you were busy can still be caught up on, instead of leaving with the panel you dismissed.</li>
+<li><strong>Two windows can no longer act on the same repository at once.</strong> Each window kept its own idea of what was running, so a fetch in one and a pull in the other could reach the same folder together. The claim is app-wide now and follows the repository rather than the window, worktree and tag actions included — and a scheduled fetch steps aside for you instead of refusing you.</li>
+</ul>
+<h2>Bug fixes</h2>
+<ul>
+<li><strong>An action you stop no longer waits for ever.</strong> A git process can hold its output open after it has been told to finish; the drain is bounded now, and what will not let go is stopped rather than waited on. git’s last bytes are kept either way, so an error message is not lost to the cancellation that revealed it.</li>
+<li><strong>The Overview summary follows a change made anywhere</strong> — in another window, or outside FinderGit altogether — rather than keeping the counts it had when you opened it.</li>
+<li><strong>The What’s New panel keeps its own header.</strong> It is an overlay that grows upward, so a long entry pushed the version label and the close button off the top of the window. It scrolls now. The 0.38.0 entry was long enough to hit this at every window size, which is why nobody reading it saw where it started.</li>
+<li><strong>The new-branch sheet acts on the commit it showed you.</strong> It pins the commit it resolved when it opened, keeps the name you typed when git refuses, and stays open on that refusal instead of discarding the work.</li>
+<li><strong>Two labels read as English grammar in the other three languages.</strong> A plural rule cannot head a sentence outside English, and the AI tab and the Release Notes label had drifted from the copy they describe.</li>
+</ul>
+<h2>Under the hood</h2>
+<p>Two more nets run on every build, and both exist because a translation can be present and still wrong. One fails when a What’s New bullet does not resolve in all four languages; the other fails when a string is merely <em>present</em> in a <code class="notranslate">.lproj</code> rather than translated — a distinction no coverage figure can make, because a key copied from English counts as covered.</p>
+<p>The AI key is stored under a Keychain namespace of its own rather than the forge’s, since a query without an account matches any item under the same server. The providers are not one dialect: what each accepts differs in shape, and the key itself is optional for a server running locally.</p>
+<p>A path git cannot print whole is no longer treated as a removal target in the rewrite runbook — a newline inside a path truncates the record and would otherwise name a different file than the one you ticked.</p>
+<p>The concurrency warnings this cycle introduced are cleared, and the suite stands at 863 cases.</p>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.39.0.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>

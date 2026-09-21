@@ -57,6 +57,15 @@ When Kaleidoscope is not installed the button is **not drawn at all**. A permane
 
 The two cases where one side does not exist are handled rather than reported as an error. A **new** file has no committed version and a **deleted** one has nothing left in the working tree, so the missing side opens **empty**.
 
+### Diff All — every change as one changeset
+
+At the top of the file list on the **Unstage** tab, **Diff All in Kaleidoscope** sends every change at once — staged and unstaged, in the order the tab draws them — as a single Kaleidoscope changeset rather than a tab per file. When the tab is filtered to a directory, only that directory's changes go.
+
+- **One document.** It opens whole or not at all, named for the repository, so a second repository's changeset in the same window is still told apart from this one.
+- **Every side is pinned to one commit.** The committed side of every file is read from the same commit, so a commit or a branch switch while the files are being prepared cannot mix two baselines into one comparison.
+- **Up to 400 files.** Past that FinderGit refuses with both numbers and suggests narrowing to a directory: a list that long is usually a build folder that slipped out of `.gitignore`, not a review.
+- **What it leaves out, it names.** A directory, a submodule, a file Git can't hand over as a blob — each is listed under the button with the reason, and never stops the rest from opening.
+
 ### Finding Kaleidoscope
 
 FinderGit looks in three places, so a copy that does not live in `/Applications` is still found: by bundle identifier wherever macOS has registered it, then the `ksdiff` command-line tool if you installed it, then the conventional application path.

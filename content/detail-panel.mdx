@@ -232,7 +232,11 @@ Hovering the date tells you which of the two it is, so a surprising position alw
 
 Click a tag to select it, ⇧-click to extend the range, ⌘-click to add or remove one. A bar appears above the list with **Fetch**, **Push** and a **Delete** menu, and nothing changes until you use it. Each action applies to the part of the selection it can touch, and says how many that is — Push over five tags of which two are already on origin acts on three, and says three.
 
+![Three tags selected across the three presence states, on a list scrolled far enough that a row is passing under the pinned header — the bar offers Fetch 1, Push 1 and a Delete menu, each counting only the tags it can act on, and one of the three selected tags is scrolled out of sight above](/screenshot-detail-release-selection.png)
+
 The three deletions live behind one menu rather than as buttons in a row: **Delete locally**, **Delete on the remote**, and **Delete everywhere**. The last one does both sides in one go, and it runs **the remote first** — deliberately. If the remote deletion fails, a protected tag or a permission denied, your local tag has not been touched and nothing is lost. The other order would destroy the only remaining reference to that commit and only then discover it could not reach origin. When a run does stop half way, the result says **which side** it stopped on, because the recovery differs: a tag still on origin needs the whole thing again, one already gone from origin only needs deleting here.
+
+![The Delete menu over a mixed selection: Delete 2 tags locally, Delete 2 tags on the remote, and — below a separator — Delete 1 tag everywhere. Three different numbers from one selection of three, because each item counts only the tags it applies to](/screenshot-detail-release-delete-menu.png)
 
 **The header and that bar stay put while the list scrolls.** On a repository with seven hundred tags you will often build a selection near the bottom, and chrome that scrolls away with the rows takes the actions for that selection with it.
 
@@ -264,6 +268,8 @@ On the **tag** you get the same actions as the ⋯ button — Fetch, Push, Delet
 Those three appear only when the forge can be expected to *have* that page. On a tag marked **local only** — which is a measured answer, `origin` was asked and did not have it — they are not drawn at all, because a link into a 404 is worse than no link.
 
 Right-clicking a tag that is part of a **multi-selection** gives you the actions for the selection, each labelled with the number it will act on. The deletions for the one row under the pointer are *not* repeated below them: two sets of delete items in one menu is not a scope you can read at a glance. What stays under the tag's own name is Copy, which cannot be ambiguous. This is also what macOS already does — right-clicking inside a selection in Finder acts on the selection.
+
+![Right-clicking a tag that is inside a multi-selection: the selection's three deletions first, each saying it acts on 3 selected tags, then a separator, the name of the row under the pointer, and the Copy actions for that one tag underneath](/screenshot-detail-release-context-menu.png)
 
 On the **release** you get **Open Release in Browser**, **Copy Release Link** and **Copy Tag Name**. Nothing appears on a row that has no release.
 
