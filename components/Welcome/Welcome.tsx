@@ -487,7 +487,7 @@ const features: Feature[] = [
     icon: IconShieldHalfFilled,
     title: 'Repo Trust',
     description:
-      'Catch the obfuscated dropper behind supply-chain worms like Shai-Hulud / Miasma — across every branch — plus the hooks that auto-run a repo, with an alert when they change after a pull.',
+      'Catch the obfuscated dropper behind supply-chain worms like Shai-Hulud / Miasma — across your branches — plus the hooks that auto-run a repo, with an alert when they change after a pull.',
     color: 'indigo',
     href: '/docs/repo-trust',
   },
@@ -785,7 +785,7 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
               icon={IconShieldHalfFilled}
               iconColor="indigo"
               title="Catch a supply-chain worm before it runs"
-              description="Cloning or pulling a repo can quietly arm it to run code — on folder open, on agent load, on npm install. Repo Trust surfaces that auto-run surface in plain language and detects the obfuscated dropper behind supply-chain worms like Shai-Hulud / Miasma — across every branch, not just the one you checked out. It flags changes after a pull, walks you through cleanup if a repo looks compromised, and never runs anything it finds."
+              description="Cloning or pulling a repo can quietly arm it to run code — on folder open, on agent load, on npm install. Repo Trust surfaces that auto-run surface in plain language and detects the obfuscated dropper behind supply-chain worms like Shai-Hulud / Miasma — across your branches, not just the one you checked out. It flags changes after a pull, walks you through cleanup if a repo looks compromised, and never runs anything it finds."
               image="/screenshot-feature-trust.png"
               imageAlt="The Repo Trust tab listing a repository's auto-run hooks with a plain-language explanation of what each one runs"
               href="/docs/repo-trust"

@@ -77,7 +77,7 @@ export const MantineFooter = () => {
               <Logo size={44} />
               <Text fz={13} c="dimmed" maw={340} lh={1.6}>
                 FinderGit is a native macOS app that combines file browsing with Git intelligence.
-                Built with SwiftUI by{' '}
+                Built by{' '}
                 <Anchor fz={13} href="https://gfazioli.github.io/">
                   Undolog
                 </Anchor>
