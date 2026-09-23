@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "@gfazioli/mantine-marquee": "^4.1.6",
-    "@gfazioli/mantine-scene": "^2.2.10",
     "@gfazioli/mantine-text-animate": "^4.0.10",
     "@mantine/core": "9.6.1",
     "@mantine/hooks": "9.6.1",

@@ -1,6 +1,5 @@
 'use client';
 
-import { Scene } from '@gfazioli/mantine-scene';
 import { IconArrowRight, IconSparkles } from '@tabler/icons-react';
 import {
   Box,
@@ -28,22 +27,21 @@ const exampleBody = [
 
 export function AICommitSection() {
   return (
-    <Box pos="relative" py={96} className="fg-feather" style={{ overflow: 'hidden' }}>
-      {/*
-        Decorative atmospheric background. `lazy` pauses the rAF loop and
-        all child animations when the section leaves the viewport — zero
-        re-renders while the user is scrolling elsewhere on the page.
-        The icon's plate lilac (#C1C5F5) leads, for the ✨ association the
-        in-app button carries, with the Finder's sky (#7DC3EB) opposite;
-        feathered at both edges so the section has no border of its own.
-      */}
-      <Scene lazy>
-        <Scene.Glow color="#C1C5F5" size={560} blur={160} opacity={0.16} top="10%" left="-8%" />
-        <Scene.Glow color="#7DC3EB" size={420} blur={140} opacity={0.12} top="80%" left="90%" />
-        <Scene.DotGrid color="gray" opacity={0.12} spacing={28} />
-        <Scene.Noise opacity={0.02} />
-      </Scene>
-
+    <Box
+      pos="relative"
+      py={96}
+      className="fg-feather"
+      style={{
+        /*
+          A fixed wash, painted once: the icon's plate lilac (#C1C5F5) leads,
+          for the ✨ association the in-app button carries, with the Finder's
+          sky (#7DC3EB) opposite. Feathered at both edges so the section has
+          no border of its own.
+        */
+        background:
+          'radial-gradient(40% 45% at 8% 15%, rgb(193 197 245 / 13%), transparent 70%), radial-gradient(34% 40% at 92% 85%, rgb(125 195 235 / 10%), transparent 70%)',
+      }}
+    >
       <Container size="lg" pos="relative" style={{ zIndex: 1 }}>
         <Stack align="center" gap="md" mb={56}>
           <Group gap={8}>

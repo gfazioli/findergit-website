@@ -1,13 +1,11 @@
 /*
- * Sits on the hero's Scene wash (mesh + two glows + dotgrid), so the surface
- * is translucent with a blur behind it rather than a flat fill: an opaque
- * pill would punch a hole in the atmosphere it sits on. light-dark() keeps
- * it legible on the white light-mode page and on dark-7.
+ * Glass on the hero's wash rather than a flat fill: an opaque pill would
+ * punch a hole in the gradient it sits on. No backdrop blur: behind it is a
+ * still gradient with nothing to blur, so the filter only cost a repaint.
  */
 .strip {
-  background: light-dark(rgb(255 255 255 / 65%), rgb(255 255 255 / 4%));
-  border-color: light-dark(rgb(0 0 0 / 8%), rgb(255 255 255 / 8%));
-  backdrop-filter: blur(6px);
+  background: var(--fg-glass);
+  border-color: var(--fg-rule);
 }
 
 /*

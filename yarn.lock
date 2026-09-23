@@ -2380,20 +2380,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gfazioli/mantine-scene@npm:^2.2.10":
-  version: 2.2.10
-  resolution: "@gfazioli/mantine-scene@npm:2.2.10"
-  dependencies:
-    cobe: "npm:^2.0.1"
-  peerDependencies:
-    "@mantine/core": ">=9.0.0"
-    "@mantine/hooks": ">=9.0.0"
-    react: ^18.x || ^19.x
-    react-dom: ^18.x || ^19.x
-  checksum: 10c0/55993c4177ce15bc813e62a18ac02360f91339ffa7441e4aef5ad43f277d756704e3702e23af447616eb14a7cc74eb8b0ea048316cdc04604c7128c9b0a313b2
-  languageName: node
-  linkType: hard
-
 "@gfazioli/mantine-text-animate@npm:^4.0.10":
   version: 4.0.10
   resolution: "@gfazioli/mantine-text-animate@npm:4.0.10"
@@ -11671,7 +11657,6 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.29.7"
     "@gfazioli/mantine-marquee": "npm:^4.1.6"
-    "@gfazioli/mantine-scene": "npm:^2.2.10"
     "@gfazioli/mantine-text-animate": "npm:^4.0.10"
     "@mantine/core": "npm:9.6.1"
     "@mantine/hooks": "npm:9.6.1"

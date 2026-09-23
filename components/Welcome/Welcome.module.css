@@ -12,6 +12,34 @@
 }
 
 /*
+ * THE HERO'S GROUND: fixed radial gradients in the icon's colours over the
+ * body's night gradient, painted once. It used to be a <Scene> of meshes,
+ * glows, a dot grid and noise; the user asked for a fixed wash instead
+ * (2026-09-23: the dots read as netfox.app's, and nothing here should cost
+ * CPU for atmosphere). The Finder's sky (#7dc3eb) and blue (#609be3) on the
+ * left where its face is, the plate's lilac (#c1c5f5) on the right, the
+ * outline's steel (#335d8f) underneath. No tint near the top edge: a lit edge
+ * right under the navbar made the bar read as a darker strip over the page.
+ *
+ * Every ellipse fades out INSIDE the box, and the hero is not feathered: the
+ * page gradient behind its bottom edge has not reached --fg-page yet, so a
+ * feather dissolving into --fg-page drew a dark rule across the page there.
+ */
+.heroGround {
+  background:
+    radial-gradient(38% 28% at 10% 30%, rgb(125 195 235 / 20%), transparent 70%),
+    radial-gradient(34% 26% at 88% 36%, rgb(193 197 245 / 13%), transparent 70%),
+    radial-gradient(45% 30% at 50% 55%, rgb(96 155 227 / 11%), transparent 70%),
+    radial-gradient(45% 22% at 18% 78%, rgb(51 93 143 / 22%), transparent 70%),
+    radial-gradient(38% 22% at 86% 76%, rgb(193 197 245 / 10%), transparent 70%);
+}
+
+/* The Get Started call to action: one still pool of the Finder's blue. */
+.ctaGround {
+  background: radial-gradient(40% 70% at 50% 40%, rgb(96 155 227 / 20%), transparent 72%);
+}
+
+/*
  * The hero's copy sits on the lightest stretch of the page gradient, where
  * the dark scale's dimmed grey measures about 4.3:1. Redefining Mantine's own
  * variables here rather than colouring each element: every c="dimmed" and

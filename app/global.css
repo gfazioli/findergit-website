@@ -63,9 +63,8 @@
    * boundary and dissolves it inward, so two sections meet through a stretch
    * of page rather than at an edge.
    *
-   * An overlay rather than a `mask-image`, because the washes are painted by
-   * <Scene>, whose layers are CHILDREN of the section: masking the section
-   * would mask its copy too. `z-index: 0` sits above the wash and below the
+   * An overlay rather than a `mask-image`, because the wash is the section's
+   * own background: masking the section would mask its copy too. `z-index: 0` sits above the wash and below the
    * content, which these sections pin at `zIndex: 1`. Lengths, not
    * percentages: a percentage of a tall section dissolves the section, not
    * its edge. Set `--fg-feather-top: 0px` where a side has nothing to meet.
