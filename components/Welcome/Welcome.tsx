@@ -388,7 +388,7 @@ const features: Feature[] = [
     icon: IconGitMerge,
     title: 'Branch Management',
     description:
-      'Create, rename, merge, rebase and delete branches from the Branches tab. The rebase confirmation says the part nothing on screen would suggest — Git checks out the branch it rebases — before you agree to it.',
+      'Create a branch from the branch menu, then rename, merge, rebase or delete it from the Branches tab. The rebase confirmation says the part nothing on screen would suggest — Git checks out the branch it rebases — before you agree to it.',
     color: 'lime',
     href: '/docs/git-actions#managing-branches',
     since: '0.38.0',
@@ -449,8 +449,7 @@ const features: Feature[] = [
   {
     icon: IconColumns3,
     title: 'Sortable Columns',
-    description:
-      'Browse files in an outline table sorted by branch, status, changes, size, or date.',
+    description: 'Browse files in an outline table sorted by branch, status, stars, size, or date.',
     color: 'blue',
     href: '/docs/file-browser#sorting',
   },
@@ -807,7 +806,7 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
               icon={IconSparkles}
               iconColor="grape"
               title="Commit messages, generated from your diff"
-              description="Click the ✨ button next to the commit field — get a properly-formatted message in about a second. Conventional Commits, optional emoji prefix, four tone presets. Free for everyone, no account, no API key to manage."
+              description="Click the ✨ button next to the commit field — get a properly-formatted message in about a second. Conventional Commits, optional emoji prefix, three tone presets. Free for everyone, no account, no API key to manage."
               image="/screenshot-feature-ai-commit.png"
               imageAlt="AI-generated commit message in the FinderGit detail panel"
               href="/docs/ai-commit-messages"

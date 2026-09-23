@@ -10,7 +10,7 @@ FinderGit lets you perform common Git operations directly from the app, without 
 
 Git operations are spread across three surfaces of the [Detail Panel](/docs/detail-panel):
 
-- **Docked action bar** (bottom edge of the panel, visible from every tab) — Fetch · Pull · Push · Refresh, plus a compact branch · upstream · ahead/behind summary.
+- **Docked action bar** (bottom edge of the panel, visible from every tab) — Fetch · Pull · Push · Stash… · Refresh, plus a compact branch · upstream · ahead/behind summary.
 - **Unstage tab** — the changes list, per-file Stage / Unstage, and the commit form.
 - **Context menus** in the file browser — right-click any repo for quick Fetch / Pull / Push / Stage All / Open in Terminal; right-click a file for Stage / Unstage.
 
@@ -27,6 +27,7 @@ The bar sits at the bottom of the [Detail Panel](/docs/detail-panel) and stays r
 - **Fetch** — fetches from all remotes (`git fetch --all`)
 - **Pull** — pulls from the upstream using your [pull strategy](/docs/settings#pull-strategy), always passed explicitly (`--ff-only`, `--no-rebase` or `--rebase`), so pulling behaves the same on every machine. Turns into a menu when the branch has [diverged](#when-your-branch-has-diverged)
 - **Push** — pushes to the upstream. If no upstream is configured, automatically sets it with `--set-upstream origin <branch>`
+- **Stash…** — sets your uncommitted work aside (see [Stashing](#stashing))
 - **Refresh** — re-reads the repository status (local only, no network)
 
 ### Button feedback
@@ -58,12 +59,14 @@ Stopping is a real interruption, not just the app looking away — the underlyin
 
 When the detail panel is narrower than about 500px (common on 13" laptops or split-screen windows), the layout automatically adapts:
 
-- Action buttons collapse to **icon-only** — the title still shows as a tooltip on hover
+- Action buttons switch to a **compact** style — the icon with a small label underneath, like a Finder toolbar. Turn off **Settings → General → Show labels under compact action buttons** for icons alone; the title still shows as a tooltip on hover
 - Section spacing and typography tighten
 - Long strings (repo path, last-commit subject) truncate more aggressively
-- Branch/Upstream/Ahead-Behind info switches from a single row to a compact two-column stack
+- The branch summary drops the upstream name and the last-fetched time, so it stays on one line
 
-No setting to manage — widen the panel and the full layout returns automatically.
+If the panel is too narrow even for that, the buttons that don't fit fold into a **⋯** menu at the end of the bar — Refresh first, then Stash…, then Push. Fetch and Pull always stay in the bar, and the labels go only when no labelled row fits at all.
+
+Widen the panel and the full layout returns automatically.
 
 ### Staging and unstaging
 

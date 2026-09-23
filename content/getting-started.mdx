@@ -49,7 +49,7 @@ If any of them fail — the checksum differs, or `spctl` rejects the file — do
 
 ## Before first launch (fresh Mac)
 
-FinderGit uses the `git` binary that ships with the Xcode Command Line Tools. On a brand-new Mac you may need to install them and accept the Xcode license — otherwise every Git action inside FinderGit will surface a `nonZeroExit(status: 89, …)` error.
+FinderGit uses the `git` binary that ships with the Xcode Command Line Tools. On a brand-new Mac you may need to install them and accept the Xcode license — otherwise every Git action inside FinderGit fails, and the error it shows is git's own message saying the Xcode license hasn't been accepted.
 
 1. **Install the Command Line Tools** (skip if already installed):
 
@@ -84,16 +84,16 @@ You can add multiple root folders. Each one appears in the sidebar and can be se
 FinderGit opens on the **[Repository List](/docs/repository-list)** — a flat, sortable table of every repository you track. The window has four areas:
 
 ### Sidebar (left)
-The control panel. It's organized into **Dashboards** (Overview, Account), **Library** (All Repositories, Favorites, Recents), **Smart Views** (Changes, Ahead, Behind, Dirty, Clean — status filters with live counts), **Filters** (GitHub, GitLab, Bitbucket, Codeberg, Local Only), and **Root Folders** (the directories you scan, and the groups you organize them into). Picking an entry changes what the main area shows. See [Repository List → The sidebar](/docs/repository-list#the-sidebar).
+The control panel. It's organized into **Dashboards** (Overview, Account), **Library** (All Repositories, Favorites, Recents), **Smart Views** (Changes, Ahead, Behind, Diverged, Dirty, Clean — status filters with live counts), **Filters** (GitHub, GitLab, Bitbucket, Codeberg, Local Only), and **Root Folders** (the directories you scan, and the groups you organize them into). Picking an entry changes what the main area shows. See [Repository List → The sidebar](/docs/repository-list#the-sidebar).
 
 ### Main area (center)
 Either the **Repository List** — one sortable row per repo (Repository, Branch, Status, Ahead/Behind, Files, Size) — or, when you select a Root Folder (or double-click a repo), the Finder-style **[File Browser](/docs/file-browser)** tree.
 
 ### Detail Panel (right or bottom)
-Select a repository to reveal its detail — an eight-tab panel (Overview · Unstage · Commits · Branches · Issues · Pull Requests · Maintenance · Trust) with the global Fetch / Pull / Push / Refresh actions docked at its edge, reachable from any tab. See [Detail Panel](/docs/detail-panel). For a file you get its info and an inline diff; for a non-git file, basic info (size, date, type).
+Select a repository to reveal its detail — a nine-tab panel (Overview · Unstage · Commits · Branches · Release · Issues · Pull Requests · Maintenance · Trust) with the global Fetch / Pull / Push / Stash… / Refresh actions docked at its edge, reachable from any tab. See [Detail Panel](/docs/detail-panel). For a file you get its info and an inline diff; for a non-git file, basic info (size, date, type).
 
 ### Summary bar (bottom)
-A live tally across the whole list — repository count, clean / dirty / ahead / behind, and total size.
+A live tally across the whole list — repository count, clean / dirty / ahead / behind (plus diverged, when any are), and total size.
 
 ## Language
 
@@ -112,7 +112,7 @@ FinderGit ships in 🇬🇧 **English**, 🇮🇹 **Italian**, 🇫🇷 **French
 ## Next steps
 
 - **[Repository List](/docs/repository-list)** — the flat all-repos table, the status sidebar (Smart Views + Filters), Favorites/Recents, and the summary bar.
-- **[Detail Panel](/docs/detail-panel)** — what each of the eight tabs (Overview, Unstage, Commits, Branches, Issues, Pull Requests, Maintenance, Trust) shows when a repo is selected.
+- **[Detail Panel](/docs/detail-panel)** — what each of the nine tabs (Overview, Unstage, Commits, Branches, Release, Issues, Pull Requests, Maintenance, Trust) shows when a repo is selected.
 - **[GitHub Integration](/docs/github-integration)** — turn on the Issues, Pull Requests and Overview tabs, plus the file-browser Issues / PRs / Stars columns, by pointing FinderGit at your GitHub auth (`gh` CLI or a token).
 - **[Git Actions](/docs/git-actions)** — the operations available from the docked action bar, the Unstage tab, and the context menus, with their keyboard shortcuts.
 - **[AI Commit Messages](/docs/ai-commit-messages)** — the ✨ button inside the Unstage tab's commit form.

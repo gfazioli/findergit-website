@@ -115,7 +115,7 @@ A few things worth knowing:
 Expand **Deep Clean options** to tune exactly how aggressive the cleanup is:
 
 - **Aggressive repack** — recompresses the whole history one big object at a time for the tightest possible packing. It reclaims more space than a normal repack, but takes noticeably longer and works the machine harder. Worth it for a one-off deep tidy; overkill for routine cleanups.
-- **Expire reflog** — clears the reflog so the objects it was protecting become eligible to prune. This is the switch that unlocks the largest savings and the one that removes the recovery safety net — leave it off if you might still want to rewind recent branch moves.
+- **Expire undo history (reflog)** — on by default. Clears the reflog so the objects it was protecting become eligible to prune. This is the switch that unlocks the largest savings and the one that removes the recovery safety net — leave it off if you might still want to rewind recent branch moves.
 - **Keep stashes** — on by default. Keeps your stashed changes safe through the cleanup. Turn it off only if you're certain you don't need any stashed work.
 - **Prune objects** — the prune horizon: how old an unreachable object must be before it's removed. Set to **Immediately** to reclaim everything eligible right away (the most thorough setting, and the one behind the "immediate prune" caveat above), or pick a grace window to leave very recent objects untouched.
 

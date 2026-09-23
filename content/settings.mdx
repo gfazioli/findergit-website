@@ -12,19 +12,19 @@ Open Settings with <Kbd>⌘</Kbd> <Kbd>,</Kbd> or from the menu **FinderGit → 
 
 ### Startup
 - **Launch FinderGit at login** — automatically start FinderGit when you log in to your Mac
-- **Show the support window at launch** — show the About & Support window (sponsors and the developer's other apps) each time FinderGit starts. Off by default; you can also toggle it from that window.
+- **Show the support window at launch** — show the About & Support window (sponsors and the developer's other apps) each time FinderGit starts. On by default; you can also toggle it from that window.
 
 ### Updates
 - **Check for updates on launch** — run a background check every time FinderGit starts. Silent unless a newer version is available.
 - **Automatically check for updates** — scheduled background check (every 24h by default). Toggle this if you want to freeze on your current version.
-- **Check for Updates Now…** — trigger a check on demand. Disabled in development builds so the Xcode-run binary can't accidentally offer to replace itself with the release DMG.
+- **Check for Updates Now…** — trigger a check on demand.
 
 ### File Browser
-- **Show hidden files** — display dotfiles (files starting with `.`) in the tree view
-- **Show labels under compact action buttons** — show text labels beneath the toolbar's compact action buttons instead of icons alone
+- **Show hidden files (dotfiles)** — display dotfiles (files starting with `.`) in the tree view. On by default; also toggleable from the **View** menu (<Kbd>⌘</Kbd> <Kbd>⇧</Kbd> <Kbd>.</Kbd>)
+- **Show labels under compact action buttons** — when the detail panel is narrow, show text labels beneath the compact buttons of its action bar instead of icons alone
 - **Scan depth** — maximum folder depth when scanning root folders for `.git` directories (1–10, default 5)
 - **Discover nested repositories** — when a scanned folder is itself a Git repository, also look inside it for more repositories. Useful when a "container" repo holds independent clones (for example a folder of related projects that is also under version control). Off by default: scanning otherwise stops at the outermost repository on each path, so repositories nested inside another repository aren't counted. Still bounded by the scan depth and excluded folders; submodules are not counted. Also toggleable from the **View** menu (<Kbd>⌘</Kbd> <Kbd>⇧</Kbd> <Kbd>N</Kbd>) and as a toolbar toggle next to **Refresh** — the Overview subtitle then notes "including nested".
-- **Tree font size** — tree view font size in points (10–20, default 13). Also adjustable via <Kbd>⌘</Kbd> <Kbd>+</Kbd> / <Kbd>⌘</Kbd> <Kbd>−</Kbd> / <Kbd>⌘</Kbd> <Kbd>0</Kbd>
+- **Tree font size** — tree view font size in points (10–20 on the slider, default 13). Also adjustable via <Kbd>⌘</Kbd> <Kbd>+</Kbd> / <Kbd>⌘</Kbd> <Kbd>−</Kbd>, which reach a wider 9–24 range, and <Kbd>⌘</Kbd> <Kbd>0</Kbd> to reset it
 
 ### Excluded Folders
 Comma-separated list of directory names to skip during scanning. Default:
@@ -102,7 +102,7 @@ Configures the **✨ AI** commit-message generator added in 0.5.0. See the dedic
 - **Use Conventional Commits format** — wraps the subject as `type(scope): subject` (default on)
 - **Prefix with a relevant emoji** — let the model pick one matching emoji (default off)
 - **Tone** — Professional / Casual / Friendly
-- **Length** — Short (subject only) / Normal (subject + brief body) / Long (subject + bulleted body)
+- **Length** — Short (subject only) / Normal (subject + brief body) / Long (with body) — a subject plus a bulleted body
 
 ### Provider
 - **Generate with** — *FinderGit (no key needed)* (default), *Anthropic*, or *OpenAI-compatible*
@@ -134,5 +134,6 @@ Choose which terminal application to use for the "Open in Terminal" action:
 ### File System Watcher
 FSEvents latency slider (0.1s–2.0s, default 0.3s). Lower values make the UI more responsive to file changes; higher values reduce CPU usage.
 
-### About
-Shows the current app version and build number.
+## About
+
+Click **About FinderGit** at the top of the Settings sidebar. It shows the current app version and build number, plus the same About & Support content as the window at launch.

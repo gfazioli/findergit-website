@@ -103,8 +103,7 @@ export const FAQ_ENTRIES: { question: string; answer: string }[] = [
   },
   {
     question: 'What macOS version do I need?',
-    answer:
-      'macOS 15 (Sequoia) or later. FinderGit is built with SwiftUI and uses APIs available from macOS 15+.',
+    answer: 'macOS 15 (Sequoia) or later. FinderGit uses APIs available from macOS 15+.',
   },
   {
     question: 'Which languages does FinderGit speak?',
@@ -119,12 +118,12 @@ export const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: 'Can I open a diff in Kaleidoscope?',
     answer:
-      'Yes. With Kaleidoscope installed, an Open in Kaleidoscope button appears beside Refresh Diff in a file’s detail. It opens the committed version against your working copy in a tab named for the file, binary files intact. Nothing to configure: FinderGit finds Kaleidoscope by bundle identifier, then by its ksdiff tool, then at the conventional path — and without Kaleidoscope the button is simply not drawn.',
+      "Yes. With Kaleidoscope installed, an Open in Kaleidoscope button appears beside Refresh Diff in a file's detail. It opens the committed version against your working copy in a tab named for the file, binary files intact. Nothing to configure: FinderGit finds Kaleidoscope by bundle identifier, then by its ksdiff tool, then at the conventional path — and without Kaleidoscope the button is simply not drawn. See Open in Kaleidoscope.",
   },
   {
     question: 'Do I need to connect a GitHub account?',
     answer:
-      'Only for the GitHub-powered extras — the Account dashboard, the issue / pull-request / star counts in the file browser, and new-star alerts. FinderGit reuses the GitHub CLI if it’s already set up, or a personal access token you paste into Settings — kept in your Keychain, never written to disk. Plain browsing, Git status, diffs and commit / push / pull all work with no GitHub connection at all. Codeberg, GitLab and Bitbucket repositories need nothing at all: their counts fill in without an account or a token, because those forges answer questions about public repositories anonymously. Bitbucket retired its issue tracker, so its Issues column stays empty, and its stars are watchers.',
+      'Only for the GitHub-powered extras — the Account dashboard, the issue / pull-request / star counts in the file browser, and new-star alerts. FinderGit reuses the GitHub CLI if it\'s already set up, or a personal access token you paste into Settings — kept in your Keychain, never written to disk. Plain browsing, Git status, diffs and commit / push / pull all work with no GitHub connection at all. Codeberg, GitLab and Bitbucket repositories need nothing at all — their counts fill in without an account or a token, because those forges answer questions about public repositories anonymously. (Bitbucket retired its issue tracker, so its Issues column stays empty, and its "stars" are watchers.) See GitHub Integration for GitHub setup and what each forge covers.',
   },
   {
     question: 'Can FinderGit tell me when one of my repos gets a star?',
@@ -139,27 +138,27 @@ export const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: 'Does FinderGit modify my repositories?',
     answer:
-      'Only when you explicitly perform an action (commit, push, pull, stage, etc.). FinderGit reads your repository state via git status and git diff — it never modifies anything without your command.',
+      'Only when you explicitly perform an action (commit, push, pull, stage, etc.). FinderGit reads your repository state via git status and git diff — it never touches your working tree, your branches or your commits without your command. The one thing it runs on its own is a fetch: once at launch by default, and on a schedule if you turn on Auto Fetch. A fetch only downloads what’s new on your remotes and updates your repository’s record of them — its remote-tracking branches, plus any new tags that come with them. You can turn both off in Settings → Git.',
   },
   {
     question: 'Is it safe to open repositories I don’t fully trust?',
     answer:
-      'That’s what Repo Trust is for. FinderGit scans each repository’s auto-run surface — hooks and configuration that could execute code when you open, build, or install — without ever running any of it. Repos with findings are flagged in the list, and you get an alert when that surface changes after a pull.',
+      "That's what Repo Trust is for. FinderGit scans each repository's auto-run surface — hooks and configuration that could execute code when you open, build, or install — without ever running any of it. Repos with findings are flagged in the list, and you get an alert when that surface changes after a pull.",
   },
   {
     question: 'How do I verify a download — and what if a virus scanner flags it?',
     answer:
-      'Every release is signed with an Apple Developer ID and notarized by Apple, and each release page publishes the SHA-256 of its DMG, so you can confirm the file you downloaded is byte-for-byte the one we shipped. Antivirus engines do sometimes flag a notarized Mac app on a machine-learning heuristic rather than an actual malware signature. A matching checksum can’t prove a detection wrong on its own, but together with Apple’s notarization scan and a clean spctl it makes a heuristic false positive much the likeliest reading, and we report those to the vendor. If the checksum doesn’t match, or macOS rejects the file, don’t open it — tell us.',
+      "Every release is signed with an Apple Developer ID and notarized by Apple, and each release page publishes the SHA-256 of its DMG, so you can confirm the file you downloaded is byte-for-byte the one we shipped — Verifying your download has the two commands. Antivirus engines do sometimes flag a notarized Mac app on a machine-learning heuristic rather than an actual malware signature. A matching checksum can't prove a detection wrong on its own, but together with Apple's notarization scan and a clean spctl run it makes a heuristic false positive much the likeliest reading, and we report those to the vendor. If the checksum doesn't match, or macOS rejects the file, don't open it — tell us.",
   },
   {
     question: 'Does FinderGit send my data anywhere?',
     answer:
-      'No telemetry, ever. Forge data (issues, pull requests, stars, fork status) is fetched directly from the forge a repo lives on — GitHub with your own credentials; Codeberg, GitLab and Bitbucket without credentials, so they are not told who you are — though, like any direct request, it reaches them from your own IP address. The only other traffic is the optional AI commit message feature: when you click ✨ AI, your staged diff is sent to generate the message — nothing is stored, and nothing is sent unless you ask.',
+      'No telemetry, ever: FinderGit never reports how you use it or which repositories you open. Here is all of the traffic it does make. Git itself talks to your remotes when you fetch, pull, push or clone — including the fetch at launch, which is on by default, and the optional Auto Fetch. Forge data (issues, pull requests, stars, fork status, avatars) is fetched directly from the forge a repo lives on — GitHub with your own credentials; Codeberg, GitLab and Bitbucket without credentials, so they are not told who you are — though, like any direct request, it reaches them from your own IP address. With a GitHub account connected, the Account dashboard, star alerts and the Clone window read from GitHub too, and FinderGit reads GitHub’s public status page at launch, when you refresh and after a failed request. Commit authors’ avatars come from GitHub or, for other email addresses, from a public avatar service that is sent a hash of the address; turn off Show author avatars in Settings → Detail View to stop both. The About & Support window loads its sponsors’ pictures from GitHub. Update checks read the release feed on findergit.app, unless you turn automatic checks off in Settings. And the optional AI commit message feature: when you click ✨ AI, your staged diff is sent to generate the message — through findergit.app by default, where nothing is stored, or straight to the provider you chose, which is also asked to check your key when you save it — and nothing is sent unless you ask.',
   },
   {
     question: 'How does the live update work?',
     answer:
-      'FinderGit uses macOS FSEvents to monitor file system changes in real time. When a file changes inside a watched repository, the status is automatically refreshed within ~300ms.',
+      'FinderGit watches your folders for changes in real time. When a file changes inside a watched repository, the status is automatically refreshed within ~300ms.',
   },
   {
     question: 'I found a bug. How do I report it?',
@@ -169,7 +168,7 @@ export const FAQ_ENTRIES: { question: string; answer: string }[] = [
   {
     question: 'I have an idea for a new feature. Where can I suggest it?',
     answer:
-      'We’d love to hear your ideas! Send us a feature request by email and describe what you’d like FinderGit to do. The more detail you provide, the better we can evaluate and prioritize it.',
+      "We'd love to hear your ideas! Send us a feature request by email and describe what you'd like FinderGit to do. The more detail you provide, the better we can evaluate and prioritize it.",
   },
 ];
 

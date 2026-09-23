@@ -76,7 +76,7 @@ export function AICommitSection() {
                   One click, properly formatted
                 </Text>
                 <Text c="dimmed" size="sm">
-                  Conventional Commits, optional emoji prefix, four tone presets, four length
+                  Conventional Commits, optional emoji prefix, three tone presets, three length
                   presets — pick a default that fits your team.
                 </Text>
               </List.Item>

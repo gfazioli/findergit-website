@@ -32,8 +32,7 @@ export const faqItems: { value: string; question: string; answer: ReactNode }[] 
   {
     value: 'macos',
     question: 'What macOS version do I need?',
-    answer:
-      'macOS 15 (Sequoia) or later. FinderGit is built with SwiftUI and uses APIs available from macOS 15+.',
+    answer: 'macOS 15 (Sequoia) or later. FinderGit uses APIs available from macOS 15+.',
   },
   {
     value: 'languages',
@@ -114,7 +113,7 @@ export const faqItems: { value: string; question: string; answer: ReactNode }[] 
     value: 'modify',
     question: 'Does FinderGit modify my repositories?',
     answer:
-      'Only when you explicitly perform an action (commit, push, pull, stage, etc.). FinderGit reads your repository state via git status and git diff — it never modifies anything without your command.',
+      'Only when you explicitly perform an action (commit, push, pull, stage, etc.). FinderGit reads your repository state via git status and git diff — it never touches your working tree, your branches or your commits without your command. The one thing it runs on its own is a fetch: once at launch by default, and on a schedule if you turn on Auto Fetch. A fetch only downloads what’s new on your remotes and updates your repository’s record of them — its remote-tracking branches, plus any new tags that come with them. You can turn both off in Settings → Git.',
   },
   {
     value: 'trust',
@@ -164,16 +163,26 @@ export const faqItems: { value: string; question: string; answer: ReactNode }[] 
     question: 'Does FinderGit send my data anywhere?',
     answer: (
       <>
-        No telemetry, ever. Forge data (issues, pull requests, stars, fork status) is fetched
-        directly from the forge a repo lives on — GitHub with your own credentials; Codeberg, GitLab
-        and Bitbucket without credentials, so they are not told who you are — though, like any
-        direct request, it reaches them from your own IP address. The only other traffic is the
-        optional{' '}
+        No telemetry, ever: FinderGit never reports how you use it or which repositories you open.
+        Here is all of the traffic it does make. Git itself talks to your remotes when you fetch,
+        pull, push or clone — including the fetch at launch, which is on by default, and the
+        optional Auto Fetch. Forge data (issues, pull requests, stars, fork status, avatars) is
+        fetched directly from the forge a repo lives on — GitHub with your own credentials;
+        Codeberg, GitLab and Bitbucket without credentials, so they are not told who you are —
+        though, like any direct request, it reaches them from your own IP address. With a GitHub
+        account connected, the Account dashboard, star alerts and the Clone window read from GitHub
+        too, and FinderGit reads GitHub’s public status page at launch, when you refresh and after a
+        failed request. Commit authors’ avatars come from GitHub or, for other email addresses, from
+        a public avatar service that is sent a hash of the address; turn off Show author avatars in
+        Settings → Detail View to stop both. The About &amp; Support window loads its sponsors’
+        pictures from GitHub. Update checks read the release feed on findergit.app, unless you turn
+        automatic checks off in Settings. And the optional{' '}
         <Anchor href="/docs/ai-commit-messages" size="sm">
           AI commit message
         </Anchor>{' '}
-        feature: when you click ✨ AI, your staged diff is sent to generate the message — nothing is
-        stored, and nothing is sent unless you ask.
+        feature: when you click ✨ AI, your staged diff is sent to generate the message — through
+        findergit.app by default, where nothing is stored, or straight to the provider you chose,
+        which is also asked to check your key when you save it — and nothing is sent unless you ask.
       </>
     ),
   },
@@ -181,7 +190,7 @@ export const faqItems: { value: string; question: string; answer: ReactNode }[] 
     value: 'live',
     question: 'How does the live update work?',
     answer:
-      'FinderGit uses macOS FSEvents to monitor file system changes in real time. When a file changes inside a watched repository, the status is automatically refreshed within ~300ms.',
+      'FinderGit watches your folders for changes in real time. When a file changes inside a watched repository, the status is automatically refreshed within ~300ms.',
   },
   {
     value: 'bug',

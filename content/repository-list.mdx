@@ -34,6 +34,7 @@ Dynamic, status-driven filters — each shows a running count and updates in rea
 - **Changes** — repos with uncommitted changes in the working tree.
 - **Ahead** — repos with local commits to push.
 - **Behind** — repos with upstream commits to pull.
+- **Diverged** — repos where both sides moved on: neither a pull nor a push works until the branch is reconciled with a merge or a rebase. They also count under Ahead and Behind; this view calls them out because they need a decision rather than a click (see [When your branch has diverged](/docs/git-actions#when-your-branch-has-diverged)).
 - **Dirty** — anything that isn't pristine: uncommitted changes *or* an out-of-sync branch.
 - **Clean** — fully in sync: working tree matches HEAD and the branch is level with (or has no) upstream.
 
@@ -91,11 +92,11 @@ One row per repository. Every column is sortable — click a header to sort, cli
 - **Files** — number of tracked files (`git ls-files`).
 - **Size** — the repository's Git-data footprint on disk (see [Repo Maintenance](/docs/repo-maintenance)).
 
-Selecting a repository reveals the **[Detail Panel](/docs/detail-panel)** beside (or below) the table — the same eight-tab panel, with the docked Fetch / Pull / Push / Refresh actions. **Double-click** a row (or **Browse Files** from its context menu) to open that repository in the [File Browser](/docs/file-browser).
+Selecting a repository reveals the **[Detail Panel](/docs/detail-panel)** beside (or below) the table — the same nine-tab panel, with the docked Fetch / Pull / Push / Stash… / Refresh actions. **Double-click** a row (or **Browse Files** from its context menu) to open that repository in the [File Browser](/docs/file-browser).
 
 ### Row actions
 
-Right-click any row for: **Add to / Remove from Favorites**, **Browse Files**, **Open in Finder**, **Open in Terminal**, **Open on GitHub** (or GitLab / Bitbucket), and **Fetch / Pull / Push**.
+Right-click any row for: **Add to / Remove from Favorites**, **Browse Files**, **Open in Finder**, **Open in Terminal**, **Open on GitHub** (or GitLab / Bitbucket / Codeberg — the label follows the remote's host), and **Fetch / Pull / Push**. On a diverged repository, **Pull** is replaced by **Pull with Merge** and **Pull with Rebase**.
 
 ## Favorites & Recents
 
@@ -110,6 +111,6 @@ A bar along the bottom of the list keeps the workspace total in view at all time
 
 **N repositories · ✓ clean · ● dirty · ↑ ahead · ↓ behind · Total size**
 
-The counts and total size are live — they track the same status data the Smart Views count, so the bar always agrees with the sidebar.
+A **diverged** count joins them whenever at least one repository has diverged — it stays hidden at zero, so when it appears it means something. The counts and total size are live — they track the same status data the Smart Views count, so the bar always agrees with the sidebar.
 
 ![The bottom summary bar with repository count, clean/dirty/ahead/behind tallies and total size](/screenshot-status-bar.png)
