@@ -201,7 +201,9 @@ export const MantineFooter = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="gradient"
-                gradient={{ from: 'pink', to: 'grape' }}
+                // Shade 7, not Mantine's default 6: white on pink-6 is 3.7:1
+                // and on grape-6 4.0:1; on these, 4.6:1 and 4.8:1.
+                gradient={{ from: 'pink.7', to: 'grape.7' }}
                 leftSection={<IconHeartFilled size={16} />}
                 radius="xl"
               >
