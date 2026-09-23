@@ -2,7 +2,6 @@
 
 import { type CSSProperties, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Scene } from '@gfazioli/mantine-scene';
 import { TextAnimate } from '@gfazioli/mantine-text-animate';
 import {
   IconDownload,
@@ -522,38 +521,9 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
       {/* ─── Hero ─── */}
       <Box
         pos="relative"
-        className="fg-feather fg-home"
-        style={{ overflow: 'hidden', ['--fg-feather-top' as string]: '0px' }}
+        className={`fg-home ${classes.heroGround}`}
+        style={{ overflow: 'hidden' }}
       >
-        {/*
-          The icon's own colours, read as light on the night: the Finder's
-          sky (#7DC3EB) and blue (#609BE3) on the left, where its face is, the
-          plate's lilac (#C1C5F5) on the right, and the outline's steel
-          (#335D8F) underneath. Sampled from public/icon-512x512.png. No stop
-          near the top edge: a lit edge right under the navbar made the bar
-          read as a darker strip laid over the page.
-
-          Not animated. `animate` on a Mesh is a hue-rotate over the whole
-          layer: on netfox.app a full turn walked the hero through green, seen
-          in a live browser while a capture taken at another point of the
-          cycle looked right.
-        */}
-        <Scene lazy>
-          <Scene.Mesh
-            stops={[
-              { color: '#7DC3EB', position: '15% 35%', spread: 45 },
-              { color: '#C1C5F5', position: '85% 38%', spread: 45 },
-              { color: '#609BE3', position: '50% 55%', spread: 45 },
-              { color: '#335D8F', position: '20% 88%', spread: 55 },
-              { color: '#C1C5F5', position: '85% 88%', spread: 45 },
-            ]}
-            opacity={0.18}
-          />
-          <Scene.Glow color="#7DC3EB" size={560} blur={140} opacity={0.26} top="22%" left="-10%" />
-          <Scene.Glow color="#C1C5F5" size={460} blur={120} opacity={0.2} top="65%" left="85%" />
-          <Scene.DotGrid color="gray" opacity={0.14} spacing={32} />
-          <Scene.Noise opacity={0.022} />
-        </Scene>
         <Container size="lg" pos="relative" style={{ zIndex: 1 }}>
           <Stack align="center" gap="xl" py={80} className={classes.night}>
             <Badge
@@ -705,7 +675,9 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
       <SolutionSection />
 
       {/* ─── Features ─── */}
-      <Box py={80}>
+      {/* `scrollMarginTop`: the navbar is sticky, and the Features link in it
+          would otherwise land the eyebrow under the bar. */}
+      <Box py={80} id="features" style={{ scrollMarginTop: 64 }}>
         <Container size="lg">
           <Stack align="center" gap="md" mb={48}>
             <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
@@ -866,12 +838,7 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
       </Box>
 
       {/* ─── Get Started CTA ─── */}
-      <Box pos="relative" py={80} className="fg-feather" style={{ overflow: 'hidden' }}>
-        <Scene lazy>
-          <Scene.StarField count={{ base: 60, md: 120 }} twinkle opacity={0.7} />
-          <Scene.ShootingStar count={2} minInterval={5} maxInterval={12} opacity={0.5} />
-          <Scene.Glow color="#609BE3" size={520} blur={170} opacity={0.22} top="30%" left="50%" />
-        </Scene>
+      <Box pos="relative" py={80} className={`fg-feather ${classes.ctaGround}`}>
         <Container size="lg" pos="relative" style={{ zIndex: 1 }}>
           <Stack align="center" gap="lg">
             <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">

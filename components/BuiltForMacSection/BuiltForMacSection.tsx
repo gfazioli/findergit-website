@@ -1,6 +1,5 @@
 'use client';
 
-import { Scene } from '@gfazioli/mantine-scene';
 import {
   IconEye,
   IconKeyboard,
@@ -23,32 +22,21 @@ const techPills = [
 
 export function BuiltForMacSection() {
   return (
-    <Box pos="relative" py={80} className="fg-feather" style={{ overflow: 'hidden' }}>
-      {/*
-        Aurora + Mesh evoke the Sequoia/Tahoe wallpaper aesthetic that
-        ships with current macOS releases — the section is literally
-        called "Built for macOS", so leaning into the macOS-native
-        atmospheric vibe rather than a generic wash makes the message
-        land. Colours from the icon: the Finder's sky and blue, the
-        plate's lilac. Feathered at both edges like every wash here.
-      */}
-      <Scene lazy>
-        <Scene.Mesh
-          stops={[
-            { color: '#609BE3', position: '15% 30%', spread: 60 },
-            { color: '#7DC3EB', position: '85% 65%', spread: 55 },
-            { color: '#C1C5F5', position: '50% 55%', spread: 70 },
-          ]}
-          opacity={0.14}
-        />
-        <Scene.Aurora
-          colors={['#7DC3EB', '#609BE3', '#C1C5F5']}
-          bands={3}
-          position="top"
-          opacity={0.16}
-        />
-        <Scene.Noise opacity={0.018} />
-      </Scene>
+    <Box
+      pos="relative"
+      py={80}
+      className="fg-feather"
+      style={{
+        /*
+          A fixed wash, painted once, lit from above like a macOS wallpaper:
+          the Finder's sky across the top, its blue on the left and the
+          plate's lilac on the right. Feathered at both edges like every
+          wash here.
+        */
+        background:
+          'radial-gradient(70% 55% at 50% 0%, rgb(125 195 235 / 14%), transparent 70%), radial-gradient(40% 55% at 12% 40%, rgb(96 155 227 / 10%), transparent 70%), radial-gradient(40% 55% at 88% 65%, rgb(193 197 245 / 9%), transparent 70%)',
+      }}
+    >
       <Container size="lg" pos="relative" style={{ zIndex: 1 }}>
         <Stack align="center" gap="md">
           <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">

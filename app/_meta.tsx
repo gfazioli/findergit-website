@@ -5,6 +5,13 @@ export default {
   index: {
     display: 'hidden',
   },
+  // The home page's feature grid, as on netfox.app. An anchor, so Nextra
+  // shows no external arrow.
+  features: {
+    type: 'page',
+    title: 'Features',
+    href: '/#features',
+  },
   docs: {
     type: 'page',
     title: 'Documentation',
