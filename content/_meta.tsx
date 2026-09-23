@@ -20,11 +20,12 @@ import {
   IconHelpCircle,
 } from '@tabler/icons-react';
 
-// Sidebar entry with a leading icon. The icon inherits `currentColor`, so it
-// tracks the link's active/hover colour automatically — which is why the
-// label stays a bare string (a Mantine `Text` would impose its own colour
-// token and break that inheritance). Kept as a small helper so every page
-// entry reads as `nav(Icon, 'Label')`.
+// Sidebar entry with a leading icon, tinted with its hue at shade 4: shade 6
+// is drawn for a light page and sank into the night (grape-6 is under 4:1 on
+// it). On the active row app/global.css hands the stroke back to the row's
+// white text. The label stays a bare string so it keeps Nextra's own
+// active/hover colour (a Mantine `Text` would impose its own token). Kept as
+// a small helper so every page entry reads as `nav(Icon, 'Label')`.
 function nav(Icon: typeof IconBook2, label: string, color?: string): { title: ReactNode } {
   return {
     title: (
@@ -32,7 +33,7 @@ function nav(Icon: typeof IconBook2, label: string, color?: string): { title: Re
         <Icon
           size={16}
           stroke={1.8}
-          color={color ? `var(--mantine-color-${color}-6)` : undefined}
+          color={color ? `var(--mantine-color-${color}-4)` : undefined}
         />
         {label}
       </Group>

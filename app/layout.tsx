@@ -28,7 +28,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en" dir="ltr" {...mantineHtmlProps}>
-      <Head>
+      {/*
+        Nextra's primary colour, which its links, active sidebar row and
+        table of contents are all cut from: the Finder's blue in the icon,
+        #609be3 as HSL. The same in both schemes, since only dark is ever
+        shown. The background is --fg-page (theme/global.css), given here as
+        well because Nextra also writes it into the theme-color meta, which
+        tints the browser's own chrome on a phone.
+      */}
+      <Head
+        color={{ hue: 213, saturation: 70, lightness: 63 }}
+        backgroundColor={{ dark: '#0b1628', light: '#0b1628' }}
+      >
         {/*
           Forced, not defaulted: the site is at night, with no switch
           (theme/global.css). `forceColorScheme` makes the pre-hydration

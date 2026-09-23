@@ -46,8 +46,41 @@
     line-height: var(--tw-leading, var(--x-text-sm--line-height)) !important;
   }
 
+  /*
+   * The active sidebar row. The brand's filled shade rather than the primary
+   * itself: white on the Finder's blue is 2.9:1, on this 4.7:1. Mantine's
+   * blue-6, which it was, measured 3.6:1.
+   */
   .x\:bg-primary-100 {
-    background-color: var(--mantine-color-blue-6) !important;
+    background-color: var(--mantine-color-findergit-6) !important;
+  }
+
+  /*
+   * A tinted sidebar icon carries its hue as the SVG's stroke attribute, which
+   * CSS outranks: on the active row it follows the row's white text instead of
+   * sitting, grape on blue, where nobody can see it. (netfox.app, measured.)
+   */
+  .x\:bg-primary-100 svg {
+    stroke: currentColor !important;
+  }
+
+  /*
+   * The docs' headings in the Finder's sky, the colour of the home page's
+   * eyebrows and of the headline's "Always live." (user, 2026-09-23: act on
+   * the titles, as on netfox.app, whose docs headings are its fox's amber).
+   * About 9:1 on the page. Not the home page, whose titles are white.
+   */
+  body:not(:has(.fg-home)) article :is(h1, h2, h3) {
+    color: var(--fg-sky);
+  }
+
+  /*
+   * Code blocks as the night's glass, not Nextra's pure black: a black slab
+   * on the navy page read as a hole cut in it.
+   */
+  article pre {
+    background-color: var(--fg-glass) !important;
+    border-color: var(--fg-rule) !important;
   }
 
   .x\:text-primary-800 {
@@ -88,7 +121,7 @@
     li {
       a.x\:text-primary-600 {
         position: relative;
-        color: var(--mantine-color-blue-6) !important;
+        color: var(--fg-blue) !important;
       }
 
       a.x\:text-primary-600::before {
@@ -96,7 +129,7 @@
         display: block;
         width: 2px;
         height: 100%;
-        background: var(--mantine-color-blue-6);
+        background: var(--fg-blue);
         position: absolute;
         left: -8px;
         top: 0;
