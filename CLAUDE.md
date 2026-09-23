@@ -56,18 +56,28 @@ The website serves as:
 ### Layout & Theme Integration
 
 - `app/layout.tsx` wraps the entire app in both `MantineProvider` and Nextra's `Layout`
-- Dark mode sync between Mantine and Nextra is handled by `MantineNextraThemeObserver`
+- The site is dark only, with no switch: see **At night** below
 - Mantine theme overrides go in `theme.ts` (client-side `createTheme`)
 - Global site configuration (metadata, GitHub API, search, Nextra layout) lives in `config/index.ts`
-- Primary color: blue (matching FinderGit app icon)
-- Custom color palette: `findergit` (blue shades)
+- Primary color: `findergit`, the Finder face's blues from the app icon (`theme.ts`)
+
+### At night
+
+One dark scheme, forced, since 2026-09-23 (the user asked for netfox.app's treatment). The traps below were each measured, on this site or on netfox.app, which went through the same change first.
+
+- **Both libraries are forced dark.** `ColorSchemeScript` and `MantineProvider` take `forceColorScheme="dark"`, so a visitor who picked light with the old switch is not left on a scheme nothing is written for; Nextra's `Layout` takes `darkMode={false}` and `nextThemes={{ defaultTheme: 'dark', forcedTheme: 'dark' }}`. Mantine's OWN dark scheme, tinted, rather than netfox.app's night written over the light scheme: this site was already drawn for dark. `html { color-scheme: dark }` sends every leftover `light-dark()` to its dark branch.
+- **The palette is the icon's, sampled by k-means** (the git nodes by hand; they are too small to cluster), and it lives as `--fg-*` tokens on `:root` in `theme/global.css`, with the surfaces (`--fg-page`, `--fg-top`, `--fg-lift`, `--fg-rule`, `--fg-glass`, `--fg-footer`). **On `:root`, not on the body**: a `var()` inside a custom property resolves where it is DECLARED, so a token Nextra reads from `html` would keep the root's value whatever the body said.
+- **Overriding a Mantine variable needs `html:root[data-mantine-color-scheme='dark']`**: the provider injects its variables later under the same selector, and an equal-specificity override silently loses.
+- **`primaryShade: 6` in both schemes.** Mantine's dark default is 8, which here is the icon's outline navy: every filled button came out a dull denim.
+- **Nextra's primary colour is set on its `Head`** (`color`, `backgroundColor` in `app/layout.tsx`), not class by class: its links, active row and table of contents are all cut from it. The active sidebar row still takes `findergit-6`, because white on the primary itself is 2.9:1.
+- **The home page's ground is one body gradient** (`body:has(.fg-home)`), reaching `--fg-page` at 2800px and holding it. Section washes are fixed `radial-gradient`s, painted once: no `<Scene>`, no dot grid, no animated layer (user: the dots read as netfox.app's, and atmosphere must cost no CPU). A wash that has to dissolve into the page at its edges takes `.fg-feather`; the hero does NOT, because the body gradient has not reached `--fg-page` at its bottom edge and a feather there drew a dark rule across the page.
+- **Measure contrast in place**, against the real ground: a DOM walk in a real browser (`lancetta-website/scripts/shot.mjs --eval`). Its colour parser reads `rgb()` only; a `lab()` colour (Nextra's text) comes out as a false 1.5:1 and has to be checked by eye.
 
 ### Key Components (`components/`)
 
 - `MantineNavBar` — top navigation with FinderGit logo + GitHub link
 - `MantineFooter` — 4-column footer with highlights, resources, ecosystem links
 - `Welcome` — hero section with animated title, features grid, download CTA
-- `ColorSchemeControl` / `ColorSchemeToggle` — dark mode toggle
 - `ReleaseNotes` — fetches GitHub releases via `/api/github-releases`
 
 ### API Routes (`app/api/`)
