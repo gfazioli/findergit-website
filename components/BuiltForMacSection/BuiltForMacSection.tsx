@@ -1,17 +1,9 @@
 'use client';
 
-import {
-  IconEye,
-  IconKeyboard,
-  IconMenu2,
-  IconCpu,
-  IconDeviceDesktop,
-  IconCode,
-} from '@tabler/icons-react';
+import { IconEye, IconKeyboard, IconMenu2, IconCpu, IconDeviceDesktop } from '@tabler/icons-react';
 import { Badge, Box, Container, Group, Stack, Text, Title } from '@mantine/core';
 
 const techPills = [
-  { label: 'SwiftUI', icon: IconCode },
   { label: 'Quick Look', icon: IconEye },
   { label: 'Keyboard Shortcuts', icon: IconKeyboard },
   { label: 'Context Menus', icon: IconMenu2 },

@@ -63,7 +63,7 @@ Repo Trust is deliberately **high-signal**. It flags the things that genuinely r
 
 It surfaces:
 
-- **Dropper artifacts** — a script shaped like a known supply-chain payload: an obfuscated file at a known indicator path, or a setup/bootstrap script that's abnormally large or single-line packed. FinderGit looks for these in the working tree **and across every branch**, because the most recent worms hide a back-dated copy on a side branch you'd never open. This is the highest-severity finding — it flags even on repos you've trusted, because trust can't whitelist malware.
+- **Dropper artifacts** — a script shaped like a known supply-chain payload: an obfuscated file at a known indicator path, or a setup/bootstrap script that's abnormally large or single-line packed. FinderGit looks for these in the working tree **and across your branches**, because the most recent worms hide a back-dated copy on a side branch you'd never open. This is the highest-severity finding — it flags even on repos you've trusted, because trust can't whitelist malware.
 - **Editor auto-tasks** — a `.vscode/tasks.json` task set to run on **folderOpen**, which fires the instant the folder is opened in VS Code.
 - **Dev-container hooks** — a `devcontainer.json` lifecycle command (`postCreateCommand`, `initializeCommand`, …) that runs when the folder is reopened in a container; `initializeCommand` runs on your host machine, before any sandbox exists.
 - **AI-agent configs** — `.claude`, `.gemini`, `.cursor`, `.aider`, and `.continue` configurations wired to run a command or hook when the agent loads the workspace — including an **always-applied** Cursor rule (one forced into every session) that points at a setup script.
