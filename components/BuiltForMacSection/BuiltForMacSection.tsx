@@ -23,30 +23,35 @@ const techPills = [
 
 export function BuiltForMacSection() {
   return (
-    <Box pos="relative" py={80} style={{ overflow: 'hidden' }}>
+    <Box pos="relative" py={80} className="fg-feather" style={{ overflow: 'hidden' }}>
       {/*
         Aurora + Mesh evoke the Sequoia/Tahoe wallpaper aesthetic that
         ships with current macOS releases — the section is literally
         called "Built for macOS", so leaning into the macOS-native
         atmospheric vibe rather than a generic wash makes the message
-        land. Colors stay in the FinderGit blue/cyan/indigo brand
-        family rather than Aurora's default green/teal.
+        land. Colours from the icon: the Finder's sky and blue, the
+        plate's lilac. Feathered at both edges like every wash here.
       */}
       <Scene lazy>
         <Scene.Mesh
           stops={[
-            { color: 'blue', position: '15% 25%', spread: 60 },
-            { color: 'cyan', position: '85% 70%', spread: 60 },
-            { color: 'indigo', position: '50% 55%', spread: 75 },
+            { color: '#609BE3', position: '15% 30%', spread: 60 },
+            { color: '#7DC3EB', position: '85% 65%', spread: 55 },
+            { color: '#C1C5F5', position: '50% 55%', spread: 70 },
           ]}
-          opacity={0.18}
+          opacity={0.14}
         />
-        <Scene.Aurora colors={['blue', 'cyan', 'indigo']} bands={3} position="top" opacity={0.22} />
+        <Scene.Aurora
+          colors={['#7DC3EB', '#609BE3', '#C1C5F5']}
+          bands={3}
+          position="top"
+          opacity={0.16}
+        />
         <Scene.Noise opacity={0.018} />
       </Scene>
       <Container size="lg" pos="relative" style={{ zIndex: 1 }}>
         <Stack align="center" gap="md">
-          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="orange">
+          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
             Built for macOS
           </Text>
           <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>

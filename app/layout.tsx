@@ -30,10 +30,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" dir="ltr" {...mantineHtmlProps}>
       <Head>
-        <ColorSchemeScript
-          nonce={head.mantine.nonce}
-          defaultColorScheme={head.mantine.defaultColorScheme}
-        />
+        {/*
+          Forced, not defaulted: the site is at night, with no switch
+          (theme/global.css). `forceColorScheme` makes the pre-hydration
+          script write `dark` whatever is in local storage, so a visitor who
+          chose light with the old switch is not left on a scheme nothing
+          here is written for any more.
+        */}
+        <ColorSchemeScript nonce={head.mantine.nonce} forceColorScheme="dark" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="shortcut icon" href="/favicon.ico" />
@@ -47,7 +51,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         */}
       </Head>
       <body>
-        <MantineProvider theme={theme} defaultColorScheme={head.mantine.defaultColorScheme}>
+        <MantineProvider theme={theme} forceColorScheme="dark">
           <Layout
             banner={
               <Banner storageKey={`findergit-release-${config.app.version}`}>
@@ -69,6 +73,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             docsRepositoryBase={nextraLayout.docsRepositoryBase}
             footer={<MantineFooter />}
             sidebar={nextraLayout.sidebar}
+            /*
+              Nextra's DARK theme, forced, with no switch in its sidebar:
+              the same night as Mantine above, so its tables, callouts and
+              code blocks are drawn for the ground they sit on.
+            */
+            darkMode={false}
+            nextThemes={{ defaultTheme: 'dark', forcedTheme: 'dark' }}
           >
             {children}
           </Layout>

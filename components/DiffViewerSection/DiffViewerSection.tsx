@@ -60,7 +60,9 @@ function getLineColor(type: DiffLine['type']) {
     case 'addition':
       return { bg: 'rgba(40, 167, 69, 0.12)', color: '#28a745', prefix: '+' };
     case 'deletion':
-      return { bg: 'rgba(215, 58, 73, 0.12)', color: '#d73a49', prefix: '–' };
+      // A lighter red than the row's tint: #d73a49 measured 3.3:1 on the
+      // mock's surface, this one 5.3:1.
+      return { bg: 'rgba(215, 58, 73, 0.12)', color: '#f47067', prefix: '–' };
     default:
       return { bg: 'transparent', color: 'var(--mantine-color-dark-1)', prefix: ' ' };
   }
@@ -108,7 +110,7 @@ function ComparePane({ side }: { side: 'old' | 'new' }) {
           <Group key={idx} gap={0} wrap="nowrap" style={{ backgroundColor: style.bg }}>
             <Text
               fz={10}
-              c="dark.3"
+              c="dark.2"
               ta="right"
               w={28}
               px={6}
@@ -143,15 +145,10 @@ const handoffPoints = [
 
 export function DiffViewerSection() {
   return (
-    <Box
-      py={80}
-      style={{
-        backgroundColor: 'var(--mantine-color-dark-8)',
-      }}
-    >
+    <Box py={80}>
       <Container size="lg">
         <Stack align="center" gap="md" mb={48}>
-          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="orange">
+          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
             Diff Viewer
           </Text>
           <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900} c="white">
@@ -229,7 +226,7 @@ export function DiffViewerSection() {
                 <Group key={idx} gap={0} wrap="nowrap" style={{ backgroundColor: style.bg }}>
                   <Text
                     size="xs"
-                    c="dark.3"
+                    c="dark.2"
                     ta="right"
                     w={40}
                     px={8}
@@ -240,7 +237,7 @@ export function DiffViewerSection() {
                   </Text>
                   <Text
                     size="xs"
-                    c="dark.3"
+                    c="dark.2"
                     ta="right"
                     w={40}
                     px={8}
@@ -296,7 +293,7 @@ export function DiffViewerSection() {
                   pos="relative"
                 />
               </Box>
-              <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="orange">
+              <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
                 Works with Kaleidoscope
               </Text>
               <Title order={3} fz={{ base: 24, sm: 30 }} fw={800} lh={1.15} c="white">
@@ -317,7 +314,7 @@ export function DiffViewerSection() {
                       style={{
                         flexShrink: 0,
                         borderRadius: '50%',
-                        backgroundColor: 'var(--mantine-color-orange-5)',
+                        backgroundColor: 'var(--fg-sky)',
                       }}
                     />
                     <Text c="gray.4" size="sm" lh={1.55}>

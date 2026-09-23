@@ -1,38 +1,45 @@
 .title {
-  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
-  font-size: rem(100px);
+  color: var(--mantine-color-white);
+  /* Fluid rather than stepped (user, 2026-09-23: smaller): at a 1000px
+     window, just past Mantine's md breakpoint, a fixed 84px filled the line
+     edge to edge. 5.6vw reaches the 72px cap at about 1290px. */
+  font-size: clamp(rem(44px), 5.6vw, rem(72px));
   font-weight: 900;
   letter-spacing: rem(-2px);
   /* Balance the two lines so the headline never strands "window." alone:
      at 1440px it broke as "Every Git repo. One / window." */
   text-wrap: balance;
+}
 
-  @media (max-width: $mantine-breakpoint-md) {
-    font-size: rem(50px);
-  }
+/*
+ * The hero's copy sits on the lightest stretch of the page gradient, where
+ * the dark scale's dimmed grey measures about 4.3:1. Redefining Mantine's own
+ * variables here rather than colouring each element: every c="dimmed" and
+ * anchor inside follows by itself.
+ */
+.night {
+  --mantine-color-dimmed: rgb(255 255 255 / 84%);
+  --mantine-color-anchor: var(--fg-sky);
 }
 
 /*
  * Raycast-style feature card. The per-card accent comes from --card-color,
  * set inline from the feature's Mantine palette hex. A very low-alpha radial
  * tint of --card-color washes in from the top-left and fades to transparent
- * so each card carries its own hue. The base adapts per scheme via
- * light-dark(): a near-white surface on light mode (so the near-black title
- * token stays readable) and the original dark-7 surface on dark mode. The
- * border likewise switches from a faint black hairline (light) to the faint
- * white hairline (dark) so the card edge reads against either page colour.
+ * so each card carries its own hue, over the night's glass rather than a
+ * solid surface, so the page's gradient runs through the grid.
  */
 .featureCard {
   position: relative;
   border-radius: rem(16px);
-  border: 1px solid light-dark(rgb(0 0 0 / 8%), rgb(255 255 255 / 6%));
+  border: 1px solid var(--fg-rule);
   background:
     radial-gradient(
       120% 120% at 0% 0%,
       color-mix(in srgb, var(--card-color) 8%, transparent) 0%,
       transparent 55%
     ),
-    light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+    var(--fg-glass);
   transition:
     transform 180ms ease,
     border-color 180ms ease,
@@ -49,7 +56,7 @@
       color-mix(in srgb, var(--card-color) 14%, transparent) 0%,
       transparent 60%
     ),
-    light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+    var(--fg-glass);
   box-shadow:
     0 12px 30px -12px color-mix(in srgb, var(--card-color) 45%, transparent),
     0 0 0 1px color-mix(in srgb, var(--card-color) 20%, transparent);
@@ -84,23 +91,6 @@
 .featureIcon {
   border: 1px solid color-mix(in srgb, var(--card-color) 32%, transparent);
   box-shadow: 0 6px 18px -6px color-mix(in srgb, var(--card-color) 55%, transparent);
-}
-
-/*
- * Subtle section band: a soft indigo wash from the top so the feature cards
- * and their icon tiles lift off the page instead of sitting on a flat fill.
- * Theme-aware via light-dark() and deliberately faint — atmosphere, not a
- * coloured block.
- */
-.sectionBand {
-  background: radial-gradient(
-    100% 70% at 50% -10%,
-    light-dark(
-      color-mix(in srgb, var(--mantine-color-indigo-3) 28%, transparent),
-      color-mix(in srgb, var(--mantine-color-indigo-9) 30%, transparent)
-    ),
-    transparent 62%
-  );
 }
 
 /*

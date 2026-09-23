@@ -54,10 +54,10 @@ const finderRepos = ['my-ios-app', 'api-server', 'design-system', 'landing-page'
 
 export function ProblemSection() {
   return (
-    <Box py={80} className={classes.sectionBand}>
+    <Box py={80}>
       <Container size="lg">
         <Stack align="center" gap="md" mb={48}>
-          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="orange">
+          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
             The Problem
           </Text>
           <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>

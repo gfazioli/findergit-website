@@ -520,40 +520,49 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
   return (
     <>
       {/* ─── Hero ─── */}
-      <Box pos="relative" style={{ overflow: 'hidden' }}>
+      <Box
+        pos="relative"
+        className="fg-feather fg-home"
+        style={{ overflow: 'hidden', ['--fg-feather-top' as string]: '0px' }}
+      >
         {/*
-          The Scene background needs enough opacity to read on a *white*
-          page (light mode) without becoming garish in dark mode. The
-          combination below — soft mesh + two sized glows + dotgrid +
-          noise — gives noticeable atmosphere on white and a richer wash
-          on dark, with no theme-specific branching needed.
+          The icon's own colours, read as light on the night: the Finder's
+          sky (#7DC3EB) and blue (#609BE3) on the left, where its face is, the
+          plate's lilac (#C1C5F5) on the right, and the outline's steel
+          (#335D8F) underneath. Sampled from public/icon-512x512.png. No stop
+          near the top edge: a lit edge right under the navbar made the bar
+          read as a darker strip laid over the page.
+
+          Not animated. `animate` on a Mesh is a hue-rotate over the whole
+          layer: on netfox.app a full turn walked the hero through green, seen
+          in a live browser while a capture taken at another point of the
+          cycle looked right.
         */}
         <Scene lazy>
           <Scene.Mesh
             stops={[
-              { color: 'blue', position: '20% 25%', spread: 55 },
-              { color: 'cyan', position: '80% 70%', spread: 55 },
-              { color: 'indigo', position: '50% 50%', spread: 70 },
+              { color: '#7DC3EB', position: '15% 35%', spread: 45 },
+              { color: '#C1C5F5', position: '85% 38%', spread: 45 },
+              { color: '#609BE3', position: '50% 55%', spread: 45 },
+              { color: '#335D8F', position: '20% 88%', spread: 55 },
+              { color: '#C1C5F5', position: '85% 88%', spread: 45 },
             ]}
-            opacity={0.22}
+            opacity={0.18}
           />
-          <Scene.Glow color="blue" size={560} blur={140} opacity={0.4} top="5%" left="-10%" />
-          <Scene.Glow color="cyan" size={460} blur={120} opacity={0.32} top="65%" left="85%" />
+          <Scene.Glow color="#7DC3EB" size={560} blur={140} opacity={0.26} top="22%" left="-10%" />
+          <Scene.Glow color="#C1C5F5" size={460} blur={120} opacity={0.2} top="65%" left="85%" />
           <Scene.DotGrid color="gray" opacity={0.14} spacing={32} />
           <Scene.Noise opacity={0.022} />
         </Scene>
         <Container size="lg" pos="relative" style={{ zIndex: 1 }}>
-          <Stack align="center" gap="xl" py={80}>
+          <Stack align="center" gap="xl" py={80} className={classes.night}>
             <Badge
               size="lg"
               variant="filled"
-              color="blue"
               style={{
                 // Solid filled badge plus a soft brand-tinted shadow so it
-                // reads as elevated against the Scene's blue/cyan wash —
-                // the previous `variant="light"` blended into the
-                // atmosphere and lost legibility on light mode.
-                boxShadow: '0 8px 22px -8px rgba(0, 90, 200, 0.45)',
+                // reads as elevated against the hero's wash.
+                boxShadow: '0 8px 22px -8px rgba(47, 115, 204, 0.55)',
               }}
             >
               Free for macOS 15+
@@ -562,16 +571,19 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
             <Image
               src="/icon-512x512.png"
               alt="FinderGit"
-              w={{ base: 120, sm: 160, md: 200 }}
-              h={{ base: 120, sm: 160, md: 200 }}
+              w={{ base: 112, sm: 144, md: 168 }}
+              h={{ base: 112, sm: 144, md: 168 }}
               style={{
                 // `filter: drop-shadow` (not box-shadow) follows the PNG's
                 // alpha channel, so the shadow traces the icon's actual
                 // rounded macOS-app-icon silhouette instead of the square
                 // <img> bounding box. Two layered drops give depth without
                 // the "rectangular halo behind a rounded shape" artifact.
+                // The glow is the icon's own sky, the shadow under it the
+                // night's: a blue halo on a navy page reads as light, not
+                // as a drop shadow.
                 filter:
-                  'drop-shadow(0 18px 26px rgba(0, 90, 200, 0.32)) drop-shadow(0 6px 10px rgba(0, 0, 0, 0.18))',
+                  'drop-shadow(0 18px 30px rgba(125, 195, 235, 0.3)) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35))',
               }}
             />
 
@@ -598,13 +610,13 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
                 duration={1.5}
                 animation="scale"
                 animateProps={{ scaleAmount: 2 }}
-                gradient={{ from: 'blue', to: 'cyan' }}
+                gradient={{ from: 'var(--fg-sky)', to: 'var(--fg-lilac)' }}
               >
                 Always live.
               </TextAnimate>
             </Title>
 
-            <Text c="dimmed" ta="center" size="xl" maw={640} mx="auto">
+            <Text c="dimmed" ta="center" size="lg" maw={620} mx="auto">
               FinderGit is a native macOS file browser that shows branch, status, changes and diffs
               for all your repositories at a glance — and lets you commit, push, branch and diff
               right there. No app-switching, no terminal round-trips.
@@ -614,19 +626,19 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
               <Button
                 href="/download"
                 component="a"
-                leftSection={<IconDownload size={20} />}
-                size="xl"
+                leftSection={<IconDownload size={18} />}
+                size="lg"
                 radius="xl"
-                px={40}
+                px={32}
               >
                 Download for macOS
               </Button>
               <Button
                 href="/docs"
                 component="a"
-                rightSection={<IconArrowRight size={18} />}
+                rightSection={<IconArrowRight size={16} />}
                 variant="subtle"
-                size="xl"
+                size="lg"
               >
                 See what it does
               </Button>
@@ -693,10 +705,10 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
       <SolutionSection />
 
       {/* ─── Features ─── */}
-      <Box py={80} className={classes.sectionBand}>
+      <Box py={80}>
         <Container size="lg">
           <Stack align="center" gap="md" mb={48}>
-            <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="orange">
+            <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
               And there&apos;s more
             </Text>
             <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
@@ -783,18 +795,12 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
       <BuiltForMacSection />
 
       {/* ─── In action — feature showcase with alternating image/copy rows ─── */}
-      <Box py={96} style={{ backgroundColor: 'var(--mantine-color-dark-9)' }}>
+      <Box py={96}>
         <Container size="xl">
           <Stack align="center" gap="md" mb={72}>
-            <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.5">
+            <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
               In action
             </Text>
-            {/* This band sits on a hardcoded dark backdrop (the screenshots
-                carry dark macOS chrome, so the dark band is intentional —
-                same idiom as the Get Started CTA below). Force light text so
-                the heading + copy read on the dark band in *both* schemes
-                instead of falling back to the near-black default token in
-                light mode. */}
             <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900} c="white">
               Built around the way you actually work
             </Title>
@@ -860,22 +866,15 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
       </Box>
 
       {/* ─── Get Started CTA ─── */}
-      <Box
-        pos="relative"
-        py={80}
-        style={{
-          backgroundColor: 'var(--mantine-color-dark-8)',
-          overflow: 'hidden',
-        }}
-      >
+      <Box pos="relative" py={80} className="fg-feather" style={{ overflow: 'hidden' }}>
         <Scene lazy>
           <Scene.StarField count={{ base: 60, md: 120 }} twinkle opacity={0.7} />
           <Scene.ShootingStar count={2} minInterval={5} maxInterval={12} opacity={0.5} />
-          <Scene.Glow color="orange" size={500} blur={170} opacity={0.18} top="30%" left="50%" />
+          <Scene.Glow color="#609BE3" size={520} blur={170} opacity={0.22} top="30%" left="50%" />
         </Scene>
         <Container size="lg" pos="relative" style={{ zIndex: 1 }}>
           <Stack align="center" gap="lg">
-            <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="orange">
+            <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
               Get Started
             </Text>
             <Title order={2} ta="center" fz={{ base: 36, sm: 48 }} fw={900} c="white">
@@ -892,7 +891,6 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
               size="xl"
               radius="xl"
               px={48}
-              color="orange"
               mt="md"
             >
               Download for macOS
@@ -907,7 +905,7 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
       {/* ─── FAQ ─── */}
       <Container size="lg">
         <Stack align="center" gap="md" my={64}>
-          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="orange">
+          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
             FAQ
           </Text>
           <Title order={2} ta="center">

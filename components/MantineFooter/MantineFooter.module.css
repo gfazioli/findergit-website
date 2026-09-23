@@ -3,23 +3,11 @@
  * bands between drawn rules. No rules here either: the footer's own ground,
  * a step deeper than the page, fading in from it; the sponsor wall as a card
  * whose edges do the separating; the colophon and sharing on one line.
- *
- * This site still has both schemes, so the three surfaces are set per scheme
- * here rather than read from a site-wide token.
+ * Its three surfaces are the night's own tokens (theme/global.css).
  */
 .contentFooter {
-  --fg-footer: var(--mantine-color-gray-2);
-  --fg-card: var(--mantine-color-white);
-  --fg-rule: var(--mantine-color-gray-3);
-
   padding-top: 96px;
   background: linear-gradient(to bottom, transparent 0, var(--fg-footer) 140px);
-
-  @mixin dark {
-    --fg-footer: #0b0c0e;
-    --fg-card: rgb(255 255 255 / 4%);
-    --fg-rule: rgb(255 255 255 / 10%);
-  }
 }
 
 .footer {
@@ -65,7 +53,7 @@
   padding: rem(24px) rem(28px);
   border: 1px solid var(--fg-rule);
   border-radius: var(--mantine-radius-lg);
-  background: var(--fg-card);
+  background: var(--fg-glass);
 
   @media (max-width: $mantine-breakpoint-sm) {
     grid-template-columns: minmax(0, 1fr);
