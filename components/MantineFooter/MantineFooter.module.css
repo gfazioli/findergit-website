@@ -1,39 +1,140 @@
+/*
+ * Ported from netfox-website (2026-09-23), where it replaced a footer of three
+ * bands between drawn rules. No rules here either: the footer's own ground,
+ * a step deeper than the page, fading in from it; the sponsor wall as a card
+ * whose edges do the separating; the colophon and sharing on one line.
+ *
+ * This site still has both schemes, so the three surfaces are set per scheme
+ * here rather than read from a site-wide token.
+ */
 .contentFooter {
-  padding-top: 32px;
-  background: var(--mantine-color-body);
-  box-shadow: inset 0px 4px 32px 0px #00000032;
+  --fg-footer: var(--mantine-color-gray-2);
+  --fg-card: var(--mantine-color-white);
+  --fg-rule: var(--mantine-color-gray-3);
+
+  padding-top: 96px;
+  background: linear-gradient(to bottom, transparent 0, var(--fg-footer) 140px);
+
+  @mixin dark {
+    --fg-footer: #0b0c0e;
+    --fg-card: rgb(255 255 255 / 4%);
+    --fg-rule: rgb(255 255 255 / 10%);
+  }
 }
 
 .footer {
-  padding-bottom: 32px;
+  padding-bottom: 28px;
 }
 
+/* Column headings, the same small caps as the page's eyebrows. */
 .title {
-  font-size: 14px !important;
-  font-weight: 300;
+  color: var(--mantine-color-dimmed);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 2px;
 }
 
+/* Quiet at rest, the accent on hover: a column of amber was the loudest
+   thing in the footer. */
 .columnAnchor {
-  font-size: 12.8px !important;
+  color: var(--mantine-color-text) !important;
+  opacity: 0.82;
+  font-size: 13px !important;
   font-weight: 500 !important;
+  transition:
+    color 150ms ease,
+    opacity 150ms ease;
+
+  &:hover {
+    color: var(--mantine-color-anchor) !important;
+    opacity: 1;
+    text-decoration: none;
+  }
 }
 
-.lastDivider {
-  @mixin light {
-    box-shadow: 0 0px 20px 2px rgb(0, 0, 0, 0.2);
-  }
-
-  @mixin dark {
-    box-shadow: 0 3px 8px 2px rgb(0, 0, 0, 0.5);
-  }
-}
-
-.sponsorsSection {
+/* The sponsor block is a card: its own edges separate it. */
+.sponsors {
   scroll-margin-top: rem(90px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: rem(32px);
+  margin-top: rem(56px);
+  padding: rem(24px) rem(28px);
+  border: 1px solid var(--fg-rule);
+  border-radius: var(--mantine-radius-lg);
+  background: var(--fg-card);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    grid-template-columns: minmax(0, 1fr);
+    text-align: center;
+  }
+}
+
+.sponsorsCopy {
+  max-width: rem(480px);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    max-width: none;
+
+    & > :first-child {
+      justify-content: center;
+    }
+  }
+}
+
+.sponsorsActions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(16px);
+}
+
+.heart {
+  color: var(--mantine-color-pink-5);
+  flex: none;
 }
 
 .sponsorSlot {
-  border: 1px dashed var(--mantine-color-default-border);
+  border: 1px dashed var(--fg-rule);
   background-color: transparent;
   color: var(--mantine-color-dimmed);
+}
+
+.colophon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: rem(12px) rem(24px);
+  margin-top: rem(40px);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+.credits {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 rem(4px);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: rem(3px);
+}
+
+.dot {
+  margin-inline: rem(6px);
+  opacity: 0.5;
+}
+
+.shareLabel {
+  letter-spacing: 2px;
 }

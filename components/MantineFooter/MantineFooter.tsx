@@ -16,12 +16,10 @@ import {
   Avatar,
   Button,
   Container,
-  Divider,
   Grid,
   Group,
   Stack,
   Text,
-  Title,
 } from '@mantine/core';
 import { Logo } from '@/components/Logo/Logo';
 import { NewsletterSignup } from '@/components/NewsletterSignup/NewsletterSignup';
@@ -58,17 +56,26 @@ const VerticalLinks = ({ list }: { list: VerticalLink[] }) => {
   );
 };
 
+/*
+ * No drawn rules anywhere in here. The footer used to be three bands stacked
+ * between two full-width Dividers, with two vertical ones in the colophon: on
+ * the night page each one was a bright line across the dark, and they were the
+ * loudest thing in the footer. What separates things now is ground and
+ * objects: the footer's own deeper ground fading in from the page, the
+ * sponsor block as a card with its own edges, and space.
+ */
 export const MantineFooter = () => {
   return (
-    <div className={classes.contentFooter}>
-      <NewsletterSignup />
-      <Divider my="md" className={classes.lastDivider} />
+    <footer className={classes.contentFooter}>
       <Container className={classes.footer} size="lg">
-        <Grid grow>
+        {/* The newsletter leads, and space separates it from the columns: no rule. */}
+        <NewsletterSignup />
+
+        <Grid grow mt={48}>
           <Grid.Col span={{ base: 12, sm: 4 }}>
-            <Stack gap="xs">
-              <Logo size={48} />
-              <Text fz={13} mr={64}>
+            <Stack gap="sm">
+              <Logo size={44} />
+              <Text fz={13} c="dimmed" maw={340} lh={1.6}>
                 FinderGit is a native macOS app that combines file browsing with Git intelligence.
                 Built with SwiftUI by{' '}
                 <Anchor fz={13} href="https://gfazioli.github.io/">
@@ -84,177 +91,174 @@ export const MantineFooter = () => {
                 </Anchor>
                 .
               </Text>
-              <Group>
-                <ActionIcon variant="subtle" component="a" href="https://github.com/gfazioli">
-                  <IconBrandGithubFilled size={24} />
+              <Group gap={4}>
+                <ActionIcon
+                  variant="subtle"
+                  component="a"
+                  href="https://github.com/gfazioli"
+                  aria-label="GitHub"
+                >
+                  <IconBrandGithubFilled size={20} />
                 </ActionIcon>
-                <ActionIcon variant="subtle" component="a" href="https://twitter.com/gfazioli">
-                  <IconBrandX size={24} />
+                <ActionIcon
+                  variant="subtle"
+                  component="a"
+                  href="https://twitter.com/gfazioli"
+                  aria-label="X"
+                >
+                  <IconBrandX size={20} />
                 </ActionIcon>
-                <ActionIcon variant="subtle" component="a" href="https://findergit.substack.com">
-                  <IconMailHeart size={24} />
+                <ActionIcon
+                  variant="subtle"
+                  component="a"
+                  href="https://findergit.substack.com"
+                  aria-label="Newsletter"
+                >
+                  <IconMailHeart size={20} />
                 </ActionIcon>
               </Group>
             </Stack>
           </Grid.Col>
-          <Grid.Col className={classes.column} span={2}>
-            <Stack gap="xs">
-              <Title className={classes.title} order={6}>
-                HIGHLIGHTS
-              </Title>
+          <Grid.Col className={classes.column} span={{ base: 4, sm: 2 }}>
+            <Stack gap={10}>
+              <Text className={classes.title}>Highlights</Text>
               <VerticalLinks list={highlights} />
             </Stack>
           </Grid.Col>
-          <Grid.Col className={classes.column} span={2}>
-            <Stack gap="xs">
-              <Title className={classes.title} order={6}>
-                RESOURCES
-              </Title>
+          <Grid.Col className={classes.column} span={{ base: 4, sm: 2 }}>
+            <Stack gap={10}>
+              <Text className={classes.title}>Resources</Text>
               <VerticalLinks list={resources} />
             </Stack>
           </Grid.Col>
-          <Grid.Col className={classes.column} span={2}>
-            <Stack gap="xs">
-              <Title className={classes.title} order={6}>
-                APPS
-              </Title>
+          <Grid.Col className={classes.column} span={{ base: 4, sm: 2 }}>
+            <Stack gap={10}>
+              <Text className={classes.title}>Apps</Text>
               <VerticalLinks list={apps} />
             </Stack>
           </Grid.Col>
         </Grid>
 
-        <Divider my="xl" className={classes.lastDivider} />
-
-        {/* Sponsors wall */}
-        <Stack gap="md" align="center" id="sponsors" className={classes.sponsorsSection}>
-          <Title order={2} ta="center" tt="uppercase">
-            <Text
-              inherit
-              component="span"
-              variant="gradient"
-              gradient={{ from: 'pink', to: 'grape' }}
-            >
-              Sponsors
+        {/* Sponsors: a card, so its own edges do the separating. */}
+        <div id="sponsors" className={classes.sponsors}>
+          <div className={classes.sponsorsCopy}>
+            <Group gap={8} wrap="nowrap">
+              <IconHeartFilled size={18} className={classes.heart} />
+              <Text fw={700} fz="lg">
+                Support FinderGit
+              </Text>
+            </Group>
+            <Text fz={14} c="dimmed" lh={1.6} mt={6}>
+              If my open-source work saves you or your team time, consider sponsoring its
+              development. Sponsors get their name or logo featured here and across all my
+              projects&apos; documentation sites.
             </Text>
-          </Title>
-          <Text fz={15} c="dimmed" ta="center" maw={560}>
-            If my open-source work saves you or your team time, consider sponsoring its development.
-            Sponsors get their name or logo featured here and across all my projects' documentation
-            sites.
-          </Text>
-          <Group justify="center" gap="xl">
-            {sponsors.map((sponsor) => (
+          </div>
+
+          <div className={classes.sponsorsActions}>
+            <Group gap="lg" justify="center">
+              {sponsors.map((sponsor) => (
+                <Anchor
+                  key={sponsor.key}
+                  href={sponsor.href ?? `https://github.com/${sponsor.github}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  underline="never"
+                >
+                  <Stack gap={4} align="center">
+                    <Avatar
+                      src={`https://github.com/${sponsor.github}.png`}
+                      alt={sponsor.name}
+                      size="md"
+                      radius="xl"
+                    />
+                    <Text fz={11} c="dimmed">
+                      {sponsor.name}
+                    </Text>
+                  </Stack>
+                </Anchor>
+              ))}
               <Anchor
-                key={sponsor.key}
-                href={sponsor.href ?? `https://github.com/${sponsor.github}`}
+                href="https://github.com/sponsors/gfazioli"
                 target="_blank"
                 rel="noopener noreferrer"
                 underline="never"
               >
                 <Stack gap={4} align="center">
-                  <Avatar
-                    src={`https://github.com/${sponsor.github}.png`}
-                    alt={sponsor.name}
-                    size="lg"
-                    radius="xl"
-                  />
-                  <Text fz={12} c="dimmed">
-                    {sponsor.name}
+                  <Avatar size="md" radius="xl" className={classes.sponsorSlot}>
+                    <IconPlus size={18} />
+                  </Avatar>
+                  <Text fz={11} c="dimmed">
+                    Your logo here
                   </Text>
                 </Stack>
               </Anchor>
-            ))}
-            <Anchor
-              href="https://github.com/sponsors/gfazioli"
-              target="_blank"
-              rel="noopener noreferrer"
-              underline="never"
-            >
-              <Stack gap={4} align="center">
-                <Avatar size="lg" radius="xl" className={classes.sponsorSlot}>
-                  <IconPlus size={20} />
-                </Avatar>
-                <Text fz={12} c="dimmed">
-                  Your logo here
-                </Text>
-              </Stack>
+            </Group>
+            <Group gap="sm" justify="center">
+              <Button
+                component="a"
+                href="https://github.com/sponsors/gfazioli"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="gradient"
+                gradient={{ from: 'pink', to: 'grape' }}
+                leftSection={<IconHeartFilled size={16} />}
+                radius="xl"
+              >
+                Become a sponsor
+              </Button>
+              <Button
+                component="a"
+                href="https://donate.stripe.com/fZu4gy4Tn3b1dgudGx0co00"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="filled"
+                color="yellow"
+                leftSection={<IconCoffee size={16} />}
+                radius="xl"
+                // Dark ink on the yellow, not white: white on yellow-6 measured
+                // 1.9:1; this is about 8:1.
+                styles={{
+                  label: { color: '#3b2600' },
+                  section: { color: '#3b2600' },
+                }}
+              >
+                Buy me a coffee
+              </Button>
+            </Group>
+          </div>
+        </div>
+
+        {/* Colophon and sharing on one line, parted by middots, not rules. */}
+        <div className={classes.colophon}>
+          <Text fz={12} c="dimmed" className={classes.credits}>
+            Made with ❤️ by{' '}
+            <Anchor fz={12} href="https://gfazioli.github.io/">
+              Undolog
             </Anchor>
-          </Group>
-          <Group mb="xl" gap="sm" justify="center">
-            <Button
-              component="a"
-              href="https://github.com/sponsors/gfazioli"
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="gradient"
-              gradient={{ from: 'pink', to: 'grape' }}
-              leftSection={<IconHeartFilled size={16} />}
-              radius="xl"
-            >
-              Become a sponsor
-            </Button>
-            <Button
-              component="a"
-              href="https://donate.stripe.com/fZu4gy4Tn3b1dgudGx0co00"
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="filled"
-              color="yellow"
-              leftSection={<IconCoffee size={16} />}
-              radius="xl"
-              styles={{
-                label: { color: 'var(--mantine-color-white)' },
-                section: { color: 'var(--mantine-color-white)' },
-              }}
-            >
-              Buy me a coffee
-            </Button>
-          </Group>
-        </Stack>
-
-        {/* Share this page */}
-        <Stack gap="xs" align="center" mt="md">
-          <Text tt="uppercase" fz={11} fw={600} c="dimmed">
-            Share this page
+            <span className={classes.dot} aria-hidden>
+              ·
+            </span>
+            Hosted on{' '}
+            <Anchor fz={12} href="https://vercel.com/" className={classes.brand}>
+              <IconBrandVercel size={13} /> Vercel
+            </Anchor>
+            <span className={classes.dot} aria-hidden>
+              ·
+            </span>
+            Built with{' '}
+            <Anchor fz={12} href="https://mantine.dev/" className={classes.brand}>
+              <IconBrandMantine size={13} /> Mantine
+            </Anchor>
           </Text>
-          <ShareButtons />
-        </Stack>
-
-        <Divider my={16} className={classes.lastDivider} />
-
-        <Group justify="center">
-          <Group justify="center">
-            <Text fz={12} inline>
-              Made with ❤️ by{' '}
-              <Anchor fz={13} href="https://gfazioli.github.io/">
-                Undolog
-              </Anchor>
+          <Group gap="xs" wrap="nowrap">
+            <Text fz={11} fw={700} tt="uppercase" c="dimmed" className={classes.shareLabel}>
+              Share
             </Text>
-            <Divider orientation="vertical" />
-            <Text fz={12} inline>
-              <Group gap={4} component="span">
-                Hosted on{' '}
-                <Anchor fz={13} href="https://vercel.com/">
-                  <Group gap={4} component="span">
-                    <IconBrandVercel size={16} /> Vercel
-                  </Group>
-                </Anchor>
-              </Group>
-            </Text>
-            <Divider orientation="vertical" />
-            <Text fz={12} inline>
-              <Group gap={4} component="span" justify="flex-start">
-                Built with{' '}
-                <Anchor fz={13} href="https://mantine.dev/">
-                  <Group gap={4} component="span">
-                    <IconBrandMantine size={16} /> Mantine
-                  </Group>
-                </Anchor>
-              </Group>
-            </Text>
+            <ShareButtons />
           </Group>
-        </Group>
+        </div>
       </Container>
-    </div>
+    </footer>
   );
 };
