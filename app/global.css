@@ -13,12 +13,28 @@
     scroll-behavior: smooth;
   }
 
+  /* Nextra's chrome (navbar, sidebar, docs body) on the page's own surface. */
   :root {
-    --x-color-nextra-bg: var(--mantine-color-gray-1);
+    --x-color-nextra-bg: var(--fg-page);
+  }
 
-    &:where(.dark) {
-      --x-color-nextra-bg: var(--mantine-color-dark-9);
-    }
+  /*
+   * The navbar is part of the page, not a bar laid over it: no rule under it,
+   * and on the home page its translucent layer takes the colour the page
+   * STARTS with, so at the top it cannot be told from the gradient behind
+   * it, and once scrolled it stays the page's top colour over the content.
+   */
+  .nextra-navbar-blur {
+    border-bottom-color: transparent;
+  }
+
+  /* The release banner in the icon's outline denim, not Nextra's grey. */
+  .nextra-banner {
+    background: var(--fg-denim);
+  }
+
+  body:has(.fg-home) .nextra-navbar-blur {
+    background-color: color-mix(in srgb, var(--fg-top) 78%, transparent);
   }
 
   :where(.dark) {
@@ -36,6 +52,37 @@
 
   .x\:text-primary-800 {
     color: var(--mantine-color-white) !important;
+  }
+
+  /*
+   * A full-bleed section wash, feathered back to the page colour at its own
+   * top and bottom edge (ported from netfox.app, where the same seams were
+   * measured). A wash at full strength exactly where its section begins draws
+   * a hard line across the page, and a line across the page reads as a rule:
+   * the page looks ruled into strips. This restores the page colour at the
+   * boundary and dissolves it inward, so two sections meet through a stretch
+   * of page rather than at an edge.
+   *
+   * An overlay rather than a `mask-image`, because the washes are painted by
+   * <Scene>, whose layers are CHILDREN of the section: masking the section
+   * would mask its copy too. `z-index: 0` sits above the wash and below the
+   * content, which these sections pin at `zIndex: 1`. Lengths, not
+   * percentages: a percentage of a tall section dissolves the section, not
+   * its edge. Set `--fg-feather-top: 0px` where a side has nothing to meet.
+   */
+  .fg-feather {
+    position: relative;
+  }
+
+  .fg-feather::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      linear-gradient(to bottom, var(--fg-page) 0, transparent var(--fg-feather-top, 110px)),
+      linear-gradient(to top, var(--fg-page) 0, transparent var(--fg-feather-bottom, 110px));
+    pointer-events: none;
   }
 
   nav.nextra-toc {

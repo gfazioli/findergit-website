@@ -28,19 +28,18 @@ const exampleBody = [
 
 export function AICommitSection() {
   return (
-    <Box pos="relative" py={96} style={{ overflow: 'hidden' }}>
+    <Box pos="relative" py={96} className="fg-feather" style={{ overflow: 'hidden' }}>
       {/*
         Decorative atmospheric background. `lazy` pauses the rAF loop and
         all child animations when the section leaves the viewport — zero
         re-renders while the user is scrolling elsewhere on the page.
-        Color palette: grape/violet to evoke the ✨ "AI" association the
-        in-app button uses, cyan accent matching the FinderGit brand to
-        keep the section visually attached to the rest of the home.
+        The icon's plate lilac (#C1C5F5) leads, for the ✨ association the
+        in-app button carries, with the Finder's sky (#7DC3EB) opposite;
+        feathered at both edges so the section has no border of its own.
       */}
       <Scene lazy>
-        <Scene.Gradient from="grape" fromOpacity={0.08} to="violet" toOpacity={0.05} />
-        <Scene.Glow color="grape" size={520} blur={160} opacity={0.28} top="-10%" left="-8%" />
-        <Scene.Glow color="cyan" size={420} blur={140} opacity={0.18} top="85%" left="90%" />
+        <Scene.Glow color="#C1C5F5" size={560} blur={160} opacity={0.16} top="10%" left="-8%" />
+        <Scene.Glow color="#7DC3EB" size={420} blur={140} opacity={0.12} top="80%" left="90%" />
         <Scene.DotGrid color="gray" opacity={0.12} spacing={28} />
         <Scene.Noise opacity={0.02} />
       </Scene>
@@ -48,8 +47,8 @@ export function AICommitSection() {
       <Container size="lg" pos="relative" style={{ zIndex: 1 }}>
         <Stack align="center" gap="md" mb={56}>
           <Group gap={8}>
-            <IconSparkles size={18} color="var(--mantine-color-grape-5)" />
-            <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="grape">
+            <IconSparkles size={18} color="var(--fg-sky)" />
+            <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
               AI
             </Text>
           </Group>
@@ -117,7 +116,6 @@ export function AICommitSection() {
                 component="a"
                 href="/docs/ai-commit-messages"
                 rightSection={<IconArrowRight size={16} />}
-                color="grape"
                 size="md"
                 radius="xl"
               >
@@ -192,7 +190,7 @@ export function AICommitSection() {
 
                 {/* Action buttons mock */}
                 <Group mt="md" gap="sm">
-                  <Button size="xs" variant="filled" color="blue">
+                  <Button size="xs" variant="filled">
                     Commit Staged
                   </Button>
                   <Button size="xs" variant="default">

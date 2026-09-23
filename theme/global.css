@@ -1,39 +1,114 @@
-* {
-  --marquee-fade-edge-color: var(--mantine-color-gray-1);
+/*
+ * The whole site is at night, with no switch (user, 2026-09-23: the same as
+ * netfox.app). Mantine and Nextra are both FORCED to their dark schemes in
+ * app/layout.tsx. Unlike netfox.app, which writes its night over Mantine's
+ * light scheme because its redesign started light, this site was already
+ * drawn for dark: every component has its dark variant, so the night here is
+ * Mantine's own dark scheme, tinted from the icon through theme.ts's `dark`
+ * scale and the variables below.
+ *
+ * `color-scheme: dark` makes native controls and scrollbars dark, and sends
+ * every `light-dark()` still in a module to its dark branch.
+ */
+html {
+  color-scheme: dark;
+}
+
+:root {
+  /*
+   * The icon's palette, sampled by k-means over public/icon-512x512.png and
+   * point by point on its git nodes, which are too small to form a cluster.
+   * Every colour on the site is one of these or cut from one.
+   *
+   *   plate    #ccd6d3 pearl · #c1cbe7 mist · #c1c5f5 lilac
+   *   finder   #7dc3eb sky · #609be3 blue
+   *   outline  #335d8f steel · #274e85 denim · #163d7a navy
+   *   nodes    #9ccb7e green · #f0a258 orange · #e27d68 red · #f3d881 yellow
+   */
+  --fg-pearl: #ccd6d3;
+  --fg-mist: #c1cbe7;
+  --fg-lilac: #c1c5f5;
+  --fg-sky: #7dc3eb;
+  --fg-blue: #609be3;
+  --fg-steel: #335d8f;
+  --fg-denim: #274e85;
+  --fg-navy: #163d7a;
+  --fg-green: #9ccb7e;
+  --fg-orange: #f0a258;
+  --fg-red: #e27d68;
+  --fg-yellow: #f3d881;
 
   /*
-   * ── FinderGit homepage design tokens ──
-   * Git-state semantic colours are the only saturated colours on the page
-   * besides the brand accent, so colour carries meaning at a glance:
-   * clean / changes / ahead — plus the brand accent and the "needs attention"
-   * signal. Referenced everywhere (hero dashboard mock, repo list, feature
-   * grid) instead of ad-hoc per-spot colours. Dark overrides below keep
-   * contrast in both schemes.
+   * The night's surfaces, cut from the outline's navy. One token each, so
+   * everything that has to dissolve INTO the page (the marquee's fade, a
+   * section's feathered edge, Nextra's own chrome) names the colour the body
+   * is painted with. Declared on :root, not on the body: a var() inside a
+   * custom property resolves where it is declared, so a token Nextra reads
+   * from html (`--x-color-nextra-bg: var(--fg-page)`) would keep the root's
+   * value whatever the body said. Measured on netfox.app.
+   *
+   * - `--fg-page`    #0b1628, the page.
+   * - `--fg-top`     #0f2547, the navy the home page starts with; its navbar
+   *                  takes it.
+   * - `--fg-lift`    #1a3560, the outline's steel brought down, behind the
+   *                  hero, so the headline has air.
+   * - `--fg-rule`    white at 10%, every hairline and card edge.
+   * - `--fg-glass`   white at 4%, the glass every card is made of.
+   * - `--fg-footer`  #070f1d, the footer's ground, a step under the page.
    */
-  --fg-accent: var(--mantine-color-findergit-6);
-  --fg-clean: var(--mantine-color-teal-7);
-  --fg-changes: var(--mantine-color-orange-6);
-  --fg-ahead: var(--mantine-color-blue-6);
-  --fg-attention: var(--mantine-color-orange-7);
+  --fg-page: #0b1628;
+  --fg-top: #0f2547;
+  --fg-lift: #1a3560;
+  --fg-rule: rgb(255 255 255 / 10%);
+  --fg-glass: rgb(255 255 255 / 4%);
+  --fg-footer: #070f1d;
+}
 
-  @mixin dark {
-    --marquee-fade-edge-color: var(--mantine-color-dark-9);
-    --mantine-color-body: var(--mantine-color-dark-9);
+/*
+ * Mantine's own variables, for the night. `html:root`, one step more specific
+ * than Mantine's own selector: the provider injects its variables later in
+ * the cascade under the SAME selector, so an equal-specificity override
+ * silently loses for any variable it also sets (measured on netfox.app,
+ * where every footer link stayed the old orange).
+ */
+html:root[data-mantine-color-scheme='dark'] {
+  --mantine-color-body: var(--fg-page);
+  --mantine-color-default-border: var(--fg-rule);
+}
 
-    --fg-accent: var(--mantine-color-findergit-4);
-    --fg-clean: var(--mantine-color-teal-4);
-    --fg-changes: var(--mantine-color-orange-4);
-    --fg-ahead: var(--mantine-color-blue-4);
-    --fg-attention: var(--mantine-color-orange-5);
-  }
+/*
+ * THE HOME PAGE'S OWN GRADIENT: the deep navy at the top, lifted toward the
+ * outline's steel behind the hero, back down, and on to --fg-page, which it
+ * reaches at a fixed length and holds. It holds because every feathered
+ * section below dissolves into --fg-page, and a page still changing colour
+ * there would give each one a visible edge. On the BODY rather than on the
+ * hero, so it also runs behind the translucent navbar instead of starting
+ * under it with a seam. `.fg-home` is on the hero.
+ */
+body:has(.fg-home) {
+  background:
+    linear-gradient(
+        to bottom,
+        var(--fg-top) 0,
+        var(--fg-lift) 1000px,
+        var(--fg-top) 1700px,
+        var(--fg-page) 2800px
+      )
+      no-repeat,
+    var(--fg-page);
+}
+
+/* Titles in white: the body text is the dark scale's near-white. */
+.mantine-Title-root {
+  color: var(--mantine-color-white);
+}
+
+* {
+  --marquee-fade-edge-color: var(--fg-page);
 }
 
 body {
-  background-color: var(--mantine-color-gray-1);
-
-  @mixin dark {
-    background-color: var(--mantine-color-dark-9);
-  }
+  background-color: var(--fg-page);
 }
 
 .mantine-Button-root {
