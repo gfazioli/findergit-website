@@ -875,7 +875,7 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
           <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
             FAQ
           </Text>
-          <Title order={2} ta="center">
+          <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
             Frequently Asked Questions
           </Title>
           <Box w="100%" maw={700} mt="md">
