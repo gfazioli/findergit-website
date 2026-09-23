@@ -294,7 +294,7 @@ export function SolutionSection() {
                 ✔ 2 clean
               </Text>
               <Text size="xs" c="orange.4" style={{ fontFamily: 'monospace' }}>
-                ● 2 dirty
+                ● 3 dirty
               </Text>
               <Text size="xs" c="blue.4" style={{ fontFamily: 'monospace' }}>
                 ↑ 1 ahead

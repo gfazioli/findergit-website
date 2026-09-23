@@ -12,7 +12,7 @@ Generate properly-formatted Git commit messages from your staged diff with one c
 
 1. **Stage** the files you want to include in the commit (per-file Stage button or **Stage All** in the Changes header)
 2. The **✨ AI** button appears next to the *Commit* heading in the detail panel — click it
-3. FinderGit reads `git diff --cached`, sends it to the AI, and fills the commit message field with the suggestion (typically in under a second)
+3. FinderGit reads `git diff --cached`, sends it to the AI, and fills the commit message field with the suggestion (typically in about a second)
 4. Edit the message if you want, then click **Commit Staged**
 
 The button is disabled until you have something staged. While generating, a small spinner replaces the icon and the label switches to *"Generating…"*. Errors render as a dismissable inline orange banner inside the commit section, right next to the button that triggered them — never far from where you clicked.
@@ -73,10 +73,10 @@ A small diff with `Conventional` on, `Emoji` off, `Tone: professional`, `Length:
 feat(networking): implement retry mechanism
 ```
 
-The same diff with `Length: long` and `Emoji` on:
+A dependency bump with `Length: long` and `Emoji` on:
 
 ```
-feat: 📦 bump dependencies
+chore: 📦 bump dependencies
 
 - Update Mantine packages to 9.1.1 for improved compatibility and bug fixes.
 - Upgrade Storybook to 10.3.6 to include the latest UI enhancements.
@@ -111,7 +111,7 @@ The per-IP limit is rarely what you'll meet. The one you can actually run into i
 - **Button is disabled** — nothing is staged. Stage at least one file.
 - **"AI provider is temporarily unreachable"** — transient network glitch or warm-up delay. Click the **×** to dismiss the banner and retry; usually works on the second attempt.
 - **"The AI service needs an update"** — not something a retry fixes: the service behind the free mode needs attention on our side. Please [open an issue](https://github.com/gfazioli/findergit-website/issues/new) so it gets looked at.
-- **"Diff too large (max 100 KB)"** — stage fewer files, or split the change into multiple commits.
+- **"The staged diff is N KB, larger than the 100 KB limit"** — stage fewer files, or split the change into multiple commits.
 - **"Hit the AI rate limit"** — wait the number of seconds the banner names and try again. This is usually the shared capacity of the free mode rather than your own 30/hour allowance, so it often clears in seconds even if you have barely used the feature.
 
 ## Bring your own key
@@ -122,7 +122,7 @@ Three choices:
 
 - **FinderGit (no key needed)** — what shipped first, and still the default. Nothing to set up, nothing changes.
 - **Anthropic** — a model name and your key.
-- **OpenAI-compatible** — a base URL, a model name, and a key when the server wants one. That covers OpenAI itself (`https://api.openai.com/v1`), a local [Ollama](https://ollama.com) or LM Studio (`http://localhost:11434/v1`), or a gateway of your own. FinderGit appends `/chat/completions`.
+- **OpenAI-compatible** — a base URL, a model name, and a key when the server wants one. That covers OpenAI itself (`https://api.openai.com/v1`), a local [Ollama](https://ollama.com) (`http://localhost:11434/v1`) or LM Studio server, or a gateway of your own. FinderGit appends `/chat/completions`.
 
 A few things worth knowing:
 

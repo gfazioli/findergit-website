@@ -112,6 +112,7 @@ Reasoning: end users care about what the feature does for them, not which vendor
 **Exceptions**:
 - Developer-facing files (commit messages, this `CLAUDE.md`, `CHANGELOG.md`) — name infra freely
 - "Under the hood" sections at the bottom of release notes — okay to be specific for power users who want to know, but prefer generic phrasing where it doesn't lose information
+- The bring-your-own-key provider docs (`content/ai-commit-messages.mdx` → *Bring your own key*, `content/settings.mdx` → *AI → Provider*) — name Anthropic, OpenAI, Ollama and LM Studio freely. There the names are the product's own UI: *Anthropic* and *OpenAI-compatible* are the labels of the app's provider picker (`FinderGitCore/AICommitProvider.swift`), and the reader has to recognise which service to point FinderGit at. The rule still holds for the default mode — never name the provider behind *FinderGit (no key needed)*
 
 ## Tooling
 

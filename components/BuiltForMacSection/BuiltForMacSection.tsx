@@ -43,7 +43,7 @@ export function BuiltForMacSection() {
             Built for macOS
           </Text>
           <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
-            100% native SwiftUI. Fast. Familiar. Yours.
+            100% native. Fast. Familiar. Yours.
           </Title>
 
           <Group justify="center" gap="sm" mt="lg" maw={700}>
