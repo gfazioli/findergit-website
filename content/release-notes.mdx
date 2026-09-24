@@ -14,10 +14,18 @@ export const releases = await loadReleases();
 
 <ReleaseNotes initialReleases={releases} />
 
+{/*
+  In `next dev` Nextra also compiles this file into a METADATA-ONLY module for
+  the page map, keeping `import React` and this export and dropping everything
+  else -- `releases` and the imports included (`compile-metadata.js`). A bare
+  `releases.map` there is a ReferenceError that answers 500 on every page, dev
+  only: the build uses the whole module. `typeof` on an undeclared name does not
+  throw, so that module gets an empty TOC and this page keeps the real one.
+*/}
 export const metadata = {
     description:
         "What's new in FinderGit — release notes for the native macOS Git-aware file browser, with the features, fixes and improvements in each version.",
-    toc: releases.map((release) => ({
+    toc: (typeof releases === 'undefined' ? [] : releases).map((release) => ({
         value: `${release.tag_name} - ${new Date(release.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).replace(' ', ', ')}`,
         depth: '3',
         id: release.tag_name,
