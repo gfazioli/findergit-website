@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { compileMdx } from 'nextra/compile';
 import useSWR from 'swr';
 
-import { formatReleaseDate } from './format-release-date';
+import { compileReleaseBodies } from './load-releases';
 
 export interface Author {
   login: string;
@@ -47,7 +46,14 @@ export interface Release {
   assets: any[];
   tarball_url: string;
   zipball_url: string;
-  body: string;
+  /**
+   * As GitHub serves it, the markdown; once compiled, the source for
+   * `MDXRemote`, or `null` when that one body would not compile -- never a
+   * reason to drop the release, since `rawBody` still holds it.
+   */
+  body: string | null;
+  /** The body exactly as GitHub published it, for the plain-text fallback. */
+  rawBody?: string;
 }
 
 export interface TOC {
@@ -56,10 +62,17 @@ export interface TOC {
   id: string;
 }
 
-export function useReleaseNotes() {
+/**
+ * The releases for the page. `initial` is what the build compiled (see
+ * `loadReleases`); when it holds anything the hook returns it as is and the
+ * browser never calls the API. Only an empty `initial` -- the build could not
+ * reach GitHub -- falls back to fetching at runtime, as the page always did.
+ */
+export function useReleaseNotes(initial: Release[] = []) {
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
+  const prebuilt = initial.length > 0;
 
-  const [compiledReleases, setCompiledReleases] = useState<Release[]>([]);
+  const [compiledReleases, setCompiledReleases] = useState<Release[]>(initial);
   const [error, setError] = useState<string | null>(null);
 
   const {
@@ -68,28 +81,21 @@ export function useReleaseNotes() {
     isLoading,
   } = useSWR<{
     releases: Release[];
-  }>('/api/github-releases', fetcher);
+  }>(prebuilt ? null : '/api/github-releases', fetcher);
 
   useEffect(() => {
-    if (data && !isLoading && !error) {
+    if (!prebuilt && data && !isLoading && !error) {
       if (data.toString() === 'rate limit exceeded') {
         setError('Rate limit exceeded. Please try again later. Or check your API key.');
         return;
       }
 
       const fetchReleases = async () => {
-        const releases = await Promise.all(
-          data.releases.map(async (release) => ({
-            ...release,
-            displayDate: formatReleaseDate(release.published_at, release.created_at),
-            body: await compileMdx(release.body),
-          }))
-        );
-        setCompiledReleases(releases);
+        setCompiledReleases(await compileReleaseBodies(data.releases ?? []));
       };
       fetchReleases();
     }
-  }, [data, isLoading, error]); // Add isLoading and error to the dependency array
+  }, [prebuilt, data, isLoading, error]);
 
   return { data: compiledReleases, error: error || swrError, isLoading } as const;
 }
