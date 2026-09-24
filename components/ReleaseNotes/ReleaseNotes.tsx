@@ -17,8 +17,13 @@ import config from '@/config';
 import { useMDXComponents } from '@/mdx-components';
 import { useReleaseNotes, type Release } from './use-release-notes';
 
-export function ReleaseNotes() {
-  const { data, error, isLoading } = useReleaseNotes();
+/**
+ * `initialReleases` is what the build compiled, so the releases are in the
+ * served HTML for crawlers and the browser makes no request. Without it (the
+ * build could not reach GitHub) the component fetches at runtime instead.
+ */
+export function ReleaseNotes({ initialReleases }: { initialReleases?: Release[] }) {
+  const { data, error, isLoading } = useReleaseNotes(initialReleases);
 
   const components = useMDXComponents();
 
@@ -58,7 +63,15 @@ export function ReleaseNotes() {
             <Text size="sm" fw={800} mb={16}>
               {release.displayDate}
             </Text>
-            <MDXRemote compiledSource={release.body} components={components} />
+            {release.body ? (
+              <MDXRemote compiledSource={release.body} components={components} />
+            ) : (
+              // A body that would not compile is shown as it was written rather
+              // than dropped: see `compileReleaseBodies`.
+              <Text size="sm" style={{ whiteSpace: 'pre-wrap' }}>
+                {release.rawBody}
+              </Text>
+            )}
           </Timeline.Item>
         ))}
       </Timeline>
