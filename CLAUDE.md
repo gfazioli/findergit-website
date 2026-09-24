@@ -78,7 +78,7 @@ One dark scheme, forced, since 2026-09-23 (the user asked for netfox.app's treat
 - `MantineNavBar` — top navigation with FinderGit logo + GitHub link
 - `MantineFooter` — 4-column footer with highlights, resources, ecosystem links
 - `Welcome` — hero section with animated title, features grid, download CTA
-- `ReleaseNotes` — fetches GitHub releases via `/api/github-releases`
+- `ReleaseNotes` — renders the releases `content/release-notes.mdx` fetched and compiled at BUILD time (`load-releases.ts`); only when the build got none does it fall back to fetching `/api/github-releases` in the browser
 
 ### API Routes (`app/api/`)
 
@@ -89,8 +89,8 @@ One dark scheme, forced, since 2026-09-23 (the user asked for netfox.app's treat
 ### Environment variables
 
 - `GITHUB_TOKEN` (optional, recommended on Vercel) — fine-grained or classic token with `public_repo` read scope. Used by:
-  - The `/api/github-releases` proxy (runtime).
-  - The `content/release-notes.mdx` TOC metadata, which fetches at build time so Vercel needs the var available during deploys.
+  - The `/api/github-releases` proxy (runtime, now only the fallback).
+  - `content/release-notes.mdx`, which fetches the releases at build time for both the page and its TOC, so Vercel needs the var available during deploys.
   Without the token the app still works but may hit 60 req/hr GitHub rate limit on shared IPs.
 
 ### CSS Import Order
@@ -99,6 +99,15 @@ In `app/layout.tsx`, CSS imports must follow this order:
 1. `@mantine/core/styles.css`
 2. Mantine extension styles (marquee, text-animate, scene)
 3. Global styles
+
+### What a crawler gets is the served HTML
+
+Measured 2026-09-24, when Search Console listed pages as *Crawled - currently not indexed*: two pages reached Google nearly empty, and neither looked wrong in a browser.
+
+- **`/docs/release-notes` was 32 words.** The releases were fetched in the browser from `/api/github-releases`, and that route answers **403 to any user agent containing `bot`** -- Googlebot's rendering service included. The hook never checked the status, so the 403 body threw inside it and even the JavaScript-rendered page stayed on the *Loading releases...* skeleton. Now `load-releases.ts` fetches and compiles them at build time (release.sh publishes the GitHub release BEFORE pushing the website commit, so the deploy after a release sees it) and the page carries about 2,400 words; the browser makes no request at all. Bodies compile as `md`, one `try` each: a body is written on GitHub after the build, and a brace in MDX is a JavaScript expression.
+- **`/docs/faq` was 129 words: the questions, no answers.** Mantine 9's Accordion keeps a closed panel in a React `<Activity>`, which renders nothing on the server. `keepMountedMode="display-none"` renders every answer and only hides it. The JSON-LD mirror had the answers all along; the visible markup did not. The test for it uses `renderToString`, because a jsdom `render` mounts a hidden Activity's children and cannot see the defect.
+
+Check a page the way a crawler gets it: `curl -A Googlebot` and count words in `<main>` with the scripts stripped. A number under a few hundred on a page that looks full in the browser is this class of defect.
 
 ## Content Guidelines
 
