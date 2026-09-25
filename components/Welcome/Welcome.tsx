@@ -286,7 +286,10 @@ function HeroCarousel({ shots }: { shots: { src: string; alt: string }[] }) {
   return (
     <Box>
       {/* Fixed-ratio stage so the fade doesn't jolt the layout when shots
-          differ slightly in height; each shot is contained within it. */}
+          differ slightly in height; each shot is contained within it. The
+          ratio is the shots' own (all 2000x1282): at 16/13 every one was
+          letterboxed, about 95px of empty stage above and below it at
+          desktop width, which read as a gap on both sides of the window. */}
       <UnstyledButton
         onClick={() => setZoomed(true)}
         aria-label={`Open enlarged screenshot: ${active.alt}`}
@@ -294,7 +297,7 @@ function HeroCarousel({ shots }: { shots: { src: string; alt: string }[] }) {
         onMouseLeave={() => setPaused(false)}
         style={{ display: 'block', width: '100%', cursor: 'zoom-in' }}
       >
-        <Box pos="relative" style={{ width: '100%', aspectRatio: '16 / 13' }}>
+        <Box pos="relative" style={{ width: '100%', aspectRatio: '2000 / 1282' }}>
           {shots.map((shot, i) => (
             <Image
               key={shot.src}
@@ -350,13 +353,9 @@ function HeroCarousel({ shots }: { shots: { src: string; alt: string }[] }) {
   );
 }
 
-// The hero rotation — the Repository List leads, the dashboards follow, the
-// file browser anchors.
+// The hero rotation — the Overview dashboard leads, the Account follows, then
+// the Repository List; the file browser anchors.
 const heroShots = [
-  {
-    src: '/screenshot-portfolio.png',
-    alt: 'FinderGit — every repository at a glance in the flat Repository List',
-  },
   {
     src: '/screenshot-hero-overview.png',
     alt: 'FinderGit Overview — an at-a-glance dashboard across every repository',
@@ -364,6 +363,10 @@ const heroShots = [
   {
     src: '/screenshot-hero-account.png',
     alt: 'FinderGit Account — your GitHub profile and contributions at a glance',
+  },
+  {
+    src: '/screenshot-portfolio.png',
+    alt: 'FinderGit — every repository at a glance in the flat Repository List',
   },
   { src: '/screenshot-hero-browser.png', alt: 'FinderGit — a Git-aware file browser for macOS' },
 ];
@@ -524,7 +527,9 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
         style={{ overflow: 'hidden' }}
       >
         <Container size="lg" pos="relative" style={{ zIndex: 1 }}>
-          <Stack align="center" gap="xl" py={80} className={classes.night}>
+          {/* pb is half the top: the carousel below adds its own 32px and the
+              shots carry their window shadow, so 80 read as a hole. */}
+          <Stack align="center" gap="xl" pt={80} pb={40} className={classes.night}>
             <Badge
               size="lg"
               variant="filled"
