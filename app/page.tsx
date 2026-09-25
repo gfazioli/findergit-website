@@ -26,9 +26,10 @@ export const revalidate = 21600;
  * Next resolves against the page's pathname — right for every docs page, and
  * wrong here on Vercel, where this page is rendered as `/index`: production
  * served `canonical` and `og:url` as https://findergit.app/index (2026-09-25), a
- * URL that also answers 200 with this same page, while the sitemap says `/`.
- * Every shared link carried it. `next start` renders the page as `/`, after a
- * regeneration too, so the defect cannot be seen locally.
+ * URL that also answers 200 with this same page, while the sitemap says `/` —
+ * and `og:url` is the address Open Graph readers attribute a share to.
+ * `next start` renders the page as `/`, after a regeneration too, so the defect
+ * cannot be seen locally.
  *
  * A leading `/` is resolved against `metadataBase` alone, whatever pathname the
  * platform passes. `openGraph` set on a page REPLACES the layout's rather than
