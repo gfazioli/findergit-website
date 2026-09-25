@@ -1,6 +1,8 @@
+import type { Metadata } from 'next';
 import { SoftwareApplicationJsonLd } from '@/components/StructuredData/StructuredData';
 import { fetchReleaseCadence } from '@/components/ReleaseCadence/fetch-release-cadence';
 import { Welcome } from '@/components/Welcome/Welcome';
+import config from '@/config';
 
 /**
  * Regenerated on a timer so the hero's release strip stays honest between
@@ -18,6 +20,24 @@ import { Welcome } from '@/components/Welcome/Welcome';
  * six hours behind the UTC day boundary that would have changed it.
  */
 export const revalidate = 21600;
+
+/**
+ * The home page names its own URL. The root layout's canonical is `./`, which
+ * Next resolves against the page's pathname — right for every docs page, and
+ * wrong here on Vercel, where this page is rendered as `/index`: production
+ * served `canonical` and `og:url` as https://findergit.app/index (2026-09-25), a
+ * URL that also answers 200 with this same page, while the sitemap says `/`.
+ * Every shared link carried it. `next start` renders the page as `/`, after a
+ * regeneration too, so the defect cannot be seen locally.
+ *
+ * A leading `/` is resolved against `metadataBase` alone, whatever pathname the
+ * platform passes. `openGraph` set on a page REPLACES the layout's rather than
+ * merging with it, hence the spread.
+ */
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+  openGraph: { ...config.metadata.openGraph, url: '/' },
+};
 
 export default async function HomePage() {
   const cadence = await fetchReleaseCadence();
