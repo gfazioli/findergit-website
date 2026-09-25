@@ -44,8 +44,9 @@ export default {
     title: 'Support',
     type: 'menu',
     items: {
-      // Scrolls to the on-page Sponsors section (footer) — internal anchor,
-      // so Nextra shows no external arrow.
+      // The GitHub Sponsors page itself. This was `#sponsors`, which scrolled
+      // to the footer's sponsor card, one step short of the page where
+      // sponsoring happens. External, so Nextra adds its arrow like the coffee.
       sponsor: {
         title: (
           <Group component="span" gap={8} wrap="nowrap" align="center">
@@ -53,7 +54,7 @@ export default {
             Sponsor
           </Group>
         ),
-        href: '#sponsors',
+        href: 'https://github.com/sponsors/gfazioli',
       },
       // External donation link — Nextra keeps the ↗ external indicator.
       coffee: {
