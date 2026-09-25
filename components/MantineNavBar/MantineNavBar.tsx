@@ -27,10 +27,13 @@ export const MantineNavBar = () => {
           key prop" warning. Passing one concrete element neutralises it.
         */}
         <Group gap="sm" wrap="nowrap">
+          {/* GitHub Sponsors, not the footer's #sponsors card it used to scroll to. */}
           <Tooltip label="Sponsor" withArrow>
             <ActionIcon
               component="a"
-              href="#sponsors"
+              href="https://github.com/sponsors/gfazioli"
+              target="_blank"
+              rel="noopener noreferrer"
               size="lg"
               radius="xl"
               variant="gradient"
