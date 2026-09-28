@@ -84,6 +84,41 @@ describe('CarouselGuide', () => {
     expect(said(/The Overview/)).toBeInTheDocument();
   });
 
+  it('steps off when the prompt opens mid-walk, and walks in again once it has gone', async () => {
+    // On a window taller than 900 the dots come into view before the prompt's
+    // 1200px, so the prompt can open while the mascot is still walking.
+    render(<CarouselGuide {...props()} />);
+    dotsInView();
+    wait(DELAY_MS + 50);
+    expect(walker()).toBeInTheDocument();
+
+    await act(async () => {
+      document.documentElement.setAttribute(PROMPT_OPEN_ATTRIBUTE, 'open');
+    });
+    expect(walker()).toBeNull();
+    wait(WALK_MS + 1000);
+    expect(said(/The Overview/)).toBeNull();
+
+    await act(async () => {
+      document.documentElement.removeAttribute(PROMPT_OPEN_ATTRIBUTE);
+    });
+    wait(PROMPT_GONE_MS + 50);
+    expect(walker()).toBeInTheDocument();
+    expect(said(/The Overview/)).toBeNull();
+    wait(WALK_MS);
+    expect(said(/The Overview/)).toBeInTheDocument();
+  });
+
+  it('stays where it is if the prompt opens once it is already pointing', async () => {
+    render(<CarouselGuide {...props()} />);
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    await act(async () => {
+      document.documentElement.setAttribute(PROMPT_OPEN_ATTRIBUTE, 'open');
+    });
+    expect(said(/The Overview/)).toBeInTheDocument();
+  });
+
   it('arrives after the delay where nothing can say the dots are in view', () => {
     delete (globalThis as { IntersectionObserver?: unknown }).IntersectionObserver;
     render(<CarouselGuide {...props()} />);
@@ -110,6 +145,18 @@ describe('CarouselGuide', () => {
     expect(onNext).toHaveBeenCalledTimes(2);
   });
 
+  it('names what it says for what it does too', () => {
+    // The visible "Next" has to be part of the button's name (WCAG 2.5.3).
+    render(<CarouselGuide {...props()} />);
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    expect(
+      screen.getByRole('button', {
+        name: 'The Overview: every repository’s state on one dashboard. Next',
+      })
+    ).toBeInTheDocument();
+  });
+
   it('holds the carousel still while the pointer is on it', () => {
     const onHold = jest.fn();
     render(<CarouselGuide {...props({ onHold })} />);
@@ -121,11 +168,61 @@ describe('CarouselGuide', () => {
     expect(onHold.mock.calls).toEqual([[true], [false]]);
   });
 
+  it('holds it for the keyboard too, until both the pointer and the focus have left', () => {
+    const onHold = jest.fn();
+    render(<CarouselGuide {...props({ onHold })} />);
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    const hint = walker()!.parentElement!;
+    act(() => walker()!.focus());
+    fireEvent.mouseEnter(hint);
+    fireEvent.mouseLeave(hint);
+    expect(onHold).toHaveBeenLastCalledWith(true);
+    act(() => (document.activeElement as HTMLElement).blur());
+    expect(onHold).toHaveBeenLastCalledWith(false);
+  });
+
+  it('never leaves the carousel held by a pointer that arrived as it was leaving', () => {
+    // Found in review: a hover that starts on the fading mascot is never told
+    // the pointer left, because the mascot unmounts under it; the carousel then
+    // stopped for the rest of the page's life.
+    const onHold = jest.fn();
+    render(<CarouselGuide {...props({ onHold })} />);
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    const hint = walker()!.parentElement!;
+    fireEvent.click(screen.getByRole('button', { name: 'Dismiss' }));
+    fireEvent.mouseEnter(hint);
+    expect(onHold).toHaveBeenLastCalledWith(true);
+    wait(400);
+    expect(walker()).toBeNull();
+    expect(onHold).toHaveBeenLastCalledWith(false);
+  });
+
+  it('hands the keyboard focus to the shot on screen when dismissed', () => {
+    render(
+      <div>
+        <button type="button" aria-current="true">
+          dot
+        </button>
+        <CarouselGuide {...props()} />
+      </div>
+    );
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    const dismiss = screen.getByRole('button', { name: 'Dismiss' });
+    act(() => dismiss.focus());
+    fireEvent.click(dismiss);
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'dot' }));
+  });
+
   it('leaves when dismissed, lets go of the carousel, and stays gone for the rest of the load', () => {
     const onHold = jest.fn();
     const first = render(<CarouselGuide {...props({ onHold })} />);
     dotsInView();
     wait(DELAY_MS + WALK_MS + 50);
+    // A click on the × comes with the pointer on the mascot, holding the carousel.
+    fireEvent.mouseEnter(walker()!.parentElement!);
     fireEvent.click(screen.getByRole('button', { name: 'Dismiss' }));
     expect(onHold).toHaveBeenLastCalledWith(false);
     wait(400);

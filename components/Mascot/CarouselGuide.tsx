@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { type FocusEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { IconX } from '@tabler/icons-react';
 import { useReducedMotion } from '@mantine/hooks';
 import { PROMPT_OPEN_ATTRIBUTE } from '@/components/NewsletterSignup/prompt-open';
@@ -34,7 +34,11 @@ interface CarouselGuideProps {
   index: number;
   /** Clicking the mascot or what it says turns the carousel to the next shot. */
   onNext: () => void;
-  /** True while the pointer is on the mascot or its bubble, so the caption holds still. */
+  /**
+   * True while the pointer is on the mascot or its bubble, or the keyboard focus
+   * is in them, so the caption holds still; false the moment neither is, and
+   * always once the mascot leaves.
+   */
   onHold: (held: boolean) => void;
 }
 
@@ -57,49 +61,85 @@ interface CarouselGuideProps {
  */
 export function CarouselGuide({ caption, index, onNext, onHold }: CarouselGuideProps) {
   const reduced = useReducedMotion();
-  // Read when the delay runs out, not when the page mounts: the hook answers
+  // Read when a timer runs out, not when the page mounts: the hook answers
   // `false` on the first render and the real value after it.
   const reducedNow = useRef(reduced);
   const [phase, setPhase] = useState<Phase>('hidden');
+  // The phase as the timers and the observers below see it: they run outside
+  // React's render, where the state would be a stale closure. Every change goes
+  // through `move`, which keeps the two together.
+  const phaseNow = useRef<Phase>('hidden');
+  const move = useCallback((next: Phase) => {
+    phaseNow.current = next;
+    setPhase(next);
+  }, []);
   const anchor = useRef<HTMLDivElement>(null);
+  const hint = useRef<HTMLDivElement>(null);
+  const leaving = useRef<number | undefined>(undefined);
+  // Why the carousel is held. Two reasons, so that the pointer leaving does not
+  // release a hold the keyboard still has, or the other way round.
+  const hold = useRef({ pointer: false, focus: false });
+  const report = () => onHold(hold.current.pointer || hold.current.focus);
 
   useEffect(() => {
     const el = anchor.current;
     if (!el || guideMemory.dismissed) {
       return undefined;
     }
-    const timers: number[] = [];
-    let prompt: MutationObserver | undefined;
     const root = document.documentElement;
+    const covered = () => root.hasAttribute(PROMPT_OPEN_ATTRIBUTE);
+    const timers = new Set<number>();
+    const later = (fn: () => void, ms: number) => {
+      const id = window.setTimeout(() => {
+        timers.delete(id);
+        fn();
+      }, ms);
+      timers.add(id);
+      return id;
+    };
+    let arrived = false;
+    let walkEnd: number | undefined;
+
     const walkIn = () => {
-      if (guideMemory.dismissed) {
-        return;
-      }
-      // The newsletter prompt opens on the same scroll that brings the dots
-      // into view, and a walk played behind its overlay is one nobody sees:
-      // wait for it to close.
-      if (root.hasAttribute(PROMPT_OPEN_ATTRIBUTE)) {
-        prompt = new MutationObserver(() => {
-          if (!root.hasAttribute(PROMPT_OPEN_ATTRIBUTE)) {
-            prompt?.disconnect();
-            timers.push(window.setTimeout(walkIn, PROMPT_GONE_MS));
-          }
-        });
-        prompt.observe(root, { attributes: true, attributeFilter: [PROMPT_OPEN_ATTRIBUTE] });
+      if (guideMemory.dismissed || covered() || phaseNow.current !== 'hidden') {
         return;
       }
       if (reducedNow.current) {
-        setPhase('pointing');
+        move('pointing');
         return;
       }
-      setPhase('walking');
-      timers.push(
-        window.setTimeout(() => setPhase((now) => (now === 'walking' ? 'pointing' : now)), WALK_MS)
-      );
+      move('walking');
+      walkEnd = later(() => {
+        if (phaseNow.current === 'walking') {
+          move('pointing');
+        }
+      }, WALK_MS);
     };
-    const arrive = () => timers.push(window.setTimeout(walkIn, DELAY_MS));
+
+    // The newsletter prompt opens on a scroll close to the one that brings the
+    // dots into view (at 1200px; the dots arrive at about 1170 on a window 900
+    // tall, 1000 on one 1080 tall), and a walk played behind its overlay is one
+    // nobody sees. So while it is open the mascot does not set out, and if it
+    // opens mid-walk the mascot steps off and walks in again, from the start,
+    // once the prompt has gone. One standing and pointing just stays.
+    const prompt = new MutationObserver(() => {
+      if (covered()) {
+        if (phaseNow.current === 'walking') {
+          window.clearTimeout(walkEnd);
+          move('hidden');
+        }
+      } else if (arrived) {
+        later(walkIn, PROMPT_GONE_MS);
+      }
+    });
+    prompt.observe(root, { attributes: true, attributeFilter: [PROMPT_OPEN_ATTRIBUTE] });
+
+    const arrive = () => {
+      arrived = true;
+      later(walkIn, DELAY_MS);
+    };
     const stop = () => {
-      prompt?.disconnect();
+      prompt.disconnect();
       timers.forEach((timer) => window.clearTimeout(timer));
     };
     // Where nothing can say the dots came into view, it comes after the delay.
@@ -121,21 +161,48 @@ export function CarouselGuide({ caption, index, onNext, onHold }: CarouselGuideP
       observer.disconnect();
       stop();
     };
-  }, []);
+  }, [move]);
 
   // Reduce Motion switched on mid-walk: land where the walk was going, now.
   useEffect(() => {
     reducedNow.current = reduced;
-    if (reduced) {
-      setPhase((now) => (now === 'walking' ? 'pointing' : now));
+    if (reduced && phaseNow.current === 'walking') {
+      move('pointing');
     }
-  }, [reduced]);
+  }, [reduced, move]);
+
+  // Once it is leaving or gone, nothing on it can hold the carousel: an element
+  // that unmounts under the pointer never reports the pointer leaving, and a
+  // hold nobody releases stops the carousel for the rest of the page's life.
+  useEffect(() => {
+    if (
+      (phase === 'leaving' || phase === 'hidden') &&
+      (hold.current.pointer || hold.current.focus)
+    ) {
+      hold.current = { pointer: false, focus: false };
+      onHold(false);
+    }
+  }, [phase, onHold]);
+
+  useEffect(() => () => window.clearTimeout(leaving.current), []);
 
   const dismiss = () => {
     guideMemory.dismissed = true;
-    onHold(false);
-    setPhase('leaving');
-    window.setTimeout(() => setPhase('hidden'), LEAVE_MS);
+    // The keyboard was on the × that is about to go: hand the focus to the dot
+    // of the shot on screen, the control the mascot was standing beside, rather
+    // than let it drop to the page.
+    if (hint.current?.contains(document.activeElement)) {
+      anchor.current?.parentElement?.querySelector<HTMLElement>('[aria-current="true"]')?.focus();
+    }
+    move('leaving');
+    leaving.current = window.setTimeout(() => move('hidden'), LEAVE_MS);
+  };
+
+  const focusLeft = (event: FocusEvent<HTMLDivElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+      hold.current.focus = false;
+      report();
+    }
   };
 
   return (
@@ -143,10 +210,22 @@ export function CarouselGuide({ caption, index, onNext, onHold }: CarouselGuideP
       {phase !== 'hidden' && (
         <div className={classes.lane}>
           <div
+            ref={hint}
             className={classes.hint}
             data-phase={phase}
-            onMouseEnter={() => onHold(true)}
-            onMouseLeave={() => onHold(false)}
+            onMouseEnter={() => {
+              hold.current.pointer = true;
+              report();
+            }}
+            onMouseLeave={() => {
+              hold.current.pointer = false;
+              report();
+            }}
+            onFocus={() => {
+              hold.current.focus = true;
+              report();
+            }}
+            onBlur={focusLeft}
           >
             <button
               type="button"
@@ -159,13 +238,19 @@ export function CarouselGuide({ caption, index, onNext, onHold }: CarouselGuideP
             </button>
             {phase === 'pointing' && (
               <div className={classes.bubble}>
-                <button type="button" className={classes.say} onClick={onNext}>
+                {/* Named for what it says AND for what it does: the visible
+                    "Next" has to be in the name (WCAG 2.5.3), and the arrow
+                    is not worth reading out. */}
+                <button
+                  type="button"
+                  className={classes.say}
+                  aria-label={`${caption} Next`}
+                  onClick={onNext}
+                >
                   <span key={index} className={classes.caption}>
                     {caption}
                   </span>
-                  <span className={classes.next} aria-hidden="true">
-                    Next →
-                  </span>
+                  <span className={classes.next}>Next →</span>
                 </button>
                 <button
                   type="button"
