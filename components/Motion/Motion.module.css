@@ -1,0 +1,233 @@
+/*
+ * Scroll reveals, cross-ported from lancetta.app (its #59), which took them
+ * from netfox.app (its #77) and changed two things this copy keeps: the light
+ * on a card is on its RIM, not across its face; and nothing is hidden until a
+ * script has run and found it off screen.
+ *
+ * A *scope* is what an IntersectionObserver watches (`useReveal`); an *item*
+ * is what moves. One element can be both. Scopes are not nested: an item
+ * answers to the nearest scope above it.
+ *
+ * A scope has three states. At REST (no attribute) its items are where the
+ * layout put them: that is the served HTML, and it is what stays if the
+ * scripts never run, so a blocked chunk or a runtime error costs the motion and
+ * never the content. Once mounted, a scope entirely off screen is ARMED
+ * (`data-armed`): its items snap to their starting pose where nobody can see
+ * them do it. The first time it comes into view it is REVEALED
+ * (`data-revealed`), and they spring to where the layout put them. A scope on
+ * screen at mount is never armed, so it never moves: the hero paints as served.
+ *
+ * Only on a screen and without Reduce Motion: otherwise, and on paper,
+ * everything is simply there.
+ */
+
+.item {
+  --reveal-delay: 0ms;
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  .item {
+    transform-origin: 50% 100%;
+  }
+
+  .item[data-reveal='left'] {
+    transform-origin: 0% 50%;
+  }
+
+  .item[data-reveal='right'] {
+    transform-origin: 100% 50%;
+  }
+
+  /*
+   * The way in. Only a revealed item has a transition, so arming snaps it into
+   * its starting pose instead of animating it there. Opacity and blur settle
+   * quickly and never overshoot; the transform runs on the spring, so the shape
+   * lands, overshoots and settles. That overshoot on a squashed shape is the
+   * morph.
+   */
+  .scope[data-revealed] .item,
+  .scope.item[data-revealed] {
+    transition:
+      opacity 520ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay),
+      filter 640ms ease-out var(--reveal-delay),
+      transform var(--fg-spring-duration) var(--fg-spring) var(--reveal-delay);
+  }
+
+  .scope[data-revealed] .item[data-reveal='rise'],
+  .scope.item[data-reveal='rise'][data-revealed] {
+    transition:
+      opacity 520ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay),
+      filter 560ms ease-out var(--reveal-delay),
+      transform var(--fg-spring-soft-duration) var(--fg-spring-soft) var(--reveal-delay);
+  }
+
+  .scope[data-armed]:not([data-revealed]) .item,
+  .scope.item[data-armed]:not([data-revealed]) {
+    opacity: 0;
+    filter: blur(12px);
+  }
+
+  /* A card: squashed and low, it lands and wobbles into shape. */
+  .scope[data-armed]:not([data-revealed]) .item[data-reveal='morph'],
+  .scope.item[data-reveal='morph'][data-armed]:not([data-revealed]) {
+    transform: translate3d(0, 48px, 0) scale(0.9, 0.7);
+  }
+
+  /* Text: a short lift, almost no overshoot, so it stays readable as it lands. */
+  .scope[data-armed]:not([data-revealed]) .item[data-reveal='rise'],
+  .scope.item[data-reveal='rise'][data-armed]:not([data-revealed]) {
+    filter: blur(8px);
+    transform: translate3d(0, 28px, 0) scale(0.98);
+  }
+
+  /* A chip or a figure: from a point, past its size, back. */
+  .scope[data-armed]:not([data-revealed]) .item[data-reveal='pop'],
+  .scope.item[data-reveal='pop'][data-armed]:not([data-revealed]) {
+    filter: blur(6px);
+    transform: scale(0.4);
+  }
+
+  /* A screenshot: in from the side it sits on, stretched the other way. */
+  .scope[data-armed]:not([data-revealed]) .item[data-reveal='left'],
+  .scope.item[data-reveal='left'][data-armed]:not([data-revealed]) {
+    transform: translate3d(-80px, 0, 0) scale(0.86, 0.94);
+  }
+
+  .scope[data-armed]:not([data-revealed]) .item[data-reveal='right'],
+  .scope.item[data-reveal='right'][data-armed]:not([data-revealed]) {
+    transform: translate3d(80px, 0, 0) scale(0.86, 0.94);
+  }
+
+  /*
+   * The light, as a card lands: its RIM catches it at two opposite corners,
+   * the top right and the bottom left, and the light reaches a little further
+   * along the edges as it fades. The film's band across the whole face read as
+   * a diagonal reflection, and the user asked for it on the edges only
+   * (2026-09-28, on Lancetta: "solo sui bordi top-right / bottom-left
+   * opposti"). The light is the two ends of the headline's gradient: the
+   * icon's sky at the top right, its plate's lilac at the bottom left.
+   *
+   * A ring, not a fill: the padding is the stroke and the mask cuts the rest
+   * away. `--glint` runs 0 -> 1 (registered in theme/global.css so it can be
+   * animated); the opacity is its sine, dark at both ends. The reach is the
+   * app's cap, 70 points, which every card on this page is tall enough to take.
+   * The radius comes from the card, or from `--reveal-radius` on a wrapper that
+   * has none.
+   *
+   * Behind `@supports`, because an engine without `sin()` would find the
+   * opacity invalid at computed-value time, fall back to 1, and leave the ring
+   * lit for good.
+   */
+  @supports (opacity: sin(0)) {
+    .item[data-reveal='morph'] {
+      position: relative;
+    }
+
+    .item[data-reveal='morph']::after {
+      --reach: calc(70px * (0.45 + 0.55 * var(--glint)));
+
+      position: absolute;
+      inset: 0;
+      padding: 1.5px;
+      border-radius: var(--reveal-radius, inherit);
+      pointer-events: none;
+      content: '';
+      background:
+        radial-gradient(circle var(--reach) at 100% 0, var(--fg-sky), transparent),
+        radial-gradient(circle var(--reach) at 0 100%, var(--fg-lilac), transparent);
+      opacity: sin(calc(var(--glint) * 180deg));
+      mask:
+        linear-gradient(#000 0 0) content-box exclude,
+        linear-gradient(#000 0 0);
+    }
+
+    .scope[data-revealed] .item[data-reveal='morph']::after,
+    .scope.item[data-reveal='morph'][data-revealed]::after {
+      animation: glint 900ms ease-out calc(var(--reveal-delay) + 220ms) both;
+    }
+  }
+}
+
+@keyframes glint {
+  from {
+    --glint: 0;
+  }
+
+  to {
+    --glint: 1;
+  }
+}
+
+/*
+ * The odometer. The real value sits in a visually hidden span, so a screen
+ * reader, a crawler and a copy-paste all get "5" and never "0123456789". The
+ * digits that roll are generated content, which is not part of the text.
+ */
+.number {
+  display: inline-flex;
+  font-variant-numeric: tabular-nums;
+  /*
+   * Top, not baseline: an inline-block that clips (the digit window) puts its
+   * baseline at its bottom edge, which sank the digits 3px under the words
+   * beside them. A window exactly one line tall, hung from the top of the line,
+   * puts the glyph where the line's own text puts it.
+   */
+  vertical-align: top;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.odometer {
+  display: inline-flex;
+}
+
+/* One window per digit, one line tall; the strip behind it holds 0-9 and a
+   last 0, so the overshoot past a 9 shows the 0 an odometer would. */
+.digit {
+  display: inline-block;
+  height: 1.2em;
+  height: 1lh;
+  overflow: hidden;
+}
+
+.strip {
+  display: block;
+  transform: translate3d(0, calc(var(--d) * -100% / 11), 0);
+}
+
+.strip::before {
+  display: block;
+  white-space: pre;
+  content: '0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0';
+}
+
+/* A run of the characters between digits ("% left"), in one box so its
+   letters keep their kerning; `pre`, or its leading space is collapsed out of
+   the flex row. */
+.glyph::before {
+  white-space: pre;
+  content: attr(data-ch);
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  /*
+   * Armed and revealed as a scope is (above): zeros only once a script has
+   * found the number off screen, and a transition only on the way up. The
+   * rightmost digit starts last, so a number fills in the way it is read.
+   */
+  .number[data-revealed] .strip {
+    transition: transform var(--fg-spring-roll-duration) var(--fg-spring-roll)
+      calc(var(--reveal-delay, 0ms) + var(--i) * 110ms);
+  }
+
+  .number[data-armed]:not([data-revealed]) .strip {
+    transform: translate3d(0, 0, 0);
+  }
+}

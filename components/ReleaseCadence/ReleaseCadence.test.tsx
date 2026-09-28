@@ -12,7 +12,13 @@ describe('ReleaseCadence', () => {
   it('leads with the freshness phrase and backs it with the count', () => {
     render(<ReleaseCadence cadence={FRESH} />);
     expect(screen.getByText('Updated today')).toBeInTheDocument();
-    expect(screen.getByText(/47 releases since April 2026/)).toBeInTheDocument();
+    // The count rolls up (ScrollNumber), so it sits in a span of its own: match
+    // the line by its whole text, which is still exactly this sentence.
+    expect(
+      screen.getByText(
+        (_, el) => el?.tagName === 'P' && el.textContent === '47 releases since April 2026'
+      )
+    ).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /what's new/i })).toHaveAttribute(
       'href',
       '/docs/release-notes'

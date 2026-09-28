@@ -27,7 +27,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { nextraLayout, head } = config;
 
   return (
-    <html lang="en" dir="ltr" {...mantineHtmlProps}>
+    // `data-scroll-behavior`: app/global.css makes <html> scroll smoothly (for
+    // the page's own anchors), and without this attribute Next 16 keeps that
+    // on a route change too. The scroll reveals read the scroll at mount, so a
+    // way home that mounts the page near its bottom and then scrolls it to the
+    // top fires every one-shot reveal out of sight on the way up. Measured on
+    // lancetta.app, from its FAQ: mounted at 9177, 1.6 s to the top, 37
+    // reveals spent. With it, Next jumps before any effect reads the scroll.
+    <html lang="en" dir="ltr" data-scroll-behavior="smooth" {...mantineHtmlProps}>
       {/*
         Nextra's primary colour, which its links, active sidebar row and
         table of contents are all cut from: the Finder's blue in the icon,

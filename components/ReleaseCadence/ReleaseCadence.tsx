@@ -1,4 +1,5 @@
 import { Anchor, Group, Paper, Stack, Text } from '@mantine/core';
+import { ScrollNumber } from '@/components/Motion/ScrollNumber';
 import type { ReleaseCadence as Cadence } from './release-cadence';
 import classes from './ReleaseCadence.module.css';
 
@@ -34,7 +35,7 @@ export function ReleaseCadence({ cadence }: { cadence: Cadence }) {
           {total !== null && since !== null && (
             <>
               <Text size="xs" c="dimmed">
-                {total} releases since {since}
+                <ScrollNumber value={total} /> releases since {since}
               </Text>
               <Text size="xs" c="dimmed" aria-hidden="true">
                 &middot;

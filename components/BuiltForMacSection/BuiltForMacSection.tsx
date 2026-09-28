@@ -2,6 +2,9 @@
 
 import { IconEye, IconKeyboard, IconMenu2, IconCpu, IconDeviceDesktop } from '@tabler/icons-react';
 import { Badge, Box, Container, Group, Stack, Text, Title } from '@mantine/core';
+import { revealItem, revealScope } from '@/components/Motion/Reveal';
+import { ScrollNumber } from '@/components/Motion/ScrollNumber';
+import { useReveal } from '@/components/Motion/useReveal';
 
 const techPills = [
   { label: 'Quick Look', icon: IconEye },
@@ -13,6 +16,10 @@ const techPills = [
 ];
 
 export function BuiltForMacSection() {
+  // One reveal for the band: the heading rises, the "100" rolls, the pills pop
+  // one after another and the closing line follows them.
+  const reveal = useReveal<HTMLDivElement>();
+
   return (
     <Box
       pos="relative"
@@ -30,18 +37,32 @@ export function BuiltForMacSection() {
       }}
     >
       <Container size="lg" pos="relative" style={{ zIndex: 1 }}>
-        <Stack align="center" gap="md">
-          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
+        <Stack ref={reveal.ref} {...revealScope(reveal)} align="center" gap="md">
+          <Text
+            {...revealItem('rise')}
+            size="sm"
+            fw={700}
+            tt="uppercase"
+            style={{ letterSpacing: 3 }}
+            c="findergit.3"
+          >
             Built for macOS
           </Text>
-          <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
-            100% native. Fast. Familiar. Yours.
+          <Title
+            {...revealItem('rise', 80)}
+            order={2}
+            ta="center"
+            fz={{ base: 32, sm: 42 }}
+            fw={900}
+          >
+            <ScrollNumber value="100" delay={250} />% native. Fast. Familiar. Yours.
           </Title>
 
           <Group justify="center" gap="sm" mt="lg" maw={700}>
-            {techPills.map((pill) => (
+            {techPills.map((pill, i) => (
               <Badge
                 key={pill.label}
+                {...revealItem('pop', 300 + i * 70)}
                 size="xl"
                 variant="light"
                 color="gray"
@@ -59,7 +80,14 @@ export function BuiltForMacSection() {
             ))}
           </Group>
 
-          <Text c="dimmed" ta="center" size="lg" maw={600} mt="lg">
+          <Text
+            {...revealItem('rise', 300 + techPills.length * 70)}
+            c="dimmed"
+            ta="center"
+            size="lg"
+            maw={600}
+            mt="lg"
+          >
             No Electron. No web views. A real macOS app that feels like it belongs on your Mac.
           </Text>
         </Stack>
