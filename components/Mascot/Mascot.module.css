@@ -49,8 +49,13 @@
  * element translated out there widens the page -- measured on lancetta.app at
  * 1675px of scroll width on a 1440px window, a horizontal scrollbar for the
  * length of the walk. `clip` on one axis leaves the other visible and makes no
- * scroll container. (The hero clips its overflow as well; this does not lean
- * on that.)
+ * scroll container.
+ *
+ * It does lean on the hero's own `overflow: hidden` for one thing: `100vw`
+ * counts a classic scrollbar (Windows, or macOS with a mouse attached), so with
+ * a 15px one the lane is 7.5px wider than the page on each side, and without
+ * the hero's clip the page would be 1433px wide on a 1425px one (measured in
+ * review, 2026-09-28).
  */
 .lane {
   position: absolute;
@@ -77,8 +82,11 @@
   transition: opacity 240ms ease;
 }
 
+/* Fading out, it takes no pointer: a hover that starts on a mascot about to
+   unmount would never be told the pointer left. */
 .hint[data-phase='leaving'] {
   opacity: 0;
+  pointer-events: none;
 }
 
 .walker {
