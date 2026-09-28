@@ -15,8 +15,10 @@ import classes from './Motion.module.css';
  * the strip of 0-9 behind each one. A value with no digits renders as text.
  *
  * It rolls only if it was off screen when the page mounted (see `useReveal`):
- * one already in view is left as the server drew it, so a figure is never
- * painted as zeros where someone can read it.
+ * one already in view is left as the server drew it, so a reader who was
+ * looking at a figure never sees it turn to zeros. One that was armed does
+ * read zeros once it scrolls in, until it rolls: for its `delay`, on purpose,
+ * since an empty state held a moment is what makes the roll seen.
  *
  * `delay` is optional on purpose: left out, the number takes `--reveal-delay`
  * from whatever it sits in, so a figure inside a revealed item rolls as that

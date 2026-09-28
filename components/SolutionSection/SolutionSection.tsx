@@ -108,6 +108,13 @@ type SidebarItem =
  */
 const rowDelay = (row: number) => 450 + row * 110;
 
+/**
+ * The totals tally while the rows light up, from the second row on. They read
+ * zeros until then, and holding that for the whole second the rows take
+ * (`rowDelay(5)`, where they started) was a long look at "000 MB".
+ */
+const TALLY_DELAY = rowDelay(1);
+
 const sidebar: SidebarItem[] = [
   { section: 'Library' },
   { label: 'All Repositories', count: 5, active: true },
@@ -313,21 +320,21 @@ export function SolutionSection() {
               style={{ borderTop: '1px solid var(--mantine-color-dark-5)' }}
             >
               <Text size="xs" c="dimmed" style={{ fontFamily: 'monospace' }}>
-                <ScrollNumber value="5 repositories" delay={rowDelay(repos.length)} />
+                <ScrollNumber value="5 repositories" delay={TALLY_DELAY} />
               </Text>
               <Group gap="md" wrap="nowrap" visibleFrom="sm">
                 <Text size="xs" c="teal.4" style={{ fontFamily: 'monospace' }}>
-                  <ScrollNumber value="✔ 2 clean" delay={rowDelay(repos.length)} />
+                  <ScrollNumber value="✔ 2 clean" delay={TALLY_DELAY} />
                 </Text>
                 <Text size="xs" c="orange.4" style={{ fontFamily: 'monospace' }}>
-                  <ScrollNumber value="● 3 dirty" delay={rowDelay(repos.length)} />
+                  <ScrollNumber value="● 3 dirty" delay={TALLY_DELAY} />
                 </Text>
                 <Text size="xs" c="blue.4" style={{ fontFamily: 'monospace' }}>
-                  <ScrollNumber value="↑ 1 ahead" delay={rowDelay(repos.length)} />
+                  <ScrollNumber value="↑ 1 ahead" delay={TALLY_DELAY} />
                 </Text>
               </Group>
               <Text size="xs" c="dimmed" style={{ fontFamily: 'monospace' }}>
-                <ScrollNumber value="232 MB" delay={rowDelay(repos.length)} />
+                <ScrollNumber value="232 MB" delay={TALLY_DELAY} />
               </Text>
             </Group>
           </Paper>
