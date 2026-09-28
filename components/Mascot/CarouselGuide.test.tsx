@@ -182,6 +182,29 @@ describe('CarouselGuide', () => {
     expect(onHold).toHaveBeenLastCalledWith(false);
   });
 
+  it('does not hold it for the focus a mouse click leaves behind', () => {
+    // Chrome focuses a button on a click, and a click is how the mascot is used
+    // most. That focus is not `:focus-visible`, which jsdom cannot produce by
+    // itself: every focus there is visible, so the selector is answered here.
+    const matches = Element.prototype.matches;
+    jest.spyOn(Element.prototype, 'matches').mockImplementation(function (
+      this: Element,
+      selector: string
+    ) {
+      return selector === ':focus-visible' ? false : matches.call(this, selector);
+    });
+    const onHold = jest.fn();
+    render(<CarouselGuide {...props({ onHold })} />);
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    const hint = walker()!.parentElement!;
+    fireEvent.mouseEnter(hint);
+    act(() => walker()!.focus());
+    fireEvent.click(walker()!);
+    fireEvent.mouseLeave(hint);
+    expect(onHold).toHaveBeenLastCalledWith(false);
+  });
+
   it('never leaves the carousel held by a pointer that arrived as it was leaving', () => {
     // Found in review: a hover that starts on the fading mascot is never told
     // the pointer left, because the mascot unmounts under it; the carousel then

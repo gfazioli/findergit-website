@@ -35,9 +35,9 @@ interface CarouselGuideProps {
   /** Clicking the mascot or what it says turns the carousel to the next shot. */
   onNext: () => void;
   /**
-   * True while the pointer is on the mascot or its bubble, or the keyboard focus
-   * is in them, so the caption holds still; false the moment neither is, and
-   * always once the mascot leaves.
+   * True while the pointer is on the mascot or its bubble, or the keyboard's
+   * focus is in them, so the caption holds still; false the moment neither is,
+   * and always once the mascot leaves.
    */
   onHold: (held: boolean) => void;
 }
@@ -198,6 +198,24 @@ export function CarouselGuide({ caption, index, onNext, onHold }: CarouselGuideP
     leaving.current = window.setTimeout(() => move('hidden'), LEAVE_MS);
   };
 
+  // Only the KEYBOARD's focus holds. Chrome also focuses a button on a mouse
+  // click, and a click is how the mascot is used most: that hold outlived the
+  // pointer and froze the carousel until something else took the focus (review
+  // of #75, round 2). `:focus-visible` is the browser's own word on which it is.
+  const focusArrived = (event: FocusEvent<HTMLDivElement>) => {
+    let keyboard = true;
+    try {
+      keyboard = (event.target as Element).matches(':focus-visible');
+    } catch {
+      // An engine without the selector: Safari before 15.4, which does not
+      // focus a button on a click anyway.
+    }
+    if (keyboard) {
+      hold.current.focus = true;
+      report();
+    }
+  };
+
   const focusLeft = (event: FocusEvent<HTMLDivElement>) => {
     if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
       hold.current.focus = false;
@@ -221,10 +239,7 @@ export function CarouselGuide({ caption, index, onNext, onHold }: CarouselGuideP
               hold.current.pointer = false;
               report();
             }}
-            onFocus={() => {
-              hold.current.focus = true;
-              report();
-            }}
+            onFocus={focusArrived}
             onBlur={focusLeft}
           >
             <button
