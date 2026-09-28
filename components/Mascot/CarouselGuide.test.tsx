@@ -183,14 +183,16 @@ describe('CarouselGuide', () => {
   });
 
   /** Answer `:focus-visible` as a mouse focus would (`false`), or as an engine without it. */
-  const focusVisible = (answer: false | 'unknown') => {
-    const matches = Element.prototype.matches;
+  // Captured before any test spies on it, so answering twice in one test does
+  // not call the spy from inside itself.
+  const nativeMatches = Element.prototype.matches;
+  const focusVisible = (answer: boolean | 'unknown') => {
     jest.spyOn(Element.prototype, 'matches').mockImplementation(function (
       this: Element,
       selector: string
     ) {
       if (selector !== ':focus-visible') {
-        return matches.call(this, selector);
+        return nativeMatches.call(this, selector);
       }
       if (answer === 'unknown') {
         throw new SyntaxError(`'${selector}' is not a valid selector`);
@@ -244,8 +246,27 @@ describe('CarouselGuide', () => {
     act(() => walker()!.focus());
     fireEvent.mouseLeave(hint);
     expect(onHold).toHaveBeenLastCalledWith(false);
+    // Chrome turns the ring on for Shift, with no new focus event.
+    focusVisible(true);
     fireEvent.keyDown(walker()!, { key: 'Shift' });
+    wait(20);
     expect(onHold).toHaveBeenLastCalledWith(true);
+  });
+
+  it('does not hold for a shortcut pressed after a click', () => {
+    // Cmd+C, or a zoom: the browser leaves the ring off, and so does this.
+    focusVisible(false);
+    const onHold = jest.fn();
+    render(<CarouselGuide {...props({ onHold })} />);
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    const hint = walker()!.parentElement!;
+    fireEvent.mouseEnter(hint);
+    act(() => walker()!.focus());
+    fireEvent.mouseLeave(hint);
+    fireEvent.keyDown(walker()!, { key: 'c', metaKey: true });
+    wait(20);
+    expect(onHold).toHaveBeenLastCalledWith(false);
   });
 
   it('holds on any focus where the engine does not know :focus-visible', () => {

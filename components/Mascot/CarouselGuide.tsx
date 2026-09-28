@@ -1,6 +1,13 @@
 'use client';
 
-import { type FocusEvent, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  type FocusEvent,
+  type KeyboardEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { IconX } from '@tabler/icons-react';
 import { useReducedMotion } from '@mantine/hooks';
 import { PROMPT_OPEN_ATTRIBUTE } from '@/components/NewsletterSignup/prompt-open';
@@ -198,6 +205,19 @@ export function CarouselGuide({ caption, index, onNext, onHold }: CarouselGuideP
     leaving.current = window.setTimeout(() => move('hidden'), LEAVE_MS);
   };
 
+  /**
+   * Whether the browser draws the focus on `el`: its own answer to "is this the
+   * keyboard?". An engine without the selector (Safari before 15.4, Chrome
+   * before 86) says yes to any focus, as this did before round 2.
+   */
+  const shownFocus = (el: Element) => {
+    try {
+      return el.matches(':focus-visible');
+    } catch {
+      return true;
+    }
+  };
+
   // Only the KEYBOARD's focus holds. Chrome also focuses a button on a mouse
   // click, and a click is how the mascot is used most: that hold outlived the
   // pointer and froze the carousel until something else took the focus (review
@@ -205,24 +225,23 @@ export function CarouselGuide({ caption, index, onNext, onHold }: CarouselGuideP
   // and every focus event decides afresh: a click after a Tab moves the focus
   // without making it visible, and has to let go of the Tab's hold (round 3).
   const focusArrived = (event: FocusEvent<HTMLDivElement>) => {
-    let keyboard = true;
-    try {
-      keyboard = (event.target as Element).matches(':focus-visible');
-    } catch {
-      // An engine without the selector (Safari before 15.4, Chrome before 86)
-      // holds on any focus, as this did before round 2.
-    }
-    hold.current.focus = keyboard;
+    hold.current.focus = shownFocus(event.target as Element);
     report();
   };
 
-  // A key pressed after a click turns the focus ring on with no new focus
-  // event, so the keyboard being used in here holds as well.
-  const keyPressed = () => {
-    if (!hold.current.focus) {
-      hold.current.focus = true;
-      report();
-    }
+  // A key pressed after a click can turn the focus ring on with no new focus
+  // event (Shift, Escape), and then the keyboard is being used in here. Not
+  // every key does: a shortcut (Cmd+C, a zoom) leaves the ring off, and holding
+  // on it froze the carousel again (round 4). So the browser is asked once it
+  // has handled the key, rather than its rule being guessed here.
+  const keyPressed = (event: KeyboardEvent<HTMLDivElement>) => {
+    const target = event.target as Element;
+    window.requestAnimationFrame(() => {
+      if (!hold.current.focus && document.activeElement === target && shownFocus(target)) {
+        hold.current.focus = true;
+        report();
+      }
+    });
   };
 
   const focusLeft = (event: FocusEvent<HTMLDivElement>) => {
