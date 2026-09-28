@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Modal } from '@mantine/core';
 import { useDisclosure, useLocalStorage, useWindowScroll } from '@mantine/hooks';
 import { NewsletterCallToAction } from './NewsletterCallToAction';
+import { PROMPT_OPEN_ATTRIBUTE } from './prompt-open';
 
 /**
  * Scroll-triggered newsletter prompt.
@@ -33,6 +34,14 @@ export function NewsletterModal() {
       open();
     }
   }, [scroll.y, dismissed, armed, open]);
+
+  useEffect(() => {
+    if (!opened) {
+      return undefined;
+    }
+    document.documentElement.setAttribute(PROMPT_OPEN_ATTRIBUTE, 'open');
+    return () => document.documentElement.removeAttribute(PROMPT_OPEN_ATTRIBUTE);
+  }, [opened]);
 
   const handleClose = () => {
     setDismissed(true);

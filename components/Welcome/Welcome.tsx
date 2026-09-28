@@ -55,6 +55,9 @@ import { SolutionSection } from '../SolutionSection/SolutionSection';
 import { DiffViewerSection } from '../DiffViewerSection/DiffViewerSection';
 import { AICommitSection } from '../AICommitSection/AICommitSection';
 import { BuiltForMacSection } from '../BuiltForMacSection/BuiltForMacSection';
+import { Reveal, revealItem, revealScope } from '@/components/Motion/Reveal';
+import { useReveal } from '@/components/Motion/useReveal';
+import { CarouselGuide } from '@/components/Mascot/CarouselGuide';
 import { isRecent } from './recent';
 import classes from './Welcome.module.css';
 
@@ -129,6 +132,12 @@ function FeatureRow({
   // read the small text without us blowing up the image inline.
   const imageCol = <ZoomableScreenshot src={image} alt={imageAlt} />;
 
+  // The row is one reveal: the screenshot comes in from the side it sits on at
+  // desktop width, the copy rises a beat later.
+  const reveal = useReveal<HTMLDivElement>();
+  const shot = revealItem(reverse ? 'right' : 'left');
+  const copy = revealItem('rise', 160);
+
   // 7/5 split: the screenshot gets the dominant side (~58% of the row)
   // so detail like file names, branch labels and diff lines actually
   // becomes legible; the copy still has comfortable measure for the
@@ -136,11 +145,22 @@ function FeatureRow({
   // `Grid.Col.order` lets us alternate desktop side without breaking the
   // mobile reading order — image always stays on top in the stacked view.
   return (
-    <Grid gap={{ base: 32, md: 56 }} align="center">
-      <Grid.Col span={{ base: 12, md: 7 }} order={{ base: 1, md: reverse ? 2 : 1 }}>
+    <Grid ref={reveal.ref} {...revealScope(reveal)} gap={{ base: 32, md: 56 }} align="center">
+      <Grid.Col
+        span={{ base: 12, md: 7 }}
+        order={{ base: 1, md: reverse ? 2 : 1 }}
+        className={shot.className}
+        data-reveal={shot['data-reveal']}
+      >
         {imageCol}
       </Grid.Col>
-      <Grid.Col span={{ base: 12, md: 5 }} order={{ base: 2, md: reverse ? 1 : 2 }}>
+      <Grid.Col
+        span={{ base: 12, md: 5 }}
+        order={{ base: 2, md: reverse ? 1 : 2 }}
+        className={copy.className}
+        data-reveal={copy['data-reveal']}
+        style={copy.style}
+      >
         {copyCol}
       </Grid.Col>
     </Grid>
@@ -261,25 +281,37 @@ function ZoomableScreenshot({
   );
 }
 
+interface HeroShot {
+  src: string;
+  alt: string;
+  /** What the mascot says while this shot is on screen (`CarouselGuide`). */
+  caption: string;
+}
+
 /**
  * Hero carousel: cross-fades through several screenshots on a timer, with
- * clickable dots to jump between them. Auto-advance pauses on hover. The
- * active shot keeps the click-to-zoom affordance (opens a fullscreen Modal,
- * same as `ZoomableScreenshot`). Built without a carousel dependency — a
- * stack of absolutely-positioned images whose opacity we cross-fade.
+ * clickable dots to jump between them. Auto-advance pauses on hover, over the
+ * picture or over the mascot that narrates it. The active shot keeps the
+ * click-to-zoom affordance (opens a fullscreen Modal, same as
+ * `ZoomableScreenshot`). Built without a carousel dependency — a stack of
+ * absolutely-positioned images whose opacity we cross-fade.
  */
-function HeroCarousel({ shots }: { shots: { src: string; alt: string }[] }) {
+function HeroCarousel({ shots }: { shots: HeroShot[] }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [held, setHeld] = useState(false);
   const [zoomed, setZoomed] = useState(false);
 
+  // A timeout keyed on the shot rather than an interval: every change of shot,
+  // by the timer, a dot or the mascot, gets its full five seconds. An interval
+  // kept its own beat, so a shot picked by hand could turn a moment later.
   useEffect(() => {
-    if (paused || zoomed || shots.length < 2) return;
-    const id = setInterval(() => {
+    if (paused || held || zoomed || shots.length < 2) return;
+    const id = setTimeout(() => {
       setIndex((i) => (i + 1) % shots.length);
     }, 5000);
-    return () => clearInterval(id);
-  }, [paused, zoomed, shots.length]);
+    return () => clearTimeout(id);
+  }, [index, paused, held, zoomed, shots.length]);
 
   const active = shots[index];
 
@@ -320,28 +352,38 @@ function HeroCarousel({ shots }: { shots: { src: string; alt: string }[] }) {
         </Box>
       </UnstyledButton>
 
-      {/* Dots */}
-      <Center mt="lg" mb={56}>
-        <Group gap={10}>
-          {shots.map((shot, i) => (
-            <UnstyledButton
-              key={shot.src}
-              onClick={() => setIndex(i)}
-              aria-label={`Show screenshot ${i + 1} of ${shots.length}: ${shot.alt}`}
-              aria-current={i === index}
-              style={{
-                width: i === index ? 26 : 9,
-                height: 9,
-                borderRadius: 999,
-                backgroundColor:
-                  i === index ? 'var(--mantine-color-findergit-5)' : 'var(--mantine-color-gray-5)',
-                opacity: i === index ? 1 : 0.5,
-                transition: 'width 250ms ease, opacity 250ms ease, background-color 250ms ease',
-              }}
-            />
-          ))}
-        </Group>
-      </Center>
+      {/* Dots, and the mascot that stands beside them */}
+      <Box pos="relative" mt="lg" mb={56}>
+        <Center>
+          <Group gap={10}>
+            {shots.map((shot, i) => (
+              <UnstyledButton
+                key={shot.src}
+                onClick={() => setIndex(i)}
+                aria-label={`Show screenshot ${i + 1} of ${shots.length}: ${shot.alt}`}
+                aria-current={i === index}
+                style={{
+                  width: i === index ? 26 : 9,
+                  height: 9,
+                  borderRadius: 999,
+                  backgroundColor:
+                    i === index
+                      ? 'var(--mantine-color-findergit-5)'
+                      : 'var(--mantine-color-gray-5)',
+                  opacity: i === index ? 1 : 0.5,
+                  transition: 'width 250ms ease, opacity 250ms ease, background-color 250ms ease',
+                }}
+              />
+            ))}
+          </Group>
+        </Center>
+        <CarouselGuide
+          caption={active.caption}
+          index={index}
+          onNext={() => setIndex((i) => (i + 1) % shots.length)}
+          onHold={setHeld}
+        />
+      </Box>
 
       <FullscreenImageModal
         opened={zoomed}
@@ -355,20 +397,27 @@ function HeroCarousel({ shots }: { shots: { src: string; alt: string }[] }) {
 
 // The hero rotation — the Overview dashboard leads, the Account follows, then
 // the Repository List; the file browser anchors.
-const heroShots = [
+const heroShots: HeroShot[] = [
   {
     src: '/screenshot-hero-overview.png',
     alt: 'FinderGit Overview — an at-a-glance dashboard across every repository',
+    caption: 'The Overview: every repository’s state on one dashboard.',
   },
   {
     src: '/screenshot-hero-account.png',
     alt: 'FinderGit Account — your GitHub profile and contributions at a glance',
+    caption: 'Your GitHub account: stars, followers and a year of contributions.',
   },
   {
     src: '/screenshot-portfolio.png',
     alt: 'FinderGit — every repository at a glance in the flat Repository List',
+    caption: 'All your repositories in one table: branch, status, ahead and behind.',
   },
-  { src: '/screenshot-hero-browser.png', alt: 'FinderGit — a Git-aware file browser for macOS' },
+  {
+    src: '/screenshot-hero-browser.png',
+    alt: 'FinderGit — a Git-aware file browser for macOS',
+    caption: 'The file browser: every repo folder with its branch, status, issues and stars.',
+  },
 ];
 
 interface Feature {
@@ -666,9 +715,13 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
           </Stack>
 
           {/* ─── Screenshot carousel ─── */}
-          <Box mt={32}>
-            <HeroCarousel shots={heroShots} />
-          </Box>
+          {/* It rises only when the page mounts with it below the fold; on a
+              screen tall enough to show it at once it is simply there. */}
+          <Reveal variant="rise">
+            <Box mt={32}>
+              <HeroCarousel shots={heroShots} />
+            </Box>
+          </Reveal>
         </Container>
       </Box>
 
@@ -683,79 +736,92 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
           would otherwise land the eyebrow under the bar. */}
       <Box py={80} id="features" style={{ scrollMarginTop: 64 }}>
         <Container size="lg">
-          <Stack align="center" gap="md" mb={48}>
-            <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
-              And there&apos;s more
-            </Text>
-            <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
-              Beyond the at-a-glance overview
-            </Title>
-            <Text c="dimmed" ta="center" size="lg" maw={620}>
-              The control center is the core. Around it, the tools for when you go deeper into a
-              repo.
-            </Text>
-          </Stack>
+          <Reveal variant="rise">
+            <Stack align="center" gap="md" mb={48}>
+              <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
+                And there&apos;s more
+              </Text>
+              <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
+                Beyond the at-a-glance overview
+              </Title>
+              <Text c="dimmed" ta="center" size="lg" maw={620}>
+                The control center is the core. Around it, the tools for when you go deeper into a
+                repo.
+              </Text>
+            </Stack>
+          </Reveal>
 
           <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
             {features.map((feature, i) => (
-              // Whole card is a Next.js Link via Mantine's polymorphic
-              // `component` prop — keeps the Paper/Raycast card styling while
-              // making the entire card clickable, keyboard-focusable, and
-              // prefetched. `cardLink` resets the anchor's default text color /
-              // underline and adds a focus-visible ring matching the hover tint.
-              <Paper
+              // Each card lands on its own reveal, a column's worth of stagger
+              // apart. Wrapped rather than given the props: the card lifts on
+              // hover with a transform of its own, and two transforms on one
+              // element fight. The wrapper is the grid cell, so it carries the
+              // leftover card's span and the card fills it to keep rows level.
+              <Reveal
                 key={feature.title}
-                component={Link}
-                href={feature.href}
-                p="lg"
-                className={`${classes.featureCard} ${classes.cardLink}`}
-                // Per-card accent: resolve the feature's Mantine palette hex
-                // into the --card-color CSS var the card's tint/border/glow read.
+                delay={(i % 3) * 120}
+                radius={16}
+                // A lone leftover card (odd count) spans the whole row so the
+                // grid ends flush instead of lopsided.
                 style={
-                  {
-                    '--card-color': `var(--mantine-color-${feature.color}-5)`,
-                    // A lone leftover card (odd count) spans the whole row so
-                    // the grid ends flush instead of lopsided.
-                    ...(i === features.length - 1 && features.length % 3 === 1
-                      ? { gridColumn: '1 / -1' }
-                      : {}),
-                  } as CSSProperties
+                  i === features.length - 1 && features.length % 3 === 1
+                    ? { gridColumn: '1 / -1' }
+                    : undefined
                 }
               >
-                {feature.since && isRecent(feature.since, config.app.version) && (
-                  <Badge className={classes.newBadge} variant="filled" size="sm" radius="sm">
-                    New
-                  </Badge>
-                )}
-                <Stack gap={10} align="flex-start">
-                  {feature.image ? (
-                    <Image
-                      src={feature.image}
-                      alt=""
-                      w={48}
-                      h={48}
-                      radius="md"
-                      className={classes.featureIcon}
-                    />
-                  ) : (
-                    <ThemeIcon
-                      size={48}
-                      radius="md"
-                      color={feature.color}
-                      variant="light"
-                      className={classes.featureIcon}
-                    >
-                      <feature.icon size={26} />
-                    </ThemeIcon>
+                {/* Whole card is a Next.js Link via Mantine's polymorphic
+                  `component` prop — keeps the Paper/Raycast card styling while
+                  making the entire card clickable, keyboard-focusable, and
+                  prefetched. `cardLink` resets the anchor's default text color /
+                  underline and adds a focus-visible ring matching the hover tint. */}
+                <Paper
+                  component={Link}
+                  href={feature.href}
+                  p="lg"
+                  h="100%"
+                  className={`${classes.featureCard} ${classes.cardLink}`}
+                  // Per-card accent: resolve the feature's Mantine palette hex
+                  // into the --card-color CSS var the card's tint/border/glow read.
+                  style={
+                    { '--card-color': `var(--mantine-color-${feature.color}-5)` } as CSSProperties
+                  }
+                >
+                  {feature.since && isRecent(feature.since, config.app.version) && (
+                    <Badge className={classes.newBadge} variant="filled" size="sm" radius="sm">
+                      New
+                    </Badge>
                   )}
-                  <Text fw={700} fz={18}>
-                    {feature.title}
-                  </Text>
-                  <Text c="dimmed" size="sm" lh={1.55}>
-                    {feature.description}
-                  </Text>
-                </Stack>
-              </Paper>
+                  <Stack gap={10} align="flex-start">
+                    {feature.image ? (
+                      <Image
+                        src={feature.image}
+                        alt=""
+                        w={48}
+                        h={48}
+                        radius="md"
+                        className={classes.featureIcon}
+                      />
+                    ) : (
+                      <ThemeIcon
+                        size={48}
+                        radius="md"
+                        color={feature.color}
+                        variant="light"
+                        className={classes.featureIcon}
+                      >
+                        <feature.icon size={26} />
+                      </ThemeIcon>
+                    )}
+                    <Text fw={700} fz={18}>
+                      {feature.title}
+                    </Text>
+                    <Text c="dimmed" size="sm" lh={1.55}>
+                      {feature.description}
+                    </Text>
+                  </Stack>
+                </Paper>
+              </Reveal>
             ))}
           </SimpleGrid>
         </Container>
@@ -771,19 +837,25 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
       <BuiltForMacSection />
 
       {/* ─── In action — feature showcase with alternating image/copy rows ─── */}
-      <Box py={96}>
+      {/* `overflowX: clip`: each row's screenshot comes in from the side, 80px
+          out, and a transformed box that far out would widen the page for the
+          length of the spring. `clip` makes no scroll container, so the
+          shadows above and below are not cut. */}
+      <Box py={96} style={{ overflowX: 'clip' }}>
         <Container size="xl">
-          <Stack align="center" gap="md" mb={72}>
-            <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
-              In action
-            </Text>
-            <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900} c="white">
-              Built around the way you actually work
-            </Title>
-            <Text c="gray.4" ta="center" size="lg" maw={640}>
-              Five touches that make Git feel native to the file browser — not bolted on top.
-            </Text>
-          </Stack>
+          <Reveal variant="rise">
+            <Stack align="center" gap="md" mb={72}>
+              <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
+                In action
+              </Text>
+              <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900} c="white">
+                Built around the way you actually work
+              </Title>
+              <Text c="gray.4" ta="center" size="lg" maw={640}>
+                Five touches that make Git feel native to the file browser — not bolted on top.
+              </Text>
+            </Stack>
+          </Reveal>
 
           <Stack gap={96}>
             <FeatureRow
@@ -844,47 +916,55 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
       {/* ─── Get Started CTA ─── */}
       <Box pos="relative" py={80} className={`fg-feather ${classes.ctaGround}`}>
         <Container size="lg" pos="relative" style={{ zIndex: 1 }}>
-          <Stack align="center" gap="lg">
-            <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
-              Get Started
-            </Text>
-            <Title order={2} ta="center" fz={{ base: 36, sm: 48 }} fw={900} c="white">
-              Every repo, under control.
-            </Title>
-            <Text c="dimmed" ta="center" size="lg" maw={500}>
-              Download FinderGit and see — and manage — every repository from one native window.
-            </Text>
+          <Reveal variant="rise">
+            <Stack align="center" gap="lg">
+              <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
+                Get Started
+              </Text>
+              <Title order={2} ta="center" fz={{ base: 36, sm: 48 }} fw={900} c="white">
+                Every repo, under control.
+              </Title>
+              <Text c="dimmed" ta="center" size="lg" maw={500}>
+                Download FinderGit and see — and manage — every repository from one native window.
+              </Text>
 
-            <Button
-              href="/download"
-              component="a"
-              leftSection={<IconDownload size={20} />}
-              size="xl"
-              radius="xl"
-              px={48}
-              mt="md"
-            >
-              Download for macOS
-            </Button>
-            <Text c="dimmed" size="sm">
-              Free &middot; macOS 15 Sequoia or later
-            </Text>
-          </Stack>
+              <Button
+                href="/download"
+                component="a"
+                leftSection={<IconDownload size={20} />}
+                size="xl"
+                radius="xl"
+                px={48}
+                mt="md"
+              >
+                Download for macOS
+              </Button>
+              <Text c="dimmed" size="sm">
+                Free &middot; macOS 15 Sequoia or later
+              </Text>
+            </Stack>
+          </Reveal>
         </Container>
       </Box>
 
       {/* ─── FAQ ─── */}
       <Container size="lg">
         <Stack align="center" gap="md" my={64}>
-          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
-            FAQ
-          </Text>
-          <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
-            Frequently Asked Questions
-          </Title>
-          <Box w="100%" maw={700} mt="md">
-            <FAQ />
-          </Box>
+          <Reveal variant="rise">
+            <Stack align="center" gap="md">
+              <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
+                FAQ
+              </Text>
+              <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
+                Frequently Asked Questions
+              </Title>
+            </Stack>
+          </Reveal>
+          <Reveal variant="rise" delay={120} style={{ width: '100%', maxWidth: 700 }}>
+            <Box mt="md">
+              <FAQ />
+            </Box>
+          </Reveal>
         </Stack>
       </Container>
     </>
