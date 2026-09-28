@@ -1,0 +1,169 @@
+import type { ComponentProps } from 'react';
+import { act, fireEvent, render, screen } from '@/test-utils';
+import { PROMPT_OPEN_ATTRIBUTE } from '@/components/NewsletterSignup/prompt-open';
+import { CarouselGuide, DELAY_MS, guideMemory, PROMPT_GONE_MS, WALK_MS } from './CarouselGuide';
+
+type Props = ComponentProps<typeof CarouselGuide>;
+
+describe('CarouselGuide', () => {
+  let observers: { callback: IntersectionObserverCallback }[];
+
+  beforeEach(() => {
+    guideMemory.dismissed = false;
+    observers = [];
+    // jsdom has none. This one only records its callback, so a test can say
+    // when the dots "come into view".
+    globalThis.IntersectionObserver = class {
+      callback: IntersectionObserverCallback;
+      constructor(callback: IntersectionObserverCallback) {
+        this.callback = callback;
+        observers.push(this);
+      }
+      observe() {}
+      disconnect() {}
+    } as unknown as typeof IntersectionObserver;
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    document.documentElement.removeAttribute(PROMPT_OPEN_ATTRIBUTE);
+    delete (globalThis as { IntersectionObserver?: unknown }).IntersectionObserver;
+    jest.useRealTimers();
+    jest.restoreAllMocks();
+  });
+
+  const props = (over: Partial<Props> = {}): Props => ({
+    caption: 'The Overview: every repository’s state on one dashboard.',
+    index: 0,
+    onNext: jest.fn(),
+    onHold: jest.fn(),
+    ...over,
+  });
+  const walker = () => screen.queryByRole('button', { name: 'Show the next screenshot' });
+  const said = (text: RegExp | string) => screen.queryByText(text);
+  const dotsInView = () =>
+    act(() =>
+      observers
+        .at(-1)
+        ?.callback(
+          [{ isIntersecting: true } as IntersectionObserverEntry],
+          {} as IntersectionObserver
+        )
+    );
+  const wait = (ms: number) => act(() => jest.advanceTimersByTime(ms));
+
+  it('waits for the dots to come into view, walks in, then points and says what is shown', () => {
+    render(<CarouselGuide {...props()} />);
+    wait(10_000);
+    expect(walker()).toBeNull();
+
+    dotsInView();
+    wait(DELAY_MS + 50);
+    expect(walker()).toBeInTheDocument();
+    expect(said(/The Overview/)).toBeNull();
+
+    wait(WALK_MS);
+    expect(said(/The Overview/)).toBeInTheDocument();
+  });
+
+  it('waits for the newsletter prompt to close before walking in behind it', async () => {
+    // The prompt opens on the same scroll that brings the dots into view.
+    document.documentElement.setAttribute(PROMPT_OPEN_ATTRIBUTE, 'open');
+    render(<CarouselGuide {...props()} />);
+    dotsInView();
+    wait(10_000);
+    expect(walker()).toBeNull();
+
+    // A MutationObserver reports on a microtask, which fake timers do not run.
+    await act(async () => {
+      document.documentElement.removeAttribute(PROMPT_OPEN_ATTRIBUTE);
+    });
+    wait(PROMPT_GONE_MS + 50);
+    expect(walker()).toBeInTheDocument();
+    wait(WALK_MS);
+    expect(said(/The Overview/)).toBeInTheDocument();
+  });
+
+  it('arrives after the delay where nothing can say the dots are in view', () => {
+    delete (globalThis as { IntersectionObserver?: unknown }).IntersectionObserver;
+    render(<CarouselGuide {...props()} />);
+    wait(DELAY_MS + WALK_MS + 50);
+    expect(said(/The Overview/)).toBeInTheDocument();
+  });
+
+  it('names each shot as the carousel turns', () => {
+    const { rerender } = render(<CarouselGuide {...props()} />);
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    rerender(<CarouselGuide {...props({ index: 1, caption: 'Your GitHub account.' })} />);
+    expect(said('Your GitHub account.')).toBeInTheDocument();
+    expect(said(/The Overview/)).toBeNull();
+  });
+
+  it('turns the carousel when the mascot, or what it says, is clicked', () => {
+    const onNext = jest.fn();
+    render(<CarouselGuide {...props({ onNext })} />);
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    fireEvent.click(walker()!);
+    fireEvent.click(screen.getByRole('button', { name: /The Overview/ }));
+    expect(onNext).toHaveBeenCalledTimes(2);
+  });
+
+  it('holds the carousel still while the pointer is on it', () => {
+    const onHold = jest.fn();
+    render(<CarouselGuide {...props({ onHold })} />);
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    const hint = walker()!.parentElement!;
+    fireEvent.mouseEnter(hint);
+    fireEvent.mouseLeave(hint);
+    expect(onHold.mock.calls).toEqual([[true], [false]]);
+  });
+
+  it('leaves when dismissed, lets go of the carousel, and stays gone for the rest of the load', () => {
+    const onHold = jest.fn();
+    const first = render(<CarouselGuide {...props({ onHold })} />);
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    fireEvent.click(screen.getByRole('button', { name: 'Dismiss' }));
+    expect(onHold).toHaveBeenLastCalledWith(false);
+    wait(400);
+    expect(walker()).toBeNull();
+    first.unmount();
+
+    // Off to the docs and back through a link: the home page mounts again.
+    render(<CarouselGuide {...props()} />);
+    dotsInView();
+    wait(10_000);
+    expect(walker()).toBeNull();
+  });
+
+  it('comes back on the way home if it was never dismissed', () => {
+    const first = render(<CarouselGuide {...props()} />);
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    first.unmount();
+
+    render(<CarouselGuide {...props()} />);
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    expect(said(/The Overview/)).toBeInTheDocument();
+  });
+
+  it('stands already pointing, with no walk, for a reader who asked for less motion', () => {
+    jest.spyOn(window, 'matchMedia').mockImplementation(
+      (query: string) =>
+        ({
+          matches: query.includes('prefers-reduced-motion'),
+          media: query,
+          addEventListener: () => undefined,
+          removeEventListener: () => undefined,
+        }) as unknown as MediaQueryList
+    );
+    render(<CarouselGuide {...props()} />);
+    dotsInView();
+    wait(DELAY_MS + 50);
+    expect(said(/The Overview/)).toBeInTheDocument();
+  });
+});

@@ -1,0 +1,270 @@
+/*
+ * The mascot and where it stands: beside the hero carousel's dots, pointing
+ * up at the window. Cross-ported from lancetta.app's `PanelHint.module.css`,
+ * which is where the lane and the one-hop rule come from.
+ */
+
+.sprite {
+  display: block;
+}
+
+/* Two leg frames, alternating while it walks. */
+.stepA {
+  animation: step-a 320ms steps(1) infinite;
+}
+
+.stepB {
+  animation: step-b 320ms steps(1) infinite;
+}
+
+@keyframes step-a {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes step-b {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/*
+ * Laid over the row of dots, and what the arrival watches: the lane below has
+ * no height of its own. It takes no clicks, so the dots under it keep theirs.
+ */
+.anchor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/*
+ * The lane it walks in: as wide as the window, centred on the dots, clipped
+ * SIDEWAYS only. The walk starts half a window right of where it ends, and an
+ * element translated out there widens the page -- measured on lancetta.app at
+ * 1675px of scroll width on a 1440px window, a horizontal scrollbar for the
+ * length of the walk. `clip` on one axis leaves the other visible and makes no
+ * scroll container. (The hero clips its overflow as well; this does not lean
+ * on that.)
+ */
+.lane {
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 50vw);
+  width: 100vw;
+  height: 0;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+/*
+ * It stands just right of the dots, its feet on their line: the sprite is 48px
+ * tall, so its top is 44px above the dots' centre.
+ */
+.hint {
+  position: absolute;
+  top: rem(-44px);
+  left: calc(50% + rem(58px));
+  display: flex;
+  align-items: flex-start;
+  gap: rem(10px);
+  pointer-events: auto;
+  transition: opacity 240ms ease;
+}
+
+.hint[data-phase='leaving'] {
+  opacity: 0;
+}
+
+.walker {
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  /* The icon's sky, as the hero's icon has it: at night a glow separates the
+     navy outline from the ground better than a drop shadow could. */
+  filter: drop-shadow(0 0 6px rgb(125 195 235 / 35%)) drop-shadow(0 3px 4px rgb(0 0 0 / 45%));
+}
+
+.walker:focus-visible {
+  outline: 2px solid var(--fg-sky);
+  outline-offset: 4px;
+}
+
+/*
+ * The walk: in from the right edge of the window, slowing to a stop. `both`
+ * on purpose: this is decoration, and an engine that never runs it should
+ * show nothing rather than a character standing in the middle of the row.
+ */
+.hint[data-phase='walking'] .walker {
+  animation: walk-in 2200ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.hint[data-phase='walking'] .sprite {
+  animation: bob 320ms steps(1) infinite;
+}
+
+/* One hop on arrival and on every new shot, then still. Every effect here ends. */
+.hint[data-phase='pointing'] .sprite {
+  animation: hop 420ms ease-out 1;
+}
+
+@keyframes walk-in {
+  from {
+    transform: translateX(50vw);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(rem(-2px));
+  }
+}
+
+@keyframes hop {
+  40% {
+    transform: translateY(rem(-8px));
+  }
+}
+
+/*
+ * What it says, with its tail towards it. The night's lifted navy with the
+ * sky on its rim, so it reads as a bubble over the hero's wash rather than as
+ * one more glass card.
+ */
+.bubble {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: rem(4px);
+  width: max-content;
+  max-width: min(rem(260px), calc(50vw - rem(160px)));
+  margin-top: rem(-4px);
+  padding: rem(8px) rem(6px) rem(9px) rem(12px);
+  border-radius: rem(12px);
+  background: var(--fg-lift);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--fg-sky) 38%, transparent),
+    0 12px 28px -10px rgb(0 0 0 / 55%);
+  animation: pop 220ms ease-out both;
+}
+
+.bubble::before {
+  position: absolute;
+  top: rem(14px);
+  left: rem(-5px);
+  width: rem(10px);
+  height: rem(10px);
+  border-bottom: 1px solid color-mix(in srgb, var(--fg-sky) 38%, transparent);
+  border-left: 1px solid color-mix(in srgb, var(--fg-sky) 38%, transparent);
+  background: var(--fg-lift);
+  content: '';
+  transform: rotate(45deg);
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateX(rem(-6px)) scale(0.96);
+  }
+}
+
+.say {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: rem(2px);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--mantine-color-white);
+  font: inherit;
+  font-size: rem(13px);
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* Keyed on the shot, so each new caption fades in rather than swapping. */
+.caption {
+  animation: speak 260ms ease-out both;
+}
+
+@keyframes speak {
+  from {
+    opacity: 0;
+    transform: translateY(rem(3px));
+  }
+}
+
+.next {
+  color: var(--fg-sky);
+  font-size: rem(12px);
+  font-weight: 600;
+}
+
+.say:hover .next {
+  text-decoration: underline;
+}
+
+.say:focus-visible,
+.dismiss:focus-visible {
+  outline: 2px solid var(--fg-sky);
+  outline-offset: 2px;
+  border-radius: rem(4px);
+}
+
+.dismiss {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: rem(20px);
+  height: rem(20px);
+  padding: 0;
+  border: 0;
+  border-radius: rem(6px);
+  background: none;
+  color: rgb(255 255 255 / 60%);
+  cursor: pointer;
+}
+
+.dismiss:hover {
+  background: rgb(255 255 255 / 8%);
+  color: var(--mantine-color-white);
+}
+
+/*
+ * Not on a phone or a narrow tablet. Right of the dots there has to be room
+ * for the mascot and a bubble that says something, and below 48em there is
+ * not; the carousel still turns and its dots still work, it simply is not
+ * narrated.
+ */
+@media (max-width: $mantine-breakpoint-sm) {
+  .hint {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hint,
+  .bubble,
+  .caption,
+  .hint[data-phase] .walker,
+  .hint[data-phase] .sprite,
+  .stepA,
+  .stepB {
+    transition: none;
+    animation: none;
+  }
+}
