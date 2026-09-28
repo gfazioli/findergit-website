@@ -14,6 +14,8 @@ import {
   ThemeIcon,
   Title,
 } from '@mantine/core';
+import { Reveal, revealItem, revealScope } from '@/components/Motion/Reveal';
+import { useReveal } from '@/components/Motion/useReveal';
 
 // Static example output the model produces with the default Long+Emoji+
 // Conventional config. Picked for variety (deps bump → likely
@@ -26,6 +28,11 @@ const exampleBody = [
 ];
 
 export function AICommitSection() {
+  // The list is one reveal, its points rising one after another. Mantine types
+  // the list's ref as both kinds of list, since `type` picks <ul> or <ol>.
+  const points = useReveal<HTMLUListElement & HTMLOListElement>();
+  const point = (i: number) => revealItem('rise', i * 110);
+
   return (
     <Box
       pos="relative"
@@ -43,26 +50,30 @@ export function AICommitSection() {
       }}
     >
       <Container size="lg" pos="relative" style={{ zIndex: 1 }}>
-        <Stack align="center" gap="md" mb={56}>
-          <Group gap={8}>
-            <IconSparkles size={18} color="var(--fg-sky)" />
-            <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
-              AI
+        <Reveal variant="rise">
+          <Stack align="center" gap="md" mb={56}>
+            <Group gap={8}>
+              <IconSparkles size={18} color="var(--fg-sky)" />
+              <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
+                AI
+              </Text>
+            </Group>
+            <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
+              Commit messages, written for you
+            </Title>
+            <Text c="dimmed" ta="center" size="lg" maw={620}>
+              Click the ✨ AI button next to the commit field — get a properly-formatted message
+              from your staged diff in about a second. No setup, no API key, free for everyone.
             </Text>
-          </Group>
-          <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
-            Commit messages, written for you
-          </Title>
-          <Text c="dimmed" ta="center" size="lg" maw={620}>
-            Click the ✨ AI button next to the commit field — get a properly-formatted message from
-            your staged diff in about a second. No setup, no API key, free for everyone.
-          </Text>
-        </Stack>
+          </Stack>
+        </Reveal>
 
         <SimpleGrid cols={{ base: 1, md: 2 }} spacing={48} mt={32}>
           {/* Left column — copy + bullets + CTA */}
           <Stack gap="lg" justify="center">
             <List
+              ref={points.ref}
+              {...revealScope(points)}
               spacing="sm"
               size="md"
               icon={
@@ -71,7 +82,7 @@ export function AICommitSection() {
                 </ThemeIcon>
               }
             >
-              <List.Item>
+              <List.Item {...point(0)}>
                 <Text fw={600} component="span">
                   One click, properly formatted
                 </Text>
@@ -80,7 +91,7 @@ export function AICommitSection() {
                   presets — pick a default that fits your team.
                 </Text>
               </List.Item>
-              <List.Item>
+              <List.Item {...point(1)}>
                 <Text fw={600} component="span">
                   Bullet-list bodies that read well
                 </Text>
@@ -89,7 +100,7 @@ export function AICommitSection() {
                   bullets each describing one change and its motivation.
                 </Text>
               </List.Item>
-              <List.Item>
+              <List.Item {...point(2)}>
                 <Text fw={600} component="span">
                   Custom Instructions for your house style
                 </Text>
@@ -98,7 +109,7 @@ export function AICommitSection() {
                   reference an issue number, sign with your initials.
                 </Text>
               </List.Item>
-              <List.Item>
+              <List.Item {...point(3)}>
                 <Text fw={600} component="span">
                   Privacy-first
                 </Text>
@@ -122,8 +133,9 @@ export function AICommitSection() {
             </Group>
           </Stack>
 
-          {/* Right column — mock commit panel */}
-          <Box>
+          {/* Right column — mock commit panel. It lands as a card; then the
+              AI button pops and the message it wrote rises line by line. */}
+          <Reveal delay={120} radius="var(--mantine-radius-lg)">
             <Paper
               radius="lg"
               bg="var(--mantine-color-dark-7)"
@@ -157,6 +169,7 @@ export function AICommitSection() {
                     Commit
                   </Text>
                   <Button
+                    {...revealItem('pop', 520)}
                     size="compact-sm"
                     variant="light"
                     color="grape"
@@ -174,12 +187,19 @@ export function AICommitSection() {
                   style={{ border: '1px solid var(--mantine-color-grape-7)' }}
                 >
                   <Stack gap={4}>
-                    <Text c="white" ff="monospace" size="sm" fw={600}>
+                    <Text {...revealItem('rise', 760)} c="white" ff="monospace" size="sm" fw={600}>
                       {exampleSubject}
                     </Text>
                     <Box h={6} />
-                    {exampleBody.map((line) => (
-                      <Text key={line} c="gray.4" ff="monospace" size="sm" lh={1.5}>
+                    {exampleBody.map((line, i) => (
+                      <Text
+                        key={line}
+                        {...revealItem('rise', 900 + i * 140)}
+                        c="gray.4"
+                        ff="monospace"
+                        size="sm"
+                        lh={1.5}
+                      >
                         - {line}
                       </Text>
                     ))}
@@ -197,7 +217,7 @@ export function AICommitSection() {
                 </Group>
               </Box>
             </Paper>
-          </Box>
+          </Reveal>
         </SimpleGrid>
       </Container>
     </Box>

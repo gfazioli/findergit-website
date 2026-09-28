@@ -13,6 +13,7 @@ import {
   ThemeIcon,
   Title,
 } from '@mantine/core';
+import { Reveal } from '@/components/Motion/Reveal';
 import classes from './ProblemSection.module.css';
 
 // Icon colours pick a vivid, distinct hue per tool so each card has a
@@ -56,96 +57,109 @@ export function ProblemSection() {
   return (
     <Box py={80}>
       <Container size="lg">
-        <Stack align="center" gap="md" mb={48}>
-          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
-            The Problem
-          </Text>
-          <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
-            Managing multiple Git repos shouldn&apos;t require juggling tools
-          </Title>
-        </Stack>
+        <Reveal variant="rise">
+          <Stack align="center" gap="md" mb={48}>
+            <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
+              The Problem
+            </Text>
+            <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900}>
+              Managing multiple Git repos shouldn&apos;t require juggling tools
+            </Title>
+          </Stack>
+        </Reveal>
 
         <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="lg">
-          {problems.map((item) => (
-            <Paper
-              key={item.title}
-              p="lg"
-              className={classes.problemCard}
-              // Per-card accent: resolve the card's Mantine palette hex into the
-              // --card-color CSS var the card's tint/border/glow read.
-              style={{ '--card-color': `var(--mantine-color-${item.color}-5)` } as CSSProperties}
-            >
-              <Stack gap={10} align="flex-start">
-                <ThemeIcon
-                  size={48}
-                  radius="md"
-                  color={item.color}
-                  variant="light"
-                  className={classes.problemIcon}
-                >
-                  <item.icon size={26} />
-                </ThemeIcon>
-                <Text fw={700} fz={18}>
-                  {item.title}
-                </Text>
-                <Text c="dimmed" fz={14} lh={1.55}>
-                  {item.description}
-                  <Text component="span" c="red" fw={600} fz={14} td="underline">
-                    {item.highlight}
+          {problems.map((item, i) => (
+            // Wrapped rather than given the reveal props: the card lifts on
+            // hover with a transform of its own, and two transforms on one
+            // element fight. The wrapper is the grid cell now, so the card
+            // takes its full height to keep the row's cards level.
+            <Reveal key={item.title} delay={i * 120} radius={16}>
+              <Paper
+                p="lg"
+                h="100%"
+                className={classes.problemCard}
+                // Per-card accent: resolve the card's Mantine palette hex into the
+                // --card-color CSS var the card's tint/border/glow read.
+                style={{ '--card-color': `var(--mantine-color-${item.color}-5)` } as CSSProperties}
+              >
+                <Stack gap={10} align="flex-start">
+                  <ThemeIcon
+                    size={48}
+                    radius="md"
+                    color={item.color}
+                    variant="light"
+                    className={classes.problemIcon}
+                  >
+                    <item.icon size={26} />
+                  </ThemeIcon>
+                  <Text fw={700} fz={18}>
+                    {item.title}
                   </Text>
-                  {item.rest}
-                </Text>
-              </Stack>
-            </Paper>
+                  <Text c="dimmed" fz={14} lh={1.55}>
+                    {item.description}
+                    <Text component="span" c="red" fw={600} fz={14} td="underline">
+                      {item.highlight}
+                    </Text>
+                    {item.rest}
+                  </Text>
+                </Stack>
+              </Paper>
+            </Reveal>
           ))}
         </SimpleGrid>
 
         {/* The standard Finder — the "before": the same folders, just names and
             no Git state. Sets up the Solution's lit-up window right below. */}
         <Stack align="center" gap="sm" mt={56}>
-          <Paper
-            radius="lg"
-            bg="var(--mantine-color-dark-7)"
-            maw={680}
-            w="100%"
-            style={{ overflow: 'hidden', border: '1px solid var(--mantine-color-dark-5)' }}
-          >
-            <Group
-              px="md"
-              py="sm"
-              bg="var(--mantine-color-dark-6)"
-              style={{ borderBottom: '1px solid var(--mantine-color-dark-5)' }}
+          <Reveal radius="var(--mantine-radius-lg)" style={{ width: '100%', maxWidth: 680 }}>
+            <Paper
+              radius="lg"
+              bg="var(--mantine-color-dark-7)"
+              w="100%"
+              style={{ overflow: 'hidden', border: '1px solid var(--mantine-color-dark-5)' }}
             >
-              <Group gap={8}>
-                <Box w={12} h={12} style={{ borderRadius: '50%', backgroundColor: '#ff5f57' }} />
-                <Box w={12} h={12} style={{ borderRadius: '50%', backgroundColor: '#febc2e' }} />
-                <Box w={12} h={12} style={{ borderRadius: '50%', backgroundColor: '#28c840' }} />
-              </Group>
-              <Text size="sm" c="dimmed" style={{ fontFamily: 'monospace' }}>
-                Finder — ~/Developer
-              </Text>
-            </Group>
-            <Stack gap={0} px="lg" py="md">
-              {finderRepos.map((name) => (
-                <Group
-                  key={name}
-                  gap="sm"
-                  wrap="nowrap"
-                  py="sm"
-                  style={{ borderBottom: '1px solid var(--mantine-color-dark-6)' }}
-                >
-                  <IconFolder size={18} color="var(--mantine-color-dark-2)" />
-                  <Text size="sm" c="gray.5" style={{ fontFamily: 'monospace' }}>
-                    {name}
-                  </Text>
+              <Group
+                px="md"
+                py="sm"
+                bg="var(--mantine-color-dark-6)"
+                style={{ borderBottom: '1px solid var(--mantine-color-dark-5)' }}
+              >
+                <Group gap={8}>
+                  <Box w={12} h={12} style={{ borderRadius: '50%', backgroundColor: '#ff5f57' }} />
+                  <Box w={12} h={12} style={{ borderRadius: '50%', backgroundColor: '#febc2e' }} />
+                  <Box w={12} h={12} style={{ borderRadius: '50%', backgroundColor: '#28c840' }} />
                 </Group>
-              ))}
-            </Stack>
-          </Paper>
-          <Text c="dimmed" fz="sm" ta="center" maw={520}>
-            Your ~/Developer in Finder today: just folders &mdash; no branch, no status, no idea
-            which repo needs you.
-          </Text>
+                <Text size="sm" c="dimmed" style={{ fontFamily: 'monospace' }}>
+                  Finder — ~/Developer
+                </Text>
+              </Group>
+              <Stack gap={0} px="lg" py="md">
+                {finderRepos.map((name) => (
+                  <Group
+                    key={name}
+                    gap="sm"
+                    wrap="nowrap"
+                    py="sm"
+                    style={{ borderBottom: '1px solid var(--mantine-color-dark-6)' }}
+                  >
+                    <IconFolder size={18} color="var(--mantine-color-dark-2)" />
+                    <Text size="sm" c="gray.5" style={{ fontFamily: 'monospace' }}>
+                      {name}
+                    </Text>
+                  </Group>
+                ))}
+              </Stack>
+            </Paper>
+          </Reveal>
+          {/* The measure is on the wrapper: a centred flex item shrinks to its
+              content, and a narrower paragraph inside it would sit at its left. */}
+          <Reveal variant="rise" delay={200} style={{ maxWidth: 520 }}>
+            <Text c="dimmed" fz="sm" ta="center">
+              Your ~/Developer in Finder today: just folders &mdash; no branch, no status, no idea
+              which repo needs you.
+            </Text>
+          </Reveal>
         </Stack>
       </Container>
     </Box>
