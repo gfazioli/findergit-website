@@ -182,17 +182,28 @@ describe('CarouselGuide', () => {
     expect(onHold).toHaveBeenLastCalledWith(false);
   });
 
-  it('does not hold it for the focus a mouse click leaves behind', () => {
-    // Chrome focuses a button on a click, and a click is how the mascot is used
-    // most. That focus is not `:focus-visible`, which jsdom cannot produce by
-    // itself: every focus there is visible, so the selector is answered here.
+  /** Answer `:focus-visible` as a mouse focus would (`false`), or as an engine without it. */
+  const focusVisible = (answer: false | 'unknown') => {
     const matches = Element.prototype.matches;
     jest.spyOn(Element.prototype, 'matches').mockImplementation(function (
       this: Element,
       selector: string
     ) {
-      return selector === ':focus-visible' ? false : matches.call(this, selector);
+      if (selector !== ':focus-visible') {
+        return matches.call(this, selector);
+      }
+      if (answer === 'unknown') {
+        throw new SyntaxError(`'${selector}' is not a valid selector`);
+      }
+      return answer;
     });
+  };
+
+  it('does not hold it for the focus a mouse click leaves behind', () => {
+    // Chrome focuses a button on a click, and a click is how the mascot is used
+    // most. That focus is not `:focus-visible`, which jsdom cannot produce by
+    // itself: every focus there is visible, so the selector is answered here.
+    focusVisible(false);
     const onHold = jest.fn();
     render(<CarouselGuide {...props({ onHold })} />);
     dotsInView();
@@ -203,6 +214,48 @@ describe('CarouselGuide', () => {
     fireEvent.click(walker()!);
     fireEvent.mouseLeave(hint);
     expect(onHold).toHaveBeenLastCalledWith(false);
+  });
+
+  it('lets go of a Tab’s hold when a mouse click moves the focus on', () => {
+    const onHold = jest.fn();
+    render(<CarouselGuide {...props({ onHold })} />);
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    const hint = walker()!.parentElement!;
+    act(() => walker()!.focus());
+    expect(onHold).toHaveBeenLastCalledWith(true);
+    // Then the mouse: onto the mascot, a click on "Next" (focused, not
+    // visibly), and away.
+    focusVisible(false);
+    fireEvent.mouseEnter(hint);
+    act(() => screen.getByRole('button', { name: /Next$/ }).focus());
+    fireEvent.mouseLeave(hint);
+    expect(onHold).toHaveBeenLastCalledWith(false);
+  });
+
+  it('holds once a key is pressed after a click, with no new focus', () => {
+    focusVisible(false);
+    const onHold = jest.fn();
+    render(<CarouselGuide {...props({ onHold })} />);
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    const hint = walker()!.parentElement!;
+    fireEvent.mouseEnter(hint);
+    act(() => walker()!.focus());
+    fireEvent.mouseLeave(hint);
+    expect(onHold).toHaveBeenLastCalledWith(false);
+    fireEvent.keyDown(walker()!, { key: 'Shift' });
+    expect(onHold).toHaveBeenLastCalledWith(true);
+  });
+
+  it('holds on any focus where the engine does not know :focus-visible', () => {
+    focusVisible('unknown');
+    const onHold = jest.fn();
+    render(<CarouselGuide {...props({ onHold })} />);
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    act(() => walker()!.focus());
+    expect(onHold).toHaveBeenLastCalledWith(true);
   });
 
   it('never leaves the carousel held by a pointer that arrived as it was leaving', () => {

@@ -201,16 +201,25 @@ export function CarouselGuide({ caption, index, onNext, onHold }: CarouselGuideP
   // Only the KEYBOARD's focus holds. Chrome also focuses a button on a mouse
   // click, and a click is how the mascot is used most: that hold outlived the
   // pointer and froze the carousel until something else took the focus (review
-  // of #75, round 2). `:focus-visible` is the browser's own word on which it is.
+  // of #75, round 2). `:focus-visible` is the browser's own word on which it is,
+  // and every focus event decides afresh: a click after a Tab moves the focus
+  // without making it visible, and has to let go of the Tab's hold (round 3).
   const focusArrived = (event: FocusEvent<HTMLDivElement>) => {
     let keyboard = true;
     try {
       keyboard = (event.target as Element).matches(':focus-visible');
     } catch {
-      // An engine without the selector: Safari before 15.4, which does not
-      // focus a button on a click anyway.
+      // An engine without the selector (Safari before 15.4, Chrome before 86)
+      // holds on any focus, as this did before round 2.
     }
-    if (keyboard) {
+    hold.current.focus = keyboard;
+    report();
+  };
+
+  // A key pressed after a click turns the focus ring on with no new focus
+  // event, so the keyboard being used in here holds as well.
+  const keyPressed = () => {
+    if (!hold.current.focus) {
       hold.current.focus = true;
       report();
     }
@@ -241,6 +250,7 @@ export function CarouselGuide({ caption, index, onNext, onHold }: CarouselGuideP
             }}
             onFocus={focusArrived}
             onBlur={focusLeft}
+            onKeyDown={keyPressed}
           >
             <button
               type="button"
