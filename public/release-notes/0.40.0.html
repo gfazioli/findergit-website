@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.40.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.40.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.40.0 — dashboards that arrive, pull to refresh, and a What's New that gets out of the way</p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>The cards on the Overview and the Account arrive rather than simply appear.</strong> Each lands just after the one before, its figures roll up from zero and the health ring fills. A refresh you ask for — the toolbar, ⌘R, the header's button or a pull — presses every card and rolls the figures again, so you can watch them being measured, while an update in the background moves them in place. With Reduce Motion on, nothing moves.</li>
+<li><strong>On macOS 26 and later the cards are made of glass</strong>, rounder and with no line drawn around them, over soft light in the colors of the app's icon. The color sits under the glass rather than in it, so a card keeps it when the window is not in front. On macOS 15 they keep their gradient, and are rounder too.</li>
+<li><strong>On macOS 27, pull the Overview or the Account down to refresh it, as in Mail.</strong> It is the same Refresh as the toolbar button and ⌘R: the spinner turns for a moment and then lets the page go, while the work carries on. The Account's header now carries the same <strong>Clone from GitHub…</strong> and refresh buttons as the Overview's.</li>
+<li><strong>After an update, a small card in the corner says which version has arrived</strong>, and <strong>Learn More…</strong> opens its notes in the Release Notes window. The notes used to fill a panel in that corner, which a long release could push past the top of the window. Help → Release Notes… still has every release, so the menu item that reopened the panel has gone.</li>
+<li><strong>The Release Notes window shows each release with a preview of its first change</strong>, marks the one you are running as <strong>Installed</strong>, and sets the notes at reading size. Back and Forward (⌘[ and ⌘]) retrace the releases you looked at, as in System Settings.</li>
+</ul>
+<h2>Bug fixes</h2>
+<ul>
+<li><strong>A release's unread dot goes when you open it.</strong> The Release Notes window measured its dots against a mark taken when it opened, so a dot stayed for as long as the window was up, and every dot went at the next opening, read or not. A release is now read the moment its row is selected, and what the old window showed as read stays read.</li>
+</ul>
+<h2>Under the hood</h2>
+<p>The pull is a trigger rather than a hold: it runs the global Refresh in a task of its own and lets go after two seconds at most, or sooner when the work is done. On the Overview it holds on a pending flag raised before your root folders are rescanned, which comes before any repository is read again, and only the pass the refresh asked for clears it.</p>
+<p>Text on the cards uses explicit ink levels, because default label colors turn vibrant on glass and lose contrast; by day the rim light is the icon's blue rather than white. The Overview's panels, which a drag re-creates when it reorders them, show at rest rather than landing again.</p>
+<p>The window's unread state is a baseline plus the releases read one by one. The baseline has a key of its own, seeded once at launch from the later of the two marks the previous window read, so nothing it showed as read turns unread again, and a fresh install starts counting from the release it installed. The window lists only the releases the running build is or predates.</p>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.40.0.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel). Pull to refresh needs macOS 27, and the glass cards macOS 26.</p>
+</body>
+</html>
