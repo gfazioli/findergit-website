@@ -55,7 +55,7 @@ import { SolutionSection } from '../SolutionSection/SolutionSection';
 import { DiffViewerSection } from '../DiffViewerSection/DiffViewerSection';
 import { AICommitSection } from '../AICommitSection/AICommitSection';
 import { BuiltForMacSection } from '../BuiltForMacSection/BuiltForMacSection';
-import { Reveal, revealItem, revealScope } from '@/components/Motion/Reveal';
+import { Reveal, revealItem, revealScope, type RevealVariant } from '@/components/Motion/Reveal';
 import { useReveal } from '@/components/Motion/useReveal';
 import { CarouselGuide } from '@/components/Mascot/CarouselGuide';
 import { isRecent } from './recent';
@@ -132,11 +132,18 @@ function FeatureRow({
   // read the small text without us blowing up the image inline.
   const imageCol = <ZoomableScreenshot src={image} alt={imageAlt} />;
 
-  // The row is one reveal: the screenshot comes in from the side it sits on at
-  // desktop width, the copy rises a beat later.
-  const reveal = useReveal<HTMLDivElement>();
-  const shot = revealItem(reverse ? 'right' : 'left');
-  const copy = revealItem('rise', 160);
+  // Each column is a reveal of its own, as lancetta.app's hero frames are: the
+  // screenshot comes in from the side it sits on, the copy rises. When the row
+  // was one reveal, a phone (one column there, the copy under the screenshot)
+  // fired it with the copy 218-228px below the fold, scrolling at 750px/s, so
+  // the copy began to rise before it was on screen; at 1440x900 it was 6-45px
+  // below.
+  // Side by side the screenshot is the taller column, so it still goes first,
+  // and the copy's 160 ms keeps it a beat behind.
+  const shotReveal = useReveal<HTMLDivElement>();
+  const copyReveal = useReveal<HTMLDivElement>();
+  const shot = ownReveal(shotReveal, reverse ? 'right' : 'left');
+  const copy = ownReveal(copyReveal, 'rise', 160);
 
   // 7/5 split: the screenshot gets the dominant side (~58% of the row)
   // so detail like file names, branch labels and diff lines actually
@@ -145,26 +152,46 @@ function FeatureRow({
   // `Grid.Col.order` lets us alternate desktop side without breaking the
   // mobile reading order — image always stays on top in the stacked view.
   return (
-    <Grid ref={reveal.ref} {...revealScope(reveal)} gap={{ base: 32, md: 56 }} align="center">
+    <Grid gap={{ base: 32, md: 56 }} align="center">
       <Grid.Col
+        ref={shotReveal.ref}
         span={{ base: 12, md: 7 }}
         order={{ base: 1, md: reverse ? 2 : 1 }}
-        className={shot.className}
-        data-reveal={shot['data-reveal']}
+        {...shot}
       >
         {imageCol}
       </Grid.Col>
       <Grid.Col
+        ref={copyReveal.ref}
         span={{ base: 12, md: 5 }}
         order={{ base: 2, md: reverse ? 1 : 2 }}
-        className={copy.className}
-        data-reveal={copy['data-reveal']}
-        style={copy.style}
+        {...copy}
       >
         {copyCol}
       </Grid.Col>
     </Grid>
   );
+}
+
+/**
+ * The props that make an element its own scope and its own item, as `Reveal`
+ * does with a wrapper: for a component that takes them itself, like a
+ * `Grid.Col`, where a wrapper div would be one more box in the layout.
+ */
+function ownReveal(
+  reveal: { armed: boolean; revealed: boolean },
+  variant: RevealVariant,
+  delay = 0
+) {
+  const scope = revealScope(reveal);
+  const item = revealItem(variant, delay);
+  return {
+    className: `${scope.className} ${item.className}`,
+    'data-armed': scope['data-armed'],
+    'data-revealed': scope['data-revealed'],
+    'data-reveal': item['data-reveal'],
+    style: item.style,
+  };
 }
 
 /**
