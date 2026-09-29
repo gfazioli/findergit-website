@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { readdirSync, statSync } from 'node:fs';
+import { readdirSync } from 'node:fs';
 import path from 'node:path';
 import config from '@/config';
 
@@ -7,8 +7,14 @@ import config from '@/config';
  * Build-time sitemap. Enumerates the MDX pages under `content/` (served by
  * Nextra at `/docs/...`) plus the homepage, so crawlers get the full URL set
  * — there was no sitemap before, which left discovery entirely to internal
- * linking. `lastModified` comes from each file's mtime so re-crawls are
- * scoped to pages that actually changed.
+ * linking.
+ *
+ * No `lastModified`, on any URL. It used to be each file's mtime, and on
+ * Vercel that is the moment the build cloned the repository: all 18 docs
+ * pages carried the same date, which moved on every deploy whether or not a
+ * page had changed (2026-09-29 audit). A date that is always "now" is a
+ * signal crawlers learn to ignore; none at all is the honest one, as the
+ * homepage already had.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = config.metadata.metadataBase.toString().replace(/\/$/, '');
@@ -19,19 +25,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .map((file) => {
       const slug = file.replace(/\.mdx$/, '');
       const url = slug === 'index' ? `${base}/docs` : `${base}/docs/${slug}`;
-      let lastModified = new Date();
-      try {
-        lastModified = statSync(path.join(contentDir, file)).mtime;
-      } catch {
-        // Fall back to build time if the stat fails.
-      }
       // The docs landing and the release notes are the liveliest pages.
       const priority = slug === 'index' || slug === 'release-notes' ? 0.9 : 0.8;
-      return { url, lastModified, changeFrequency: 'weekly', priority };
+      return { url, changeFrequency: 'weekly', priority };
     });
 
-  // No `lastModified` on the homepage: there's no single content file to
-  // stat, and a build-time `new Date()` would report it as changed on every
-  // deploy, nudging needless recrawls. Omitting it is the honest signal.
   return [{ url: `${base}/`, changeFrequency: 'weekly', priority: 1 }, ...docs];
 }
