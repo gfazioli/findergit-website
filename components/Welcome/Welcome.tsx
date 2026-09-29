@@ -341,6 +341,15 @@ function HeroCarousel({ shots }: { shots: HeroShot[] }) {
   const [paused, setPaused] = useState(false);
   const [held, setHeld] = useState(false);
   const [zoomed, setZoomed] = useState(false);
+  // How far into the stack the images exist: the shot on screen and the next
+  // one. The others are hidden at load and used to be downloaded anyway, about
+  // 600 KB a visitor who leaves in five seconds never sees (2026-09-29 audit);
+  // now each arrives one turn before its own, and a dot that jumps ahead makes
+  // its shot at once.
+  const [warm, setWarm] = useState(1);
+  useEffect(() => {
+    setWarm((w) => Math.max(w, index + 1));
+  }, [index]);
 
   // A timeout keyed on the shot rather than an interval: every change of shot,
   // by the timer, a dot or the mascot, gets its full five seconds. An interval
@@ -370,29 +379,31 @@ function HeroCarousel({ shots }: { shots: HeroShot[] }) {
         style={{ display: 'block', width: '100%', cursor: 'zoom-in' }}
       >
         <Box pos="relative" style={{ width: '100%', aspectRatio: '2000 / 1282' }}>
-          {shots.map((shot, i) => (
-            <Image
-              key={shot.src}
-              src={shot.src}
-              alt={shot.alt}
-              // Only the first is on screen at load; the three behind it wait
-              // their turn five seconds apart and must not compete with it.
-              fetchPriority={i === 0 ? 'high' : 'low'}
-              decoding="async"
-              aria-hidden={i !== index}
-              style={{
-                position: 'absolute',
-                inset: 0,
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain',
-                opacity: i === index ? 1 : 0,
-                transition: 'opacity 800ms ease',
-                pointerEvents: 'none',
-                filter: 'drop-shadow(0 30px 60px rgba(0, 0, 0, 0.7))',
-              }}
-            />
-          ))}
+          {shots.map((shot, i) =>
+            i > warm ? null : (
+              <Image
+                key={shot.src}
+                src={shot.src}
+                alt={shot.alt}
+                // Only the first is on screen at load; the next one, made a turn
+                // ahead (`warm`), must not compete with it.
+                fetchPriority={i === 0 ? 'high' : 'low'}
+                decoding="async"
+                aria-hidden={i !== index}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  opacity: i === index ? 1 : 0,
+                  transition: 'opacity 800ms ease',
+                  pointerEvents: 'none',
+                  filter: 'drop-shadow(0 30px 60px rgba(0, 0, 0, 0.7))',
+                }}
+              />
+            )
+          )}
         </Box>
       </UnstyledButton>
 
