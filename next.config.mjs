@@ -6,7 +6,7 @@ const withBundleAnalyzer = bundleAnalyzer({
 });
 
 const withNextra = nextra({
-  latex: true,
+  // No `latex`: nothing on the site is math, and it shipped KaTeX to every page.
   search: {
     codeblocks: false
   },
