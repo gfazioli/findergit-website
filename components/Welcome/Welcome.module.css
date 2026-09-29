@@ -147,6 +147,9 @@
   transform: rotate(8deg);
   transform-origin: center;
   animation: new-badge-pulse 2.4s ease-in-out infinite;
+  /* Mantine's Badge clips its root, which would clip the two layers below:
+     their light is all outside the badge. The label clips its own text. */
+  overflow: visible;
 }
 
 /*
@@ -173,7 +176,7 @@
 }
 
 .newBadge::after {
-  box-shadow: 0 0 0 rem(3px) color-mix(in srgb, var(--mantine-color-pink-5) 45%, transparent);
+  box-shadow: 0 0 0 rem(4px) color-mix(in srgb, var(--mantine-color-pink-5) 40%, transparent);
   animation: new-badge-ping 2.4s ease-out infinite;
 }
 
@@ -199,20 +202,22 @@
   }
 }
 
+/* A halo hugging the badge that swells and fades, as the spread shadow did:
+   barely scaled, so no gap opens between the badge and its light. */
 @keyframes new-badge-ping {
   0% {
     opacity: 0;
     transform: scale(1);
   }
 
-  20% {
+  25% {
     opacity: 1;
   }
 
   55%,
   100% {
     opacity: 0;
-    transform: scale(1.18, 1.35);
+    transform: scale(1.05);
   }
 }
 
