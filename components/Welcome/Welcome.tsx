@@ -1,6 +1,7 @@
 'use client';
 
 import { type CSSProperties, useEffect, useState } from 'react';
+import NextImage from 'next/image';
 import Link from 'next/link';
 import { TextAnimate } from '@gfazioli/mantine-text-animate';
 import {
@@ -41,6 +42,7 @@ import {
   Title,
   Badge,
   Center,
+  VisuallyHidden,
 } from '@mantine/core';
 import config from '@/config';
 import { ShareButtons } from '@/components/ShareButtons/ShareButtons';
@@ -115,9 +117,11 @@ function FeatureRow({
           w="fit-content"
           px={0}
           c="white"
-          aria-label={`Learn more about ${title}`}
         >
-          Learn more
+          {/* The words a crawler and the link-text audit read are the link's */}
+          {/* own: an aria-label is invisible to both, and six "Learn more"   */}
+          {/* links failed the audit (2026-09-29).                              */}
+          Learn more<VisuallyHidden> about {title}</VisuallyHidden>
         </Button>
       )}
     </Stack>
@@ -292,10 +296,19 @@ function ZoomableScreenshot({
         aria-label={`Open enlarged screenshot: ${alt}`}
         style={{ display: 'block', width: '100%', cursor: 'zoom-in' }}
       >
+        {/* Every one of these is below the fold. Without `loading="lazy"`   */}
+        {/* React preloads each <img> at the top of the document, and these   */}
+        {/* 2000px PNGs competed with the hero for the first second on a phone */}
+        {/* (Lighthouse mobile LCP 5.9 s, 2026-09-29). The dimensions hold the */}
+        {/* place while it loads, so arriving late moves nothing.             */}
         <Image
           src={src}
           alt={alt}
           display="block"
+          loading="lazy"
+          decoding="async"
+          width={2000}
+          height={1282}
           style={{
             width: '100%',
             height: 'auto',
@@ -362,6 +375,10 @@ function HeroCarousel({ shots }: { shots: HeroShot[] }) {
               key={shot.src}
               src={shot.src}
               alt={shot.alt}
+              // Only the first is on screen at load; the three behind it wait
+              // their turn five seconds apart and must not compete with it.
+              fetchPriority={i === 0 ? 'high' : 'low'}
+              decoding="async"
               aria-hidden={i !== index}
               style={{
                 position: 'absolute',
@@ -618,9 +635,20 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
               Free for macOS 15+
             </Badge>
 
+            {/* Through next/image, which serves it as WebP at the size it is  */}
+            {/* drawn: the 512px PNG was 271 KB, the largest paint on a phone, */}
+            {/* and so the page's LCP (2026-09-29). Eager and high priority:   */}
+            {/* next/image is lazy by default, and `priority` is deprecated in */}
+            {/* Next 16 in favour of exactly these two.                         */}
             <Image
+              component={NextImage}
               src="/icon-512x512.png"
               alt="FinderGit"
+              width={512}
+              height={512}
+              loading="eager"
+              fetchPriority="high"
+              sizes="(max-width: 48em) 112px, (max-width: 62em) 144px, 168px"
               w={{ base: 112, sm: 144, md: 168 }}
               h={{ base: 112, sm: 144, md: 168 }}
               style={{
@@ -824,6 +852,8 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
                       <Image
                         src={feature.image}
                         alt=""
+                        loading="lazy"
+                        decoding="async"
                         w={48}
                         h={48}
                         radius="md"
