@@ -143,34 +143,85 @@
     var(--mantine-color-pink-5) 55%,
     var(--mantine-color-orange-5) 100%
   );
+  box-shadow: 0 4px 14px -2px color-mix(in srgb, var(--mantine-color-red-6) 60%, transparent);
   transform: rotate(8deg);
   transform-origin: center;
   animation: new-badge-pulse 2.4s ease-in-out infinite;
-  will-change: transform, box-shadow;
+}
+
+/*
+ * The glow's swell and the ping are layers of their own, faded and scaled,
+ * rather than box-shadows animated on the badge: transform and opacity run on
+ * the compositor, and the animated shadows repainted both badges sixty times a
+ * second for as long as the page was open (see ReleaseCadence.module.css for
+ * the measurement). No `will-change`: a running transform animation is
+ * promoted on its own, and a permanent hint only held the layers forever.
+ */
+.newBadge::before,
+.newBadge::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  content: '';
+  opacity: 0;
+}
+
+.newBadge::before {
+  box-shadow: 0 7px 20px -2px color-mix(in srgb, var(--mantine-color-red-6) 78%, transparent);
+  animation: new-badge-glow 2.4s ease-in-out infinite;
+}
+
+.newBadge::after {
+  box-shadow: 0 0 0 rem(3px) color-mix(in srgb, var(--mantine-color-pink-5) 45%, transparent);
+  animation: new-badge-ping 2.4s ease-out infinite;
 }
 
 @keyframes new-badge-pulse {
   0%,
   100% {
     transform: rotate(8deg) scale(1);
-    box-shadow:
-      0 4px 14px -2px color-mix(in srgb, var(--mantine-color-red-6) 60%, transparent),
-      0 0 0 0 color-mix(in srgb, var(--mantine-color-pink-5) 55%, transparent);
   }
 
   50% {
     transform: rotate(8deg) scale(1.09);
-    box-shadow:
-      0 7px 20px -2px color-mix(in srgb, var(--mantine-color-red-6) 78%, transparent),
-      0 0 0 7px color-mix(in srgb, var(--mantine-color-pink-5) 0%, transparent);
+  }
+}
+
+@keyframes new-badge-glow {
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes new-badge-ping {
+  0% {
+    opacity: 0;
+    transform: scale(1);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  55%,
+  100% {
+    opacity: 0;
+    transform: scale(1.18, 1.35);
   }
 }
 
 /* Opt out of motion: keep the tilt + gradient + glow, drop the animation. */
 @media (prefers-reduced-motion: reduce) {
-  .newBadge {
+  .newBadge,
+  .newBadge::before,
+  .newBadge::after {
     animation: none;
-    box-shadow: 0 4px 14px -2px color-mix(in srgb, var(--mantine-color-red-6) 60%, transparent);
   }
 }
 
