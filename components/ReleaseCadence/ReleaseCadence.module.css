@@ -13,33 +13,51 @@
  * and blue would merge into the brand wash behind it.
  */
 .dot {
+  position: relative;
   flex: none;
   width: rem(8px);
   height: rem(8px);
   border-radius: 50%;
   background: var(--mantine-color-teal-5);
-  box-shadow: 0 0 0 rem(4px) color-mix(in srgb, var(--mantine-color-teal-5) 22%, transparent);
-  animation: cadence-pulse 2.4s ease-in-out infinite;
 }
 
 /*
- * The halo breathes, the dot does not move: animating the box-shadow spread
- * would relayout nothing but does force a paint on a blurred surface, and
- * transform-scaling the dot makes the text baseline appear to wobble.
+ * The halo breathes, the dot does not move (scaling the dot itself made the
+ * text baseline appear to wobble). The halo is a ring of its own, scaled and
+ * faded: transform and opacity run on the compositor, where the box-shadow
+ * spread it used to animate repainted the dot sixty times a second for as long
+ * as the page was open. With the two NEW badges, the only things on the page
+ * that never stopped: 1.03 s of main-thread work in 10 s at rest, against
+ * 0.08 s with the three stopped (measured 2026-09-29). The ring is the dot's
+ * own teal at 30%, so where it lies over the dot the dot keeps its colour; at
+ * rest it is the old 3px halo at 14%, at the peak the 6px one at 30%.
  */
+.dot::after {
+  position: absolute;
+  inset: rem(-6px);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--mantine-color-teal-5) 30%, transparent);
+  content: '';
+  opacity: 0.47;
+  transform: scale(0.7);
+  animation: cadence-pulse 2.4s ease-in-out infinite;
+}
+
 @keyframes cadence-pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 rem(3px) color-mix(in srgb, var(--mantine-color-teal-5) 14%, transparent);
+    opacity: 0.47;
+    transform: scale(0.7);
   }
 
   50% {
-    box-shadow: 0 0 0 rem(6px) color-mix(in srgb, var(--mantine-color-teal-5) 30%, transparent);
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dot {
+  .dot::after {
     animation: none;
   }
 }
