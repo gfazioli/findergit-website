@@ -14,6 +14,7 @@ import {
   Stack,
   Text,
   Title,
+  VisuallyHidden,
 } from '@mantine/core';
 import { Reveal, revealItem } from '@/components/Motion/Reveal';
 import { ScrollNumber } from '@/components/Motion/ScrollNumber';
@@ -216,7 +217,9 @@ export function DiffViewerSection() {
                 size="compact-xs"
                 variant="light"
                 color="orange"
-                leftSection={<Image src="/kaleidoscope-icon.png" alt="" w={14} h={14} />}
+                leftSection={
+                  <Image src="/kaleidoscope-icon.png" alt="" w={14} h={14} loading="lazy" />
+                }
               >
                 Open in Kaleidoscope
               </Button>
@@ -306,6 +309,7 @@ export function DiffViewerSection() {
                     w={72}
                     h={72}
                     pos="relative"
+                    loading="lazy"
                   />
                 </Box>
                 <Text
@@ -354,9 +358,9 @@ export function DiffViewerSection() {
                   w="fit-content"
                   px={0}
                   c="white"
-                  aria-label="Learn more about opening a diff in Kaleidoscope"
                 >
-                  Learn more
+                  {/* The link's own words, not an aria-label: see Welcome's FeatureRow. */}
+                  Learn more<VisuallyHidden> about opening a diff in Kaleidoscope</VisuallyHidden>
                 </Button>
                 <Text c="dimmed" fz="xs" lh={1.5}>
                   Kaleidoscope is a registered trademark of Leitmotif GmbH, which is not affiliated
@@ -403,7 +407,7 @@ export function DiffViewerSection() {
                       style={{ borderRadius: '50%', backgroundColor: '#28c840' }}
                     />
                   </Group>
-                  <Image src="/kaleidoscope-icon.png" alt="" w={16} h={16} />
+                  <Image src="/kaleidoscope-icon.png" alt="" w={16} h={16} loading="lazy" />
                   <Text size="sm" c="dimmed" ff="monospace" truncate>
                     src/components/Header.swift &mdash; Text &mdash; {diffStats.additions}{' '}
                     additions, {diffStats.deletions} deletions

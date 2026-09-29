@@ -171,6 +171,7 @@ export const MantineFooter = () => {
                       alt={sponsor.name}
                       size="md"
                       radius="xl"
+                      imageProps={{ loading: 'lazy', decoding: 'async' }}
                     />
                     <Text fz={11} c="dimmed">
                       {sponsor.name}
