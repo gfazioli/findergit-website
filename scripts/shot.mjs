@@ -141,26 +141,54 @@ const chrome = spawn(
   { stdio: ['ignore', 'ignore', 'pipe'] }
 );
 
-// Chrome prints the endpoint it picked to stderr; port 0 avoids colliding with
-// anything else listening.
-const wsUrl = await new Promise((resolve, reject) => {
-  let buf = '';
-  chrome.stderr.on('data', (chunk) => {
-    buf += chunk;
-    const m = buf.match(/DevTools listening on (ws:\/\/\S+)/);
-    if (m) {
-      resolve(m[1]);
-    }
-  });
-  chrome.on('exit', (code) => reject(new Error(`Chrome exited early (${code})`)));
-  setTimeout(() => reject(new Error('Chrome did not announce DevTools within 15s')), 15000);
-});
+// Stops Chrome and removes its profile, waiting for Chrome to be gone first:
+// killing it and deleting the directory in the same tick raced its shutdown and
+// failed with ENOTEMPTY after every capture had already been written.
+async function stopChrome() {
+  if (chrome.exitCode === null && chrome.signalCode === null) {
+    const gone = new Promise((r) => chrome.once('exit', r));
+    chrome.kill();
+    await gone;
+  }
+  rmSync(profile, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
+}
 
-const ws = new WebSocket(wsUrl);
-await new Promise((resolve, reject) => {
-  ws.onopen = resolve;
-  ws.onerror = () => reject(new Error(`cannot connect to ${wsUrl}`));
-});
+// Chrome prints the endpoint it picked to stderr; port 0 avoids colliding with
+// anything else listening. The start is cleaned up too: a Chrome that never
+// announced itself used to be left running, with its profile, by a throw that
+// came before the try below. And the deadline is cleared once it is met, or it
+// kept Node alive for the whole 15 seconds after a capture that took one.
+let ws;
+try {
+  const wsUrl = await new Promise((resolve, reject) => {
+    let buf = '';
+    const deadline = setTimeout(
+      () => reject(new Error('Chrome did not announce DevTools within 15s')),
+      15000
+    );
+    chrome.stderr.on('data', (chunk) => {
+      buf += chunk;
+      const m = buf.match(/DevTools listening on (ws:\/\/\S+)/);
+      if (m) {
+        clearTimeout(deadline);
+        resolve(m[1]);
+      }
+    });
+    chrome.on('exit', (code) => {
+      clearTimeout(deadline);
+      reject(new Error(`Chrome exited early (${code})`));
+    });
+  });
+  ws = new WebSocket(wsUrl);
+  await new Promise((resolve, reject) => {
+    ws.onopen = resolve;
+    ws.onerror = () => reject(new Error(`cannot connect to ${wsUrl}`));
+  });
+} catch (err) {
+  ws?.close();
+  await stopChrome();
+  throw err;
+}
 
 let nextId = 1;
 const pending = new Map();
@@ -408,11 +436,5 @@ try {
   }
 } finally {
   ws.close();
-  // Wait for Chrome to be gone before removing its profile: killing it and
-  // deleting the directory in the same tick raced its shutdown and failed with
-  // ENOTEMPTY after every capture had already been written.
-  const gone = new Promise((r) => chrome.once('exit', r));
-  chrome.kill();
-  await gone;
-  rmSync(profile, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
+  await stopChrome();
 }
