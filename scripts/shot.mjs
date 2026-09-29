@@ -143,9 +143,11 @@ const chrome = spawn(
 
 // Stops Chrome and removes its profile, waiting for Chrome to be gone first:
 // killing it and deleting the directory in the same tick raced its shutdown and
-// failed with ENOTEMPTY after every capture had already been written.
+// failed with ENOTEMPTY after every capture had already been written. A Chrome
+// that could not be spawned at all has no pid and never emits `exit`, so there
+// is nothing to wait for.
 async function stopChrome() {
-  if (chrome.exitCode === null && chrome.signalCode === null) {
+  if (chrome.pid !== undefined && chrome.exitCode === null && chrome.signalCode === null) {
     const gone = new Promise((r) => chrome.once('exit', r));
     chrome.kill();
     await gone;
@@ -177,6 +179,12 @@ try {
     chrome.on('exit', (code) => {
       clearTimeout(deadline);
       reject(new Error(`Chrome exited early (${code})`));
+    });
+    // A binary that is missing or not executable emits `error`, not `exit`, and
+    // an `error` nobody listens for kills Node before the cleanup below runs.
+    chrome.on('error', (err) => {
+      clearTimeout(deadline);
+      reject(new Error(`cannot start Chrome: ${err.message}`));
     });
   });
   ws = new WebSocket(wsUrl);
