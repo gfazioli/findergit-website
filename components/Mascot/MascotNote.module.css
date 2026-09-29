@@ -1,0 +1,125 @@
+/*
+ * The mascot's note in the docs: the sprite beside a speech bubble, in the
+ * home page's bubble language (`Mascot.module.css`: the lifted ground, the
+ * sky rim, a tail at the speaker) so it reads as the same character talking,
+ * not as one more callout.
+ */
+
+.note {
+  display: flex;
+  align-items: flex-start;
+  gap: rem(14px);
+  margin-block: rem(28px);
+}
+
+.note[data-side='right'] {
+  flex-direction: row-reverse;
+}
+
+/* Its face level with the bubble's first line: the tail points at its mouth. */
+.sprite {
+  flex: none;
+  margin-top: rem(2px);
+}
+
+.bubble {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: rem(12px) rem(16px);
+  border-radius: rem(14px);
+  background: var(--fg-lift);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--fg-sky) 38%, transparent),
+    0 12px 28px -14px rgb(0 0 0 / 55%);
+  line-height: 1.6;
+}
+
+.bubble > :first-child {
+  margin-top: 0;
+}
+
+.bubble > :last-child {
+  margin-bottom: 0;
+}
+
+.bubble::before {
+  position: absolute;
+  top: rem(18px);
+  left: rem(-6px);
+  width: rem(11px);
+  height: rem(11px);
+  border-bottom: 1px solid color-mix(in srgb, var(--fg-sky) 38%, transparent);
+  border-left: 1px solid color-mix(in srgb, var(--fg-sky) 38%, transparent);
+  background: var(--fg-lift);
+  content: '';
+  transform: rotate(45deg);
+}
+
+.note[data-side='right'] .bubble::before {
+  right: rem(-6px);
+  left: auto;
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, var(--fg-sky) 38%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--fg-sky) 38%, transparent);
+}
+
+/*
+ * One hop as the page lands, and another whenever the pointer comes to it: a
+ * transform only, which the compositor runs on its own, and none at all under
+ * Reduce Motion. Two keyframe names, so the hover's animation is a change the
+ * browser starts rather than the landing one it has already finished.
+ */
+@media screen and (prefers-reduced-motion: no-preference) {
+  .sprite {
+    animation: land 900ms cubic-bezier(0.3, 0.7, 0.3, 1) 250ms both;
+  }
+
+  .note:hover .sprite {
+    animation: hop 700ms cubic-bezier(0.3, 0.7, 0.3, 1) both;
+  }
+}
+
+@keyframes land {
+  0% {
+    transform: translateY(0);
+  }
+
+  30% {
+    transform: translateY(-7px);
+  }
+
+  55% {
+    transform: translateY(0);
+  }
+
+  72% {
+    transform: translateY(-2px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes hop {
+  0% {
+    transform: translateY(0);
+  }
+
+  35% {
+    transform: translateY(-6px);
+  }
+
+  65% {
+    transform: translateY(0);
+  }
+
+  80% {
+    transform: translateY(-2px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
