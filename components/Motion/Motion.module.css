@@ -107,16 +107,21 @@
    * opposti"). The light is the two ends of the headline's gradient: the
    * icon's sky at the top right, its plate's lilac at the bottom left.
    *
-   * A ring, not a fill: the padding is the stroke and the mask cuts the rest
-   * away. `--glint` runs 0 -> 1 (registered in theme/global.css so it can be
-   * animated); the opacity is its sine, dark at both ends. The reach is the
-   * app's cap, 70 points, which every card on this page is tall enough to take.
-   * The radius comes from the card, or from `--reveal-radius` on a wrapper that
-   * has none.
+   * A glow held just inside the edge, not a line drawn on it (the user,
+   * 2026-09-29: "più sfocato, più riflesso ... leggermente più inner alla
+   * scheda"): inset shadows on a layer set 3px in from the card, so the light
+   * reads as the glass reflecting it rather than as a stroke on the border.
+   * Two per colour, a tight core whitened toward a highlight and a wide bloom;
+   * each pair is offset toward its own corner, so the sky lights only the top
+   * and right edges and the lilac only the bottom and left. The mask keeps
+   * each to its corner and lets it reach along the edges as it fades.
+   * `--glint` runs 0 -> 1 (registered in theme/global.css so it can be
+   * animated); the opacity is its sine, dark at both ends. The radius comes
+   * from the card, or from `--reveal-radius` on a wrapper that has none.
    *
    * Behind `@supports`, because an engine without `sin()` would find the
-   * opacity invalid at computed-value time, fall back to 1, and leave the ring
-   * lit for good.
+   * opacity invalid at computed-value time, fall back to 1, and leave the
+   * light on for good.
    */
   @supports (opacity: sin(0)) {
     .item[data-reveal='morph'] {
@@ -124,21 +129,22 @@
     }
 
     .item[data-reveal='morph']::after {
-      --reach: calc(70px * (0.45 + 0.55 * var(--glint)));
+      --reach: calc(104px * (0.45 + 0.55 * var(--glint)));
 
       position: absolute;
-      inset: 0;
-      padding: 1.5px;
+      inset: 3px;
       border-radius: var(--reveal-radius, inherit);
       pointer-events: none;
       content: '';
-      background:
-        radial-gradient(circle var(--reach) at 100% 0, var(--fg-sky), transparent),
-        radial-gradient(circle var(--reach) at 0 100%, var(--fg-lilac), transparent);
-      opacity: sin(calc(var(--glint) * 180deg));
+      box-shadow:
+        inset -2px 2px 8px -2px color-mix(in oklab, var(--fg-sky) 65%, #fff),
+        inset -6px 6px 24px -6px var(--fg-sky),
+        inset 2px -2px 8px -2px color-mix(in oklab, var(--fg-lilac) 65%, #fff),
+        inset 6px -6px 24px -6px var(--fg-lilac);
+      opacity: calc(0.9 * sin(calc(var(--glint) * 180deg)));
       mask:
-        linear-gradient(#000 0 0) content-box exclude,
-        linear-gradient(#000 0 0);
+        radial-gradient(circle var(--reach) at 100% 0, #000, rgb(0 0 0 / 0.55) 40%, transparent),
+        radial-gradient(circle var(--reach) at 0 100%, #000, rgb(0 0 0 / 0.55) 40%, transparent);
     }
 
     .scope[data-revealed] .item[data-reveal='morph']::after,
