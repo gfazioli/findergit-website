@@ -8,17 +8,18 @@ jest.mock('./load-releases', () => {
   throw new Error('ChunkLoadError: Loading chunk failed.');
 });
 
-// The hook reads the API through SWR. Called lazily, so the factory does not
-// touch `mockUseSWR` before the test has given it an answer.
+// The hook reads the API through SWR. The factory wraps `mockUseSWR` in a function
+// because `jest.mock` is hoisted above the `const`: returning `mockUseSWR` itself
+// reads it before it is initialised (a ReferenceError).
 const mockUseSWR = jest.fn();
 jest.mock('swr', () => ({
   __esModule: true,
   default: (...args: unknown[]) => mockUseSWR(...args),
 }));
 
-function release(tag: string, body: string | null, publishedAt: string): Release {
+function release(id: number, tag: string, body: string | null, publishedAt: string): Release {
   return {
-    id: tag.length,
+    id,
     tag_name: tag,
     name: `App ${tag.slice(1)}`,
     body,
@@ -30,8 +31,13 @@ function release(tag: string, body: string | null, publishedAt: string): Release
 describe('useReleaseNotes, with nothing from the build', () => {
   it('shows the fetched releases as plain text when the compiler will not load', async () => {
     const fetched = [
-      release('v0.40.0', '- **Account.** Your GitHub profile, in the app.', '2026-09-29T09:39:06Z'),
-      release('v0.39.0', null, '2026-09-27T12:36:56Z'),
+      release(
+        2,
+        'v0.40.0',
+        '- **Account.** Your GitHub profile, in the app.',
+        '2026-09-29T09:39:06Z'
+      ),
+      release(1, 'v0.39.0', null, '2026-09-27T12:36:56Z'),
     ];
     mockUseSWR.mockReturnValue({ data: { releases: fetched }, error: undefined, isLoading: false });
 

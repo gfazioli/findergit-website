@@ -29,7 +29,7 @@ export async function compileReleaseBodies(
     releases.map(async (release) => {
       const plain = plainRelease(release);
       try {
-        return { ...plain, body: await compile(plain.rawBody ?? '', MARKDOWN) };
+        return { ...plain, body: await compile(plain.rawBody, MARKDOWN) };
       } catch {
         return plain;
       }

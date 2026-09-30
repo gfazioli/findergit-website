@@ -5,10 +5,10 @@ import type { Release } from './use-release-notes';
  * A release as the page shows it uncompiled: its body as the text GitHub
  * published, its date formatted.
  *
- * Two callers, and one reason:
- * - `compileReleaseBodies` falls back to it for a body that will not compile;
- * - the hook falls back to it for every release when the compiler's chunk will
- *   not load.
+ * Two callers:
+ * - `compileReleaseBodies` builds every release from it, and replaces `body` when
+ *   the compile succeeds, so a body that will not compile is left as this;
+ * - the hook shows every release as this when the compiler's chunk will not load.
  * Either way the releases are shown, never dropped.
  *
  * A module of its own because the hook imports it STATICALLY. `load-releases`
@@ -16,7 +16,7 @@ import type { Release } from './use-release-notes';
  * `use-release-notes` brings React and SWR, which the server's import of
  * `load-releases` must not.
  */
-export function plainRelease(release: Release): Release {
+export function plainRelease(release: Release): Release & { rawBody: string; body: null } {
   return {
     ...release,
     rawBody: release.body ?? '',
