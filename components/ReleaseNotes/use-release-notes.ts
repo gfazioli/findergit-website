@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
+import { plainRelease } from './plain-release';
 
 export interface Author {
   login: string;
@@ -88,14 +89,24 @@ export function useReleaseNotes(initial: Release[] = []) {
         return;
       }
 
+      const releases: Release[] = Array.isArray(data.releases) ? data.releases : [];
       const fetchReleases = async () => {
-        // Imported here, on the fallback, and nowhere else in the browser: the
-        // module brings nextra's MDX compiler, and a static import put it in the
-        // client JavaScript of EVERY page, 470 KB compressed that the home page
-        // downloaded and never ran (Lighthouse, 2026-09-29). The build compiles
-        // the releases on the server, so this path runs only when it could not.
-        const { compileReleaseBodies } = await import('./load-releases');
-        setCompiledReleases(await compileReleaseBodies(data.releases ?? []));
+        try {
+          // Imported here, on the fallback, and nowhere else in the browser: the
+          // module brings nextra's MDX compiler, and a static import put it in
+          // the client JavaScript of EVERY page, 470 KB compressed that the home
+          // page downloaded and never ran (Lighthouse, 2026-09-29). The build
+          // compiles the releases on the server, so this runs only when it could
+          // not.
+          const { compileReleaseBodies } = await import('./load-releases');
+          setCompiledReleases(await compileReleaseBodies(releases));
+        } catch {
+          // The chunk did not load. The releases were fetched all the same, so
+          // they are shown as the text GitHub published, as one body that will
+          // not compile already is. Left empty, the page stayed on its "Loading
+          // releases..." skeleton over releases it held.
+          setCompiledReleases(releases.map(plainRelease));
+        }
       };
       fetchReleases();
     }
