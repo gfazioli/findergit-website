@@ -12,6 +12,26 @@ interface RevealOptions {
 type RevealState = 'rest' | 'armed' | 'revealed';
 
 /**
+ * Where an element is laid out, in the window's coordinates: its offsets,
+ * which no transform moves. Not `getBoundingClientRect`, which is the box as
+ * DRAWN: an item at rest is drawn in its starting pose from the first paint
+ * (Motion.module.css), 48px down and squashed for a card, so a card showing
+ * its top 100px at the bottom of the window measured as off screen, was armed,
+ * and stayed blank until the reader scrolled (Codex, on netfox-website#87).
+ */
+export function layoutBox(el: Element) {
+  if (!(el instanceof HTMLElement)) {
+    const { top, bottom } = el.getBoundingClientRect();
+    return { top, bottom };
+  }
+  let top = -window.scrollY;
+  for (let node: Element | null = el; node instanceof HTMLElement; node = node.offsetParent) {
+    top += node.offsetTop;
+  }
+  return { top, bottom: top + el.offsetHeight };
+}
+
+/**
  * Three states, and nothing is hidden in the first. At REST the element is
  * where the layout put it: that is the served HTML, and it is what stays when
  * the scripts never run -- a blocked chunk, a runtime error on an old iPad --
@@ -46,7 +66,7 @@ export function useReveal<T extends Element>({
       return;
     }
     if (state === 'rest') {
-      const { top, bottom } = el.getBoundingClientRect();
+      const { top, bottom } = layoutBox(el);
       if (bottom <= 0 || top >= window.innerHeight) {
         setState('armed');
       }
