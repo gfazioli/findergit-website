@@ -60,6 +60,8 @@ import { BuiltForMacSection } from '../BuiltForMacSection/BuiltForMacSection';
 import { Reveal, revealItem, revealScope, type RevealVariant } from '@/components/Motion/Reveal';
 import { useReveal } from '@/components/Motion/useReveal';
 import { CarouselGuide } from '@/components/Mascot/CarouselGuide';
+import { clearCarousel, publishCarousel } from '@/components/Mascot/carousel';
+import { ScrollGuide, type Tip } from '@/components/Mascot/ScrollGuide';
 import { isRecent } from './recent';
 import classes from './Welcome.module.css';
 
@@ -364,6 +366,17 @@ function HeroCarousel({ shots }: { shots: HeroShot[] }) {
 
   const active = shots[index];
 
+  // What is on screen, for the mascot in the corner, which narrates the
+  // carousel where there is no room beside the dots (`ScrollGuide`).
+  useEffect(() => {
+    publishCarousel({
+      caption: active.caption,
+      index,
+      next: () => setIndex((i) => (i + 1) % shots.length),
+    });
+  }, [active.caption, index, shots.length]);
+  useEffect(() => clearCarousel, []);
+
   return (
     <Box>
       {/* Fixed-ratio stage so the fade doesn't jolt the layout when shots
@@ -474,6 +487,14 @@ const heroShots: HeroShot[] = [
     caption: 'The file browser: every repo folder with its branch, status, issues and stars.',
   },
 ];
+
+/**
+ * What the mascot in the corner gives as a tip (`ScrollGuide`): the feature
+ * cards below, as the grid words them, so it says nothing the page does not.
+ * Only those short enough to read in its bubble; the three longest cards say
+ * more than one breath's worth.
+ */
+const TIP_MAX_CHARS = 160;
 
 interface Feature {
   icon: typeof IconMarkdown;
@@ -614,6 +635,10 @@ const features: Feature[] = [
     href: '/docs/ai-commit-messages',
   },
 ];
+
+const tips: Tip[] = features
+  .filter((feature) => feature.description.length <= TIP_MAX_CHARS)
+  .map(({ title, description }) => ({ title, description }));
 
 /**
  * `cadence` is fetched on the server in `app/page.tsx` so the release count
@@ -1035,6 +1060,9 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
           </Reveal>
         </Stack>
       </Container>
+
+      {/* The mascot that follows the scroll down to the footer's Support card */}
+      <ScrollGuide tips={tips} />
     </>
   );
 }
