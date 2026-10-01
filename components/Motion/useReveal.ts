@@ -18,7 +18,9 @@ type RevealState = 'rest' | 'armed' | 'revealed';
  * so a failure costs the motion and never the content. Once mounted, an element
  * that is entirely off screen is ARMED, parked in its starting pose where
  * nobody sees it park, and REVEALED the first time it comes into view. What is
- * on screen when the page mounts is never armed, so it never moves.
+ * on screen when the page mounts is never armed: it plays its entrance from
+ * the first paint by CSS alone (Motion.module.css), so it moves where the
+ * reader is already looking, without waiting for this.
  *
  * One-shot: scrolling back up never replays a section. Where there is no
  * IntersectionObserver (jsdom, very old browsers) nothing is ever armed.
