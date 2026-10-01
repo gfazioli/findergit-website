@@ -13,11 +13,10 @@ function Probe() {
   );
 }
 
-/** Where the element is when the page mounts, as `getBoundingClientRect` says. */
+/** Where the element is laid out when the page mounts: its offsets (`layoutBox`). */
 function placeAt(top: number) {
-  jest
-    .spyOn(Element.prototype, 'getBoundingClientRect')
-    .mockReturnValue({ top, bottom: top + 200 } as DOMRect);
+  jest.spyOn(HTMLElement.prototype, 'offsetTop', 'get').mockReturnValue(top);
+  jest.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(200);
 }
 
 describe('useReveal', () => {
@@ -60,6 +59,18 @@ describe('useReveal', () => {
     render(<Probe />);
     expect(screen.getByTestId('probe')).not.toHaveAttribute('data-armed');
     expect(observers).toHaveLength(0);
+  });
+
+  it('goes by where the layout puts it, not by the starting pose it is drawn in', () => {
+    // Its top 50px show at the bottom of the window; drawn in a card's pose
+    // (48px down, squashed from the bottom) it is a box entirely below.
+    placeAt(window.innerHeight - 50);
+    jest.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
+      top: window.innerHeight + 12,
+      bottom: window.innerHeight + 152,
+    } as DOMRect);
+    render(<Probe />);
+    expect(screen.getByTestId('probe')).not.toHaveAttribute('data-armed');
   });
 
   it('arms what is below the fold, and reveals it once it scrolls in', () => {

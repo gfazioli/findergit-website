@@ -42,12 +42,13 @@ describe('Welcome component', () => {
 
     /** Where each element is at mount: `onScreen` decides, the rest is below the fold. */
     function placeAtMount(onScreen: (el: Element) => boolean) {
-      jest.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(function (
-        this: Element
+      // Laid out, not drawn: the hook reads offsets (`layoutBox`).
+      jest.spyOn(HTMLElement.prototype, 'offsetTop', 'get').mockImplementation(function (
+        this: HTMLElement
       ) {
-        const top = onScreen(this) ? 100 : 5000;
-        return { top, bottom: top + 200 } as DOMRect;
+        return onScreen(this) ? 100 : 5000;
       });
+      jest.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(200);
     }
 
     /** Each row's screenshot column and copy column, found from its screenshot. */
