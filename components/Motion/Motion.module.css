@@ -14,8 +14,22 @@
  * never the content. Once mounted, a scope entirely off screen is ARMED
  * (`data-armed`): its items snap to their starting pose where nobody can see
  * them do it. The first time it comes into view it is REVEALED
- * (`data-revealed`), and they spring to where the layout put them. A scope on
- * screen at mount is never armed, so it never moves: the hero paints as served.
+ * (`data-revealed`), and they spring to where the layout put them.
+ *
+ * What is on screen from the start comes in the same way, by CSS alone: an
+ * item at REST plays its entrance once from the first paint, after
+ * `--reveal-hold`, on the same curves as the transition. The keyframes name
+ * only the starting pose (`from`), so they end on whatever the layout says,
+ * and they fill only `backwards`, so once ended nothing of them is left. An
+ * item off screen plays it too, unseen, until its scope is armed: arming sets
+ * `animation: none` and the pose, so a script that runs takes the item over,
+ * and one that never runs leaves it landed. Until 2026-10-01 a scope on screen
+ * at mount was never armed and never moved: on a window taller than the hero
+ * -- a 27-inch display stood upright -- the carousel and the sections under it
+ * sat still under the reader's eyes, while everybody who scrolled to them saw
+ * them arrive (the user: "dovrebbero vedersi anche quando l'elemento è già
+ * visibile dall'inizio"). It hides nothing for longer than its own hold and
+ * curve, with the scripts or without them.
  *
  * Only on a screen and without Reduce Motion: otherwise, and on paper,
  * everything is simply there.
@@ -26,16 +40,56 @@
 }
 
 @media screen and (prefers-reduced-motion: no-preference) {
+  /*
+   * How long what is on screen at the first paint stays out before it comes
+   * in: an entrance that starts as the page appears is one nobody sees, so the
+   * empty place is held a moment first, as the apps hold theirs.
+   */
+  .item,
+  .number {
+    --reveal-hold: 400ms;
+  }
+
+  /*
+   * The entrance at REST (see the top): the transition's curves, one animation
+   * per property, from the pose the armed rules below name. In longhands, so
+   * the names are plain identifiers the CSS-module hashing always reaches.
+   */
   .item {
+    --reveal-at: calc(var(--reveal-hold) + var(--reveal-delay));
+
     transform-origin: 50% 100%;
+    animation-name: reveal-fade, reveal-blur, reveal-morph;
+    animation-duration: 520ms, 640ms, var(--fg-spring-duration);
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1), ease-out, var(--fg-spring);
+    animation-delay: var(--reveal-at);
+    animation-fill-mode: backwards;
+  }
+
+  .item[data-reveal='rise'] {
+    animation-name: reveal-fade, reveal-blur-text, reveal-rise;
+    animation-duration: 520ms, 560ms, var(--fg-spring-soft-duration);
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1), ease-out, var(--fg-spring-soft);
+  }
+
+  .item[data-reveal='pop'] {
+    animation-name: reveal-fade, reveal-blur-chip, reveal-pop;
   }
 
   .item[data-reveal='left'] {
     transform-origin: 0% 50%;
+    animation-name: reveal-fade, reveal-blur, reveal-left;
   }
 
   .item[data-reveal='right'] {
     transform-origin: 100% 50%;
+    animation-name: reveal-fade, reveal-blur, reveal-right;
+  }
+
+  /* Armed, then revealed, the scope's script has the item: no entrance of its own. */
+  .scope[data-armed] .item,
+  .scope.item[data-armed] {
+    animation: none;
   }
 
   /*
@@ -145,6 +199,13 @@
       mask:
         radial-gradient(circle var(--reach) at 100% 0, #000, rgb(0 0 0 / 0.55) 40%, transparent),
         radial-gradient(circle var(--reach) at 0 100%, #000, rgb(0 0 0 / 0.55) 40%, transparent);
+      /* At rest it catches the light as it lands from the first paint. */
+      animation: glint 900ms ease-out calc(var(--reveal-at) + 220ms) both;
+    }
+
+    .scope[data-armed]:not([data-revealed]) .item[data-reveal='morph']::after,
+    .scope.item[data-reveal='morph'][data-armed]:not([data-revealed])::after {
+      animation: none;
     }
 
     .scope[data-revealed] .item[data-reveal='morph']::after,
@@ -161,6 +222,65 @@
 
   to {
     --glint: 1;
+  }
+}
+
+/*
+ * The entrance at rest. Each names only where it starts, the same pose the
+ * armed rules name (`Motion.css.test.ts` holds the two equal), and ends on the
+ * layout's own value.
+ */
+@keyframes reveal-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes reveal-blur {
+  from {
+    filter: blur(12px);
+  }
+}
+
+@keyframes reveal-blur-text {
+  from {
+    filter: blur(8px);
+  }
+}
+
+@keyframes reveal-blur-chip {
+  from {
+    filter: blur(6px);
+  }
+}
+
+@keyframes reveal-morph {
+  from {
+    transform: translate3d(0, 48px, 0) scale(0.9, 0.7);
+  }
+}
+
+@keyframes reveal-rise {
+  from {
+    transform: translate3d(0, 28px, 0) scale(0.98);
+  }
+}
+
+@keyframes reveal-pop {
+  from {
+    transform: scale(0.4);
+  }
+}
+
+@keyframes reveal-left {
+  from {
+    transform: translate3d(-80px, 0, 0) scale(0.86, 0.94);
+  }
+}
+
+@keyframes reveal-right {
+  from {
+    transform: translate3d(80px, 0, 0) scale(0.86, 0.94);
   }
 }
 
@@ -227,13 +347,35 @@
    * Armed and revealed as a scope is (above): zeros only once a script has
    * found the number off screen, and a transition only on the way up. The
    * rightmost digit starts last, so a number fills in the way it is read.
+   *
+   * At rest it rolls up once from the first paint, after the hold, as an item
+   * comes in (see the top): from zero, on the roll's spring, ending on the
+   * digit the layout already shows.
    */
+  .strip {
+    animation-name: roll-in;
+    animation-duration: var(--fg-spring-roll-duration);
+    animation-timing-function: var(--fg-spring-roll);
+    animation-delay: calc(var(--reveal-hold) + var(--reveal-delay, 0ms) + var(--i) * 110ms);
+    animation-fill-mode: backwards;
+  }
+
+  .number[data-armed] .strip {
+    animation: none;
+  }
+
   .number[data-revealed] .strip {
     transition: transform var(--fg-spring-roll-duration) var(--fg-spring-roll)
       calc(var(--reveal-delay, 0ms) + var(--i) * 110ms);
   }
 
   .number[data-armed]:not([data-revealed]) .strip {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes roll-in {
+  from {
     transform: translate3d(0, 0, 0);
   }
 }

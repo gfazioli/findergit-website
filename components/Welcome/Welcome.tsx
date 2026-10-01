@@ -806,8 +806,8 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
           </Stack>
 
           {/* ─── Screenshot carousel ─── */}
-          {/* It rises only when the page mounts with it below the fold; on a
-              screen tall enough to show it at once it is simply there. */}
+          {/* It rises as it comes into view; on a screen tall enough to show
+              it at once, it rises from the first paint (components/Motion). */}
           <Reveal variant="rise">
             <Box mt={32}>
               <HeroCarousel shots={heroShots} />
