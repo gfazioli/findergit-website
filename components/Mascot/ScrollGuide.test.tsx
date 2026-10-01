@@ -28,6 +28,9 @@ describe('ScrollGuide', () => {
   let narrow: boolean;
   let reduced: boolean;
   let turns: jest.Mock;
+  // Where the row of dots is, for anything that measures it rather than
+  // waiting for its observer; kept in step with what the observer reports.
+  let rowRect: Partial<DOMRect>;
 
   beforeEach(() => {
     guideMemory.dismissed = false;
@@ -62,7 +65,12 @@ describe('ScrollGuide', () => {
           removeEventListener: () => undefined,
         }) as unknown as MediaQueryList
     );
-    jest.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({} as DOMRect);
+    rowRect = { top: 1190, bottom: 1200 };
+    jest.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(function rect(
+      this: Element
+    ) {
+      return (this.hasAttribute('data-guide-anchor') ? rowRect : {}) as DOMRect;
+    });
     // Rendered, as far as the focus handoff can tell.
     jest.spyOn(Element.prototype, 'getClientRects').mockReturnValue([{}] as unknown as DOMRectList);
     turns = jest.fn();
@@ -115,12 +123,13 @@ describe('ScrollGuide', () => {
           )
         )
     );
-  const rowOnScreen = () =>
-    fire(row(), { isIntersecting: true, boundingClientRect: { bottom: 400 } as DOMRectReadOnly });
-  const rowBelow = () =>
-    fire(row(), { isIntersecting: false, boundingClientRect: { bottom: 1200 } as DOMRectReadOnly });
-  const rowPassed = () =>
-    fire(row(), { isIntersecting: false, boundingClientRect: { bottom: -10 } as DOMRectReadOnly });
+  const rowAt = (top: number) => {
+    rowRect = { top, bottom: top + 10 };
+    return { boundingClientRect: rowRect as DOMRectReadOnly };
+  };
+  const rowOnScreen = () => fire(row(), { isIntersecting: true, ...rowAt(390) });
+  const rowBelow = () => fire(row(), { isIntersecting: false, ...rowAt(1190) });
+  const rowPassed = () => fire(row(), { isIntersecting: false, ...rowAt(-20) });
   const cardShowing = (ratio: number) =>
     fire(sponsors(), { isIntersecting: ratio > 0, intersectionRatio: ratio });
 
@@ -147,6 +156,21 @@ describe('ScrollGuide', () => {
     rowBelow();
     wait(10_000);
     expect(corner()).toBeNull();
+  });
+
+  it('comes to the corner after a jump straight past the dots, which no observer reports', () => {
+    render(<Page />);
+    wait(DELAY_MS);
+    rowBelow();
+    // From below the window to above it with no frame in between: an anchor
+    // link or a restored scroll position. Only the scroll event says so.
+    rowAt(-2000);
+    act(() => {
+      window.dispatchEvent(new Event('scroll'));
+    });
+    expect(corner()).toBeNull();
+    wait(STILL_MS);
+    expect(corner()).toHaveAttribute('data-phase', 'arriving');
   });
 
   it('comes to the corner once the dots are scrolled past, where the mascot beside them has room', () => {
