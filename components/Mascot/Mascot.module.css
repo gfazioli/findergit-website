@@ -1,7 +1,10 @@
 /*
  * The mascot and where it stands: beside the hero carousel's dots, pointing
- * up at the window. Cross-ported from lancetta.app's `PanelHint.module.css`,
- * which is where the lane and the one-hop rule come from.
+ * up at the window (`CarouselGuide`); in the corner of the window and on the
+ * footer's Support card (`ScrollGuide`, below). The carousel's part is
+ * cross-ported from lancetta.app's `PanelHint.module.css`, which is where the
+ * lane and the one-hop rule come from; the corner and the card from
+ * netfox.app's `Mascot.module.css`.
  */
 
 .sprite {
@@ -264,6 +267,252 @@
   }
 }
 
+/*
+ * The mascot that follows the scroll (`ScrollGuide`): in the corner of the
+ * window, and standing on the footer's Support card. It shares the walker,
+ * the caption's fade and the dismiss button above. Ported from netfox.app's
+ * fox, which is where every measurement behind it was taken.
+ */
+
+/* Pixels per cell: four, as beside the dots; three on a phone, still whole
+   pixels, so every edge stays on the grid. */
+.corner,
+.card {
+  --cell: 4px;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    --cell: 3px;
+  }
+}
+
+/* 18 cells wide (`sprite.ts`); `height: auto` keeps the viewBox's shape. */
+.corner .sprite,
+.card .sprite {
+  width: calc(var(--cell) * 18);
+  height: auto;
+}
+
+/*
+ * In the corner of the window. Above the page's sections and below anything
+ * that opens over them: Nextra's menu on a phone, Mantine's overlays and the
+ * newsletter prompt.
+ */
+.corner {
+  position: fixed;
+  right: max(rem(16px), env(safe-area-inset-right));
+  bottom: max(rem(16px), env(safe-area-inset-bottom));
+  z-index: 10;
+  transition:
+    opacity 240ms ease,
+    transform 240ms ease;
+}
+
+.corner[data-phase='leaving'] {
+  opacity: 0;
+  transform: translateX(rem(24px));
+  pointer-events: none;
+}
+
+/* A block, not the button's default inline-block: on a line box it would sit
+   on the baseline, above the corner's bottom edge (measured on netfox.app). */
+.corner .walker {
+  position: relative;
+  display: block;
+}
+
+/* In from the right edge of the window, slowing to a stop. `both`, as beside
+   the dots: an engine that never runs it shows nothing mid-walk. */
+.corner[data-phase='arriving'] .walker {
+  animation: corner-in 900ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* While the page scrolls it walks: the legs are `Mascot`'s, the bob is here,
+   on the button, so the drawing's own hop is not restarted when it stops. */
+.corner[data-moving] .walker {
+  animation: bob 320ms steps(1) infinite;
+}
+
+/* One hop as it arrives and one on every new tip or shot, then still. */
+.corner[data-phase='here'] .sprite,
+.card[data-phase='here'] .sprite {
+  animation: hop 420ms ease-out 1;
+}
+
+@keyframes corner-in {
+  from {
+    transform: translateX(calc(100% + rem(40px)));
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+/* What the reader asked for, said to a screen reader and to no one else. */
+.announcer {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The bubble in the corner, above the mascot and flush with its right edge,
+   its tail down at the mascot's head. No wider than the window leaves. */
+.cornerBubble {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + rem(10px));
+  display: flex;
+  align-items: flex-start;
+  gap: rem(4px);
+  width: max-content;
+  max-width: min(rem(300px), calc(100vw - rem(32px)));
+  padding: rem(8px) rem(6px) rem(9px) rem(12px);
+  border-radius: rem(12px);
+  background: var(--fg-lift);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--fg-sky) 38%, transparent),
+    0 12px 28px -10px rgb(0 0 0 / 55%);
+  animation: pop-up 220ms ease-out both;
+  transform-origin: bottom right;
+}
+
+.cornerBubble::before {
+  position: absolute;
+  right: calc(var(--cell) * 8);
+  bottom: rem(-5px);
+  width: rem(10px);
+  height: rem(10px);
+  border-right: 1px solid color-mix(in srgb, var(--fg-sky) 38%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--fg-sky) 38%, transparent);
+  background: var(--fg-lift);
+  content: '';
+  transform: rotate(45deg);
+}
+
+@keyframes pop-up {
+  from {
+    opacity: 0;
+    transform: translateY(rem(6px)) scale(0.96);
+  }
+}
+
+/* What it says, and Next under it. */
+.cornerSay {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: rem(4px);
+  color: var(--mantine-color-white);
+  font-size: rem(13px);
+  line-height: 1.4;
+  text-align: left;
+}
+
+/* A tip's name, as the feature card names it. */
+.tipTitle {
+  color: var(--fg-sky);
+  font-weight: 600;
+}
+
+.nextButton {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--fg-sky);
+  font: inherit;
+  font-size: rem(12px);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nextButton:hover {
+  text-decoration: underline;
+}
+
+.nextButton:focus-visible {
+  outline: 2px solid var(--fg-sky);
+  outline-offset: 2px;
+  border-radius: rem(4px);
+}
+
+/*
+ * On the Support card: standing on its top edge near the right, its bubble to
+ * its left with the tail at its face, the raised arm reaching up toward it.
+ * `MantineFooter.module.css` makes the card the box this is placed in.
+ */
+.card {
+  position: absolute;
+  right: rem(28px);
+  bottom: 100%;
+  transition: opacity 240ms ease;
+}
+
+.card[data-phase='leaving'] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sitter {
+  position: relative;
+  display: block;
+  filter: drop-shadow(0 0 6px rgb(125 195 235 / 35%)) drop-shadow(0 3px 4px rgb(0 0 0 / 45%));
+}
+
+.card[data-phase='arriving'] .sitter {
+  animation: card-in 420ms cubic-bezier(0.3, 0.7, 0.3, 1) both;
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(rem(14px));
+  }
+}
+
+.cardBubble {
+  position: absolute;
+  top: rem(-4px);
+  right: calc(100% + rem(10px));
+  display: flex;
+  align-items: flex-start;
+  gap: rem(4px);
+  width: max-content;
+  max-width: min(rem(300px), calc(100vw - rem(150px)));
+  padding: rem(8px) rem(6px) rem(9px) rem(12px);
+  border-radius: rem(12px);
+  background: var(--fg-lift);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--fg-sky) 38%, transparent),
+    0 12px 28px -10px rgb(0 0 0 / 55%);
+  animation: pop-up 220ms ease-out both;
+  transform-origin: top right;
+}
+
+.cardBubble::before {
+  position: absolute;
+  top: rem(14px);
+  right: rem(-5px);
+  width: rem(10px);
+  height: rem(10px);
+  border-top: 1px solid color-mix(in srgb, var(--fg-sky) 38%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--fg-sky) 38%, transparent);
+  background: var(--fg-lift);
+  content: '';
+  transform: rotate(45deg);
+}
+
+.cardLine {
+  margin: 0;
+  color: var(--mantine-color-white);
+  font-size: rem(13px);
+  line-height: 1.4;
+  text-align: left;
+}
+
+/* As specific as the rules they undo, and after them. */
 @media (prefers-reduced-motion: reduce) {
   .hint,
   .bubble,
@@ -271,8 +520,24 @@
   .hint[data-phase] .walker,
   .hint[data-phase] .sprite,
   .stepA,
-  .stepB {
+  .stepB,
+  .corner,
+  .card,
+  .cornerBubble,
+  .cardBubble,
+  .corner[data-phase] .walker,
+  .corner[data-moving] .walker,
+  .card[data-phase] .sitter,
+  .corner[data-phase] .sprite,
+  .card[data-phase] .sprite {
     transition: none;
     animation: none;
+  }
+}
+
+@media print {
+  .corner,
+  .card {
+    display: none;
   }
 }

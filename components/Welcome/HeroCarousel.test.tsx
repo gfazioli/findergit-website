@@ -1,5 +1,7 @@
 import { act, fireEvent, render, screen } from '@/test-utils';
-import { DELAY_MS, guideMemory, WALK_MS } from '@/components/Mascot/CarouselGuide';
+import { DELAY_MS, WALK_MS } from '@/components/Mascot/CarouselGuide';
+import { useCarousel } from '@/components/Mascot/carousel';
+import { guideMemory } from '@/components/Mascot/guide';
 import { Welcome } from './Welcome';
 
 /**
@@ -87,5 +89,28 @@ describe('the hero carousel', () => {
     fireEvent.mouseLeave(hint);
     wait(5000);
     expect(shown()).toBe((held + 1) % 4);
+  });
+
+  it('tells the mascot in the corner what is on screen, and turns when it asks', () => {
+    // The corner narrates the carousel where the dots leave no room for the
+    // mascot beside them (`ScrollGuide`), and reads it from `carousel.ts`.
+    let heard = { caption: '', next: () => undefined as void };
+    function Corner() {
+      heard = useCarousel();
+      return null;
+    }
+    render(
+      <>
+        <Welcome />
+        <Corner />
+      </>
+    );
+    expect(heard.caption).toMatch(/^The Overview/);
+    act(() => heard.next());
+    expect(shown()).toBe(1);
+    expect(heard.caption).toMatch(/^Your GitHub account/);
+    wait(5000);
+    expect(shown()).toBe(2);
+    expect(heard.caption).toMatch(/^All your repositories/);
   });
 });

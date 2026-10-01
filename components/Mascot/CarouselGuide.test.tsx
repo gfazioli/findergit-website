@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react';
 import { act, fireEvent, render, screen } from '@/test-utils';
 import { PROMPT_OPEN_ATTRIBUTE } from '@/components/NewsletterSignup/prompt-open';
-import { CarouselGuide, DELAY_MS, guideMemory, PROMPT_GONE_MS, WALK_MS } from './CarouselGuide';
+import { CarouselGuide, DELAY_MS, PROMPT_GONE_MS, WALK_MS } from './CarouselGuide';
+import { dismissGuide, guideMemory } from './guide';
 
 type Props = ComponentProps<typeof CarouselGuide>;
 
@@ -330,6 +331,25 @@ describe('CarouselGuide', () => {
     render(<CarouselGuide {...props()} />);
     dotsInView();
     wait(10_000);
+    expect(walker()).toBeNull();
+  });
+
+  it('leaves when it is dismissed in the corner of the window or on the Support card', () => {
+    render(
+      <div>
+        <button type="button" aria-current="true">
+          dot
+        </button>
+        <CarouselGuide {...props()} />
+      </div>
+    );
+    dotsInView();
+    wait(DELAY_MS + WALK_MS + 50);
+    act(() => walker()!.focus());
+    act(() => dismissGuide());
+    // The keyboard was on it: the focus goes to the dot it stood beside.
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'dot' }));
+    wait(400);
     expect(walker()).toBeNull();
   });
 

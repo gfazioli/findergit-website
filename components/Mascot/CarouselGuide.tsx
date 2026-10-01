@@ -11,6 +11,7 @@ import {
 import { IconX } from '@tabler/icons-react';
 import { useReducedMotion } from '@mantine/hooks';
 import { PROMPT_OPEN_ATTRIBUTE } from '@/components/NewsletterSignup/prompt-open';
+import { dismissGuide, guideMemory, onGuideDismissed } from './guide';
 import { Mascot } from './Mascot';
 import classes from './Mascot.module.css';
 
@@ -26,13 +27,18 @@ const LEAVE_MS = 260;
 export const PROMPT_GONE_MS = 400;
 
 /**
- * What the guide remembers, for the life of the page: module state survives a
- * client navigation and is gone on a reload. Once dismissed it does not walk in
- * again when the reader comes back to the home page through a link; a reload
- * brings it back, as lancetta.app's does (user, 2026-09-24: "facciamolo
- * apparire sempre ad ogni reload della pagina"). Exported for the tests.
+ * Where there is no room right of the dots for the mascot and what it says:
+ * the stylesheet hides it at `$mantine-breakpoint-sm` and below, which is this
+ * query. `ScrollGuide` asks the same question, so the mascot in the corner
+ * narrates the carousel exactly where this one cannot, and the two never both
+ * come or both stay away.
  */
-export const guideMemory = { dismissed: false };
+export const NO_ROOM_QUERY = '(max-width: 48em)';
+
+/** Whether the mascot beside the dots has room to stand there. */
+export function guideFits() {
+  return typeof window.matchMedia !== 'function' || !window.matchMedia(NO_ROOM_QUERY).matches;
+}
 
 interface CarouselGuideProps {
   /** What the carousel shows now: the bubble says it. */
@@ -64,7 +70,10 @@ interface CarouselGuideProps {
  * It arrives on EVERY load, and nothing is decided before mount, so the served
  * markup carries none of it. A reader who asked for reduced motion gets it
  * standing in place, already pointing: settled, not skipped. Not on a phone
- * (the stylesheet): there is no room beside the dots for what it says.
+ * (the stylesheet, `NO_ROOM_QUERY`): there is no room beside the dots for what
+ * it says, and the mascot in the corner of the window narrates the carousel
+ * there instead (`ScrollGuide`). Dismissed here or anywhere else, it goes
+ * (`guide.ts`).
  */
 export function CarouselGuide({ caption, index, onNext, onHold }: CarouselGuideProps) {
   const reduced = useReducedMotion();
@@ -193,17 +202,28 @@ export function CarouselGuide({ caption, index, onNext, onHold }: CarouselGuideP
 
   useEffect(() => () => window.clearTimeout(leaving.current), []);
 
-  const dismiss = () => {
-    guideMemory.dismissed = true;
-    // The keyboard was on the × that is about to go: hand the focus to the dot
-    // of the shot on screen, the control the mascot was standing beside, rather
-    // than let it drop to the page.
-    if (hint.current?.contains(document.activeElement)) {
-      anchor.current?.parentElement?.querySelector<HTMLElement>('[aria-current="true"]')?.focus();
-    }
-    move('leaving');
-    leaving.current = window.setTimeout(() => move('hidden'), LEAVE_MS);
-  };
+  // Dismissed here, or wherever else the mascot is (`guide.ts`): it goes from
+  // here too.
+  useEffect(
+    () =>
+      onGuideDismissed(() => {
+        if (phaseNow.current === 'hidden' || phaseNow.current === 'leaving') {
+          return;
+        }
+        // The keyboard was on something of the mascot's that is about to go:
+        // hand the focus to the dot of the shot on screen, the control it was
+        // standing beside, rather than let it drop to the page.
+        if (hint.current?.contains(document.activeElement)) {
+          anchor.current?.parentElement
+            ?.querySelector<HTMLElement>('[aria-current="true"]')
+            ?.focus();
+        }
+        move('leaving');
+        window.clearTimeout(leaving.current);
+        leaving.current = window.setTimeout(() => move('hidden'), LEAVE_MS);
+      }),
+    [move]
+  );
 
   /**
    * Whether the browser draws the focus on `el`: its own answer to "is this the
@@ -252,7 +272,9 @@ export function CarouselGuide({ caption, index, onNext, onHold }: CarouselGuideP
   };
 
   return (
-    <div ref={anchor} className={classes.anchor}>
+    // Marked for `ScrollGuide`, which watches the same row to know when the
+    // mascot belongs here and when in the corner of the window.
+    <div ref={anchor} className={classes.anchor} data-guide-anchor="">
       {phase !== 'hidden' && (
         <div className={classes.lane}>
           <div
@@ -300,7 +322,7 @@ export function CarouselGuide({ caption, index, onNext, onHold }: CarouselGuideP
                   type="button"
                   className={classes.dismiss}
                   aria-label="Dismiss"
-                  onClick={dismiss}
+                  onClick={dismissGuide}
                 >
                   <IconX size={12} stroke={2.2} />
                 </button>
