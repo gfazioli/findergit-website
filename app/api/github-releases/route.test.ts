@@ -24,6 +24,7 @@ beforeEach(() => {
   fetchMock.mockReset();
   global.fetch = fetchMock as unknown as typeof fetch;
   jest.spyOn(console, 'error').mockImplementation(() => {});
+  jest.spyOn(console, 'warn').mockImplementation(() => {});
 });
 
 afterEach(() => jest.restoreAllMocks());
@@ -31,6 +32,11 @@ afterEach(() => jest.restoreAllMocks());
 describe('GET /api/github-releases, when GitHub refuses', () => {
   it('sends a spent quota on as a 429', async () => {
     fetchMock.mockResolvedValue(github(403, { 'x-ratelimit-remaining': '0' }));
+    expect((await GET(visit())).status).toBe(429);
+  });
+
+  it('sends a secondary limit on as a 429', async () => {
+    fetchMock.mockResolvedValue(github(403, { 'retry-after': '60' }));
     expect((await GET(visit())).status).toBe(429);
   });
 
@@ -42,6 +48,27 @@ describe('GET /api/github-releases, when GitHub refuses', () => {
   it('keeps a 403 that is not about the quota', async () => {
     fetchMock.mockResolvedValue(github(403, { 'x-ratelimit-remaining': '42' }));
     expect((await GET(visit())).status).toBe(403);
+  });
+
+  // With a token, a rate limit is answered as it is: asking again without the token
+  // spends a slot of the anonymous quota on a request GitHub has just refused.
+  it.each<Record<string, string>>([{ 'x-ratelimit-remaining': '0' }, { 'retry-after': '60' }])(
+    'does not ask again without the token after a rate limit (%o)',
+    async (headers) => {
+      process.env.GITHUB_TOKEN = 'token';
+      fetchMock.mockResolvedValue(github(403, headers));
+      expect((await GET(visit())).status).toBe(429);
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+    }
+  );
+
+  it('asks again without a token GitHub did not accept', async () => {
+    process.env.GITHUB_TOKEN = 'token';
+    fetchMock
+      .mockResolvedValueOnce(github(401))
+      .mockResolvedValueOnce(new Response('[]', { status: 200 }));
+    expect((await GET(visit())).status).toBe(200);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 
   // "Cubot" phones carry "bot" in their user agent: a reader, refused, must not be

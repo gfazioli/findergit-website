@@ -90,6 +90,22 @@ describe('useReleaseNotes, when the releases route refuses', () => {
     expect(result.current.data).toEqual([]);
   });
 
+  it('says a refused revalidation when it had no release to show', async () => {
+    fetchMock
+      .mockResolvedValueOnce(answer(200, { releases: [], status: 'ok' }))
+      .mockResolvedValue(answer(429, { error: 'Too Many Requests' }));
+
+    const { result } = renderHook(() => useReleaseNotes([]), { wrapper });
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+    expect(result.current.error).toBeNull();
+
+    await act(async () => {
+      window.dispatchEvent(new Event('focus'));
+      await pause(50);
+    });
+    await waitFor(() => expect(result.current.error).toBe(RATE_LIMIT));
+  });
+
   it('keeps what it showed when asking again on focus is refused', async () => {
     const shown = { id: 1, tag_name: 'v1.0.0', body: 'Notes.' } as unknown as Release;
     fetchMock
