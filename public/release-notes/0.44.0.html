@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.44.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.44.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.44.0 — Cleaning: free the space your developer tools can rebuild</p>
+<h2>Highlights</h2>
+<ul>
+<li>
+<p><strong>A new Cleaning page.</strong> It sits under Account in the sidebar and finds the folders nobody wrote, the ones a tool makes again on its next run. On the Mac it was built on, the first scan found about 30 GB. The first visit scans your root folders, your home folder and every repository, and the cards land and count up as the results arrive. There are eight cards:</p>
+<ul>
+<li><strong>node_modules</strong>, for every JavaScript project.</li>
+<li><strong>Build output</strong>: <code class="notranslate">.next</code>, <code class="notranslate">.nuxt</code>, <code class="notranslate">.svelte-kit</code>, <code class="notranslate">.turbo</code>, <code class="notranslate">.parcel-cache</code>, <code class="notranslate">dist</code>, <code class="notranslate">build</code>, <code class="notranslate">out</code>, a Rust or Maven <code class="notranslate">target</code>, and more.</li>
+<li><strong>Swift &amp; Xcode</strong>: SwiftPM's <code class="notranslate">.build</code>, CocoaPods, DerivedData, Xcode previews, device-support files, simulator caches, and simulators whose runtime is gone.</li>
+<li><strong>Package caches</strong>: npm, Yarn, pnpm, bun, Homebrew, Composer, CocoaPods, pip and Deno.</li>
+<li><strong>Toolchains</strong>: Go's build and module caches, Cargo, Gradle and Maven.</li>
+<li><strong>Python</strong>: virtual environments and the caches of pytest, mypy and Ruff.</li>
+<li><strong>Git objects</strong>: loose objects and garbage in each repository, repacked with Optimize, which keeps all history.</li>
+<li><strong>Other caches</strong>: browsers downloaded for tests, node-gyp headers, Electron and JetBrains caches.</li>
+</ul>
+</li>
+<li>
+<p><strong>You choose, folder by folder.</strong> Open a card to see each folder with its project, its size and when it last changed, then tick what to clean. Only what is safe, not in use and, inside a project, untouched for 30 days starts ticked. Anything else shows a badge with the reason and is left for you to decide:</p>
+<ul>
+<li>a folder a dev server, a watcher or a terminal is working in, a monorepo's root included;</li>
+<li>a folder changed recently;</li>
+<li>a folder slower to get back, such as an Xcode <code class="notranslate">build</code> or a virtual environment.</li>
+</ul>
+<p>A folder you untick stays unticked when you scan again.</p>
+</li>
+<li>
+<p><strong>Only what a project can rebuild.</strong> Inside a repository, a folder is listed only when that repository's own <code class="notranslate">.gitignore</code> ignores it and it sits next to its project file, such as the <code class="notranslate">package.json</code> beside a <code class="notranslate">node_modules</code>. A folder holding a file you added to Git is never listed, nor is a symbolic link or anything inside <code class="notranslate">.git</code>. Each folder is checked again right before it is deleted: still ignored, still a real folder, still inside your root folder, and not something that started being used after you confirmed.</p>
+</li>
+<li>
+<p><strong>Honest sizes.</strong> Each size is what deleting that folder alone gives back. Package managers that fill <code class="notranslate">node_modules</code> from a shared store leave files the store still holds, so those are never promised as free space. The bar under the total shows your startup disk now and after cleaning.</p>
+</li>
+<li>
+<p><strong>Deleted for good, with a Stop.</strong> After one confirmation the ticked folders go, largest first, so stopping halfway has already freed the most it could. They are deleted, not moved to the Trash, because freeing the space is the point. A cache whose own tool knows it better is cleaned by that tool. Homebrew's downloads are emptied directly, never with a cleanup that would also remove old versions of your formulae. The result shows on the page and in the Activity panel.</p>
+</li>
+</ul>
+<h2>Under the hood</h2>
+<ul>
+<li><strong>Finding folders.</strong> The walk uses <code class="notranslate">fts</code> and follows a root folder that is itself a link, but nothing below it.</li>
+<li><strong>Ignore check.</strong> Each candidate inside a repository goes through that repository's own <code class="notranslate">git check-ignore</code>. A home folder that is itself a repository (dotfiles) vouches for nothing.</li>
+<li><strong>Sizes.</strong> A file's size is its APFS private size (<code class="notranslate">ATTR_CMNEXT_PRIVATESIZE</code>), so blocks shared through hard links or clones are not counted. A 327 MB pnpm store measured 95 MB of its own.</li>
+<li><strong>In use.</strong> A project is in use when a process's working directory is inside its repository, read with <code class="notranslate">libproc</code>. FinderGit's own <code class="notranslate">git</code> processes, which run inside the repositories it watches, are left out. Xcode, Simulator and a running <code class="notranslate">brew</code> are checked for the caches they hold.</li>
+<li><strong>Tool cleanups.</strong> <code class="notranslate">pnpm store prune</code>, <code class="notranslate">go clean</code> and <code class="notranslate">npm cache clean</code> are pointed at exactly the folder that was measured.</li>
+<li><strong>Simulators.</strong> They are deleted by the UDIDs that were measured, after <code class="notranslate">simctl</code> confirms again that they are still unavailable.</li>
+<li><strong>Safety net.</strong> Every path is validated against the catalog that produced it before anything is removed.</li>
+</ul>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.44.0.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
