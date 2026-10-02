@@ -2,6 +2,43 @@ import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import { plainRelease } from './plain-release';
 
+/**
+ * The route refused: it answers `{ error }` with GitHub's status, a 403 or 429 for
+ * a rate limit. The fetcher used to hand any answer to `res.json()`, so that body
+ * arrived as SWR `data` and was read as a list with no releases in it (#68).
+ */
+export class ReleasesRefused extends Error {
+  readonly status: number;
+
+  constructor(status: number) {
+    super(`GitHub releases: HTTP ${status}`);
+    this.name = 'ReleasesRefused';
+    this.status = status;
+  }
+}
+
+async function fetchReleaseList(url: string) {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new ReleasesRefused(res.status);
+  }
+  return res.json();
+}
+
+/**
+ * What the page says when the fetch failed. Always a string: the Alert renders
+ * it as a child, and an `Error` there makes React throw. A rate limit is read
+ * from the status, never from the body's text.
+ */
+export function refusalMessage(err: unknown): string {
+  if (err instanceof ReleasesRefused) {
+    return err.status === 403 || err.status === 429
+      ? 'Rate limit exceeded. Please try again later.'
+      : `The server answered HTTP ${err.status}. Please try again later.`;
+  }
+  return 'The release notes could not be reached. Please try again later.';
+}
+
 export interface Author {
   login: string;
   id: number;
@@ -68,11 +105,9 @@ export interface TOC {
  * reach GitHub -- falls back to fetching at runtime, as the page always did.
  */
 export function useReleaseNotes(initial: Release[] = []) {
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
   const prebuilt = initial.length > 0;
 
   const [compiledReleases, setCompiledReleases] = useState<Release[]>(initial);
-  const [error, setError] = useState<string | null>(null);
 
   const {
     data,
@@ -80,15 +115,14 @@ export function useReleaseNotes(initial: Release[] = []) {
     isLoading,
   } = useSWR<{
     releases: Release[];
-  }>(prebuilt ? null : '/api/github-releases', fetcher);
+  }>(prebuilt ? null : '/api/github-releases', fetchReleaseList, {
+    // SWR retries a failed fetch without limit by default, backing off to
+    // minutes, and against a rate limit every retry spends the quota it waits on.
+    shouldRetryOnError: false,
+  });
 
   useEffect(() => {
-    if (!prebuilt && data && !isLoading && !error) {
-      if (data.toString() === 'rate limit exceeded') {
-        setError('Rate limit exceeded. Please try again later. Or check your API key.');
-        return;
-      }
-
+    if (!prebuilt && data && !isLoading) {
       const releases: Release[] = Array.isArray(data.releases) ? data.releases : [];
       if (releases.length === 0) {
         // Nothing to compile, so the compiler's chunk is not fetched to compile it.
@@ -118,7 +152,11 @@ export function useReleaseNotes(initial: Release[] = []) {
       };
       fetchReleases();
     }
-  }, [prebuilt, data, isLoading, error]);
+  }, [prebuilt, data, isLoading]);
 
-  return { data: compiledReleases, error: error || swrError, isLoading } as const;
+  // A refused revalidation (SWR asks again when the tab regains focus) keeps the
+  // list it already showed: SWR holds the last good `data` beside the error.
+  const failure = swrError && !data ? refusalMessage(swrError) : null;
+
+  return { data: compiledReleases, error: failure, isLoading } as const;
 }
