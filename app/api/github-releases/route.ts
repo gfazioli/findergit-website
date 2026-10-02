@@ -68,9 +68,14 @@ export async function GET(request: Request) {
         rateReset,
         body: bodyText.slice(0, 300),
       });
+      // A spent quota is told apart HERE, where GitHub's headers are, and sent on as
+      // a 429: the page reads a rate limit off the status alone, and a 403 is also
+      // GitHub refusing for another reason, or the bot filter above (#68).
+      const rateLimited =
+        response.status === 429 || (response.status === 403 && rateRemaining === '0');
       return Response.json(
         { error: response.statusText || 'GitHub releases fetch failed' },
-        { status: response.status }
+        { status: rateLimited ? 429 : response.status }
       );
     }
 

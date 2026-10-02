@@ -3,9 +3,10 @@ import useSWR from 'swr';
 import { plainRelease } from './plain-release';
 
 /**
- * The route refused: it answers `{ error }` with GitHub's status, a 403 or 429 for
- * a rate limit. The fetcher used to hand any answer to `res.json()`, so that body
- * arrived as SWR `data` and was read as a list with no releases in it (#68).
+ * The route refused: it answers `{ error }` with GitHub's status, and a 429 for a
+ * spent quota, which it tells apart from GitHub's other 403s and its own bot filter.
+ * The fetcher used to hand any answer to `res.json()`, so that body arrived as SWR
+ * `data` and was read as a list with no releases in it (#68).
  */
 export class ReleasesRefused extends Error {
   readonly status: number;
@@ -32,7 +33,7 @@ async function fetchReleaseList(url: string) {
  */
 export function refusalMessage(err: unknown): string {
   if (err instanceof ReleasesRefused) {
-    return err.status === 403 || err.status === 429
+    return err.status === 429
       ? 'Rate limit exceeded. Please try again later.'
       : `The server answered HTTP ${err.status}. Please try again later.`;
   }
