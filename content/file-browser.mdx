@@ -28,6 +28,8 @@ Open multiple root folders side-by-side with native macOS tabs (<Kbd>⌘</Kbd> <
 
 When files are created, deleted, or renamed externally — from the terminal, a build step, `git clean`, anything — the tree re-enumerates expanded directories within ~300ms. Your selection and scroll position are preserved across the refresh. You shouldn't need <Kbd>⌘</Kbd> <Kbd>R</Kbd> to see what's on disk.
 
+On macOS 27, pull down from the top of the table to refresh, even when the folder has only a few rows. It runs the same update as the toolbar's **Refresh** button and <Kbd>⌘</Kbd> <Kbd>R</Kbd>: the file tree, repository status and cached repository details. The spinner lets go after at most two seconds while any remaining work continues.
+
 ### Hidden files
 
 By default, FinderGit shows dotfiles (files starting with `.`). You can hide them in **Settings → General → Show hidden files (dotfiles)**, or toggle them from **View → Show Hidden Files** (<Kbd>⌘</Kbd> <Kbd>⇧</Kbd> <Kbd>.</Kbd>) — the open tree updates immediately.

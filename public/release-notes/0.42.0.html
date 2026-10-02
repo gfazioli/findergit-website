@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.42.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.42.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.42.0 — pull to refresh in every list, and action bars that stay in reach</p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>Pull to refresh in the file browser and every repository list.</strong> On macOS 27, pull the file browser, All Repositories, Favorites, Recents, a smart view or a filter down to refresh it, as the Overview and the Account already allow. It is the same Refresh as the toolbar button and ⌘R: the file tree, Git status and the cached repository details. It works on a folder with only a few rows and on a filtered list with nothing in it, and the spinner lets go of the table after at most two seconds while the work carries on. The sidebar stays navigation and has no pull.</li>
+<li><strong>The Issues and Pull Requests action bar stays in reach.</strong> The bar at the top of each tab is pinned while the list or an expanded thread scrolls underneath it, so <strong>New Issue</strong> / <strong>New Pull Request</strong>, <strong>Open on…</strong> and <strong>Refresh</strong> are there at the bottom of a long list too, as the tag controls already were in Release.</li>
+</ul>
+<h2>Under the hood</h2>
+<p>The repository tables take the system's native refresh control, attached to the table's own scroll view, with vertical elasticity allowed so a short or empty table can still be pulled; a scroll view that already carries a refresh controller is left alone. Only the content table takes it: a test mirrors the window, with a sidebar list and a detail table side by side, and checks the sidebar never does, including when the table is created after the window is already on screen.</p>
+<p>The Issues and Pull Requests action bars are pinned section headers of the detail panel's scroll view, the same construction as the Release tab, over an opaque backing tinted like the tab so rows pass under the bar instead of showing through it.</p>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.42.0.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>

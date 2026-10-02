@@ -148,6 +148,8 @@ Removal is never forced. Git refuses to remove a worktree holding uncommitted ch
 
 ## Issues and Pull Requests
 
+The action bar stays pinned below the tab strip as you scroll through the list or an expanded thread. **New Issue** / **New Pull Request**, **Open on…** and **Refresh** remain within reach, as the tag controls already do in Release.
+
 Each tab carries its open count in the strip — a small badge beside the tab's name — so a repository says what is waiting on it before you open either tab. The number is the forge's own count of open items — the same one behind the file browser's Issues and PRs columns, read from the same place, so it costs nothing extra for a repository already on screen. A tab with nothing open shows no badge at all (the column still prints its `0`: a column with a heading needs a cell, a tab is quieter without one), and neither does a forge that has no such counter — Bitbucket retired its issue tracker, so its Issues tab stays bare rather than claiming zero.
 
 Both tabs share the same row shape:
@@ -282,4 +284,3 @@ A badge appears only when the forge actually reported it. GitLab has no draft or
 A release whose tag is not in your clone is **not** an orphan: it gets an ordinary row, marked "not fetched", because the tag does exist — just not here. What lands in the separate section at the top is the genuinely stranded kind, typically a release left as a draft after its tag was deleted.
 
 **"No release" is only ever said when it can be proved.** If the list came back short, or a refresh is in flight, or it failed, the count carries a **+** and no row asserts an absence — because the sentence matters: deleting a tag on GitHub turns its release into a draft, and a wrong "nothing else is affected" is how you find that out afterwards.
-
