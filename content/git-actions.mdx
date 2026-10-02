@@ -43,6 +43,10 @@ Every action button adapts its appearance to show you what's happening:
 
 A brief confirmation banner (green) or error banner (red) also appears just under the action bar for a few seconds.
 
+### One action per repository, in every window
+
+A repository runs one action at a time across the whole app, not only in the window you are looking at. With the same repository open in two windows or two window tabs, a Fetch in one and a Pull in the other can no longer reach its folder together: the second is refused with an orange note under the action bar, *"Another action is running on this repository. Try again when it finishes."* Worktree and tag actions take part too, and when one of them is what is running, the note names it. The [automatic fetch](/docs/settings#auto-fetch) is the exception: it steps aside for anything you start instead of refusing it.
+
 ### Stopping something that's taking too long
 
 Once **Fetch**, **Pull** or **Push** has been running for three seconds, its button becomes a stop control — the label gains a stop icon next to the elapsed time, and clicking it ends the operation. The delay is deliberate: without it, a double-click on Fetch would cancel the fetch you just started.
