@@ -1,5 +1,20 @@
 import config from '@/config';
 
+/**
+ * Whether GitHub refused for a rate limit, by its own rule ("Rate limits for the REST
+ * API"): a primary limit is a 403 or 429 with `x-ratelimit-remaining: 0`, a secondary
+ * one a 403 or 429 that may carry `retry-after` instead. Any other 403 is a refusal
+ * that waiting does not fix.
+ */
+function isRateLimit(response: Response): boolean {
+  return (
+    response.status === 429 ||
+    (response.status === 403 &&
+      (response.headers.get('x-ratelimit-remaining') === '0' ||
+        response.headers.has('retry-after')))
+  );
+}
+
 export async function GET(request: Request) {
   try {
     const userAgent = request.headers.get('user-agent');
@@ -36,9 +51,8 @@ export async function GET(request: Request) {
         ...fetchOptions,
         headers: { ...baseHeaders, Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },
       });
-      const rateRemaining = response.headers.get('x-ratelimit-remaining');
       const shouldFallback =
-        response.status === 401 || (response.status === 403 && rateRemaining !== '0');
+        response.status === 401 || (response.status === 403 && !isRateLimit(response));
       if (shouldFallback) {
         // Drain the body to release the undici connection before refetching.
         await response.text();
@@ -68,14 +82,12 @@ export async function GET(request: Request) {
         rateReset,
         body: bodyText.slice(0, 300),
       });
-      // A spent quota is told apart HERE, where GitHub's headers are, and sent on as
-      // a 429: the page reads a rate limit off the status alone, and a 403 is also
-      // GitHub refusing for another reason, or the bot filter above (#68).
-      const rateLimited =
-        response.status === 429 || (response.status === 403 && rateRemaining === '0');
+      // A rate limit is told apart HERE, where GitHub's headers are, and sent on as
+      // a 429: the page reads it off the status alone, and a 403 is also GitHub
+      // refusing for another reason, or the bot filter above (#68).
       return Response.json(
         { error: response.statusText || 'GitHub releases fetch failed' },
-        { status: rateLimited ? 429 : response.status }
+        { status: isRateLimit(response) ? 429 : response.status }
       );
     }
 

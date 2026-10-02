@@ -156,8 +156,9 @@ export function useReleaseNotes(initial: Release[] = []) {
   }, [prebuilt, data, isLoading]);
 
   // A refused revalidation (SWR asks again when the tab regains focus) keeps the
-  // list it already showed: SWR holds the last good `data` beside the error.
-  const failure = swrError && !data ? refusalMessage(swrError) : null;
+  // list it already showed. With nothing on screen the refusal is said: keyed on SWR
+  // holding an answer, an empty one hid it (CodeRabbit).
+  const failure = swrError && compiledReleases.length === 0 ? refusalMessage(swrError) : null;
 
   return { data: compiledReleases, error: failure, isLoading } as const;
 }
