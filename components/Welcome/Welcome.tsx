@@ -24,6 +24,7 @@ import {
   IconLanguage,
   IconGitMerge,
   IconLayoutColumns,
+  IconBrush,
 } from '@tabler/icons-react';
 import {
   Box,
@@ -557,6 +558,15 @@ const features: Feature[] = [
     color: 'cyan',
     href: '/docs/account',
     since: '0.13.0',
+  },
+  {
+    icon: IconBrush,
+    title: 'Cleaning',
+    description:
+      'Find the node_modules, build output and tool caches your projects can rebuild on their own, and free the space in one go.',
+    color: 'teal',
+    href: '/docs/cleaning',
+    since: '0.44.0',
   },
   {
     icon: IconStar,
