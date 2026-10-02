@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.41.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.41.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.41.0 — zoom that reaches the whole window, and a sidebar that keeps its icons</p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>Zoom now reaches the whole window.</strong> View → Zoom In, Zoom Out and Actual Size (⌘+, ⌘− and ⌘0) used to change the file tree alone. They now scale the file browser, All Repositories, Favorites, Recents, the smart views, the filters and the Overview and Account dashboards: text, rows, cards and the contribution calendar together, while the sidebar and the toolbar stay put.</li>
+<li><strong>Familiar steps, from 75% to 300%.</strong> The same levels Safari uses. <strong>Settings → General</strong> offers them as a <strong>Zoom</strong> menu in place of the tree's text-size slider, and a tree you had set larger opens at the zoom that matches it. At either end of the range the menu item that would do nothing is disabled.</li>
+</ul>
+<h2>Bug fixes</h2>
+<ul>
+<li><strong>Zoom Out and Actual Size work again.</strong> The rows already on screen ignored a zoom change until the folder was opened again, the top row most visibly, so after zooming in there was no way back short of leaving the folder. Every step now redraws what you are looking at, both ways, and rows get shorter again even in a folder or a list you opened while zoomed in.</li>
+<li><strong>A selected row in the sidebar keeps its icon.</strong> Overview, Account and Behind drew theirs in the same blue as the selection, so it vanished the moment you picked them. A selected row's icon turns white now, as in the Finder, and keeps its color while the window is in the background.</li>
+<li><strong>The contribution calendar on the Account</strong> no longer breaks the name of a month over two lines when only one of its weeks is in view.</li>
+</ul>
+<h2>Under the hood</h2>
+<p>The zoom is one observable model that every cell reads. A SwiftUI <code class="notranslate">Table</code> redraws a visible cell for what the cell reads, never for what its column closure captured, which is why the old <code class="notranslate">@AppStorage</code> font size left the rows on screen unchanged: four Zoom Outs moved the setting from 17 to 13 points and the tree stayed pixel for pixel the same.</p>
+<p>Text styles do not scale on macOS by themselves, and scaling the picture draws text at actual size and enlarges the bitmap, visibly soft at 150%. So the zoom scales the fonts, at each text style's own size and weight, and the sizes laid out round them. At 100% everything renders exactly as before.</p>
+<p>Two <code class="notranslate">Table</code> behaviours shaped the row heights. The table reads its minimum row height once, when it is created, so the zoomed minimum lives on each row's first cell. And a table created after its window is already on screen leaves a stale ideal-height constraint pair on its first-column cells, so its rows could grow but never get shorter than they were born; a small repair clears the duplicate on each zoom change.</p>
+<p>The screenshot pipeline now refuses to shoot when FinderGit is not the frontmost app.</p>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.41.0.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
