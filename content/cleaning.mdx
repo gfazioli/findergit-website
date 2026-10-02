@@ -1,0 +1,62 @@
+---
+description: "The Cleaning dashboard finds the space your developer tools can rebuild on their own — node_modules, .next and other build output, package caches, DerivedData, Git objects — and frees it."
+---
+
+# Cleaning
+
+A developer's Mac fills up with folders nobody wrote: every JavaScript project's `node_modules`, every Next.js `.next`, Xcode's DerivedData, the download caches of npm, Yarn, Homebrew and Go. They are all **rebuildable** — the tool that made them makes them again on its next run — and together they are often tens of gigabytes.
+
+**Cleaning** finds them, shows you what each one weighs, and deletes the ones you tick.
+
+## The first visit scans
+
+Open **Cleaning** under **Account** in the sidebar and FinderGit scans three places at once:
+
+- **Your root folders**, for build folders inside your projects.
+- **Your home folder**, for the caches your tools keep there.
+- **Every repository**, for the loose objects and garbage `git gc` would repack.
+
+The cards fill as the results arrive, their figures counting up. The result stays put while FinderGit is open; press refresh (or pull the page down on macOS 27) to scan again.
+
+## The cards
+
+| Card | What it holds |
+| --- | --- |
+| **node_modules** | The packages each JavaScript project installs. |
+| **Build output** | `.next`, `.nuxt`, `.svelte-kit`, `.turbo`, `.parcel-cache`, `.angular`, `.expo`, `.astro`, `.docusaurus`, and `dist`, `build`, `out`, `coverage`, a Rust or Maven `target`. |
+| **Swift & Xcode** | SwiftPM's `.build`, CocoaPods' `Pods`, DerivedData, Xcode previews, device-support files, simulator caches and simulators whose runtime is gone. |
+| **Package caches** | npm, Yarn (classic and Berry), pnpm, bun, Homebrew, Composer, CocoaPods, pip and Deno. |
+| **Toolchains** | Go's build and module caches, Cargo's registry, Gradle's caches, the Maven repository. |
+| **Python** | Virtual environments (`.venv`, `venv`, `.tox`) and the caches of pytest, mypy and Ruff. |
+| **Git objects** | Loose objects and garbage in each repository. |
+| **Other caches** | Browsers downloaded by Playwright and Puppeteer, node-gyp headers, Electron and JetBrains caches. |
+
+Click a card to open its list below the grid: every folder with its project, its path, its size and when it last changed. The magnifying glass shows it in the Finder.
+
+## What is ticked for you
+
+A folder starts ticked only when all of this is true:
+
+- it is **safe** — the tool rebuilds it with nothing but time lost;
+- it is **not in use** — no program (a dev server, a watcher, a terminal) is working inside its project, and Xcode is closed for DerivedData and previews;
+- inside a project, it has **not changed for 30 days**, so the project you are working on today is left alone.
+
+Three badges say why something is not ticked: **In use**, **Recent**, and **Review** — rebuildable, but slow to get back or easy to still need, such as an Xcode `build` folder, a virtual environment or the Maven repository. You can tick any of them yourself; a choice you make survives the next scan.
+
+## Cleaning
+
+**Clean…** asks once, with the total, and then works through the ticked items largest first, so a **Stop** halfway has already freed the most it could.
+
+- Folders are **deleted for good**, not moved to the Trash: freeing the space is the point, and a `node_modules` in the Trash frees nothing.
+- Caches whose tool knows them better are cleaned **by that tool**: `pnpm store prune` keeps what your projects still link, `go clean -modcache` handles Go's read-only module tree, `brew cleanup` also drops outdated versions. If the tool is not installed, FinderGit empties the folder itself.
+- Repositories are **repacked with `git gc`** — the same Optimize as the [Maintenance](/docs/repo-maintenance) tab, which keeps all history.
+
+The card shows what was freed when it ends, and the result goes to the Activity panel too.
+
+<Callout type="info" emoji="🛡️">
+FinderGit only touches what it recognises. Inside a repository, a folder is listed only if **the repository's own `.gitignore` ignores it** and it sits next to its project file (`package.json` for `node_modules`, `Package.swift` for `.build`). A folder holding a file you added to Git is never listed, nor is a symbolic link, nor anything inside `.git`. Every path is checked again at the moment it is cleaned.
+</Callout>
+
+<Callout type="info" emoji="📏">
+Sizes count what deleting the folder actually gives back. A file another copy still links to — pnpm links every package from its store — is not counted, because removing one link frees nothing.
+</Callout>
