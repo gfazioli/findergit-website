@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.43.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.43.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.43.0 — pull to refresh in the repository detail panel</p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>Pull to refresh in the repository detail panel.</strong> On macOS 27, pull the detail panel down to refresh the tab you are looking at, as the file browser and the repository lists already allow. It works on a short list, an empty result and a load error too, and the spinner lets go after at most two seconds while slower work carries on.</li>
+<li><strong>Each tab refreshes only what it shows.</strong> Overview reloads the forge details, counts, fork information and local worktrees. Unstage, Commits and Branches re-read local status, history or branch lists. Issues and Pull Requests skip the cache and refresh their badges and any expanded thread. Release reloads local tags and forge releases, and repeats the remote-tag check if you had already run it. Maintenance re-runs the disk-usage report, while the expensive history analyses stay opt-in. Trust re-scans the selected repository without changing its trust setting. Pulling never runs Fetch, Pull, Push or a cleanup.</li>
+<li><strong>Release's Refresh button matches the pull.</strong> Besides the forge releases, it now reloads the local tags and repeats a remote-tag check you had already run.</li>
+</ul>
+<h2>Under the hood</h2>
+<p>The detail panel keeps a single scroll view, so the pinned Issues, Pull Requests and Release headers are unchanged. A pull bumps a refresh token passed down the environment. Only the mounted tab reacts to it, including its empty and error states, and a tab opened afterwards does not replay an earlier pull. Each tab reports whether its own load is still running through a preference, which holds the spinner until the work ends or the two-second cap passes, and a refresh already in flight is never started a second time. On macOS 15 and 26 the Refresh buttons remain the way to refresh.</p>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.43.0.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>

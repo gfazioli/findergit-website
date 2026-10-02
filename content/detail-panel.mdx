@@ -26,6 +26,19 @@ They read left to right by what they are about: what you are doing right now, th
 
 The selected tab is filled with the colour its panel starts from, so the two read as one surface rather than a button above a card. The active tab is remembered across selections and across app launches, so the panel always opens where you left it.
 
+## Pull to refresh
+
+On macOS 27, pull down from the top of the detail panel to refresh the selected tab. This works with short lists, empty results and load errors too. The spinner lets go after at most a couple of seconds while slower work continues.
+
+- **Overview** reloads forge metadata, counts, fork information and local worktrees.
+- **Unstage**, **Commits** and **Branches** re-read local status, history or branch lists.
+- **Issues** and **Pull Requests** bypass the cache and refresh their badges and any expanded thread.
+- **Release** reloads local tags and forge releases, and repeats the remote-tag check if it was already loaded.
+- **Maintenance** re-runs the disk-space report; expensive history analyses remain opt-in.
+- **Trust** re-scans the selected repository without changing its trust setting.
+
+Pulling never performs Fetch, Pull, Push or cleanup. The Issue, Pull Request and Release headers remain sticky. On older macOS versions, use the existing refresh buttons.
+
 ## Docked action bar
 
 The bottom edge of the panel carries:
