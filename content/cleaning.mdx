@@ -38,25 +38,25 @@ Click a card to open its list below the grid: every folder with its project, its
 A folder starts ticked only when all of this is true:
 
 - it is **safe** — the tool rebuilds it with nothing but time lost;
-- it is **not in use** — no program (a dev server, a watcher, a terminal) is working inside its project, and Xcode is closed for DerivedData and previews;
+- it is **not in use** — no program (a dev server, a watcher, a terminal) is working inside its repository, a monorepo's root included; Xcode is closed for DerivedData and previews, and the Simulator for its caches;
 - inside a project, it has **not changed for 30 days**, so the project you are working on today is left alone.
 
-Three badges say why something is not ticked: **In use**, **Recent**, and **Review** — rebuildable, but slow to get back or easy to still need, such as an Xcode `build` folder, a virtual environment or the Maven repository. You can tick any of them yourself; a choice you make survives the next scan.
+Three badges say why something is not ticked: **In use**, **Recent**, and **Review** — rebuildable, but slow to get back or easy to still need, such as an Xcode `build` folder, a virtual environment or the Maven repository. You can tick any of them yourself. A folder you untick stays unticked when you scan again; a tick lasts until the next scan, which reads every folder's state afresh.
 
 ## Cleaning
 
 **Clean…** asks once, with the total, and then works through the ticked items largest first, so a **Stop** halfway has already freed the most it could.
 
 - Folders are **deleted for good**, not moved to the Trash: freeing the space is the point, and a `node_modules` in the Trash frees nothing.
-- Caches whose tool knows them better are cleaned **by that tool**: `pnpm store prune` keeps what your projects still link, `go clean -modcache` handles Go's read-only module tree, `brew cleanup` also drops outdated versions. If the tool is not installed, FinderGit empties the folder itself.
+- Caches whose tool knows them better are cleaned **by that tool**, pointed at exactly the folder that was measured: `pnpm store prune` keeps what your projects still link, `go clean -modcache` handles Go's read-only module tree. If the tool is not installed, FinderGit empties the folder itself. Homebrew's downloads are emptied directly — never with `brew cleanup`, which would also uninstall old versions of your formulae.
 - Repositories are **repacked with `git gc`** — the same Optimize as the [Maintenance](/docs/repo-maintenance) tab, which keeps all history.
 
 The card shows what was freed when it ends, and the result goes to the Activity panel too.
 
 <Callout type="info" emoji="🛡️">
-FinderGit only touches what it recognises. Inside a repository, a folder is listed only if **the repository's own `.gitignore` ignores it** and it sits next to its project file (`package.json` for `node_modules`, `Package.swift` for `.build`). A folder holding a file you added to Git is never listed, nor is a symbolic link, nor anything inside `.git`. Every path is checked again at the moment it is cleaned.
+FinderGit only touches what it recognises. Inside a repository, a folder is listed only if **the repository's own `.gitignore` ignores it** and it sits next to its project file (`package.json` for `node_modules`, `Package.swift` for `.build`). A folder holding a file you added to Git is never listed, nor is a symbolic link, nor anything inside `.git`. Every folder is checked again at the moment it is cleaned — that it is still ignored, still next to its project file, still inside a root folder with no link on the way, and that nothing started using it after you confirmed.
 </Callout>
 
 <Callout type="info" emoji="📏">
-Sizes count what deleting the folder actually gives back. A file another copy still links to — pnpm links every package from its store — is not counted, because removing one link frees nothing.
+Sizes count what deleting the folder alone actually gives back. A file another copy still shares — a hard link, or an APFS clone, which is how pnpm and bun fill `node_modules` from their store — is not counted, because removing that copy frees nothing.
 </Callout>
