@@ -464,8 +464,8 @@ function HeroCarousel({ shots }: { shots: HeroShot[] }) {
   );
 }
 
-// The hero rotation — the Overview dashboard leads, the Account follows, then
-// the Repository List; the file browser anchors.
+// The hero rotation — the three dashboards in the sidebar's order (Overview,
+// Account, Cleaning), then the Repository List; the file browser anchors.
 const heroShots: HeroShot[] = [
   {
     src: '/screenshot-hero-overview.png',
@@ -476,6 +476,11 @@ const heroShots: HeroShot[] = [
     src: '/screenshot-hero-account.png',
     alt: 'FinderGit Account — your GitHub profile and contributions at a glance',
     caption: 'Your GitHub account: stars, followers and a year of contributions.',
+  },
+  {
+    src: '/screenshot-hero-cleaning.png',
+    alt: 'FinderGit Cleaning — the node_modules, build output and caches your tools can rebuild, by kind',
+    caption: 'Cleaning: the space your developer tools can rebuild, found and freed.',
   },
   {
     src: '/screenshot-portfolio.png',

@@ -43,6 +43,8 @@ describe('the hero carousel', () => {
     screen
       .getAllByRole('button', { name: /^Show screenshot/ })
       .findIndex((dot) => dot.getAttribute('aria-current') === 'true');
+  /** How many shots the carousel turns through, read off its dots. */
+  const count = () => screen.getAllByRole('button', { name: /^Show screenshot/ }).length;
   const mascot = () => screen.getByRole('button', { name: 'Show the next screenshot' });
   /** Bring the mascot in: its own observer watches the row of dots. */
   const guideArrives = () => {
@@ -75,7 +77,7 @@ describe('the hero carousel', () => {
     guideArrives();
     const before = shown();
     fireEvent.click(mascot());
-    expect(shown()).toBe((before + 1) % 4);
+    expect(shown()).toBe((before + 1) % count());
   });
 
   it('holds still while the pointer is on the mascot, and turns again once it leaves', () => {
@@ -88,7 +90,7 @@ describe('the hero carousel', () => {
     expect(shown()).toBe(held);
     fireEvent.mouseLeave(hint);
     wait(5000);
-    expect(shown()).toBe((held + 1) % 4);
+    expect(shown()).toBe((held + 1) % count());
   });
 
   it('tells the mascot in the corner what is on screen, and turns when it asks', () => {
@@ -111,6 +113,9 @@ describe('the hero carousel', () => {
     expect(heard.caption).toMatch(/^Your GitHub account/);
     wait(5000);
     expect(shown()).toBe(2);
+    expect(heard.caption).toMatch(/^Cleaning/);
+    wait(5000);
+    expect(shown()).toBe(3);
     expect(heard.caption).toMatch(/^All your repositories/);
   });
 });
