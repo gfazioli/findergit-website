@@ -86,7 +86,7 @@
 </ul>
 <h2>Under the hood</h2>
 <ul>
-<li>The two footnotes go through <code class="notranslate">String(localized:)</code>, which never applies automatic grammar agreement: only <code class="notranslate">Text</code>'s localized-key path does. The four translations were right because each carries its own plural variations; the English entries now do too. A new test asserts the string the card receives, at one and at more than one, and failed on all four cases before the fix.</li>
+<li>The two footnotes go through <code class="notranslate">String(localized:)</code>, which never applies automatic grammar agreement: <code class="notranslate">Text</code>'s localized-key path and <code class="notranslate">AttributedString(localized:)</code> do. The four translations were right because each carries its own plural variations; the English entries now do too. A new test asserts the string the card receives, at one and at more than one, and failed on all four cases before the fix.</li>
 <li>The Account's legend now shares the heatmap legend keys of the repository Overview, and the two orphaned keys are gone from the catalogue.</li>
 </ul>
 <h2>Install</h2>
