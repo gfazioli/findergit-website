@@ -91,7 +91,7 @@ export default {
     defaultLanguage: 'en',
   },
   app: {
-    version: '0.45.0',
+    version: '0.45.1',
     // Publication date of `version`, UTC, written by release.sh next to the
     // version itself. It is the OFFLINE FALLBACK for the homepage release
     // strip: the live date and the release count come from the GitHub
