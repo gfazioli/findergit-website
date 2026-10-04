@@ -8,11 +8,11 @@ import { Kbd } from '@/components/Kbd';
 
 When you select a repository — in the [Repository List](/docs/repository-list) or the file browser — the detail panel splits into a **tab strip on top**, an **informational body in the middle**, and a **docked action bar pinned at the bottom**. Tabs hold the depth; the action bar holds the affordances that always need to be one click away.
 
-![Detail panel showing the Overview tab — description, stars, topics, contributors, with Fetch/Pull/Push/Refresh docked at the bottom](/screenshot-detail-overview.png)
+![Detail panel showing the Overview dashboard — the repository's pulse, a tile for every count, and a year of activity, with Fetch/Pull/Push/Refresh docked at the bottom](/screenshot-detail-overview.png)
 
 The tabs:
 
-- **Overview** — at-a-glance facts about the repo (description, stars, topics, contributors, latest release) when it has a remote on a forge FinderGit reads, plus the [fork banner](/docs/github-integration#fork-awareness) when the repo is a fork
+- **Overview** — a dashboard of the repository: how alive it is, a tile for every count that opens its tab, a year of activity, its languages, its latest commits and releases, plus the [fork banner](/docs/github-integration#fork-awareness) when the repo is a fork
 - **Unstage** — working-tree changes, the diff, the commit form (including the AI commit button)
 - **Commits** — recent local history from `git log`
 - **Branches** — local and remote branches, with one-click checkout
@@ -30,7 +30,7 @@ The selected tab is filled with the colour its panel starts from, so the two rea
 
 On macOS 27, pull down from the top of the detail panel to refresh the selected tab. This works with short lists, empty results and load errors too. The spinner lets go after at most a couple of seconds while slower work continues.
 
-- **Overview** reloads forge metadata, counts, fork information and local worktrees.
+- **Overview** re-reads the repository's history and tags, forge metadata and counts, fork information and worktrees, and draws its charts again.
 - **Unstage**, **Commits** and **Branches** re-read local status, history or branch lists.
 - **Issues** and **Pull Requests** bypass the cache and refresh their badges and any expanded thread.
 - **Release** reloads local tags and forge releases, and repeats the remote-tag check if it was already loaded.
@@ -50,19 +50,21 @@ Because the bar is docked outside the scroll area, the actions stay reachable fr
 
 ## Overview
 
-The Overview tab paints the forge-side identity of the repo — GitHub, Codeberg, GitLab or Bitbucket; see [GitHub Integration](/docs/github-integration#what-populates-from-github) for what each forge can fill in:
+The Overview tab is a dashboard of the selected repository, and a map of the tabs beside it. Most of it is read from the repository itself, so it fills in for a local-only repo too; a remote on GitHub, Codeberg, GitLab or Bitbucket adds the description, the stars, and the open issues and pull requests (see [GitHub Integration](/docs/github-integration#what-populates-from-github) for what each forge can fill in).
 
-- An **Open on GitHub** button — opens the repo's page in your browser. The label follows the remote's host (GitHub, GitLab, Bitbucket, or Codeberg) and it appears for any repo with a recognized remote, even before the rest of the metadata loads.
-- **Description** at the top
-- A row of stat pills: ★ stars · ⎇ forks · 🏷 latest release · 🔗 homepage. Stars and forks are read-only; the release tag opens the release page on the repo's own forge, and the homepage pill opens the configured homepage URL.
-- **Topic chips** (wrapping onto multiple lines when there are many)
-- **Top contributors** — up to eight avatars, click an avatar to open that user's GitHub profile
+- **The repository at a glance** — how alive it is (*Active*, *Steady*, *Quiet* or *Dormant*, from its newest commit), when its history starts, its latest tag and how many commits sit on top of it, and whether one person wrote it. The headline is the forge's description, or the opening sentence of the README when there isn't one, with the topics under it and an **Open on GitHub** button (the label follows the remote's host). Beside it, the commits of the last 30 days over a 26-week sparkline.
+- **A tile for every count** — Changes, Stashes, Commits, Upstream, Branches, Worktrees, Tags, Issues, Pull Requests, Stars, On Disk and Findings. Each tile wears its tab's colour and icon, and a click opens that tab; Stars opens the repository on its forge. A local-only repo has no Issues, Pull Requests or Stars tiles.
+- **Activity** — the last year as a calendar, one square per day, with the current and the longest streak. Hover a day to read how many commits it holds.
+- **Rhythm** — the same commits by weekday and hour, with the busiest day and the peak hour.
+- **Codebase** — the languages by size, and whether the repository carries a README, a license, a `.gitignore`, a contributing guide, a security policy and CI.
+- **Latest commits** and **Releases** — the five newest commits and the five newest tags as timelines, with how often a release ships and how many commits are still unreleased. A row opens the Commits or Release tab.
+- **Contributors** — who wrote it, with how much, when more than one person did. A solo project is named at the top instead.
 
-If the selected repo doesn't have a remote on a forge FinderGit reads (or the panel can't reach it), the section silently disappears and the tab shows a short hint pointing at where the operational view moved.
+The cards arrive one after another and the charts draw themselves when you open the tab, and again when you refresh. Nothing moves on its own after that, and with Reduce Motion turned on everything is simply there.
 
-See [GitHub Integration](/docs/github-integration) for how to enable these tabs on GitHub, and what Codeberg, GitLab and Bitbucket fill in without any setup.
+The numbers follow the repository as it changes: a commit, a pull, a checkout or a new tag updates them, and the calendar moves to the next day at midnight.
 
-![Overview tab — the Open on GitHub button, stars and forks, and contributors for the selected repo](/screenshot-detail-overview.png)
+![Overview dashboard — the repository's pulse and age above a tile for every count, then a year of activity](/screenshot-detail-overview.png)
 
 ## Unstage
 
