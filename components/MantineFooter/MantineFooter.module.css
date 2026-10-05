@@ -129,6 +129,19 @@
   opacity: 0.5;
 }
 
+/* The publisher line under the colophon: the same small dimmed type. */
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: rem(12px);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
 .shareLabel {
   letter-spacing: 2px;
 }

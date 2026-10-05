@@ -1,0 +1,52 @@
+---
+description: "How findergit.app and the FinderGit app handle personal data: no cookies, no accounts, cookie-free visit statistics, and what the app sends where."
+---
+
+import config from "@/config";
+
+# Privacy policy
+
+_Last updated: 5 October 2026_
+
+The short version: this website sets no cookies and has no accounts, and the FinderGit app keeps your repositories, files and tokens on your Mac. Below is everything that does leave your device, and why.
+
+## Who is responsible
+
+The data controller is **{config.legal.owner}** ({config.legal.brand}), an independent software developer in Italy, VAT number {`IT${config.legal.vatNumber}`}. Write to [hello@undolog.com](mailto:hello@undolog.com) about anything on this page. See also the [Legal notice](/docs/legal).
+
+## This website
+
+- **No cookies, no tracking.** The site sets no cookies and does not follow you across other sites.
+- **Visit statistics.** Visits are counted by privacy-friendly analytics that use no cookies and build no profile of you. What we see is aggregated: pages viewed, the referring site, country, and browser or device type. We use it to learn which pages help.
+- **Server logs.** Like any website, the hosting provider that serves these pages processes your IP address and the details of each request (page, time, browser) to deliver the site and keep it secure, and keeps them for a limited time.
+- **Your browser's local storage.** The site remembers, in your browser only, small choices such as having closed the newsletter prompt or the release banner. None of it is sent to us.
+- **Email.** If you write to us, we use your address and message only to answer you, and keep them no longer than the conversation needs.
+
+## The FinderGit app
+
+- **Update checks.** The app asks this website whether a new version exists (on by default, in Settings → General). Each check is an ordinary web request: it carries your IP address and the app's version, and nothing about your repositories.
+- **AI commit messages, default mode.** When you ask for a message, the staged diff is sent to this website, which passes it to an AI provider and returns the message. The diff is not logged or stored. Your IP address is held in memory for up to an hour, only to enforce the limit of 30 requests per hour. With your own API key, the diff goes straight from your Mac to the provider you chose and never reaches us. See [AI Commit Messages](/docs/ai-commit-messages).
+- **Git hosting.** Pull requests, issues, stars and CI status are read directly from your Mac on GitHub, Codeberg, GitLab or Bitbucket, as described in [GitHub Integration](/docs/github-integration). We never see those requests.
+- **Commit avatars.** With *Show author avatars* on (the default, in Settings → Detail View), the app looks up each commit author's picture on GitHub and, failing that, on Gravatar, which receives a hash of the author's email address. Turn it off to stop these requests.
+
+## Services we link to
+
+Downloads come from GitHub Releases, the newsletter lives on Substack, sponsorships go through GitHub Sponsors and donations through Stripe. If you use them, their own privacy policies apply. They share with us what they normally share with a publisher, for example a subscriber's email address or a donor's name and email, and we use it only for the newsletter or to say thank you.
+
+## Why we may process it
+
+- **Running and protecting the site and the app** (server logs, update checks, the AI rate limit): our legitimate interest in providing a working, secure service.
+- **Understanding which pages help** (visit statistics): our legitimate interest, met without cookies or profiles.
+- **Doing what you ask** (an AI commit message, an answer to your email): providing the service you requested.
+
+## Where your data goes
+
+Our hosting provider and the AI provider may process data outside the European Union, including in the United States, under the safeguards the GDPR requires.
+
+## Your rights
+
+Under the GDPR you can ask to access, correct or delete your personal data, to restrict or object to its processing, and to receive it in a portable format: write to [hello@undolog.com](mailto:hello@undolog.com). You can also lodge a complaint with the Italian data protection authority, the [Garante per la protezione dei dati personali](https://www.garanteprivacy.it/).
+
+## Changes
+
+When this page changes, the date at the top changes with it.
