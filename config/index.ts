@@ -101,4 +101,17 @@ export default {
     minMacOS: '15.0',
     downloadUrl: 'https://github.com/gfazioli/findergit-website/releases/latest',
   },
+  // Who publishes the site, as Italian law asks every VAT-registered owner to
+  // say: the VAT number on the home page (art. 35 DPR 633/72), and name,
+  // contact and VAT number reachable from every page (art. 7 D.Lgs. 70/2003).
+  // The footer's last line reads these, and so do /docs/legal and
+  // /docs/privacy. The contact address (hello@undolog.com) is written in
+  // those two pages as a plain markdown link, which is what gets the docs'
+  // link style (a JSX <a> in MDX gets none), so it is not kept here. The same
+  // values on every Undolog site.
+  legal: {
+    brand: 'Undolog',
+    owner: 'Giovambattista Fazioli',
+    vatNumber: '12343751009',
+  },
 } as const;

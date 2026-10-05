@@ -24,6 +24,7 @@ import {
 import { Logo } from '@/components/Logo/Logo';
 import { NewsletterSignup } from '@/components/NewsletterSignup/NewsletterSignup';
 import { ShareButtons } from '@/components/ShareButtons/ShareButtons';
+import config from '@/config';
 import { AnimateBadge } from './AnimateBadge';
 import { apps, highlights, resources, sponsors } from './links';
 import classes from './MantineFooter.module.css';
@@ -64,7 +65,8 @@ const VerticalLinks = ({ list }: { list: VerticalLink[] }) => {
  * objects: the footer's own deeper ground fading in from the page, the
  * sponsor block as a card with its own edges, and space.
  */
-export const MantineFooter = () => {
+export const MantineFooter = ({ year }: { year: number }) => {
+  const { legal } = config;
   return (
     <footer className={classes.contentFooter}>
       <Container className={classes.footer} size="lg">
@@ -261,6 +263,35 @@ export const MantineFooter = () => {
             <ShareButtons />
           </Group>
         </div>
+
+        {/*
+          Who publishes the site, on every page: brand, owner and VAT number,
+          with the legal notice and the privacy policy one click away (see
+          `legal` in config/index.ts). The year comes from the layout, which
+          renders on the server, so a build in late December cannot hydrate
+          with a different year. Separators sit in template literals: a space
+          next to JSX text across lines can vanish, and oxfmt removes an
+          explicit {' '}.
+        */}
+        <Text fz={12} c="dimmed" className={classes.legal}>
+          {`© ${year} ${legal.brand} — ${legal.owner}`}
+          <span className={classes.dot} aria-hidden>
+            ·
+          </span>
+          {`P.IVA ${legal.vatNumber}`}
+          <span className={classes.dot} aria-hidden>
+            ·
+          </span>
+          <Anchor fz={12} href="/docs/legal">
+            Legal
+          </Anchor>
+          <span className={classes.dot} aria-hidden>
+            ·
+          </span>
+          <Anchor fz={12} href="/docs/privacy">
+            Privacy
+          </Anchor>
+        </Text>
       </Container>
     </footer>
   );
