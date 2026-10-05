@@ -1,4 +1,4 @@
-import { render, screen } from '@/test-utils';
+import { render, screen, within } from '@/test-utils';
 import config from '@/config';
 import { MantineFooter } from './MantineFooter';
 
@@ -20,7 +20,15 @@ describe('MantineFooter publisher line', () => {
 
   it('links to the legal notice and the privacy policy', () => {
     render(<MantineFooter year={2026} />);
-    expect(screen.getByRole('link', { name: 'Legal' })).toHaveAttribute('href', '/docs/legal');
-    expect(screen.getByRole('link', { name: 'Privacy' })).toHaveAttribute('href', '/docs/privacy');
+    // Scoped to the line: a footer column may carry a Privacy link of its own.
+    const line = screen.getByText(/P\.IVA/).closest('p') as HTMLElement;
+    expect(within(line).getByRole('link', { name: 'Legal' })).toHaveAttribute(
+      'href',
+      '/docs/legal'
+    );
+    expect(within(line).getByRole('link', { name: 'Privacy' })).toHaveAttribute(
+      'href',
+      '/docs/privacy'
+    );
   });
 });
