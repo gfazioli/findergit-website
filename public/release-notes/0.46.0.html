@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.46.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.46.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.46.0 — Take the Overview with you</p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>Export the Overview.</strong> A new <strong>Export</strong> menu beside <strong>Open on GitHub</strong> saves a repository's Overview as a PNG or a PDF, or copies it as an image to paste anywhere. The picture is the whole dashboard at full height and two columns wide, whatever the size of the window, with the repository's name, its branch and the date on top, in the app's light or dark appearance.</li>
+<li><strong>Refresh follows the pull.</strong> In the Issues, Pull Requests and Release tabs, Refresh — and the scan buttons in Trust and Maintenance — now turns off and shows its own spinner while you pull the panel down to refresh it, and while the tab is loading. No more spinner above the content next to a button that still looks ready.</li>
+</ul>
+<h2>Bug fixes</h2>
+<ul>
+<li><strong>English plurals.</strong> Several counts read wrong in English, because the automatic grammar agreement takes "commit" for a verb: "1 commits", "3 local commit", "3 linked worktree", "3 of these has a releases". Every count now carries its own English singular and plural, including the diverged tooltip on the branch badge, which showed its formatting code instead of a sentence.</li>
+<li>The Release tab's Refresh now waits for everything its refresh waits for (the tag list and the check against the remote, not only the releases), and Trust's <strong>Scan again</strong> can no longer be clicked a second time while a scan runs.</li>
+</ul>
+<h2>Under the hood</h2>
+<ul>
+<li>The export draws a copy of the dashboard in an off-screen window, with Liquid Glass off (its vibrant pass does not survive a snapshot) and every entrance at rest, and measures it there. The PDF holds the same bitmap, lossless: both vector routes (<code class="notranslate">dataWithPDF</code> and <code class="notranslate">ImageRenderer</code>) were tried and drew an empty page or solid discs where the glows are.</li>
+<li>The test suite no longer runs the app's own session: hosted tests used to open the saved landing and fetch the developer's own repositories at launch. Fixture git now runs off the main actor, and the app tests take about 20 seconds instead of 65.</li>
+</ul>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.46.0.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
