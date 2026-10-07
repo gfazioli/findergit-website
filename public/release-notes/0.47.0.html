@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.47.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.47.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.47.0 — Make it look your way</p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>A new Appearance pane.</strong> Settings now has <strong>Appearance</strong>, right after General, with everything that changes how FinderGit looks without changing what it does: where the detail panel opens (<strong>On the right</strong> or <strong>At the bottom</strong>, the same switch as <strong>View → Detail at Bottom</strong>), the zoom, the rows of the sidebar, the labels under compact action buttons, and what the commit list shows. The Detail View pane is gone, and searching Settings for "detail view" still finds its options.</li>
+<li><strong>A sidebar you can tidy.</strong> Library, Smart Views, Filters and Root Folders now collapse from their headers, the way Finder's do, and stay that way. Rows you never use, such as a forge you don't host on or a smart view you don't need, can leave the sidebar from their context menu (<strong>Hide from Sidebar</strong>) or from <strong>Settings → Appearance</strong>. There, every row is a tile with its own glyph, beside a live miniature of your sidebar that redraws as you click. Point at a tile and its row lights up; point at a hidden one and a faded row shows where it would come back. <strong>All Repositories</strong> always stays, and is where a hidden selection lands.</li>
+<li><strong>Detached HEAD, said plainly.</strong> A repository checked out at a commit rather than a branch now shows an orange <strong>detached HEAD</strong> card with that commit in the Branches tab, and the header says "detached HEAD" instead of git's raw wording. <strong>Switch Branch</strong> stays available to get back on a branch, and during a stopped rebase the card names the operation.</li>
+<li><strong>Buttons that say why.</strong> While a Pull, a Push or a cleanup runs on a repository, in any window, the buttons that would only be refused are dimmed, with the reason in their tooltip, instead of failing when clicked. <strong>Optimize</strong>, <strong>Deep Clean</strong> and <strong>Clean up history</strong> now take the same lock as every other action.</li>
+</ul>
+<h2>Bug fixes</h2>
+<ul>
+<li>The months above the contribution calendar in Account now follow the app's language.</li>
+<li>Refreshing the Overview is no longer silently dropped when a repository turns up mid-refresh, for example when a root folder is added or the watcher finds a new repository: the forced re-fetch carries on where it stopped.</li>
+<li><strong>Diff All</strong>, a comparison in Kaleidoscope, and requests made through the GitHub command-line tool can no longer hang when a helper process leaves something running after it exits.</li>
+</ul>
+<h2>Under the hood</h2>
+<ul>
+<li>One <code class="notranslate">ChildProcess.finish</code> now waits on every child FinderGit starts (git, the GitHub CLI, ksdiff, blob extraction). Output is drained by dispatch sources, the wait is bounded and cancellable, a stop escalates to SIGKILL, and processes still holding the pipes are stopped with it.</li>
+<li>Repository ownership is observed per repository, so an action bar redraws only for its own repository's claims, and never for the scheduled background fetch, which yields to any action.</li>
+<li>The Overview's forced refresh is tracked per repository and settled as each fetch starts, so a drive that supersedes another resumes it instead of cancelling it.</li>
+<li>Plurals that follow one of two counts are String Catalog substitutions that name their count, and the translation tooling refuses a whole-string plural on a two-count key. The app and both test targets build with no warnings.</li>
+<li>A test now checks the Settings search index against the controls in the source. It found one setting nobody could search for: <strong>Discover nested repositories</strong>.</li>
+</ul>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.47.0.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
