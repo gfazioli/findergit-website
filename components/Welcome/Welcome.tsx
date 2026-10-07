@@ -993,7 +993,7 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
               title="Commit messages, generated from your diff"
               description="Click the ✨ button next to the commit field — get a properly-formatted message in about a second. Conventional Commits, optional emoji prefix, three tone presets. Free for everyone, no account, no API key to manage."
               image="/screenshot-feature-ai-commit.png"
-              imageAlt="AI-generated commit message in the FinderGit detail panel"
+              imageAlt="The ✨ AI button beside the commit field, with four changes staged, in the FinderGit detail panel"
               href="/docs/ai-commit-messages"
             />
 
