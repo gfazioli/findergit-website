@@ -128,7 +128,9 @@ export default {
   // - LaunchNest: https://launchnest.io/badge/findergit.svg?variant=listed&theme=light
   //   (a 302 to their generic /brand/badges/listed-light.svg), with its
   //   embedded font cut down to the 13 characters the badge draws: 29.6 KB to
-  //   3.3 KB, rendered identical to the pixel at 2x;
+  //   3.3 KB, rendered identical to the pixel at 2x (fontTools' subsetter,
+  //   flavor woff2, text = the characters of its <text> elements: edit the
+  //   text and the subset has to be cut again from the original);
   // - ProgrammerNeeds: https://programmerneeds.com/api/badge/findergit?v=9.
   // If a directory says it cannot find its badge, put its URL back in `src`.
   directoryBadges: [

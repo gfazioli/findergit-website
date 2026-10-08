@@ -48,9 +48,11 @@ describe('DirectoryBadges', () => {
     const local = config.directoryBadges.filter((badge) => badge.src.startsWith('/'));
     expect(local.length).toBeGreaterThan(0);
     for (const badge of local) {
-      const svg = fs.readFileSync(path.join(process.cwd(), 'public', badge.src), 'utf8');
+      const svg = fs.readFileSync(path.join(__dirname, '../../public', badge.src), 'utf8');
       const [, , w, h] = (svg.match(/viewBox="([^"]+)"/)?.[1] ?? '').split(/[\s,]+/).map(Number);
-      expect(w / h).toBeCloseTo(badge.width / badge.height, 1);
+      // Within 0.5%: LaunchNest's 220x56 is 0.12% off its 590x150, while a
+      // 222x54 typo for ProgrammerNeeds' 220x54 is 0.9% off.
+      expect(Math.abs(badge.width / badge.height / (w / h) - 1)).toBeLessThan(0.005);
     }
   });
 
