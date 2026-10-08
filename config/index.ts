@@ -134,17 +134,11 @@ export default {
   // is used: the stylesheet draws every badge at one height. The ratio has to
   // be the SVG's own (its viewBox): LaunchNest's 220x56 is its 590x150.
   //
-  // A badge that never changes is served from `public/badges/`, which costs
-  // no redirect and no connection to another origin. Product Hunt's stays
-  // remote: it draws the live upvote count. The copies:
-  // - LaunchNest: https://launchnest.io/badge/findergit.svg?variant=listed&theme=light
-  //   (a 302 to their generic /brand/badges/listed-light.svg), with its
-  //   embedded font cut down to the 13 characters the badge draws: 29.6 KB to
-  //   3.3 KB, rendered identical to the pixel at 2x (fontTools' subsetter,
-  //   flavor woff2, text = the characters of its <text> elements: edit the
-  //   text and the subset has to be cut again from the original);
-  // - ProgrammerNeeds: https://programmerneeds.com/api/badge/findergit?v=9.
-  // If a directory says it cannot find its badge, put its URL back in `src`.
+  // `src` is the directory's own URL, exactly as its embed code gives it,
+  // never a copy served from here: the verifier looks for its badge IMAGE as
+  // well as the link. A copy in `public/badges/` (3.3 KB instead of LaunchNest's
+  // 29.6) shipped on 2026-10-08 and LaunchNest's Verify & publish answered
+  // "We couldn't find the badge image on that page" the same day.
   directoryBadges: [
     {
       name: 'Product Hunt',
@@ -157,7 +151,7 @@ export default {
     {
       name: 'LaunchNest',
       href: 'https://launchnest.io/p/findergit',
-      src: '/badges/launchnest-listed-light.svg',
+      src: 'https://launchnest.io/badge/findergit.svg?variant=listed&theme=light',
       alt: 'FinderGit on LaunchNest',
       width: 220,
       height: 56,
@@ -165,7 +159,7 @@ export default {
     {
       name: 'ProgrammerNeeds',
       href: 'https://programmerneeds.com/tools/findergit?utm_source=maker-site&utm_medium=badge&utm_campaign=findergit',
-      src: '/badges/programmerneeds.svg',
+      src: 'https://programmerneeds.com/api/badge/findergit?v=9',
       alt: 'Find FinderGit on ProgrammerNeeds',
       width: 220,
       height: 54,
