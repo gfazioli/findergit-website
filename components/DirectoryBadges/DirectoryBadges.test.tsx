@@ -1,17 +1,20 @@
+import type { ReactNode } from 'react';
 import { renderToString } from 'react-dom/server';
 import { MantineProvider } from '@mantine/core';
 import config from '@/config';
 import { theme } from '../../theme';
-import { DirectoryBadges } from './DirectoryBadges';
+import { DirectoryBadges, ListedOn } from './DirectoryBadges';
+
+const PLACEMENTS = ['hero', 'footer'] as const;
 
 /**
  * Rendered to a string, as the server sends it: a directory that verifies its
  * badge fetches the home page, and runs none of its JavaScript.
  */
-function served() {
+function served(node: ReactNode) {
   return renderToString(
     <MantineProvider theme={theme} env="test">
-      <DirectoryBadges />
+      {node}
     </MantineProvider>
   );
 }
@@ -20,24 +23,48 @@ function attr(tag: string, name: string) {
   return tag.match(new RegExp(`\\s${name}="([^"]*)"`))?.[1];
 }
 
+function anchors(html: string) {
+  return html.match(/<a\s[^>]*>/g) ?? [];
+}
+
 describe('DirectoryBadges', () => {
-  it('serves one link per directory, in config order, each to its listing', () => {
-    const anchors = served().match(/<a\s[^>]*>/g) ?? [];
-    expect(anchors.map((a) => attr(a, 'href')?.replace(/&amp;/g, '&'))).toEqual(
-      config.directoryBadges.map((badge) => badge.href)
+  it('serves one link per directory, in config order, each in its place', () => {
+    for (const placement of PLACEMENTS) {
+      const hrefs = anchors(served(<DirectoryBadges placement={placement} />)).map((a) =>
+        attr(a, 'href')?.replace(/&amp;/g, '&')
+      );
+      expect(hrefs).toEqual(
+        config.directoryBadges
+          .filter((badge) => badge.placement === placement)
+          .map((badge) => badge.href)
+      );
+    }
+  });
+
+  it('keeps Product Hunt alone under the hero, and the rest in the footer', () => {
+    // The user, 2026-10-08: the hero was getting crowded with badges.
+    const names = (placement: string) =>
+      config.directoryBadges.filter((b) => b.placement === placement).map((b) => b.name);
+    expect(names('hero')).toEqual(['Product Hunt']);
+    expect(names('footer')).toEqual(
+      config.directoryBadges.map((b) => b.name).filter((name) => name !== 'Product Hunt')
     );
   });
 
   it('marks no link in a way that a backlink check refuses', () => {
-    for (const anchor of served().match(/<a\s[^>]*>/g) ?? []) {
-      expect(attr(anchor, 'rel')).not.toMatch(/nofollow|sponsored|ugc/);
+    for (const placement of PLACEMENTS) {
+      for (const anchor of anchors(served(<DirectoryBadges placement={placement} />))) {
+        expect(attr(anchor, 'rel')).not.toMatch(/nofollow|sponsored|ugc/);
+      }
     }
   });
 
   it('keeps every badge out of the preload queue', () => {
     // renderToString emits React's image preloads too, a fragment included:
     // with the badges eager, this string starts with one per badge.
-    expect(served()).not.toContain('rel="preload"');
+    for (const placement of PLACEMENTS) {
+      expect(served(<DirectoryBadges placement={placement} />)).not.toContain('rel="preload"');
+    }
   });
 
   it("loads each badge image from its directory's own domain", () => {
@@ -52,14 +79,24 @@ describe('DirectoryBadges', () => {
   });
 
   it('draws each badge lazily, at the aspect ratio of its config', () => {
-    const images = served().match(/<img\s[^>]*>/g) ?? [];
-    expect(images).toHaveLength(config.directoryBadges.length);
-    images.forEach((img, i) => {
-      const badge = config.directoryBadges[i];
-      expect(attr(img, 'loading')).toBe('lazy');
-      expect(attr(img, 'width')).toBe(String(badge.width));
-      expect(attr(img, 'height')).toBe(String(badge.height));
-      expect(attr(img, 'alt')).toBe(badge.alt.replace(/'/g, '&#x27;'));
-    });
+    for (const placement of PLACEMENTS) {
+      const badges = config.directoryBadges.filter((badge) => badge.placement === placement);
+      const images = served(<DirectoryBadges placement={placement} />).match(/<img\s[^>]*>/g) ?? [];
+      expect(images).toHaveLength(badges.length);
+      images.forEach((img, i) => {
+        expect(attr(img, 'loading')).toBe('lazy');
+        expect(attr(img, 'width')).toBe(String(badges[i].width));
+        expect(attr(img, 'height')).toBe(String(badges[i].height));
+        expect(attr(img, 'alt')).toBe(badges[i].alt.replace(/'/g, '&#x27;'));
+      });
+    }
+  });
+
+  it("labels the footer's row and serves its badges", () => {
+    const html = served(<ListedOn />);
+    expect(html).toContain('Listed on');
+    expect(anchors(html)).toHaveLength(
+      config.directoryBadges.filter((badge) => badge.placement === 'footer').length
+    );
   });
 });

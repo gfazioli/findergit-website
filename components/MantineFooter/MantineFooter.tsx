@@ -22,6 +22,7 @@ import {
   Stack,
   Text,
 } from '@mantine/core';
+import { ListedOn } from '@/components/DirectoryBadges/DirectoryBadges';
 import { discordLinkProps } from '@/components/Discord/discord';
 import { Logo } from '@/components/Logo/Logo';
 import { NewsletterSignup } from '@/components/NewsletterSignup/NewsletterSignup';
@@ -247,6 +248,9 @@ export const MantineFooter = ({ year }: { year: number }) => {
             </Group>
           </div>
         </div>
+
+        {/* The directories FinderGit is listed on, except Product Hunt, whose badge is under the hero. */}
+        <ListedOn />
 
         {/* Colophon and sharing on one line, parted by middots, not rules. */}
         <div className={classes.colophon}>
