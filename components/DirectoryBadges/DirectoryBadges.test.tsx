@@ -1,5 +1,3 @@
-import fs from 'fs';
-import path from 'path';
 import { renderToString } from 'react-dom/server';
 import { MantineProvider } from '@mantine/core';
 import config from '@/config';
@@ -42,17 +40,14 @@ describe('DirectoryBadges', () => {
     expect(served()).not.toContain('rel="preload"');
   });
 
-  it('finds every self-hosted badge in public/, drawn at its own aspect ratio', () => {
-    // A missing file is a broken image that no build notices, and a ratio off
-    // the viewBox draws the badge squashed.
-    const local = config.directoryBadges.filter((badge) => badge.src.startsWith('/'));
-    expect(local.length).toBeGreaterThan(0);
-    for (const badge of local) {
-      const svg = fs.readFileSync(path.join(__dirname, '../../public', badge.src), 'utf8');
-      const [, , w, h] = (svg.match(/viewBox="([^"]+)"/)?.[1] ?? '').split(/[\s,]+/).map(Number);
-      // Within 0.5%: LaunchNest's 220x56 is 0.12% off its 590x150, while a
-      // 222x54 typo for ProgrammerNeeds' 220x54 is 0.9% off.
-      expect(Math.abs(badge.width / badge.height / (w / h) - 1)).toBeLessThan(0.005);
+  it("loads each badge image from its directory's own domain", () => {
+    // A directory's verifier looks for its badge image on the page, not only
+    // the link: LaunchNest refused a copy served from this site ("We couldn't
+    // find the badge image on that page", 2026-10-08).
+    const domain = (url: string) => new URL(url).hostname.split('.').slice(-2).join('.');
+    for (const badge of config.directoryBadges) {
+      expect(badge.src).toMatch(/^https:\/\//);
+      expect(domain(badge.src)).toBe(domain(badge.href));
     }
   });
 
