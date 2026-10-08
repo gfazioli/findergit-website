@@ -1025,13 +1025,18 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
                 Download FinderGit and see — and manage — every repository from one native window.
               </Text>
 
+              {/*
+                48px of padding a side only from xs up: on a 320px screen the
+                button measured 321.6px in a 288px column and widened the page
+                by a pixel. With 20px it is 266px there.
+              */}
               <Button
                 href="/download"
                 component="a"
                 leftSection={<IconDownload size={20} />}
                 size="xl"
                 radius="xl"
-                px={48}
+                px={{ base: 'lg', xs: 48 }}
                 mt="md"
               >
                 Download for macOS
