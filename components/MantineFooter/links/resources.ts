@@ -1,3 +1,5 @@
+import config from '@/config';
+
 export const resources = [
   {
     key: 'docs',
@@ -13,6 +15,12 @@ export const resources = [
     key: 'keyboard-shortcuts',
     title: 'Keyboard Shortcuts',
     href: '/docs/keyboard-shortcuts',
+  },
+  {
+    key: 'discord',
+    title: 'Discord',
+    href: config.community.discord,
+    newWindow: true,
   },
   {
     key: 'issues',

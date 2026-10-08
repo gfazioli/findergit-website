@@ -114,6 +114,18 @@ export default {
     owner: 'Giovambattista Fazioli',
     vatNumber: '12343751009',
   },
+  // The community's home since 2026-10-08: the Undolog Discord server, shared
+  // by FinderGit, Netfox, Lancetta and octoscope. The invite never expires.
+  // The Undolog Slack it replaces is being retired: link nothing there. Every page
+  // reads the invite from here, except `content/faq.mdx`, whose plain markdown
+  // link is what gets the docs' link style.
+  community: {
+    discord: 'https://discord.gg/rdWu5yFCR6',
+    // The app version current when the server opened. The home page's "Just
+    // opened" badge decays from it like the feature cards' NEW (`isRecent`):
+    // gone two minor releases on, with no one having to remember it.
+    discordSince: '0.47.0',
+  },
   // The directories FinderGit is listed on, as badges under the hero, in this
   // order. A directory asks for its badge on the site in return for the
   // listing, and some verify it by fetching the home page: the link has to be

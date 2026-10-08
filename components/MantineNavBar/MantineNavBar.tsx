@@ -2,7 +2,8 @@
 
 import { Navbar } from 'nextra-theme-docs';
 import { ActionIcon, Group, Text, Tooltip } from '@mantine/core';
-import { IconCoffee, IconHeartFilled } from '@tabler/icons-react';
+import { IconBrandDiscordFilled, IconCoffee, IconHeartFilled } from '@tabler/icons-react';
+import { DISCORD_BLURPLE, discordLinkProps } from '../Discord/discord';
 import { Logo } from '../Logo/Logo';
 
 export const MantineNavBar = () => {
@@ -27,6 +28,20 @@ export const MantineNavBar = () => {
           key prop" warning. Passing one concrete element neutralises it.
         */}
         <Group gap="sm" wrap="nowrap">
+          {/* First, and in Discord's own colour: the server opened on 2026-10-08. */}
+          <Tooltip label="Join us on Discord" withArrow>
+            <ActionIcon
+              component="a"
+              {...discordLinkProps}
+              size="lg"
+              radius="xl"
+              variant="filled"
+              color={DISCORD_BLURPLE}
+              aria-label="Join us on Discord"
+            >
+              <IconBrandDiscordFilled size={18} />
+            </ActionIcon>
+          </Tooltip>
           {/* GitHub Sponsors, not the footer's #sponsors card it used to scroll to. */}
           <Tooltip label="Sponsor" withArrow>
             <ActionIcon
