@@ -114,4 +114,36 @@ export default {
     owner: 'Giovambattista Fazioli',
     vatNumber: '12343751009',
   },
+  // The directories FinderGit is listed on, as badges under the hero, in this
+  // order. A directory asks for its badge on the site in return for the
+  // listing, and some verify it by fetching the home page: the link has to be
+  // in the served HTML and carry no nofollow, sponsored or ugc. `width` and
+  // `height` are the badge's own, for its aspect ratio; the stylesheet draws
+  // every badge at one height.
+  directoryBadges: [
+    {
+      name: 'Product Hunt',
+      href: 'https://www.producthunt.com/products/findergit/launches/findergit?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-findergit',
+      src: 'https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1126262&theme=neutral&t=1780989836593',
+      alt: "FinderGit - See every Git repo's status from one native Mac window | Product Hunt",
+      width: 250,
+      height: 54,
+    },
+    {
+      name: 'LaunchNest',
+      href: 'https://launchnest.io/p/findergit',
+      src: 'https://launchnest.io/badge/findergit.svg?variant=featured',
+      alt: 'FinderGit on LaunchNest',
+      width: 220,
+      height: 56,
+    },
+    {
+      name: 'ProgrammerNeeds',
+      href: 'https://programmerneeds.com/tools/findergit?utm_source=maker-site&utm_medium=badge&utm_campaign=findergit',
+      src: 'https://programmerneeds.com/api/badge/findergit?v=9',
+      alt: 'Find FinderGit on ProgrammerNeeds',
+      width: 220,
+      height: 54,
+    },
+  ],
 } as const;

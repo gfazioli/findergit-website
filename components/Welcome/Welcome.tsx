@@ -46,6 +46,7 @@ import {
   VisuallyHidden,
 } from '@mantine/core';
 import config from '@/config';
+import { DirectoryBadges } from '@/components/DirectoryBadges/DirectoryBadges';
 import { ShareButtons } from '@/components/ShareButtons/ShareButtons';
 import { ReleaseCadence } from '@/components/ReleaseCadence/ReleaseCadence';
 import {
@@ -801,20 +802,7 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
               <ReleaseCadence cadence={cadence} />
             </Stack>
 
-            <Group justify="center" gap="md" mt="sm">
-              <a
-                href="https://www.producthunt.com/products/findergit/launches/findergit?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-findergit"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1126262&theme=neutral&t=1780989836593"
-                  alt="FinderGit - See every Git repo's status from one native Mac window | Product Hunt"
-                  width={250}
-                  height={54}
-                />
-              </a>
-            </Group>
+            <DirectoryBadges mt="sm" />
             <Group justify="center" mt="sm">
               <ShareButtons />
             </Group>

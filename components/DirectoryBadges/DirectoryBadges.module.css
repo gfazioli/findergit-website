@@ -1,0 +1,33 @@
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mantine-spacing-md);
+}
+
+/*
+ * One height for every badge, whatever size its directory drew it at
+ * (Product Hunt's is 54px tall, LaunchNest's 56px): side by side, badges of
+ * different heights read as a ragged row. The width follows from the
+ * `width`/`height` attributes, which are the badge's own.
+ */
+.badge {
+  display: block;
+  width: auto;
+  height: rem(54px);
+}
+
+/*
+ * On a phone the row breaks anyway; at 40px the first two still share a line
+ * and the third sits under them, rather than three rows of hero.
+ */
+@media (max-width: $mantine-breakpoint-xs) {
+  .badges {
+    gap: var(--mantine-spacing-xs);
+  }
+
+  .badge {
+    height: rem(40px);
+  }
+}
