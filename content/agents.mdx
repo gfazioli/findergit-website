@@ -25,7 +25,8 @@ A `CLAUDE.md` in a folder **above** your repositories counts too: every session 
 The first visit scans; press refresh (or pull the page down on macOS 27) to scan again.
 
 - **The summary** counts the warnings and suggestions, and shows the heaviest start: the place whose sessions load the most before the first prompt, against the limit Claude Code warns at. **Copy Findings** puts every finding on the clipboard as Markdown, ready to paste into a session that will fix them.
-- **Six cards** — Instructions, Rules, Skills, Commands & Subagents, Settings & MCP, Memory — each with its count. Click one to list its files below the grid: each with the agents that read it, its lines and characters, when it loads, and its findings. The two buttons open the file and show it in the Finder.
+- **Background Sessions**, beside the summary: what Claude Code's ended background sessions still keep on disk, how many finished and how many stopped waiting for your answer. Click it to list them below the grid (see [Background sessions](#background-sessions)).
+- **Six cards**: Instructions, Rules, Skills, Commands & Subagents, Settings & MCP, Memory, each with its count. Click one to list its files below the grid, the ones that need fixing first. Narrow the list to one problem with the chips over it, search it, or sort it. Each row shows the agents that read the file, its lines and characters and its findings; click it to see when it loads and what to do. The two buttons open the file and show it in the Finder.
 - **What Claude Code loads at launch** takes one place at a time: every file in the order Claude Code reads it, as a bar against the limit. Imports and the memory index load too; the bar shows them, and the warning does not count them.
 
 ## What it checks
@@ -50,6 +51,21 @@ The first visit scans; press refresh (or pull the page down on macOS 27) to scan
 | **AGENTS.md that Gemini CLI skips** | Gemini CLI installed, and `context.fileName` not naming `AGENTS.md`. |
 | **Permissions and credentials** | A shared `settings.json` with `bypassPermissions` or every shell command allowed, and credential-shaped values in committed settings. |
 | **Paragraphs repeated across repositories** | The same paragraph word for word in several repositories: one copy in your own `CLAUDE.md`, a shared rule or a plugin would do. |
+| **Memory files nothing links to** | A memory file that no link reaches from `MEMORY.md`, directly or through the files it links to. Claude Code loads the index and opens what it points to, so such a file is found only by chance. |
+| **Empty files** | An instruction file, rule, skill or command with nothing in it. |
+
+## Files no agent uses
+
+Some findings mean a file does nothing for any agent today: a memory file nothing links to, an empty file, a plain `.md` in `.cursor/rules`, a rule that matches no file. Open one of those rows and **Move to Trash…** takes it away, after asking. The Finder can put it back, and for a file in git, git shows it as deleted until you commit or restore it.
+
+## Background sessions
+
+Claude Code keeps a folder for every background session, with the files it wrote while it worked, and it stays after the session has ended: on a busy Mac that adds up to gigabytes. The **Background Sessions** card lists the sessions Claude Code itself reports as ended, each with its name, where it was started, when it was last active and what its folder takes up on disk.
+
+Tick the ones to go and press **Remove**: each goes through Claude Code's own `claude rm`. Its folder goes, and so does a worktree it made, unless that worktree holds work not yet pushed, which Claude Code refuses to drop. The conversation stays: `claude --resume` opens it again.
+
+- A session that is still running, or idle and waiting for a follow-up, is never listed, and each removal checks again first.
+- Nothing is ticked for you. **Select Finished** ticks every session that finished and leaves those that stopped waiting for your answer, marked **Waiting**.
 
 ## Settings
 
@@ -68,5 +84,5 @@ Characters are counted the way Claude Code counts them, so the totals match the 
 </Callout>
 
 <Callout type="info" emoji="🛡️">
-Agents only reads. It runs nothing but `git ls-files`, sends nothing anywhere and changes no file: every fix is yours, from **Open** and the Finder.
+Agents reads, and sends nothing anywhere. It changes something only when you ask it to, after a confirmation: **Move to Trash…** on a file no agent uses, and **Remove** on ended background sessions. Every other fix is yours, from **Open** and the Finder.
 </Callout>
