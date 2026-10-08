@@ -133,7 +133,7 @@ export default {
     {
       name: 'LaunchNest',
       href: 'https://launchnest.io/p/findergit',
-      src: 'https://launchnest.io/badge/findergit.svg?variant=featured',
+      src: 'https://launchnest.io/badge/findergit.svg?variant=featured&theme=light',
       alt: 'FinderGit on LaunchNest',
       width: 220,
       height: 56,
