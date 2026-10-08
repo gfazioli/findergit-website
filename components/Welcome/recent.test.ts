@@ -25,6 +25,9 @@ describe('isRecent', () => {
 
   it('does not decorate a feature the shipped version does not have yet', () => {
     expect(isRecent('0.40.0', '0.38.0')).toBe(false);
+    // A later patch of the same minor is ahead too (CodeRabbit, vicenda-website#29).
+    expect(isRecent('0.38.1', '0.38.0')).toBe(false);
+    expect(isRecent('0.38.0', '0.38.1')).toBe(true);
   });
 
   it('refuses malformed versions instead of guessing', () => {
