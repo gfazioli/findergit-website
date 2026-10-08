@@ -78,7 +78,7 @@ One dark scheme, forced, since 2026-09-23 (the user asked for netfox.app's treat
 - `MantineNavBar` — top navigation with FinderGit logo + GitHub link
 - `MantineFooter` — 4-column footer with highlights, resources, ecosystem links
 - `Welcome` — hero section with animated title, features grid, download CTA
-- `DirectoryBadges` — the badges of the directories the app is listed on (Product Hunt and the others), under the hero; the list is `config.directoryBadges`, so a new listing is one entry there. A badge that never changes is a copy in `public/badges/` (how each was made is in the config comment); Product Hunt's stays remote, since it draws the live upvote count. Lazy, so React does not preload a third-party image ahead of the hero, and never `nofollow`/`sponsored`/`ugc`, which a directory checking its backlink refuses
+- `DirectoryBadges` — the listing directories' badges under the hero, from `config.directoryBadges` (the rules are in its comment)
 - `Motion` — scroll reveals, rolling figures and the rim light; `Mascot` — the pixel character that narrates the hero carousel, then follows the scroll down to the footer's Support card (both under **Motion** below)
 - `ReleaseNotes` — renders the releases `content/release-notes.mdx` fetched and compiled at BUILD time (`load-releases.ts`); only when the build got none does it fall back to fetching `/api/github-releases` in the browser
 
