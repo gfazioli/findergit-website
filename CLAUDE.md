@@ -78,7 +78,7 @@ One dark scheme, forced, since 2026-09-23 (the user asked for netfox.app's treat
 - `MantineNavBar` — top navigation with FinderGit logo + GitHub link
 - `MantineFooter` — 4-column footer with highlights, resources, ecosystem links
 - `Welcome` — hero section with animated title, features grid, download CTA
-- `DirectoryBadges` — the listing directories' badges under the hero, from `config.directoryBadges` (the rules are in its comment)
+- `DirectoryBadges` — the listing directories' badges, from `config.directoryBadges`, each in the place its `placement` names: Product Hunt's alone under the hero, the others in the footer's "Listed on" row under the Support card (`ListedOn`, on every page; the user, 2026-10-08: the hero was getting crowded). The rules are in its comment. Moving them measured home 1,581 → 1,558 KiB (LaunchNest's 30 KB badge is no longer fetched at load), perf 87-90 → 90, LCP 1.96-2.28 → 2.07-2.08 s, docs unchanged at 98; the mascot on the Support card clears the row at 1440, 360 and 320
 - `Discord` — the home page's call to action under the FAQ; the invite is `config.community.discord`, also in the navbar, the Community menu, the footer and the FAQ. No Slack: it is being retired
 - `Motion` — scroll reveals, rolling figures and the rim light; `Mascot` — the pixel character that narrates the hero carousel, then follows the scroll down to the footer's Support card (both under **Motion** below)
 - `ReleaseNotes` — renders the releases `content/release-notes.mdx` fetched and compiled at BUILD time (`load-releases.ts`); only when the build got none does it fall back to fetching `/api/github-releases` in the browser

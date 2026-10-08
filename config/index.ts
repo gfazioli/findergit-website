@@ -126,10 +126,14 @@ export default {
     // gone two minor releases on, with no one having to remember it.
     discordSince: '0.47.0',
   },
-  // The directories FinderGit is listed on, as badges under the hero, in this
-  // order. A directory asks for its badge on the site in return for the
-  // listing, and some verify it by fetching the home page: the link has to be
-  // in the served HTML and carry no nofollow, sponsored or ugc. `width` and
+  // The directories FinderGit is listed on, as badges, in this order.
+  // `placement` says where each one goes: Product Hunt's alone stays under the
+  // hero, where its vote count is proof a visitor reads; the others go in the
+  // footer's "Listed on" row, under the Support card, on every page (the user,
+  // 2026-10-08: the hero was getting crowded, and more listings are coming).
+  // A directory asks for its badge on the site in return for the listing, and
+  // some verify it by fetching the home page: the footer is in its served HTML
+  // too. The link has to carry no nofollow, sponsored or ugc. `width` and
   // `height` are the size in the directory's embed code, and only their ratio
   // is used: the stylesheet draws every badge at one height. The ratio has to
   // be the SVG's own (its viewBox): LaunchNest's 220x56 is its 590x150.
@@ -142,6 +146,7 @@ export default {
   directoryBadges: [
     {
       name: 'Product Hunt',
+      placement: 'hero',
       href: 'https://www.producthunt.com/products/findergit/launches/findergit?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-findergit',
       src: 'https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1126262&theme=neutral&t=1780989836593',
       alt: "FinderGit - See every Git repo's status from one native Mac window | Product Hunt",
@@ -150,6 +155,7 @@ export default {
     },
     {
       name: 'LaunchNest',
+      placement: 'footer',
       href: 'https://launchnest.io/p/findergit',
       src: 'https://launchnest.io/badge/findergit.svg?variant=listed&theme=light',
       alt: 'FinderGit on LaunchNest',
@@ -158,6 +164,7 @@ export default {
     },
     {
       name: 'ProgrammerNeeds',
+      placement: 'footer',
       href: 'https://programmerneeds.com/tools/findergit?utm_source=maker-site&utm_medium=badge&utm_campaign=findergit',
       src: 'https://programmerneeds.com/api/badge/findergit?v=9',
       alt: 'Find FinderGit on ProgrammerNeeds',

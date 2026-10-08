@@ -803,7 +803,7 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
               <ReleaseCadence cadence={cadence} />
             </Stack>
 
-            <DirectoryBadges mt="sm" />
+            <DirectoryBadges placement="hero" mt="sm" />
             <Group justify="center" mt="sm">
               <ShareButtons />
             </Group>

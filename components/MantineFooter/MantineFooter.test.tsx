@@ -32,3 +32,23 @@ describe('MantineFooter publisher line', () => {
     );
   });
 });
+
+/**
+ * The footer's "Listed on" row carries every directory badge but Product
+ * Hunt's (that one is under the hero). A directory verifies its badge on the
+ * home page, which this footer closes.
+ */
+describe('MantineFooter directory badges', () => {
+  it('links every footer directory under the Support card', () => {
+    render(<MantineFooter year={2026} />);
+    const footerBadges = config.directoryBadges.filter((badge) => badge.placement === 'footer');
+    expect(footerBadges.length).toBeGreaterThan(0);
+    for (const badge of footerBadges) {
+      expect(screen.getByRole('img', { name: badge.alt }).closest('a')).toHaveAttribute(
+        'href',
+        badge.href
+      );
+    }
+    expect(screen.getByText('Listed on')).toBeInTheDocument();
+  });
+});
