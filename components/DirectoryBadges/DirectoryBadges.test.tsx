@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import { renderToString } from 'react-dom/server';
 import { MantineProvider } from '@mantine/core';
 import config from '@/config';
@@ -38,6 +40,18 @@ describe('DirectoryBadges', () => {
     // renderToString emits React's image preloads too, a fragment included:
     // with the badges eager, this string starts with one per badge.
     expect(served()).not.toContain('rel="preload"');
+  });
+
+  it('finds every self-hosted badge in public/, drawn at its own aspect ratio', () => {
+    // A missing file is a broken image that no build notices, and a ratio off
+    // the viewBox draws the badge squashed.
+    const local = config.directoryBadges.filter((badge) => badge.src.startsWith('/'));
+    expect(local.length).toBeGreaterThan(0);
+    for (const badge of local) {
+      const svg = fs.readFileSync(path.join(process.cwd(), 'public', badge.src), 'utf8');
+      const [, , w, h] = (svg.match(/viewBox="([^"]+)"/)?.[1] ?? '').split(/[\s,]+/).map(Number);
+      expect(w / h).toBeCloseTo(badge.width / badge.height, 1);
+    }
   });
 
   it('draws each badge lazily, at the aspect ratio of its config', () => {
