@@ -19,8 +19,10 @@
 }
 
 /*
- * On a phone the row breaks anyway; at 40px the first two still share a line
- * and the third sits under them, rather than three rows of hero.
+ * On a phone the row breaks anyway. At 36px the first two (167 + 141px, with
+ * the 10px gap 318px) still share a line down to a 360px screen, whose
+ * container leaves 328px, and the third sits under them, rather than three
+ * rows of hero. At 40px they took 352px and broke into three below 385px.
  */
 @media (max-width: $mantine-breakpoint-xs) {
   .badges {
@@ -28,6 +30,6 @@
   }
 
   .badge {
-    height: rem(40px);
+    height: rem(36px);
   }
 }

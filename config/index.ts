@@ -118,8 +118,9 @@ export default {
   // order. A directory asks for its badge on the site in return for the
   // listing, and some verify it by fetching the home page: the link has to be
   // in the served HTML and carry no nofollow, sponsored or ugc. `width` and
-  // `height` are the badge's own, for its aspect ratio; the stylesheet draws
-  // every badge at one height.
+  // `height` are the size in the directory's embed code, and only their ratio
+  // is used: the stylesheet draws every badge at one height. The ratio has to
+  // be the SVG's own (its viewBox): LaunchNest's 220x56 is its 590x150.
   directoryBadges: [
     {
       name: 'Product Hunt',
