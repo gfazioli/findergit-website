@@ -1,0 +1,59 @@
+/*
+ * The footer's sponsor card, in the same glass and rule, with one light of
+ * Discord's blurple from the top-left corner. Painted once: no layer moves.
+ */
+.card {
+  /* DISCORD_BLURPLE in discord.ts; CSS cannot read a TS constant. */
+  --blurple: #5865f2;
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: rem(24px);
+  padding: rem(28px) rem(32px);
+  border: 1px solid var(--fg-rule);
+  border-radius: var(--mantine-radius-lg);
+  background:
+    radial-gradient(
+      120% 160% at 0% 0%,
+      color-mix(in srgb, var(--blurple) 22%, transparent),
+      transparent 55%
+    ),
+    var(--fg-glass);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    padding: rem(24px) rem(20px);
+    text-align: center;
+  }
+}
+
+.mark {
+  display: grid;
+  place-items: center;
+  width: rem(64px);
+  height: rem(64px);
+  border-radius: var(--mantine-radius-lg);
+  background: var(--blurple);
+  color: var(--mantine-color-white);
+}
+
+.copy {
+  max-width: rem(520px);
+}
+
+.heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: rem(10px);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    justify-content: center;
+  }
+}
+
+.button {
+  white-space: nowrap;
+}

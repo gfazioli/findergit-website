@@ -1,5 +1,6 @@
 import { Group } from '@mantine/core';
-import { IconCoffee, IconHeartFilled } from '@tabler/icons-react';
+import { IconBrandDiscordFilled, IconCoffee, IconHeartFilled } from '@tabler/icons-react';
+import config from '@/config';
 
 export default {
   index: {
@@ -25,6 +26,18 @@ export default {
     title: 'Community',
     type: 'menu',
     items: {
+      // First: the community's home since 2026-10-08. It opens in a new tab,
+      // but with no ↗: Nextra draws that only after a string title, and an
+      // icon makes this one JSX, as on the Support menu's items.
+      discord: {
+        title: (
+          <Group component="span" gap={8} wrap="nowrap" align="center">
+            <IconBrandDiscordFilled size={16} />
+            Discord
+          </Group>
+        ),
+        href: config.community.discord,
+      },
       newsletter: {
         title: 'Newsletter',
         href: 'https://findergit.substack.com',
@@ -46,7 +59,8 @@ export default {
     items: {
       // The GitHub Sponsors page itself. This was `#sponsors`, which scrolled
       // to the footer's sponsor card, one step short of the page where
-      // sponsoring happens. External, so Nextra adds its arrow like the coffee.
+      // sponsoring happens. External, but with no ↗: Nextra draws it only
+      // after a string title (seen 2026-10-08, the coffee's too).
       sponsor: {
         title: (
           <Group component="span" gap={8} wrap="nowrap" align="center">
@@ -56,7 +70,7 @@ export default {
         ),
         href: 'https://github.com/sponsors/gfazioli',
       },
-      // External donation link — Nextra keeps the ↗ external indicator.
+      // External donation link; no ↗, for the same reason as the sponsor's.
       coffee: {
         title: (
           <Group component="span" gap={8} wrap="nowrap" align="center">

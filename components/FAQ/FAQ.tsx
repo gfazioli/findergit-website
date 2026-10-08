@@ -10,6 +10,7 @@ import {
   type Icon,
 } from '@tabler/icons-react';
 import { Accordion, Anchor, Text } from '@mantine/core';
+import { discordLinkProps } from '@/components/Discord/discord';
 import classes from './FAQ.module.css';
 
 export const faqItems: { value: string; question: string; answer: ReactNode }[] = [
@@ -202,6 +203,20 @@ export const faqItems: { value: string; question: string; answer: ReactNode }[] 
       'FinderGit watches your folders for changes in real time. When a file changes inside a watched repository, the status is automatically refreshed within ~300ms.',
   },
   {
+    value: 'community',
+    question: 'Is there a FinderGit community?',
+    answer: (
+      <>
+        Yes, on{' '}
+        <Anchor {...discordLinkProps} size="sm">
+          Discord
+        </Anchor>
+        , where FinderGit and its sibling apps live: get help, suggest features, vote on what comes
+        next and talk directly with the maker.
+      </>
+    ),
+  },
+  {
     value: 'bug',
     question: 'I found a bug. How do I report it?',
     answer: (
@@ -211,7 +226,11 @@ export const faqItems: { value: string; question: string; answer: ReactNode }[] 
           bug report
         </Anchor>{' '}
         by email. Include your FinderGit version, macOS version, and steps to reproduce the issue.
-        Screenshots are very helpful!
+        Screenshots are very helpful! Not sure it&apos;s a bug? Ask on{' '}
+        <Anchor {...discordLinkProps} size="sm">
+          Discord
+        </Anchor>{' '}
+        first.
       </>
     ),
   },
@@ -220,7 +239,11 @@ export const faqItems: { value: string; question: string; answer: ReactNode }[] 
     question: 'I have an idea for a new feature. Where can I suggest it?',
     answer: (
       <>
-        We&apos;d love to hear your ideas! Send us a{' '}
+        We&apos;d love to hear your ideas! Share them on{' '}
+        <Anchor {...discordLinkProps} size="sm">
+          Discord
+        </Anchor>
+        , where other users can weigh in, or send us a{' '}
         <Anchor
           href="mailto:feedback@findergit.app?subject=FinderGit%20feature%20request"
           size="sm"

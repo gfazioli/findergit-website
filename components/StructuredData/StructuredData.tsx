@@ -161,14 +161,19 @@ export const FAQ_ENTRIES: { question: string; answer: string }[] = [
       'FinderGit watches your folders for changes in real time. When a file changes inside a watched repository, the status is automatically refreshed within ~300ms.',
   },
   {
+    question: 'Is there a FinderGit community?',
+    answer:
+      'Yes, on Discord, where FinderGit and its sibling apps live: get help, suggest features, vote on what comes next and talk directly with the maker.',
+  },
+  {
     question: 'I found a bug. How do I report it?',
     answer:
-      'Please send us a bug report by email. Include your FinderGit version, macOS version, and steps to reproduce the issue. Screenshots are very helpful!',
+      "Please send us a bug report by email. Include your FinderGit version, macOS version, and steps to reproduce the issue. Screenshots are very helpful! Not sure it's a bug? Ask on Discord first.",
   },
   {
     question: 'I have an idea for a new feature. Where can I suggest it?',
     answer:
-      "We'd love to hear your ideas! Send us a feature request by email and describe what you'd like FinderGit to do. The more detail you provide, the better we can evaluate and prioritize it.",
+      "We'd love to hear your ideas! Share them on Discord, where other users can weigh in, or send us a feature request by email and describe what you'd like FinderGit to do. The more detail you provide, the better we can evaluate and prioritize it.",
   },
 ];
 

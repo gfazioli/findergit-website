@@ -79,6 +79,7 @@ One dark scheme, forced, since 2026-09-23 (the user asked for netfox.app's treat
 - `MantineFooter` — 4-column footer with highlights, resources, ecosystem links
 - `Welcome` — hero section with animated title, features grid, download CTA
 - `DirectoryBadges` — the listing directories' badges under the hero, from `config.directoryBadges` (the rules are in its comment)
+- `Discord` — the home page's call to action under the FAQ; the invite is `config.community.discord`, also in the navbar, the Community menu, the footer and the FAQ. No Slack: it is being retired
 - `Motion` — scroll reveals, rolling figures and the rim light; `Mascot` — the pixel character that narrates the hero carousel, then follows the scroll down to the footer's Support card (both under **Motion** below)
 - `ReleaseNotes` — renders the releases `content/release-notes.mdx` fetched and compiled at BUILD time (`load-releases.ts`); only when the build got none does it fall back to fetching `/api/github-releases` in the browser
 

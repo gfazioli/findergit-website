@@ -47,6 +47,7 @@ import {
 } from '@mantine/core';
 import config from '@/config';
 import { DirectoryBadges } from '@/components/DirectoryBadges/DirectoryBadges';
+import { DiscordCallToAction } from '@/components/Discord/DiscordCallToAction';
 import { ShareButtons } from '@/components/ShareButtons/ShareButtons';
 import { ReleaseCadence } from '@/components/ReleaseCadence/ReleaseCadence';
 import {
@@ -1063,6 +1064,9 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
           </Reveal>
         </Stack>
       </Container>
+
+      {/* ─── Community: the Discord server, for what the FAQ did not answer ─── */}
+      <DiscordCallToAction />
 
       {/* The mascot that follows the scroll down to the footer's Support card */}
       <ScrollGuide tips={tips} />
