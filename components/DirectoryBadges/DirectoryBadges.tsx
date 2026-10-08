@@ -13,7 +13,9 @@ import classes from './DirectoryBadges.module.css';
  * is just no longer queued ahead of what the hero is made of.
  *
  * The links carry no `nofollow`, `sponsored` or `ugc`: a directory that checks
- * its backlink refuses a link marked with any of them.
+ * its backlink refuses a link marked with any of them. And no `noreferrer`,
+ * the site's usual pairing: a directory counts the visits it sends, and
+ * LaunchNest's link has no UTM parameters to count them by.
  *
  * Style props (`mt`, ...) pass through; a `className` is not taken, since the
  * row's own class would replace it.
@@ -22,7 +24,7 @@ export function DirectoryBadges(props: Omit<BoxProps, 'className'>) {
   return (
     <Box {...props} className={classes.badges}>
       {config.directoryBadges.map((badge) => (
-        <a key={badge.name} href={badge.href} target="_blank" rel="noopener noreferrer">
+        <a key={badge.name} href={badge.href} target="_blank" rel="noopener">
           <img
             className={classes.badge}
             src={badge.src}
@@ -30,7 +32,6 @@ export function DirectoryBadges(props: Omit<BoxProps, 'className'>) {
             width={badge.width}
             height={badge.height}
             loading="lazy"
-            decoding="async"
           />
         </a>
       ))}

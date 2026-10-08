@@ -34,7 +34,13 @@ describe('DirectoryBadges', () => {
     }
   });
 
-  it('keeps every badge out of the preload queue, at its own aspect ratio', () => {
+  it('keeps every badge out of the preload queue', () => {
+    // renderToString emits React's image preloads too, a fragment included:
+    // with the badges eager, this string starts with one per badge.
+    expect(served()).not.toContain('rel="preload"');
+  });
+
+  it('draws each badge lazily, at the aspect ratio of its config', () => {
     const images = served().match(/<img\s[^>]*>/g) ?? [];
     expect(images).toHaveLength(config.directoryBadges.length);
     images.forEach((img, i) => {
