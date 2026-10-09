@@ -1,0 +1,88 @@
+---
+description: "Every file your coding agents read before they start: CLAUDE.md, AGENTS.md, rules, skills, memory. What it costs, and what they never read."
+---
+
+# Agents
+
+Coding agents read a stack of files before your first prompt: a `CLAUDE.md` in the repository, another in the folder above it, your own in `~/.claude`, the rules beside them, an `AGENTS.md` for Codex and Cursor, the descriptions of every skill. Each session pays for all of it, and nothing tells you when the stack has grown past what the agent handles well — or when part of it is never read at all.
+
+**Agents** reads those files across every repository, the folders above them and your home folder, shows what each one costs, and points at what to fix.
+
+## What it reads
+
+| Agent | In a repository | In your home folder |
+| --- | --- | --- |
+| **Claude Code** | `CLAUDE.md`, `.claude/CLAUDE.md`, `CLAUDE.local.md`, a subfolder's `CLAUDE.md`, `.claude/rules`, `.claude/skills`, `.claude/commands`, `.claude/agents`, `.claude/settings.json`, `.mcp.json` | `~/.claude/CLAUDE.md`, its rules, skills, commands, agents and settings, and the memory Claude Code keeps per folder |
+| **Codex** | `AGENTS.md` and `AGENTS.override.md`, from the root down | `~/.codex/AGENTS.md` and `config.toml` |
+| **Cursor** | `.cursor/rules`, `.cursorrules`, `AGENTS.md` | |
+| **Copilot** | `.github/copilot-instructions.md`, `.github/instructions`, `AGENTS.md` | |
+| **Gemini CLI** | `GEMINI.md`, or the files `context.fileName` names | `~/.gemini/GEMINI.md` and `settings.json` |
+
+A `CLAUDE.md` in a folder **above** your repositories counts too: every session started below it reads it. So does a workspace folder you start sessions in, when Claude Code keeps a memory for it.
+
+## The page
+
+The first visit scans; press refresh (or pull the page down on macOS 27) to scan again.
+
+- **The summary** counts the warnings and suggestions, and shows the heaviest start: the place whose sessions load the most before the first prompt, against the limit Claude Code warns at. **Copy Findings** puts every finding on the clipboard as Markdown, ready to paste into a session that will fix them.
+- **Background Sessions**, beside the summary: what Claude Code's ended background sessions still keep on disk, how many finished and how many stopped waiting for your answer. Click it to list them below the grid (see [Background sessions](#background-sessions)).
+- **Six cards**: Instructions, Rules, Skills, Commands & Subagents, Settings & MCP, Memory, each with its count. Click one to list its files below the grid, the ones that need fixing first. Narrow the list to one problem with the chips over it, search it, or sort it. Each row shows the agents that read the file, its lines and characters and its findings; click it to see when it loads and what to do. The two buttons open the file and show it in the Finder.
+- **What Claude Code loads at launch** takes one place at a time: every file in the order Claude Code reads it, as a bar against the limit. Imports and the memory index load too; the bar shows them, and the warning does not count them.
+
+## What it checks
+
+**Warnings** are things an agent does wrong or skips today. **Suggestions** are things that cost more than they need to.
+
+| Check | What it finds |
+| --- | --- |
+| **Instructions loaded at launch** | A place whose always-on files pass the size Claude Code warns about at startup. |
+| **One file past the size warning** | A single file past Claude Code's per-file warning. |
+| **Long instruction files** | A `CLAUDE.md`, `AGENTS.md` or `GEMINI.md` past the line target: Claude Code's docs ask for under 200 lines. |
+| **Memory index past what loads** | A `MEMORY.md` past 200 lines or 25 KB, whose newest entries never load. |
+| **AGENTS.md that Claude Code skips** | An `AGENTS.md` beside a `CLAUDE.md`, with paragraphs no file Claude Code reads holds. Claude Code reads `AGENTS.md` only when there is no `CLAUDE.md`, unless the `CLAUDE.md` imports it. |
+| **Imports that load nothing** | An `@path` to no file, one in quotes, one that stops at a space, one more than four imports deep, one outside the repository. |
+| **Frontmatter that doesn't parse** | A rule, skill or subagent whose YAML a parser rejects — `paths: **/*.ts` unquoted is the classic. A rule like that loads in every session. |
+| **Rules that match no file** | A path-scoped rule whose patterns match nothing in the repository. |
+| **Skills, commands and subagents** | A skill with no description, one whose listing is cut at 1,536 characters, a `SKILL.md` past 500 lines, a subagent without a name or description. |
+| **Paths that don't resolve** | A path in backticks found nowhere: not beside the file, not above it, not anywhere in the repository. |
+| **Personal files in git** | `CLAUDE.local.md` or `.claude/settings.local.json` committed. |
+| **Codex's size limit** | `AGENTS.md` files past `project_doc_max_bytes` (32 KiB unless `config.toml` says otherwise), where Codex stops adding them. |
+| **Cursor rules** | A rule past 500 lines, or a plain `.md` in `.cursor/rules`, which Cursor ignores. |
+| **AGENTS.md that Gemini CLI skips** | Gemini CLI installed, and `context.fileName` not naming `AGENTS.md`. |
+| **Permissions and credentials** | A shared `settings.json` with `bypassPermissions` or every shell command allowed, and credential-shaped values in committed settings. |
+| **Paragraphs repeated across repositories** | The same paragraph word for word in several repositories: one copy in your own `CLAUDE.md`, a shared rule or a plugin would do. |
+| **Memory files nothing links to** | A memory file that no link reaches from `MEMORY.md`, directly or through the files it links to. Claude Code loads the index and opens what it points to, so such a file is found only by chance. |
+| **Empty files** | An instruction file, rule, skill or command with nothing in it. |
+
+## Files no agent uses
+
+Some findings mean a file does nothing for any agent today: a memory file nothing links to, an empty file, a plain `.md` in `.cursor/rules`, a rule that matches no file. Open one of those rows and **Move to Trash…** takes it away, after asking. The Finder can put it back, and for a file in git, git shows it as deleted until you commit or restore it.
+
+## Background sessions
+
+Claude Code keeps a folder for every background session, with the files it wrote while it worked, and it stays after the session has ended: on a busy Mac that adds up to gigabytes. The **Background Sessions** card lists the sessions Claude Code itself reports as ended, each with its name, where it was started, when it was last active and what its folder takes up on disk.
+
+Tick the ones to go and press **Remove**: each goes through Claude Code's own `claude rm`. Its folder goes, and so does a worktree it made, unless that worktree holds work not yet pushed, which Claude Code refuses to drop. The conversation stays: `claude --resume` opens it again.
+
+- A session that is still running, or idle and waiting for a follow-up, is never listed, and each removal checks again first.
+- Nothing is ticked for you. **Select Finished** ticks every session that finished and leaves those that stopped waiting for your answer, marked **Waiting**.
+
+## Settings
+
+**Settings › Agents** decides what the page measures against. Every change applies at once, without a new scan.
+
+- **Context window** — 200K or 1M. Claude Code's startup warnings scale with it: past 40,000 characters in one file and 120,000 in all at 200K, past 150,000 for both at 1M.
+- **Flag instruction files over** — the line target, 200 by default.
+- **Agents** — the agents whose files are listed and checked. A file several agents read stays while any of them is on.
+- **Include your home folder's configuration** — list and check `~/.claude`, `~/.codex`, `~/.gemini` and the memory.
+- **Show suggestions** — warnings are always shown.
+- **Flag a paragraph repeated in** — how many repositories must share it, 3 by default.
+- **Checks** — each one on its own switch.
+
+<Callout type="info" emoji="📏">
+Characters are counted the way Claude Code counts them, so the totals match the warning it prints at startup. The two limits it warns at were read from Claude Code itself rather than from its documentation, so a later version may move them.
+</Callout>
+
+<Callout type="info" emoji="🛡️">
+Agents reads, and sends nothing anywhere. It changes something only when you ask it to, after a confirmation: **Move to Trash…** on a file no agent uses, and **Remove** on ended background sessions. Every other fix is yours, from **Open** and the Finder.
+</Callout>
