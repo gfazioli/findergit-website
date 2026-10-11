@@ -32,7 +32,7 @@
  * that is a component.
  */
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
-import { dirname, join, relative, resolve } from 'node:path';
+import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import postcss from 'postcss';
 
@@ -42,7 +42,15 @@ const OUT = join(ROOT, 'theme/mantine.css');
 const CODE = /\.(ts|tsx|js|jsx|mjs|mdx)$/;
 // Hidden folders (.next, .git, .vercel, .claude...) are skipped by name, so the result never depends on
 // what one clone holds that another does not.
-const SKIP_DIRS = new Set(['node_modules', 'public', 'out', 'coverage', 'storybook-static', 'scripts', 'test-utils']);
+const SKIP_DIRS = new Set([
+  'node_modules',
+  'public',
+  'out',
+  'coverage',
+  'storybook-static',
+  'scripts',
+  'test-utils',
+]);
 const TOKEN = /m_[0-9a-f]{6,8}\b/g;
 
 function fail(message) {
@@ -70,7 +78,9 @@ function mantineNames(text, file) {
     fail(`${relative(ROOT, file)} takes all of @mantine/core at once: name the components instead`);
   }
   const names = new Set();
-  for (const m of text.matchAll(/(?:import|export)\s*(type\s+)?(?:[\w$]+\s*,\s*)?\{([^}]*)\}\s*from\s*['"]@mantine\/core['"]/g)) {
+  for (const m of text.matchAll(
+    /(?:import|export)\s*(type\s+)?(?:[\w$]+\s*,\s*)?\{([^}]*)\}\s*from\s*['"]@mantine\/core['"]/g
+  )) {
     if (m[1]) continue;
     const list = m[2].replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '');
     for (const part of list.split(',')) {
@@ -84,13 +94,16 @@ function mantineNames(text, file) {
 
 // 1. The names used: the site's code, and every dependency that renders Mantine.
 const used = new Set();
-for (const f of codeFiles(ROOT)) for (const n of mantineNames(readFileSync(f, 'utf8'), f)) used.add(n);
+for (const f of codeFiles(ROOT))
+  for (const n of mantineNames(readFileSync(f, 'utf8'), f)) used.add(n);
 const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
 for (const dep of Object.keys(pkg.dependencies ?? {})) {
   // Core and hooks are what is being read; any other @mantine package renders core components.
   if (dep === '@mantine/core' || dep === '@mantine/hooks') continue;
   const dir = join(ROOT, 'node_modules', dep);
-  const meta = existsSync(join(dir, 'package.json')) ? JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8')) : {};
+  const meta = existsSync(join(dir, 'package.json'))
+    ? JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'))
+    : {};
   const wants = { ...meta.dependencies, ...meta.peerDependencies };
   if (!('@mantine/core' in wants)) continue;
   let found = 0;
@@ -103,19 +116,23 @@ for (const dep of Object.keys(pkg.dependencies ?? {})) {
   // A package that wants @mantine/core and yields no name is one this scan cannot
   // read (a CommonJS-only build, a bundle that requires it): its components would
   // be left out without a word.
-  if (found === 0) fail(`${dep} depends on @mantine/core, but no import of it was found in its files`);
+  if (found === 0)
+    fail(`${dep} depends on @mantine/core, but no import of it was found in its files`);
 }
 
 // 2. Name -> module, from Mantine's own ESM index (it imports every name from
 // its module, then exports them all at once), and the components reached.
 const exported = new Map();
-for (const m of readFileSync(join(CORE, 'esm/index.mjs'), 'utf8').matchAll(/import\s*\{([^}]*)\}\s*from\s*["']([^"']+)["']/g)) {
+for (const m of readFileSync(join(CORE, 'esm/index.mjs'), 'utf8').matchAll(
+  /import\s*\{([^}]*)\}\s*from\s*["']([^"']+)["']/g
+)) {
   for (const part of m[1].split(',')) {
     const [orig, alias] = part.trim().split(/\s+as\s+/);
     if (orig) exported.set((alias ?? orig).trim(), join(CORE, 'esm', m[2]));
   }
 }
-if (exported.size < 100) fail(`read only ${exported.size} names from @mantine/core's esm/index.mjs: its format changed`);
+if (exported.size < 100)
+  fail(`read only ${exported.size} names from @mantine/core's esm/index.mjs: its format changed`);
 
 const components = join(CORE, 'esm/components');
 const sheet = (c) => join(CORE, 'styles', `${c}.css`);
@@ -125,7 +142,8 @@ function walk(mod) {
   if (seen.has(mod) || !existsSync(mod)) return;
   seen.add(mod);
   const rel = relative(components, mod);
-  if (!rel.startsWith('..')) reached.add(rel.split('/')[0]);
+  // `sep`, not '/': on Windows `relative()` answers `Button\Button.mjs`.
+  if (!rel.startsWith('..')) reached.add(rel.split(sep)[0]);
   for (const m of readFileSync(mod, 'utf8').matchAll(/from\s*["'](\.{1,2}\/[^"']+\.mjs)["']/g)) {
     const next = resolve(dirname(mod), m[1]);
     if (!relative(components, next).startsWith('..')) walk(next);
@@ -134,7 +152,8 @@ function walk(mod) {
 for (const name of used) {
   const mod = exported.get(name);
   if (mod) walk(mod);
-  else if (existsSync(sheet(name))) fail(`${name} is a Mantine component, but @mantine/core's index does not resolve it`);
+  else if (existsSync(sheet(name)))
+    fail(`${name} is a Mantine component, but @mantine/core's index does not resolve it`);
 }
 
 // 3. The tokens (class and keyframes names) of every component, and of those reached.
@@ -161,10 +180,11 @@ function unused(text) {
 root.walk((node) => {
   if (node.type === 'comment') node.remove();
   else if (node.type === 'rule' && unused(node.selector)) node.remove();
-  else if (node.type === 'atrule' && node.name === 'keyframes' && unused(node.params)) node.remove();
+  else if (node.type === 'atrule' && node.name === 'keyframes' && unused(node.params))
+    node.remove();
 });
 // An at-rule left with nothing in it goes too, and so does one emptied by that.
-for (let removed = true; removed; ) {
+for (let removed = true; removed;) {
   removed = false;
   root.walk((node) => {
     if (node.type === 'atrule' && node.nodes && node.nodes.length === 0) {
@@ -189,11 +209,20 @@ ${root.toString().trim()}
 const mode = process.argv[2];
 if (mode === '--write') {
   writeFileSync(OUT, text);
-  console.log(`theme/mantine.css: ${kept.length} components, ${text.length} bytes (styles.css is ${statSync(join(CORE, 'styles.css')).size})`);
+  console.log(
+    `theme/mantine.css: ${kept.length} components, ${text.length} bytes (styles.css is ${statSync(join(CORE, 'styles.css')).size})`
+  );
 } else if (mode === '--check') {
   const current = existsSync(OUT) ? readFileSync(OUT, 'utf8') : '';
-  if (current !== text) fail('theme/mantine.css is out of date: run `node scripts/mantine-css.mjs --write`');
+  if (current !== text)
+    fail('theme/mantine.css is out of date: run `node scripts/mantine-css.mjs --write`');
   console.log(`theme/mantine.css is current: ${kept.length} components`);
 } else {
-  console.log(JSON.stringify({ used: [...used].sort(), reached: [...reached].sort(), components: kept }, null, 1));
+  console.log(
+    JSON.stringify(
+      { used: [...used].sort(), reached: [...reached].sort(), components: kept },
+      null,
+      1
+    )
+  );
 }
