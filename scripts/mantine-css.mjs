@@ -1,0 +1,136 @@
+#!/usr/bin/env node
+/**
+ * mantine-css.mjs [--write | --check] -- the Mantine stylesheets this site uses, and only those.
+ *
+ * `@mantine/core/styles.css` carries every component Mantine has (295 KB at
+ * 9.7.1), and it is render-blocking, on every page: on lancetta.app, where
+ * this script comes from, a page used 11-13% of it (Chrome's CSS coverage,
+ * 2026-10-11). Mantine also ships one stylesheet per component
+ * (`@mantine/core/styles/<Component>.css`), and this script works out which
+ * of them the site needs, from the code rather than from memory:
+ *
+ * 1. every name imported from '@mantine/core' in the site's own source, and in
+ *    the @gfazioli/mantine-* extensions it renders;
+ * 2. each name resolved through Mantine's own ESM index to its module, and that
+ *    module's relative imports followed, so a Button brings UnstyledButton and
+ *    Loader with it;
+ * 3. every component folder reached that has a stylesheet, in the order the
+ *    full `styles.css` has them, after Mantine's three global sheets.
+ *
+ * `--write` regenerates `theme/mantine.css`; `--check` (and the Jest test that
+ * runs it) fails when a component used in the code is missing from it.
+ */
+import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { dirname, join, relative, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const CORE = join(ROOT, 'node_modules/@mantine/core');
+const OUT = join(ROOT, 'theme/mantine.css');
+const SOURCES = ['app', 'components', 'theme', 'content', 'mdx-components.ts', 'theme.ts'];
+const GLOBAL_SHEETS = ['baseline.css', 'default-css-variables.css', 'global.css'];
+
+/** Every file under `p` with one of the given extensions. */
+function files(p, exts) {
+  const abs = join(ROOT, p);
+  if (!existsSync(abs)) return [];
+  if (statSync(abs).isFile()) return exts.some((e) => abs.endsWith(e)) ? [abs] : [];
+  return readdirSync(abs, { recursive: true })
+    .map((f) => join(abs, f))
+    .filter((f) => exts.some((e) => f.endsWith(e)) && !f.includes('node_modules') && !/\.(test|story)\.tsx?$/.test(f));
+}
+
+/** Names imported from '@mantine/core' in a file's text, type-only imports left out. */
+function mantineImports(text) {
+  const names = new Set();
+  for (const m of text.matchAll(/import\s+(type\s+)?\{([^}]*)\}\s*from\s*['"]@mantine\/core['"]/g)) {
+    if (m[1]) continue;
+    for (const part of m[2].split(',')) {
+      const name = part.trim().replace(/^type\s+/, '').split(/\s+as\s+/)[0];
+      if (name && !part.trim().startsWith('type ')) names.add(name);
+    }
+  }
+  return names;
+}
+
+const used = new Set();
+for (const f of SOURCES.flatMap((p) => files(p, ['.ts', '.tsx', '.mdx', '.mjs']))) {
+  for (const n of mantineImports(readFileSync(f, 'utf8'))) used.add(n);
+}
+// The extensions render Mantine components of their own.
+const ext = join(ROOT, 'node_modules/@gfazioli');
+if (existsSync(ext)) {
+  for (const pkg of readdirSync(ext)) {
+    for (const f of readdirSync(join(ext, pkg), { recursive: true })) {
+      if (/\.(m?js)$/.test(f) && !f.includes('node_modules') && !f.includes('cjs')) {
+        for (const n of mantineImports(readFileSync(join(ext, pkg, f), 'utf8'))) used.add(n);
+      }
+    }
+  }
+}
+
+// Name -> module, from Mantine's own ESM index: it imports every name from its
+// module, then exports them all at once.
+const index = readFileSync(join(CORE, 'esm/index.mjs'), 'utf8');
+const exported = new Map();
+for (const m of index.matchAll(/import\s*\{([^}]*)\}\s*from\s*["']([^"']+)["']/g)) {
+  for (const part of m[1].split(',')) {
+    const [orig, alias] = part.trim().split(/\s+as\s+/);
+    if (orig) exported.set((alias ?? orig).trim(), join(CORE, 'esm', m[2]));
+  }
+}
+
+const components = join(CORE, 'esm/components');
+const reached = new Set();
+const seen = new Set();
+function walk(mod) {
+  if (seen.has(mod) || !existsSync(mod)) return;
+  seen.add(mod);
+  const rel = relative(components, mod);
+  if (!rel.startsWith('..')) reached.add(rel.split('/')[0]);
+  for (const m of readFileSync(mod, 'utf8').matchAll(/from\s*["'](\.{1,2}\/[^"']+\.mjs)["']/g)) {
+    const next = resolve(dirname(mod), m[1]);
+    // Follow components only: core/ is covered by the three global sheets.
+    if (!relative(components, next).startsWith('..')) walk(next);
+  }
+}
+const unresolved = [];
+for (const name of used) {
+  const mod = exported.get(name);
+  if (mod) walk(mod);
+  else unresolved.push(name);
+}
+
+const full = readFileSync(join(CORE, 'styles.css'), 'utf8');
+const sheets = [...reached]
+  .filter((c) => existsSync(join(CORE, 'styles', `${c}.css`)))
+  .map((c) => {
+    const first = readFileSync(join(CORE, 'styles', `${c}.css`), 'utf8').match(/\.m_[0-9a-f]{8}/)?.[0];
+    return { c, at: first ? full.indexOf(first) : Number.MAX_SAFE_INTEGER };
+  })
+  .sort((a, b) => a.at - b.at || a.c.localeCompare(b.c))
+  .map((s) => `${s.c}.css`);
+
+const text = `/*
+ * GENERATED by \`node scripts/mantine-css.mjs --write\`: do not edit by hand.
+ * Only the Mantine stylesheets this site renders, instead of all of
+ * \`@mantine/core/styles.css\`; the script says how the list is worked out, and
+ * \`--check\` fails when the code starts using a component that is not here.
+ */
+${[...GLOBAL_SHEETS, ...sheets].map((s) => `@import '@mantine/core/styles/${s}';`).join('\n')}
+`;
+
+const mode = process.argv[2];
+if (mode === '--write') {
+  writeFileSync(OUT, text);
+  console.log(`theme/mantine.css: ${sheets.length} component sheets (${[...used].length} names used, ${unresolved.length} not components)`);
+} else if (mode === '--check') {
+  const current = existsSync(OUT) ? readFileSync(OUT, 'utf8') : '';
+  if (current !== text) {
+    console.error('theme/mantine.css is out of date: run `node scripts/mantine-css.mjs --write`');
+    process.exit(1);
+  }
+  console.log(`theme/mantine.css is current: ${sheets.length} component sheets`);
+} else {
+  console.log(JSON.stringify({ used: [...used].sort(), unresolved: unresolved.sort(), reached: [...reached].sort(), sheets }, null, 1));
+}
