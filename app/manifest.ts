@@ -9,7 +9,9 @@ import config from '@/config';
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'FinderGit — Native macOS File Browser with Git Intelligence',
+    // The page title, so the two cannot drift apart. They read the same today;
+    // lancetta.app's manifest kept an old name after its title had moved.
+    name: config.metadata.title.default,
     short_name: 'FinderGit',
     description: config.metadata.description,
     start_url: '/',
