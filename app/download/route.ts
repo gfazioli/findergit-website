@@ -88,7 +88,9 @@ export async function GET(request?: Request) {
   const redirect = (location: string, cacheControl: string) =>
     new Response(null, {
       status: 302,
-      headers: { Location: location, 'Cache-Control': cacheControl },
+      // `Vary: RSC` here, on the response a CDN keeps: a cached redirect must never
+      // answer the client router's RSC fetch, which gets the 204 below.
+      headers: { Location: location, 'Cache-Control': cacheControl, Vary: 'RSC' },
     });
 
   try {
