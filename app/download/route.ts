@@ -62,8 +62,27 @@ const CACHE_FALLBACK = 'public, max-age=0, s-maxage=60';
  * here is overwhelmingly crawlers, one of which asked seven times in fifteen
  * seconds - invoked the function and re-read the releases payload out of the
  * data cache. Those bytes are billed as ISR reads and Fast Origin Transfer.
+ *
+ * A `next/link` to this route does not navigate on a click: it fetches the
+ * route as RSC first, with an `RSC: 1` header. Given the redirect, that fetch
+ * followed the 302 to GitHub, failed on CORS and logged "Failed to fetch RSC
+ * payload" before Next fell back to a normal navigation (lancetta.app, whose
+ * Download menu entry is such a link, 2026-10-11). Given an empty 204, Next
+ * takes the same fallback silently (in `fetch-server-response`, a response
+ * that is not a flight response, or has no body, is a plain navigation), and
+ * the browser's own request then gets the redirect. Every link here is a
+ * plain anchor today, and the Download menu entry goes to GitHub; this keeps
+ * the first `next/link` from finding out. Never cached: the RSC fetch carries
+ * its own `_rsc` query, and the 204 must not stand in for the redirect.
  */
-export async function GET() {
+export async function GET(request?: Request) {
+  if (request?.headers.get('rsc') === '1') {
+    return new Response(null, {
+      status: 204,
+      headers: { 'Cache-Control': 'private, no-store', Vary: 'RSC' },
+    });
+  }
+
   const fallback = config.app.downloadUrl; // GitHub Releases page
 
   const redirect = (location: string, cacheControl: string) =>
