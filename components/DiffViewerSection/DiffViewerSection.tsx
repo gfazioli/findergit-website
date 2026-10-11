@@ -1,5 +1,6 @@
 'use client';
 
+import NextImage from 'next/image';
 import Link from 'next/link';
 import { IconArrowRight, IconRefresh } from '@tabler/icons-react';
 import {
@@ -218,7 +219,18 @@ export function DiffViewerSection() {
                 variant="light"
                 color="orange"
                 leftSection={
-                  <Image src="/kaleidoscope-icon.png" alt="" w={14} h={14} loading="lazy" />
+                  // Kaleidoscope's icon is a 256px file (68 KB as a PNG): each
+                  // use goes through next/image at the size it is drawn.
+                  <Image
+                    component={NextImage}
+                    src="/kaleidoscope-icon.png"
+                    alt=""
+                    width={14}
+                    height={14}
+                    w={14}
+                    h={14}
+                    loading="lazy"
+                  />
                 }
               >
                 Open in Kaleidoscope
@@ -304,8 +316,11 @@ export function DiffViewerSection() {
                     }}
                   />
                   <Image
+                    component={NextImage}
                     src="/kaleidoscope-icon.png"
                     alt="Kaleidoscope app icon"
+                    width={72}
+                    height={72}
                     w={72}
                     h={72}
                     pos="relative"
@@ -407,7 +422,16 @@ export function DiffViewerSection() {
                       style={{ borderRadius: '50%', backgroundColor: '#28c840' }}
                     />
                   </Group>
-                  <Image src="/kaleidoscope-icon.png" alt="" w={16} h={16} loading="lazy" />
+                  <Image
+                    component={NextImage}
+                    src="/kaleidoscope-icon.png"
+                    alt=""
+                    width={16}
+                    height={16}
+                    w={16}
+                    h={16}
+                    loading="lazy"
+                  />
                   <Text size="sm" c="dimmed" ff="monospace" truncate>
                     src/components/Header.swift &mdash; Text &mdash; {diffStats.additions}{' '}
                     additions, {diffStats.deletions} deletions
