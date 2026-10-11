@@ -4,51 +4,37 @@ import { ImageZoom } from 'nextra/components';
 export type DocsImageProps = ComponentProps<typeof ImageZoom>;
 
 /**
- * The docs column, measured 2026-10-11 on the Nextra 4.6.1 docs layout at 700
- * to 1920: the viewport less 32px on a phone; less 352px once the sidebar
- * shows, at 768; less 608px once the table of contents shows too, at 1280,
- * and never wider than 832px. Between 1185 and 1279 it is wider than 832 (927
- * at 1279), which a flat `832px` under-asked for, and at 768 it is 416, not
- * the 768 a `(max-width: 768px) 100vw` asked for.
+ * The docs column of the Nextra 4.6.1 layout, measured from 700 to 2000 px
+ * wide on the four app sites, with the browser's default font at 16 and at
+ * 20px (2026-10-11). Nextra lays it out in rem, so it moves with the visitor's
+ * font: the viewport less 2rem on a phone; less 22rem once the sidebar shows,
+ * at 48em; less 38rem once the table of contents shows too, at 80em; and never
+ * wider than 52rem. At 16px that is 32, 352 and 608 px, and 832 at most; at
+ * 20px, 40, 440, 760 and 1040.
+ *
+ * In px, the first version under-asked for a visitor with a larger font: at
+ * 20px and 900 px wide the column is 860, still the phone's, and a px `sizes`
+ * said 548 (found in review). Each stretch ends 0.02px early (47.99875em), so
+ * a fractional viewport (a zoom, a fractional DPR) falls in the right one.
  */
-const PHONE_GUTTER = 32;
-const SIDEBAR = 352;
-const SIDEBAR_AND_TOC = 608;
-const COLUMN_MAX = 832;
-const SIDEBAR_FROM = 768;
-const TOC_FROM = 1280;
+const STRETCHES: { upTo?: string; column: string }[] = [
+  { upTo: '47.99875em', column: 'calc(100vw - 2rem)' },
+  { upTo: '79.99875em', column: 'calc(100vw - 22rem)' },
+  { upTo: '89.99875em', column: 'calc(100vw - 38rem)' },
+  { column: '52rem' },
+];
 
 /**
- * `sizes` for a picture drawn at the column's width, or at `drawn` when it is
- * narrower: one clause per stretch of viewport, the column's own formula
- * while the picture fills it and its fixed width once it does not.
+ * `sizes` for a picture drawn at the column's width, or at `width` CSS px when
+ * the column is wider: `min()` of the two in each stretch. Chrome and Safari
+ * take `min()` in `sizes` (measured); a browser that does not falls back to
+ * `100vw`, which fetches more, never a rendering too small.
  */
-export function docsSizes(drawn = Infinity): string {
-  const clauses: [string | null, string][] = [];
-  // 767.98, not 767: the layout switches at min-width 768, and a viewport of
-  // 767.5 (a zoom, a fractional DPR) is still the phone's.
-  const stretch = (until: number, from: number, gutter: number, top: number) => {
-    // The picture fills the column until the column is wider than the picture.
-    const full = drawn + gutter;
-    if (drawn <= from - gutter) {
-      clauses.push([`(max-width: ${until - 0.02}px)`, `${Math.min(drawn, top)}px`]);
-    } else if (full < until && drawn < top) {
-      clauses.push([`(max-width: ${full}px)`, `calc(100vw - ${gutter}px)`]);
-      clauses.push([`(max-width: ${until - 0.02}px)`, `${drawn}px`]);
-    } else {
-      clauses.push([`(max-width: ${until - 0.02}px)`, `calc(100vw - ${gutter}px)`]);
-    }
-  };
-  stretch(SIDEBAR_FROM, 0, PHONE_GUTTER, Infinity);
-  stretch(TOC_FROM, SIDEBAR_FROM, SIDEBAR, Infinity);
-  stretch(COLUMN_MAX + SIDEBAR_AND_TOC, TOC_FROM, SIDEBAR_AND_TOC, COLUMN_MAX);
-  clauses.push([null, `${Math.min(drawn, COLUMN_MAX)}px`]);
-
-  // A clause that says what the next one says is only a longer way to say it.
-  const kept = clauses.filter(
-    ([, size], i) => i === clauses.length - 1 || clauses[i + 1][1] !== size
-  );
-  return kept.map(([media, size]) => (media ? `${media} ${size}` : size)).join(', ');
+export function docsSizes(width?: number): string {
+  return STRETCHES.map(({ upTo, column }) => {
+    const size = width === undefined ? column : `min(${column}, ${width}px)`;
+    return upTo ? `(max-width: ${upTo}) ${size}` : size;
+  }).join(', ');
 }
 
 /**
