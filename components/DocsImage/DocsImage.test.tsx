@@ -27,8 +27,8 @@ const shot = {
   height: 1282,
 };
 
-const COLUMN =
-  '(max-width: 767.98px) calc(100vw - 32px), (max-width: 1279.98px) calc(100vw - 352px), (max-width: 1439.98px) calc(100vw - 608px), 832px';
+/** What a picture of unknown width asks for: the whole column. */
+const COLUMN = docsSizes();
 
 function drawn(props: Parameters<typeof DocsImage>[0]) {
   const { container } = render(<DocsImage {...props} />);
@@ -38,17 +38,17 @@ function drawn(props: Parameters<typeof DocsImage>[0]) {
 describe('DocsImage', () => {
   it('asks for a picture narrower than the column at its own width', () => {
     const img = drawn({ src: crop, alt: 'The sidebar' });
-    expect(img.dataset.sizes).toBe('(max-width: 310px) calc(100vw - 32px), 278px');
+    expect(img.dataset.sizes).toBe(docsSizes(278));
   });
 
-  it('asks for the column for a window shot wider than it', () => {
+  it('asks for a window shot at the smaller of the column and its width', () => {
     const img = drawn({ src: shot, alt: 'The detail panel' });
-    expect(img.dataset.sizes).toBe(COLUMN);
+    expect(img.dataset.sizes).toBe(docsSizes(2000));
   });
 
   it('reads a picture imported as a module the same way', () => {
     const img = drawn({ src: { default: crop }, alt: 'The sidebar' });
-    expect(img.dataset.sizes).toBe('(max-width: 310px) calc(100vw - 32px), 278px');
+    expect(img.dataset.sizes).toBe(docsSizes(278));
   });
 
   it('asks for the column when it cannot know the size', () => {
@@ -64,24 +64,18 @@ describe('DocsImage', () => {
   });
 });
 
-// The column, measured: the viewport less 32px under 768, less 352px under
-// 1280, less 608px above, and never wider than 832px.
+// The column, measured: in rem and em, as Nextra lays it out, so that it
+// moves with the visitor's default font.
 describe('docsSizes', () => {
-  it('follows the column for a picture as wide as it, or wider', () => {
-    expect(docsSizes()).toBe(COLUMN);
-    expect(docsSizes(1200)).toBe(docsSizes());
-  });
-
-  it('gives a picture narrower than the column its own width', () => {
-    expect(docsSizes(380)).toBe('(max-width: 412px) calc(100vw - 32px), 380px');
-    expect(docsSizes(600)).toBe(
-      '(max-width: 632px) calc(100vw - 32px), (max-width: 767.98px) 600px, (max-width: 952px) calc(100vw - 352px), 600px'
+  it('follows the column for a picture of unknown width', () => {
+    expect(docsSizes()).toBe(
+      '(max-width: 47.99875em) calc(100vw - 2rem), (max-width: 79.99875em) calc(100vw - 22rem), (max-width: 89.99875em) calc(100vw - 38rem), 52rem'
     );
   });
 
-  it('switches from the column to the picture where they cross on a laptop', () => {
-    expect(docsSizes(760)).toBe(
-      '(max-width: 767.98px) calc(100vw - 32px), (max-width: 1112px) calc(100vw - 352px), (max-width: 1279.98px) 760px, (max-width: 1368px) calc(100vw - 608px), 760px'
+  it('asks for the smaller of the column and the picture, in each stretch', () => {
+    expect(docsSizes(380)).toBe(
+      '(max-width: 47.99875em) min(calc(100vw - 2rem), 380px), (max-width: 79.99875em) min(calc(100vw - 22rem), 380px), (max-width: 89.99875em) min(calc(100vw - 38rem), 380px), min(52rem, 380px)'
     );
   });
 });
