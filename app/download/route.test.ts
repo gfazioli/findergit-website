@@ -141,5 +141,6 @@ describe('GET /download', () => {
 
     expect(response.status).toBe(302);
     expect(response.headers.get('Location')).toBe(DMG);
+    expect(response.headers.get('Vary')).toBe('RSC');
   });
 });
