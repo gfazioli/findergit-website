@@ -14,13 +14,16 @@ export type DocsImageProps = ComponentProps<typeof ImageZoom>;
  *
  * In px, the first version under-asked for a visitor with a larger font: at
  * 20px and 900 px wide the column is 860, still the phone's, and a px `sizes`
- * said 548 (found in review). Each stretch ends 0.02px early (47.99875em), so
- * a fractional viewport (a zoom, a fractional DPR) falls in the right one.
+ * said 548 (found in review). Each stretch ends where the layout switches,
+ * with range syntax (`width < 48em`), which excludes the breakpoint itself, so
+ * no viewport, however fractional, falls between two. Chrome and Safari read
+ * it in `sizes` (measured); a browser that does not skips those clauses and
+ * takes `52rem`: more bytes, never a rendering too small.
  */
-const STRETCHES: { upTo?: string; column: string }[] = [
-  { upTo: '47.99875em', column: 'calc(100vw - 2rem)' },
-  { upTo: '79.99875em', column: 'calc(100vw - 22rem)' },
-  { upTo: '89.99875em', column: 'calc(100vw - 38rem)' },
+const STRETCHES: { below?: string; column: string }[] = [
+  { below: '48em', column: 'calc(100vw - 2rem)' },
+  { below: '80em', column: 'calc(100vw - 22rem)' },
+  { below: '90em', column: 'calc(100vw - 38rem)' },
   { column: '52rem' },
 ];
 
@@ -31,9 +34,9 @@ const STRETCHES: { upTo?: string; column: string }[] = [
  * `100vw`, which fetches more, never a rendering too small.
  */
 export function docsSizes(width?: number): string {
-  return STRETCHES.map(({ upTo, column }) => {
+  return STRETCHES.map(({ below, column }) => {
     const size = width === undefined ? column : `min(${column}, ${width}px)`;
-    return upTo ? `(max-width: ${upTo}) ${size}` : size;
+    return below ? `(width < ${below}) ${size}` : size;
   }).join(', ');
 }
 

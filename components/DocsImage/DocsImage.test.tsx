@@ -69,13 +69,13 @@ describe('DocsImage', () => {
 describe('docsSizes', () => {
   it('follows the column for a picture of unknown width', () => {
     expect(docsSizes()).toBe(
-      '(max-width: 47.99875em) calc(100vw - 2rem), (max-width: 79.99875em) calc(100vw - 22rem), (max-width: 89.99875em) calc(100vw - 38rem), 52rem'
+      '(width < 48em) calc(100vw - 2rem), (width < 80em) calc(100vw - 22rem), (width < 90em) calc(100vw - 38rem), 52rem'
     );
   });
 
   it('asks for the smaller of the column and the picture, in each stretch', () => {
     expect(docsSizes(380)).toBe(
-      '(max-width: 47.99875em) min(calc(100vw - 2rem), 380px), (max-width: 79.99875em) min(calc(100vw - 22rem), 380px), (max-width: 89.99875em) min(calc(100vw - 38rem), 380px), min(52rem, 380px)'
+      '(width < 48em) min(calc(100vw - 2rem), 380px), (width < 80em) min(calc(100vw - 22rem), 380px), (width < 90em) min(calc(100vw - 38rem), 380px), min(52rem, 380px)'
     );
   });
 });
