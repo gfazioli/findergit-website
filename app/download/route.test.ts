@@ -121,14 +121,18 @@ describe('GET /download', () => {
   // A next/link fetches the route as RSC before it navigates. Given the 302,
   // that fetch followed it to GitHub and failed on CORS; given an empty answer,
   // Next navigates without a word, and the navigation gets the redirect.
-  it('answers a client-router RSC fetch with an empty, uncached 204', async () => {
+  it('answers a client-router RSC fetch with an empty, uncached 200 that is not Flight', async () => {
     global.fetch = serve(releasesWithDmg());
 
     const response = await GET(
       new Request('https://findergit.app/download?_rsc=abc', { headers: { RSC: '1' } })
     );
 
-    expect(response.status).toBe(204);
+    expect(response.status).toBe(200);
+    // A stream, never null: React's Flight decoder calls getReader() on it.
+    expect(response.body).not.toBeNull();
+    expect(await response.text()).toBe('');
+    expect(response.headers.get('Content-Type')).not.toContain('text/x-component');
     expect(response.headers.get('Location')).toBeNull();
     expect(response.headers.get('Cache-Control')).toBe('private, no-store');
     expect(global.fetch).not.toHaveBeenCalled();
