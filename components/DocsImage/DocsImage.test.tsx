@@ -28,7 +28,7 @@ const shot = {
 };
 
 const COLUMN =
-  '(max-width: 767px) calc(100vw - 32px), (max-width: 1279px) calc(100vw - 352px), (max-width: 1439px) calc(100vw - 608px), 832px';
+  '(max-width: 767.98px) calc(100vw - 32px), (max-width: 1279.98px) calc(100vw - 352px), (max-width: 1439.98px) calc(100vw - 608px), 832px';
 
 function drawn(props: Parameters<typeof DocsImage>[0]) {
   const { container } = render(<DocsImage {...props} />);
@@ -75,13 +75,13 @@ describe('docsSizes', () => {
   it('gives a picture narrower than the column its own width', () => {
     expect(docsSizes(380)).toBe('(max-width: 412px) calc(100vw - 32px), 380px');
     expect(docsSizes(600)).toBe(
-      '(max-width: 632px) calc(100vw - 32px), (max-width: 767px) 600px, (max-width: 952px) calc(100vw - 352px), 600px'
+      '(max-width: 632px) calc(100vw - 32px), (max-width: 767.98px) 600px, (max-width: 952px) calc(100vw - 352px), 600px'
     );
   });
 
   it('switches from the column to the picture where they cross on a laptop', () => {
     expect(docsSizes(760)).toBe(
-      '(max-width: 767px) calc(100vw - 32px), (max-width: 1112px) calc(100vw - 352px), (max-width: 1279px) 760px, (max-width: 1368px) calc(100vw - 608px), 760px'
+      '(max-width: 767.98px) calc(100vw - 32px), (max-width: 1112px) calc(100vw - 352px), (max-width: 1279.98px) 760px, (max-width: 1368px) calc(100vw - 608px), 760px'
     );
   });
 });
