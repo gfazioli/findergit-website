@@ -117,4 +117,29 @@ describe('GET /download', () => {
 
     expect(response.headers.get('Location')).toBe(DMG);
   });
+
+  // A next/link fetches the route as RSC before it navigates. Given the 302,
+  // that fetch followed it to GitHub and failed on CORS; given an empty answer,
+  // Next navigates without a word, and the navigation gets the redirect.
+  it('answers a client-router RSC fetch with an empty, uncached 204', async () => {
+    global.fetch = serve(releasesWithDmg());
+
+    const response = await GET(
+      new Request('https://findergit.app/download?_rsc=abc', { headers: { RSC: '1' } })
+    );
+
+    expect(response.status).toBe(204);
+    expect(response.headers.get('Location')).toBeNull();
+    expect(response.headers.get('Cache-Control')).toBe('private, no-store');
+    expect(global.fetch).not.toHaveBeenCalled();
+  });
+
+  it('still redirects a plain navigation', async () => {
+    global.fetch = serve(releasesWithDmg());
+
+    const response = await GET(new Request('https://findergit.app/download'));
+
+    expect(response.status).toBe(302);
+    expect(response.headers.get('Location')).toBe(DMG);
+  });
 });
