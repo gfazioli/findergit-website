@@ -27,8 +27,9 @@
  *
  * `--write` regenerates `theme/mantine.css`; `--check` (and the Jest test that
  * runs it) fails when it is not what this script would write. The script
- * fails outright when it cannot read Mantine's index, meets a namespace
- * import, or cannot resolve a name that is a component.
+ * fails outright when it cannot read Mantine's index, meets an import of all
+ * of @mantine/core at once (`import * as`, `export *`), or cannot resolve a name
+ * that is a component.
  */
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
@@ -39,7 +40,9 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const CORE = join(ROOT, 'node_modules/@mantine/core');
 const OUT = join(ROOT, 'theme/mantine.css');
 const CODE = /\.(ts|tsx|js|jsx|mjs|mdx)$/;
-const SKIP_DIRS = new Set(['node_modules', '.next', '.git', 'public', 'out', 'coverage', 'storybook-static', '.storybook', 'scripts', 'test-utils']);
+// Hidden folders (.next, .git, .vercel, .claude...) are skipped by name, so the result never depends on
+// what one clone holds that another does not.
+const SKIP_DIRS = new Set(['node_modules', 'public', 'out', 'coverage', 'storybook-static', 'scripts', 'test-utils']);
 const TOKEN = /m_[0-9a-f]{6,8}\b/g;
 
 function fail(message) {
@@ -53,8 +56,8 @@ function codeFiles(dir, skip = SKIP_DIRS) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const path = join(dir, entry.name);
     if (entry.isDirectory()) {
-      if (!skip.has(entry.name)) out.push(...codeFiles(path, skip));
-    } else if (CODE.test(entry.name) && !/\.(test|spec|story|stories)\.\w+$/.test(entry.name)) {
+      if (!skip.has(entry.name) && !entry.name.startsWith('.')) out.push(...codeFiles(path, skip));
+    } else if (CODE.test(entry.name) && !/\.(test|spec|story|stories|d)\.\w+$/.test(entry.name)) {
       out.push(path);
     }
   }
@@ -63,11 +66,11 @@ function codeFiles(dir, skip = SKIP_DIRS) {
 
 /** Names a file imports or re-exports from '@mantine/core', type-only ones left out. */
 function mantineNames(text, file) {
-  if (/import\s*\*\s*as\s+\w+\s*from\s*['"]@mantine\/core['"]/.test(text)) {
-    fail(`${relative(ROOT, file)} imports @mantine/core as a namespace: name the components instead`);
+  if (/(?:import|export)\s*\*\s*(?:as\s+\w+\s*)?from\s*['"]@mantine\/core['"]/.test(text)) {
+    fail(`${relative(ROOT, file)} takes all of @mantine/core at once: name the components instead`);
   }
   const names = new Set();
-  for (const m of text.matchAll(/(?:import|export)\s*(type\s+)?\{([^}]*)\}\s*from\s*['"]@mantine\/core['"]/g)) {
+  for (const m of text.matchAll(/(?:import|export)\s*(type\s+)?(?:[\w$]+\s*,\s*)?\{([^}]*)\}\s*from\s*['"]@mantine\/core['"]/g)) {
     if (m[1]) continue;
     const list = m[2].replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '');
     for (const part of list.split(',')) {
@@ -84,14 +87,23 @@ const used = new Set();
 for (const f of codeFiles(ROOT)) for (const n of mantineNames(readFileSync(f, 'utf8'), f)) used.add(n);
 const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
 for (const dep of Object.keys(pkg.dependencies ?? {})) {
-  if (dep.startsWith('@mantine/')) continue;
+  // Core and hooks are what is being read; any other @mantine package renders core components.
+  if (dep === '@mantine/core' || dep === '@mantine/hooks') continue;
   const dir = join(ROOT, 'node_modules', dep);
   const meta = existsSync(join(dir, 'package.json')) ? JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8')) : {};
   const wants = { ...meta.dependencies, ...meta.peerDependencies };
   if (!('@mantine/core' in wants)) continue;
-  for (const f of codeFiles(dir, new Set(['node_modules', 'cjs', 'src']))) {
-    for (const n of mantineNames(readFileSync(f, 'utf8'), f)) used.add(n);
+  let found = 0;
+  for (const f of codeFiles(dir, new Set(['node_modules', 'cjs', 'src', 'types']))) {
+    for (const n of mantineNames(readFileSync(f, 'utf8'), f)) {
+      used.add(n);
+      found += 1;
+    }
   }
+  // A package that wants @mantine/core and yields no name is one this scan cannot
+  // read (a CommonJS-only build, a bundle that requires it): its components would
+  // be left out without a word.
+  if (found === 0) fail(`${dep} depends on @mantine/core, but no import of it was found in its files`);
 }
 
 // 2. Name -> module, from Mantine's own ESM index (it imports every name from
@@ -151,10 +163,16 @@ root.walk((node) => {
   else if (node.type === 'rule' && unused(node.selector)) node.remove();
   else if (node.type === 'atrule' && node.name === 'keyframes' && unused(node.params)) node.remove();
 });
-// An at-rule left with nothing in it goes too.
-root.walk((node) => {
-  if (node.type === 'atrule' && node.nodes && node.nodes.length === 0) node.remove();
-});
+// An at-rule left with nothing in it goes too, and so does one emptied by that.
+for (let removed = true; removed; ) {
+  removed = false;
+  root.walk((node) => {
+    if (node.type === 'atrule' && node.nodes && node.nodes.length === 0) {
+      node.remove();
+      removed = true;
+    }
+  });
+}
 
 const kept = [...reached].filter((c) => existsSync(sheet(c))).sort();
 const text = `/*
