@@ -226,7 +226,7 @@ const HERO_SIZES = '(max-width: 1140px) calc(100vw - 32px), 1108px';
  * less their share of the 56px gap.
  */
 const FEATURE_SIZES =
-  '(max-width: 62em) calc(100vw - 32px), (max-width: 1320px) calc((100vw - 32px) * 7 / 12 - 23px), 728px';
+  '(max-width: 61.99em) calc(100vw - 32px), (max-width: 1320px) calc((100vw - 32px) * 7 / 12 - 23px), 728px';
 
 /**
  * Fullscreen image lightbox shared by `ZoomableScreenshot` and the hero
@@ -234,9 +234,12 @@ const FEATURE_SIZES =
  * 95vw/95vh (`object-fit: contain`) on a near-black backdrop, closing on
  * backdrop click, the system close button, and Escape (Mantine default).
  *
- * The enlarged view is for reading the small text, so it asks for the width
- * of the screen (`100vw`), which next/image caps at the file's own 2000px. It
- * is a request of its own, after the click; eager, since it is wanted now.
+ * The enlarged view is the PNG itself, not next/image: it is for reading the
+ * small text, it is fetched only on a click, and its `width: auto` draws the
+ * file at its natural size. Through next/image with `sizes="100vw"`, a Retina
+ * laptop asked for the 3840w candidate, got the 2000px file (next/image never
+ * enlarges) and drew it at 2000 / (3840 / 1440), about 750px, smaller than
+ * the thumbnail it enlarges (found in review, 2026-10-11).
  */
 function FullscreenImageModal({
   opened,
@@ -281,13 +284,8 @@ function FullscreenImageModal({
       }}
     >
       <Image
-        component={NextImage}
         src={src}
         alt={alt}
-        width={SHOT_WIDTH}
-        height={SHOT_HEIGHT}
-        sizes="100vw"
-        loading="eager"
         onClick={onClose}
         style={{
           maxWidth: '95vw',

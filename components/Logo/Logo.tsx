@@ -9,7 +9,8 @@ import { Image } from '@mantine/core';
  * image-redundant-alt flags, as it did on lancetta.app (2026-10-11).
  *
  * Through next/image, at the size it is drawn: as a plain <img> every page
- * fetched the whole 128px PNG, 26 KB, for a 36px mark (2026-10-11).
+ * fetched the whole 128px PNG, 26 KB, for a 36px mark (2026-10-11). Eager,
+ * because next/image is lazy by default and the bar is on every first screen.
  */
 export function Logo({ size = 36 }: { size?: number }) {
   return (
@@ -19,6 +20,7 @@ export function Logo({ size = 36 }: { size?: number }) {
       alt=""
       width={size}
       height={size}
+      loading="eager"
       w={size}
       h={size}
       style={{ borderRadius: size > 48 ? 12 : 8 }}
