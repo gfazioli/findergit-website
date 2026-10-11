@@ -220,15 +220,16 @@ const SHOT_HEIGHT = 1282;
  * Mantine lays it out: in px, a visitor whose default font is 20px got 1108
  * asked for a hero drawn 1357px wide (measured, found in review 2026-10-11).
  */
-const HERO_SIZES = '(max-width: 71.24875em) calc(100vw - 2rem), 69.25rem';
+const HERO_SIZES = '(width < 71.25em) calc(100vw - 2rem), 69.25rem';
 
 /**
  * How wide an In action screenshot is drawn: the whole `xl` Container (82.5rem
  * at most, less 1rem a side) under `md`, and from `md` up 7 of its 12 columns
- * less their share of the 3.5rem gap. In rem, like `HERO_SIZES`.
+ * less their share of the 3.5rem gap. In rem, like `HERO_SIZES`, and switching
+ * where `md` does: range syntax excludes 62em itself, as `min-width` includes it.
  */
 const FEATURE_SIZES =
-  '(max-width: 61.99875em) calc(100vw - 2rem), (max-width: 82.49875em) calc((100vw - 2rem) * 7 / 12 - 3.5rem * 5 / 12), 45.5rem';
+  '(width < 62em) calc(100vw - 2rem), (width < 82.5em) calc((100vw - 2rem) * 7 / 12 - 3.5rem * 5 / 12), 45.5rem';
 
 /**
  * Fullscreen image lightbox shared by `ZoomableScreenshot` and the hero
