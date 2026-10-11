@@ -69,7 +69,7 @@ describe('the hero carousel', () => {
     expect(shots).toHaveLength(2);
     for (const img of shots) {
       expect(img.getAttribute('src')).toMatch(/\/_next\/image\?url=/);
-      expect(img).toHaveAttribute('sizes', '(max-width: 71.24875em) calc(100vw - 2rem), 69.25rem');
+      expect(img).toHaveAttribute('sizes', '(width < 71.25em) calc(100vw - 2rem), 69.25rem');
     }
     expect(shots[0]).toHaveAttribute('loading', 'eager');
     expect(shots[0]).toHaveAttribute('fetchpriority', 'high');
