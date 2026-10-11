@@ -139,7 +139,7 @@ function FeatureRow({
   // elevation (follows the alpha channel of the PNG instead of the
   // rectangular bounding box) and adds click-to-zoom so the user can
   // read the small text without us blowing up the image inline.
-  const imageCol = <ZoomableScreenshot src={image} alt={imageAlt} />;
+  const imageCol = <ZoomableScreenshot src={image} alt={imageAlt} sizes={FEATURE_SIZES} />;
 
   // Each column is a reveal of its own, as lancetta.app's hero frames are: the
   // screenshot comes in from the side it sits on, the copy rises. When the row
@@ -204,10 +204,39 @@ function ownReveal(
 }
 
 /**
+ * Every screenshot on this page, the hero's and the In action rows', is a
+ * 2000x1282 PNG (`FinderGit/scripts/screenshots/shoot.sh` delivers them at
+ * that size). All of them go through next/image, which serves each at the
+ * width it is drawn, as AVIF or WebP: drawn as plain <img>s, production sent
+ * the PNGs themselves, the hero's 150-277 KB each, and Lighthouse counted
+ * 964 KiB to save on this page (2026-10-11).
+ */
+const SHOT_WIDTH = 2000;
+const SHOT_HEIGHT = 1282;
+
+/**
+ * How wide the hero stage is drawn: the `lg` Container, 1140px at most, less
+ * its 16px of padding a side.
+ */
+const HERO_SIZES = '(max-width: 1140px) calc(100vw - 32px), 1108px';
+
+/**
+ * How wide an In action screenshot is drawn: the whole `xl` Container (1320px
+ * at most, less 16px a side) under `md`, and from `md` up 7 of its 12 columns
+ * less their share of the 56px gap.
+ */
+const FEATURE_SIZES =
+  '(max-width: 62em) calc(100vw - 32px), (max-width: 1320px) calc((100vw - 32px) * 7 / 12 - 23px), 728px';
+
+/**
  * Fullscreen image lightbox shared by `ZoomableScreenshot` and the hero
  * carousel: a transparent fullScreen Modal that centres the image at
  * 95vw/95vh (`object-fit: contain`) on a near-black backdrop, closing on
  * backdrop click, the system close button, and Escape (Mantine default).
+ *
+ * The enlarged view is for reading the small text, so it asks for the width
+ * of the screen (`100vw`), which next/image caps at the file's own 2000px. It
+ * is a request of its own, after the click; eager, since it is wanted now.
  */
 function FullscreenImageModal({
   opened,
@@ -252,8 +281,13 @@ function FullscreenImageModal({
       }}
     >
       <Image
+        component={NextImage}
         src={src}
         alt={alt}
+        width={SHOT_WIDTH}
+        height={SHOT_HEIGHT}
+        sizes="100vw"
+        loading="eager"
         onClick={onClose}
         style={{
           maxWidth: '95vw',
@@ -279,10 +313,13 @@ function FullscreenImageModal({
 function ZoomableScreenshot({
   src,
   alt,
+  sizes,
   shadowOpacity = 0.55,
 }: {
   src: string;
   alt: string;
+  /** How wide the thumbnail is drawn, for next/image to pick its width. */
+  sizes: string;
   /** 0..1, drop-shadow alpha. The hero sits on a coloured wallpaper
    *  background, so a stronger shadow (higher alpha) reads better there
    *  — the dark feature-row backdrop tolerates a softer one. */
@@ -307,13 +344,15 @@ function ZoomableScreenshot({
         {/* (Lighthouse mobile LCP 5.9 s, 2026-09-29). The dimensions hold the */}
         {/* place while it loads, so arriving late moves nothing.             */}
         <Image
+          component={NextImage}
           src={src}
           alt={alt}
           display="block"
           loading="lazy"
           decoding="async"
-          width={2000}
-          height={1282}
+          width={SHOT_WIDTH}
+          height={SHOT_HEIGHT}
+          sizes={sizes}
           style={{
             width: '100%',
             height: 'auto',
@@ -394,15 +433,31 @@ function HeroCarousel({ shots }: { shots: HeroShot[] }) {
         onMouseLeave={() => setPaused(false)}
         style={{ display: 'block', width: '100%', cursor: 'zoom-in' }}
       >
-        <Box pos="relative" style={{ width: '100%', aspectRatio: '2000 / 1282' }}>
+        <Box
+          pos="relative"
+          style={{ width: '100%', aspectRatio: `${SHOT_WIDTH} / ${SHOT_HEIGHT}` }}
+        >
           {shots.map((shot, i) =>
             i > warm ? null : (
               <Image
                 key={shot.src}
+                component={NextImage}
                 src={shot.src}
                 alt={shot.alt}
+                width={SHOT_WIDTH}
+                height={SHOT_HEIGHT}
+                sizes={HERO_SIZES}
                 // Only the first is on screen at load; the next one, made a turn
                 // ahead (`warm`), must not compete with it.
+                //
+                // The first is eager, so the preload React writes for it (it
+                // does for every server-rendered <img> not lazy and not `low`)
+                // now carries the srcset and `sizes`, and fetches the width the
+                // stage is drawn at. The rest are lazy: the second is the only
+                // other one the server renders, and `low` already kept it out of
+                // the preloads; the others are made on the client a turn ahead,
+                // and fetched once the stage is near the screen.
+                loading={i === 0 ? 'eager' : 'lazy'}
                 fetchPriority={i === 0 ? 'high' : 'low'}
                 decoding="async"
                 aria-hidden={i !== index}
@@ -889,11 +944,16 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
                   )}
                   <Stack gap={10} align="flex-start">
                     {feature.image ? (
+                      // Through next/image too: the file is a 256px icon
+                      // (68 KB as a PNG), drawn at 48.
                       <Image
+                        component={NextImage}
                         src={feature.image}
                         alt=""
                         loading="lazy"
                         decoding="async"
+                        width={48}
+                        height={48}
                         w={48}
                         h={48}
                         radius="md"

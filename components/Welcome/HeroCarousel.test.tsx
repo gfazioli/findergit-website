@@ -58,6 +58,25 @@ describe('the hero carousel', () => {
     wait(DELAY_MS + WALK_MS + 50);
   };
 
+  // Drawn as plain <img>s, the shots were served as the 2000px PNGs themselves
+  // (Lighthouse: 964 KiB to save on the home page, 2026-10-11).
+  it('serves its shots through next/image at the stage’s width, only the first eagerly', () => {
+    const { container } = render(<Welcome />);
+    const shots = [...container.querySelectorAll('img')].filter((img) =>
+      /screenshot-(hero|portfolio)/.test(img.getAttribute('src') ?? '')
+    );
+    // The shot on screen and the next one, made a turn ahead.
+    expect(shots).toHaveLength(2);
+    for (const img of shots) {
+      expect(img.getAttribute('src')).toMatch(/\/_next\/image\?url=/);
+      expect(img).toHaveAttribute('sizes', '(max-width: 1140px) calc(100vw - 32px), 1108px');
+    }
+    expect(shots[0]).toHaveAttribute('loading', 'eager');
+    expect(shots[0]).toHaveAttribute('fetchpriority', 'high');
+    expect(shots[1]).toHaveAttribute('loading', 'lazy');
+    expect(shots[1]).toHaveAttribute('fetchpriority', 'low');
+  });
+
   it('turns every five seconds, and gives a shot picked by hand its full five', () => {
     render(<Welcome />);
     expect(shown()).toBe(0);

@@ -9,6 +9,22 @@ describe('Welcome component', () => {
     expect(screen.getByText(/every git repo\. one window\./i)).toBeInTheDocument();
   });
 
+  it('serves the In action screenshots through next/image, lazily, at their column’s width', () => {
+    render(<Welcome />);
+    const shots = screen
+      .getAllByRole('img')
+      .filter((img) => img.getAttribute('src')?.includes('screenshot-feature'));
+    expect(shots).toHaveLength(5);
+    for (const img of shots) {
+      expect(img.getAttribute('src')).toMatch(/\/_next\/image\?url=/);
+      expect(img).toHaveAttribute('loading', 'lazy');
+      expect(img).toHaveAttribute(
+        'sizes',
+        '(max-width: 62em) calc(100vw - 32px), (max-width: 1320px) calc((100vw - 32px) * 7 / 12 - 23px), 728px'
+      );
+    }
+  });
+
   describe('the In action rows', () => {
     let observed: { el: Element; fire: () => void }[];
 
