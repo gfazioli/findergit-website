@@ -20,7 +20,7 @@ describe('Welcome component', () => {
       expect(img).toHaveAttribute('loading', 'lazy');
       expect(img).toHaveAttribute(
         'sizes',
-        '(max-width: 61.99em) calc(100vw - 32px), (max-width: 1320px) calc((100vw - 32px) * 7 / 12 - 23px), 728px'
+        '(max-width: 61.99875em) calc(100vw - 2rem), (max-width: 82.49875em) calc((100vw - 2rem) * 7 / 12 - 3.5rem * 5 / 12), 45.5rem'
       );
     }
   });

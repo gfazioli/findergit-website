@@ -215,18 +215,20 @@ const SHOT_WIDTH = 2000;
 const SHOT_HEIGHT = 1282;
 
 /**
- * How wide the hero stage is drawn: the `lg` Container, 1140px at most, less
- * its 16px of padding a side.
+ * How wide the hero stage is drawn: the `lg` Container, 71.25rem at most, less
+ * its 1rem of padding a side (1140 and 16px at a 16px font). In rem, as
+ * Mantine lays it out: in px, a visitor whose default font is 20px got 1108
+ * asked for a hero drawn 1357px wide (measured, found in review 2026-10-11).
  */
-const HERO_SIZES = '(max-width: 1140px) calc(100vw - 32px), 1108px';
+const HERO_SIZES = '(max-width: 71.24875em) calc(100vw - 2rem), 69.25rem';
 
 /**
- * How wide an In action screenshot is drawn: the whole `xl` Container (1320px
- * at most, less 16px a side) under `md`, and from `md` up 7 of its 12 columns
- * less their share of the 56px gap.
+ * How wide an In action screenshot is drawn: the whole `xl` Container (82.5rem
+ * at most, less 1rem a side) under `md`, and from `md` up 7 of its 12 columns
+ * less their share of the 3.5rem gap. In rem, like `HERO_SIZES`.
  */
 const FEATURE_SIZES =
-  '(max-width: 61.99em) calc(100vw - 32px), (max-width: 1320px) calc((100vw - 32px) * 7 / 12 - 23px), 728px';
+  '(max-width: 61.99875em) calc(100vw - 2rem), (max-width: 82.49875em) calc((100vw - 2rem) * 7 / 12 - 3.5rem * 5 / 12), 45.5rem';
 
 /**
  * Fullscreen image lightbox shared by `ZoomableScreenshot` and the hero
