@@ -183,9 +183,10 @@ export const MantineFooter = ({ year }: { year: number }) => {
                   underline="never"
                 >
                   <Stack gap={4} align="center">
+                    {/* `alt=""`: the name is printed right under it. */}
                     <Avatar
                       src={`https://github.com/${sponsor.github}.png`}
-                      alt={sponsor.name}
+                      alt=""
                       size="md"
                       radius="xl"
                       imageProps={{ loading: 'lazy', decoding: 'async' }}

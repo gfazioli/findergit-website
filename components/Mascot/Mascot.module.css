@@ -240,8 +240,14 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: rem(20px);
-  height: rem(20px);
+  /*
+   * 24px, the smallest target WCAG 2.2 allows, in the 20px it always took:
+   * the negative margin gives the 4px back, so the bubble's text keeps its
+   * width and its two lines.
+   */
+  width: rem(24px);
+  height: rem(24px);
+  margin: rem(-2px);
   padding: 0;
   border: 0;
   border-radius: rem(6px);
