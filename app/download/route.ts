@@ -67,18 +67,25 @@ const CACHE_FALLBACK = 'public, max-age=0, s-maxage=60';
  * route as RSC first, with an `RSC: 1` header. Given the redirect, that fetch
  * followed the 302 to GitHub, failed on CORS and logged "Failed to fetch RSC
  * payload" before Next fell back to a normal navigation (lancetta.app, whose
- * Download menu entry is such a link, 2026-10-11). Given an empty 204, Next
+ * Download menu entry is such a link, 2026-10-11). Given an empty 200, Next
  * takes the same fallback silently (in `fetch-server-response`, a response
  * that is not a flight response, or has no body, is a plain navigation), and
  * the browser's own request then gets the redirect. Every link here is a
  * plain anchor today, and the Download menu entry goes to GitHub; this keeps
  * the first `next/link` from finding out. Never cached: the RSC fetch carries
- * its own `_rsc` query, and the 204 must not stand in for the redirect.
+ * its own `_rsc` query, and the 200 must not stand in for the redirect.
+ *
+ * An empty 200, not a 204: by the Fetch spec a 204's body is null, and Next
+ * hands the response to React's Flight decoder, which calls `getReader()` on
+ * it, before it checks, so a browser that follows the spec would log an
+ * unhandled rejection. Chrome and Safari give a 204 an empty stream anyway
+ * (measured, 2026-10-11); an empty 200 is a stream everywhere (found in
+ * review).
  */
 export async function GET(request?: Request) {
   if (request?.headers.get('rsc') === '1') {
-    return new Response(null, {
-      status: 204,
+    return new Response('', {
+      status: 200,
       headers: { 'Cache-Control': 'private, no-store', Vary: 'RSC' },
     });
   }
@@ -89,7 +96,7 @@ export async function GET(request?: Request) {
     new Response(null, {
       status: 302,
       // `Vary: RSC` here, on the response a CDN keeps: a cached redirect must never
-      // answer the client router's RSC fetch, which gets the 204 below.
+      // answer the client router's RSC fetch, which gets the empty 200 below.
       headers: { Location: location, 'Cache-Control': cacheControl, Vary: 'RSC' },
     });
 
