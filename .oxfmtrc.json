@@ -28,6 +28,7 @@
     "*.md",
     ".next",
     "content",
-    "public/_pagefind"
+    "public/_pagefind",
+    "theme/mantine.css"
   ]
 }
