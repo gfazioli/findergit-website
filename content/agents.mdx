@@ -81,12 +81,14 @@ Five kinds of finding have a fix with one right answer, and FinderGit offers to 
 
 ### When it needs a judgement
 
-Trimming a long file, merging two that drifted apart, rewording a description: these are a judgement, and they go to an agent with you in the session. **Fix with Claude Code** or **Fix with Codex** opens a Terminal window in the file's repository (through a `.command` file, so whichever app your Mac opens those with, not the one in [Settings → Terminal](/docs/settings#terminal)) and starts that agent there, with a first message FinderGit writes: what was found, why it matters, how to go about it, and to propose the changes before making them.
+Trimming a long file, merging two that drifted apart, rewording a description: these are a judgement, and they go to an agent with you in the session. **Fix with Claude Code** or **Fix with Codex** opens a terminal window in the file's repository and starts that agent there, with a first message FinderGit writes: what was found, why it matters, how to go about it, and to propose the changes before making them.
 
 The button names the agent whose problem it is. Claude Code takes its own files, and an `AGENTS.md` it skips, because that fix goes in `CLAUDE.md`. Codex takes its size limit, and the other findings on an `AGENTS.md` Claude Code does not read. For a file that is neither's, it is the one you last picked from its menu, which offers every agent installed.
 
 - **Claude Code** starts **in plan mode**: it reads and proposes, and edits nothing until you approve its plan.
 - **Codex** can't be started in its Plan mode from outside its window, so it is asked to propose first and wait for your OK, and its sandbox lets it write only in the repository and the file's own folder. To keep it planning, press ⇧Tab in its window for Plan mode.
+
+The window opens through a `.command` file, so in the app your Mac opens those with: Terminal, unless you changed it. [Settings → Terminal](/docs/settings#terminal) does not apply here.
 
 The menu also has **Copy Prompt**, to paste the same message into a session of your own. With neither agent installed, the button is **Copy Prompt for an Agent**.
 
@@ -98,7 +100,7 @@ Some findings mean a file does nothing for any agent today: a memory file nothin
 
 Claude Code keeps a folder for every background session, with the files it wrote while it worked, and it stays after the session has ended: on a busy Mac that adds up to gigabytes. The **Background Sessions** card lists the sessions Claude Code itself reports as ended, each with its name, where it was started, when it was last active and what its folder takes up on disk.
 
-Tick the ones to go and press **Remove…**: each goes through Claude Code's own `claude rm`, and the Activity panel lists what was removed. Its folder goes, and so does a worktree it made, unless that worktree holds work not yet pushed, which Claude Code refuses to drop. The conversation stays: `claude --resume` opens it again.
+Tick the ones to go and press **Remove**, which names what they take up (**Remove 65 MB…**): each goes through Claude Code's own `claude rm`, and the Activity panel lists what was removed. Its folder goes, and so does a worktree it made, unless that worktree holds work not yet pushed, which Claude Code refuses to drop. The conversation stays: `claude --resume` opens it again.
 
 - A session that is still running, or idle and waiting for a follow-up, is never listed, and each removal checks again first.
 - Nothing is ticked for you. **Select Finished** ticks every session that finished and leaves those that stopped waiting for your answer, marked **Waiting**.
@@ -120,5 +122,5 @@ Characters are counted the way Claude Code counts them, so the totals match the 
 </Callout>
 
 <Callout type="info" emoji="🛡️">
-Agents reads, and sends nothing anywhere. It changes something only when you ask it to: a fix you saw whole and applied, **Move to Trash…** on a file no agent uses, and **Remove…** on ended background sessions, each after a confirmation. **Fix with Claude Code** and **Fix with Codex** start your own agent, which then works as any session of yours does.
+Agents reads, and sends nothing anywhere. It changes something only when you ask it to: a fix you saw whole and applied, **Move to Trash…** on a file no agent uses, and **Remove** on ended background sessions, each after a confirmation. **Fix with Claude Code** and **Fix with Codex** start your own agent, which then works as any session of yours does.
 </Callout>
