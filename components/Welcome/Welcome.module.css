@@ -243,3 +243,27 @@
     transform: none;
   }
 }
+
+/* The features grid ends flush: its last cell (a Reveal wrapper) takes the
+   cells its row would leave empty, whatever the count. Two columns from sm,
+   three from lg, as `cols` on the grid says. At lg the reset uses
+   `:nth-child(n)` to match the specificity of the sm rule it undoes. */
+@media (min-width: $mantine-breakpoint-sm) {
+  .featureGrid > :last-child:nth-child(2n + 1) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: $mantine-breakpoint-lg) {
+  .featureGrid > :last-child:nth-child(n) {
+    grid-column: auto;
+  }
+
+  .featureGrid > :last-child:nth-child(3n + 1) {
+    grid-column: 1 / -1;
+  }
+
+  .featureGrid > :last-child:nth-child(3n + 2) {
+    grid-column: span 2;
+  }
+}

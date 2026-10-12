@@ -25,6 +25,7 @@ import {
   IconGitMerge,
   IconLayoutColumns,
   IconBrush,
+  IconBrain,
 } from '@tabler/icons-react';
 import {
   Box,
@@ -522,8 +523,8 @@ function HeroCarousel({ shots }: { shots: HeroShot[] }) {
   );
 }
 
-// The hero rotation — the three dashboards in the sidebar's order (Overview,
-// Account, Cleaning), then the Repository List; the file browser anchors.
+// The hero rotation — the dashboards in the sidebar's order, then the
+// Repository List; the file browser anchors.
 const heroShots: HeroShot[] = [
   {
     src: '/screenshot-hero-overview.png',
@@ -539,6 +540,11 @@ const heroShots: HeroShot[] = [
     src: '/screenshot-hero-cleaning.png',
     alt: 'FinderGit Cleaning — the node_modules, build output and caches your tools can rebuild, by kind',
     caption: 'Cleaning: the space your developer tools can rebuild, found and freed.',
+  },
+  {
+    src: '/screenshot-hero-agents.png',
+    alt: 'FinderGit Agents — the CLAUDE.md, AGENTS.md, rules and skills your coding agents read before they start, what each costs, and the fixes',
+    caption: 'Agents: every file your coding agents read before they start, and what it costs.',
   },
   {
     src: '/screenshot-portfolio.png',
@@ -630,6 +636,15 @@ const features: Feature[] = [
     color: 'teal',
     href: '/docs/cleaning',
     since: '0.44.0',
+  },
+  {
+    icon: IconBrain,
+    title: 'Agents',
+    description:
+      'Every file your coding agents read before the first prompt — CLAUDE.md, AGENTS.md, rules, skills — what each costs, and the fixes it needs.',
+    color: 'pink',
+    href: '/docs/agents',
+    since: '0.50.0',
   },
   {
     icon: IconStar,
@@ -902,25 +917,16 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
             </Stack>
           </Reveal>
 
-          <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
+          {/* The last card stretches over the cells its row would leave
+              empty, at every width (`featureGrid`). */}
+          <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg" className={classes.featureGrid}>
             {features.map((feature, i) => (
               // Each card lands on its own reveal, a column's worth of stagger
               // apart. Wrapped rather than given the props: the card lifts on
               // hover with a transform of its own, and two transforms on one
               // element fight. The wrapper is the grid cell, so it carries the
               // leftover card's span and the card fills it to keep rows level.
-              <Reveal
-                key={feature.title}
-                delay={(i % 3) * 120}
-                radius={16}
-                // A lone leftover card (odd count) spans the whole row so the
-                // grid ends flush instead of lopsided.
-                style={
-                  i === features.length - 1 && features.length % 3 === 1
-                    ? { gridColumn: '1 / -1' }
-                    : undefined
-                }
-              >
+              <Reveal key={feature.title} delay={(i % 3) * 120} radius={16}>
                 {/* Whole card is a Next.js Link via Mantine's polymorphic
                   `component` prop — keeps the Paper/Raycast card styling while
                   making the entire card clickable, keyboard-focusable, and
