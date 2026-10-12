@@ -135,6 +135,9 @@ describe('the hero carousel', () => {
     expect(heard.caption).toMatch(/^Cleaning/);
     wait(5000);
     expect(shown()).toBe(3);
+    expect(heard.caption).toMatch(/^Agents/);
+    wait(5000);
+    expect(shown()).toBe(4);
     expect(heard.caption).toMatch(/^All your repositories/);
   });
 });
