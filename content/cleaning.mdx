@@ -33,7 +33,14 @@ The cards fill as the results arrive, their figures counting up. The result stay
 | **Git objects** | Loose objects and garbage in each repository. |
 | **Other caches** | Browsers downloaded by Playwright and Puppeteer, node-gyp headers, Electron and JetBrains caches. |
 
-Click a card to open its list below the grid: every folder with its project, its path, its size and when it last changed. The magnifying glass shows it in the Finder.
+Click a card and it grows into its list right under its row: every folder with its project, its path, its size and when it last changed. One card is open at a time, a second click closes it, and FinderGit remembers which was open. The magnifying glass shows a folder in the Finder.
+
+## Shared and committed folders
+
+Two kinds of folder are listed for you to see, and never cleaned for you:
+
+- **Shared** — its files are clones or links of a package store's, as pnpm and bun make them. Deleting the folder frees almost nothing, and the store keeps the rest, so the row says what it would free of what it takes up, and it is never ticked.
+- **In git** — its repository commits it. It is listed so you know it is there, and never ticked, cleaned or counted; `git rm -r --cached` takes it out of git if it should not be in it.
 
 ## What is ticked for you
 
@@ -41,7 +48,7 @@ A folder starts ticked only when all of this is true:
 
 - it is **safe** — the tool rebuilds it with nothing but time lost;
 - it is **not in use** — no program (a dev server, a watcher, a terminal) is working inside its repository, a monorepo's root included; Xcode is closed for DerivedData and previews, and the Simulator for its caches;
-- inside a project, it has **not changed for 30 days**, so the project you are working on today is left alone.
+- inside a project, it has **not changed for 30 days** (or what **Settings → Cleaning** says), so the project you are working on today is left alone.
 
 Three badges say why something is not ticked: **In use**, **Recent**, and **Review** — rebuildable, but slow to get back or easy to still need, such as an Xcode `build` folder, a virtual environment or the Maven repository. You can tick any of them yourself. A folder you untick stays unticked when you scan again; a tick lasts until the next scan, which reads every folder's state afresh.
 
@@ -56,9 +63,18 @@ Three badges say why something is not ticked: **In use**, **Recent**, and **Revi
 The card shows what was freed when it ends, and the result goes to the Activity panel too.
 
 <Callout type="info" emoji="🛡️">
-FinderGit only touches what it recognises. Inside a repository, a folder is listed only if **the repository's own `.gitignore` ignores it** and it sits next to its project file (`package.json` for `node_modules`, `Package.swift` for `.build`). A folder holding a file you added to Git is never listed, nor is a symbolic link, nor anything inside `.git`. Every folder is checked again at the moment it is cleaned — that it is still ignored, still next to its project file, still inside a root folder with no link on the way, and that nothing started using it after you confirmed.
+FinderGit only touches what it recognises. Inside a repository, a folder is cleaned only if **the repository's own `.gitignore` ignores it** and it sits next to its project file (`package.json` for `node_modules`, `Package.swift` for `.build`). A folder the repository commits is shown with its **In git** badge and never cleaned, and a symbolic link or anything inside `.git` is never listed. Every folder is checked again at the moment it is cleaned — that it is still ignored, still next to its project file, still inside a root folder with no link on the way, and that nothing started using it after you confirmed.
 </Callout>
 
 <Callout type="info" emoji="📏">
-Sizes count what deleting the folder alone actually gives back. A file another copy still shares — a hard link, or an APFS clone, which is how pnpm and bun fill `node_modules` from their store — is not counted, because removing that copy frees nothing.
+Sizes count what deleting the folder alone actually gives back. A file another copy still shares — a hard link, or an APFS clone, which is how pnpm and bun fill `node_modules` from their store — is not counted, because removing that copy frees nothing. A file whose every link is inside the folder is counted once.
 </Callout>
+
+## Settings
+
+**Settings → Cleaning** decides what is ticked and what is listed. A rule that hides a folder also unticks it, so nothing is ever cleaned out of sight.
+
+- **Tick project folders unchanged for** — 7, 14, 30, 60 or 90 days, 30 by default. It applies from the next scan.
+- **Hide folders smaller than** — 1 MB, 10 MB or 100 MB, 1 MB by default.
+- **Show folders a package store shares** — the **Shared** ones, on by default.
+- **Show build folders committed to git** — the **In git** ones, on by default.

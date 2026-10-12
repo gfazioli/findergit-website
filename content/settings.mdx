@@ -1,5 +1,5 @@
 ---
-description: "Configure FinderGit: startup, updates and scanning, the layout, zoom and sidebar, the Git binary and fetching, AI commit messages and the terminal."
+description: "Configure FinderGit: startup and scanning, the layout and sidebar, Git and fetching, AI commit messages, Cleaning, Agents and the terminal."
 ---
 
 # Settings
@@ -127,6 +127,14 @@ Free-form textarea (max 2 KB) appended to the AI prompt as authoritative house s
 
 ### Privacy
 On the default provider your staged diff is sent to the AI in-flight only — **diffs are not logged or stored**, and no personal credentials are required. With a provider of your own the diff goes straight from your Mac to it and FinderGit's servers never see it. Capped at 100 KB per request either way, with an additional 2 KB cap on custom instructions.
+
+## Cleaning
+
+What the [Cleaning](/docs/cleaning) dashboard ticks and lists: how long a project folder must be unchanged before it is ticked (30 days by default), the smallest folder listed, and whether folders a package store shares and build folders committed to git are shown. Each option is described in [Cleaning → Settings](/docs/cleaning#settings).
+
+## Agents
+
+What the [Agents](/docs/agents) dashboard measures against: the context window, the line target for instruction files, the agents whose files are read, your home folder's configuration, suggestions, the repetition threshold, and each of the 20 checks on its own switch. Each option is described in [Agents → Settings](/docs/agents#settings).
 
 ## Terminal
 
