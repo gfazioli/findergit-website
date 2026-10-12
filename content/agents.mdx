@@ -6,7 +6,7 @@ description: "Every file your coding agents read before they start: CLAUDE.md, A
 
 Coding agents read a stack of files before your first prompt: a `CLAUDE.md` in the repository, another in the folder above it, your own in `~/.claude`, the rules beside them, an `AGENTS.md` for Codex and Cursor, the descriptions of every skill. Each session pays for all of it, and nothing tells you when the stack has grown past what the agent handles well — or when part of it is never read at all.
 
-**Agents** reads those files across every repository, the folders above them and your home folder, shows what each one costs, and points at what to fix.
+**Agents** reads those files across every repository, the folders above them and your home folder, shows what each one costs, and guides the fix: made for you when it needs no choosing, handed to Claude Code or Codex when it does.
 
 ## What it reads
 
@@ -25,9 +25,10 @@ A `CLAUDE.md` in a folder **above** your repositories counts too: every session 
 The first visit scans; press refresh (or pull the page down on macOS 27) to scan again.
 
 - **The summary** counts the warnings and suggestions, and shows the heaviest start: the place whose sessions load the most before the first prompt, against the limit Claude Code warns at. **Copy Findings** puts every finding on the clipboard as Markdown, ready to paste into a session that will fix them.
-- **Background Sessions**, beside the summary: what Claude Code's ended background sessions still keep on disk, how many finished and how many stopped waiting for your answer. Click it to list them below the grid (see [Background sessions](#background-sessions)).
-- **Six cards**: Instructions, Rules, Skills, Commands & Subagents, Settings & MCP, Memory, each with its count. Click one to list its files below the grid, the ones that need fixing first. Narrow the list to one problem with the chips over it, search it, or sort it. Each row shows the agents that read the file, its lines and characters and its findings; click it to see when it loads and what to do. The two buttons open the file and show it in the Finder.
-- **What Claude Code loads at launch** takes one place at a time: every file in the order Claude Code reads it, as a bar against the limit. Imports and the memory index load too; the bar shows them, and the warning does not count them.
+- **Cards**, in rows of four (two in a narrow window): Instructions, Rules, Skills, Commands & Subagents, Settings & MCP, Memory, Launch Weight and Background Sessions. Click one and it opens into its panel right under its row; one is open at a time, and a click on it again closes it.
+- **The six kinds of file** list their files, the ones that need fixing first. Narrow the list to one problem with the chips over it, search it, or sort it. Each row shows the agents that read the file, its lines and characters and its findings; click it to see when it loads and how to fix it. The two buttons open the file and show it in the Finder.
+- **Launch Weight** takes one place at a time: every file in the order Claude Code reads it at launch, as a bar against the limit. Imports and the memory index load too; the bar shows them, and the warning does not count them.
+- **Background Sessions**: what Claude Code's ended background sessions still keep on disk, how many finished and how many stopped waiting for your answer (see [Background sessions](#background-sessions)).
 
 ## What it checks
 
@@ -53,6 +54,37 @@ The first visit scans; press refresh (or pull the page down on macOS 27) to scan
 | **Paragraphs repeated across repositories** | The same paragraph word for word in several repositories: one copy in your own `CLAUDE.md`, a shared rule or a plugin would do. |
 | **Memory files nothing links to** | A memory file that no link reaches from `MEMORY.md`, directly or through the files it links to. Claude Code loads the index and opens what it points to, so such a file is found only by chance. |
 | **Empty files** | An instruction file, rule, skill or command with nothing in it. |
+
+## Fixing what it finds
+
+Open a card, then a file: under its findings sit the ways to fix them.
+
+### When the fix needs no choosing
+
+Five kinds of finding have a fix with one right answer, and FinderGit offers to make it:
+
+| Finding | The fix |
+| --- | --- |
+| **AGENTS.md that Claude Code skips** | Add `@AGENTS.md` to the `CLAUDE.md` in charge, or create a `CLAUDE.md` that imports it. Offered only when none of `AGENTS.md` is loaded yet: one that copied part of it would load that part twice. |
+| **An import in quotes, or cut short at a space** | Rewrite it as an import Claude Code follows, its spaces escaped. |
+| **A personal file committed to git** | Stop tracking it and add it to `.gitignore`. The file stays on your disk. |
+| **AGENTS.md that Gemini CLI skips** | Create a `.gemini/settings.json` that lists `AGENTS.md`, only where there is none. |
+| **A memory file nothing links to** | Add one line at the end of `MEMORY.md`, in the shape Claude Code writes its own entries, and only while the index still has room. |
+
+**Nothing is written before you have seen it.** The button opens the fix whole: what it does, what changes for the agents (an import says how many characters it adds to every launch there), and every line it adds or removes, file by file. **Apply** makes it; **Cancel** leaves everything as it was.
+
+**It is applied whole or not at all.** Every file the fix writes, or relies on without writing, must still be byte for byte what the preview showed: if anything changed on disk in the meantime, nothing is written, and the page scans again. If something fails once it has started — git refusing, a write failing, or the file still not ignored after the change — every file written and every change to git's index is put back before FinderGit tells you why.
+
+### When it needs a judgement
+
+Trimming a long file, merging two that drifted apart, rewording a description: these are a judgement, and they go to an agent with you in the session. **Fix with Claude Code** or **Fix with Codex** opens Terminal in the file's repository and starts that agent there, with a first message FinderGit writes: what was found, why it matters, how to go about it, and to propose the changes before making them.
+
+The button names the agent whose problem it is. Claude Code takes its own files, and an `AGENTS.md` it skips, because that fix goes in `CLAUDE.md`. Codex takes its size limit, and the other findings on an `AGENTS.md` Claude Code does not read. For a file that is neither's, it is the one you last picked from its menu, which offers every agent installed.
+
+- **Claude Code** starts **in plan mode**: it reads and proposes, and edits nothing until you approve its plan.
+- **Codex** can't be started in its Plan mode from outside its window, so it is asked to propose first and wait for your OK, and its sandbox lets it write only in the repository and the file's own folder. To keep it planning, press ⇧Tab in its window for Plan mode.
+
+The menu also has **Copy Prompt**, to paste the same message into a session of your own. With neither agent installed, the button is **Copy Prompt for an Agent**.
 
 ## Files no agent uses
 
@@ -84,5 +116,5 @@ Characters are counted the way Claude Code counts them, so the totals match the 
 </Callout>
 
 <Callout type="info" emoji="🛡️">
-Agents reads, and sends nothing anywhere. It changes something only when you ask it to, after a confirmation: **Move to Trash…** on a file no agent uses, and **Remove** on ended background sessions. Every other fix is yours, from **Open** and the Finder.
+Agents reads, and sends nothing anywhere. It changes something only when you ask it to: a fix you saw whole and applied, **Move to Trash…** on a file no agent uses, and **Remove** on ended background sessions, each after a confirmation. **Fix with Claude Code** and **Fix with Codex** start your own agent, which then works as any session of yours does.
 </Callout>
