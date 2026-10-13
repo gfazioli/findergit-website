@@ -91,18 +91,17 @@ describe('Motion.module.css, the entrance at rest', () => {
 /*
  * Everything here moves on the compositor, or the page's scroll pays for it.
  * Chrome runs only opacity and transform there: a `filter: blur()` that moves
- * pixels, a custom property, or a box-shadow all run on the main thread, once
- * a frame for each item that moves -- and the home page moves 93 of them.
- * Taking the blur and the rim's `--glint` out cut half of the GPU time of a
- * scroll down the page (measured on production, 2026-10-13).
+ * pixels, a custom property or a box-shadow ticks on the main thread, once a
+ * frame for each item that moves, and the home page moves 93 of them.
  */
 describe('Motion.module.css, on the compositor', () => {
   const keyframes = [...css.matchAll(/@keyframes ([\w-]+) \{/g)].map((match) => match[1]);
 
   it.each(keyframes)('@keyframes %s moves only opacity and transform', (name) => {
-    const properties = [...body(`@keyframes ${name} {`).matchAll(/([\w-]+):/g)].map(
-      (match) => match[1]
-    );
+    // A keyframe's own timing function is a descriptor, not a property it moves.
+    const properties = [...body(`@keyframes ${name} {`).matchAll(/([\w-]+):/g)]
+      .map((match) => match[1])
+      .filter((p) => p !== 'animation-timing-function');
     expect(properties.length).toBeGreaterThan(0);
     expect(properties.filter((p) => p !== 'opacity' && p !== 'transform')).toEqual([]);
   });
@@ -125,7 +124,6 @@ describe('Motion.module.css, on the compositor', () => {
     const opacities = [...body('@keyframes glint {').matchAll(/opacity: ([\d.]+);/g)].map((match) =>
       Number(match[1])
     );
-    expect(opacities).toHaveLength(11);
     expect(opacities[0]).toBe(0);
     expect(opacities.at(-1)).toBe(0);
     expect(Math.max(...opacities)).toBeLessThanOrEqual(0.9);

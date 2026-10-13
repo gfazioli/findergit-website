@@ -91,6 +91,31 @@ describe('the hero carousel', () => {
     expect(shown()).toBe(3);
   });
 
+  it('holds its shot while it is off screen, and turns five seconds after it is back', () => {
+    render(<Welcome />);
+    // Its own observer watches the carousel, stage and dots: the box that
+    // holds the dots and is not a reveal.
+    const dots = screen.getAllByRole('button', { name: /^Show screenshot/ });
+    const carousel = observers.find((o) =>
+      o.targets.some((t) => t.contains(dots[0]) && !t.hasAttribute('data-reveal'))
+    )!;
+    const seen = (isIntersecting: boolean) =>
+      act(() =>
+        carousel.callback(
+          [{ isIntersecting } as IntersectionObserverEntry],
+          {} as IntersectionObserver
+        )
+      );
+    seen(false);
+    wait(12_000);
+    expect(shown()).toBe(0);
+    seen(true);
+    wait(4900);
+    expect(shown()).toBe(0);
+    wait(100);
+    expect(shown()).toBe(1);
+  });
+
   it('turns when the mascot is clicked', () => {
     render(<Welcome />);
     guideArrives();
