@@ -61,6 +61,12 @@ describe('Motion.module.css, the entrance at rest', () => {
   it('fills only backwards, so nothing of it outlives its curve', () => {
     expect(css).not.toMatch(/animation-fill-mode:\s*(both|forwards)/);
     expect(css.match(/animation-fill-mode: backwards;/g)).toHaveLength(2);
+    // The rim light's fill is in its shorthand.
+    const shorthands = [...css.matchAll(/^\s*animation: ([^;\n]+);/gm)].map((match) => match[1]);
+    expect(shorthands.filter((one) => one !== 'none')).toHaveLength(2);
+    for (const one of shorthands) {
+      expect(one).not.toMatch(/\b(both|forwards)\b/);
+    }
   });
 
   it('stops once a script has armed the scope', () => {
@@ -110,7 +116,9 @@ describe('Motion.module.css, on the compositor', () => {
   });
 
   it('transitions only what the compositor runs', () => {
-    const transitions = [...css.matchAll(/transition:([^;]+);/g)].map((match) => match[1]);
+    const transitions = [...css.matchAll(/transition(?:-property)?:([^;]+);/g)].map(
+      (match) => match[1]
+    );
     expect(transitions.length).toBeGreaterThan(0);
     for (const list of transitions) {
       // The commas inside cubic-bezier() and calc() are not between transitions.
@@ -129,7 +137,7 @@ describe('Motion.module.css, on the compositor', () => {
     );
     expect(opacities[0]).toBe(0);
     expect(opacities.at(-1)).toBe(0);
-    expect(Math.max(...opacities)).toBeLessThanOrEqual(0.9);
+    expect(Math.max(...opacities)).toBe(0.9);
     expect(value(body(".item[data-reveal='morph']::after {"), 'opacity')).toBe('0');
   });
 });

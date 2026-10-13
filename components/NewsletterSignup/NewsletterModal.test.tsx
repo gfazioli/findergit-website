@@ -1,7 +1,9 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { Profiler } from 'react';
-import { act, fireEvent, render, screen } from '@/test-utils';
-import { DISMISSED_KEY, NewsletterModal } from './NewsletterModal';
-import { PROMPT_OPEN_ATTRIBUTE } from './prompt-open';
+import { act, cleanup, fireEvent, render, screen } from '@/test-utils';
+import { NewsletterModal } from './NewsletterModal';
+import { DISMISSED_KEY, PROMPT_OPEN_ATTRIBUTE } from './prompt-open';
 
 /*
  * The prompt watches the scroll on every page of the site, so what it costs
@@ -45,6 +47,9 @@ describe('NewsletterModal', () => {
   });
 
   afterEach(() => {
+    // Unmounted while the doubles are still in place: its cleanup cancels a
+    // frame the mock queued, which the real cancelAnimationFrame never issued.
+    cleanup();
     jest.restoreAllMocks();
     if (jsdomScrollY) {
       Object.defineProperty(window, 'scrollY', jsdomScrollY);
@@ -100,6 +105,26 @@ describe('NewsletterModal', () => {
 
     fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' });
     expect(localStorage.getItem(DISMISSED_KEY)).toBe('true');
+  });
+
+  it('opens at most once per page load, even where storage refuses the answer', () => {
+    jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('blocked');
+    });
+    render(<NewsletterModal />);
+    scrollTo(1300);
+    runFrames();
+    fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' });
+    expect(isOpen()).toBe(false);
+
+    scrollTo(1600);
+    runFrames();
+    expect(isOpen()).toBe(false);
+  });
+
+  it('is the key the screenshot script writes to keep it out of its captures', () => {
+    const shot = readFileSync(join(__dirname, '../../scripts/shot.mjs'), 'utf8');
+    expect(shot).toContain(`const PROMPT_KEY = '${DISMISSED_KEY}';`);
   });
 
   it('stays closed when the visitor closed it in another tab since the page loaded', () => {
