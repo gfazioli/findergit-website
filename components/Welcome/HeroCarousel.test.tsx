@@ -91,14 +91,18 @@ describe('the hero carousel', () => {
     expect(shown()).toBe(3);
   });
 
+  /** The carousel's own observer: of those that watch a box holding the dots, the innermost. */
+  const carouselObserver = () => {
+    const dots = screen.getAllByRole('button', { name: /^Show screenshot/ });
+    const holding = observers.filter((o) => o.targets.some((t) => t.contains(dots[0])));
+    return holding.find((o) =>
+      holding.every((other) => other === o || !o.targets[0].contains(other.targets[0]))
+    )!;
+  };
+
   it('holds its shot while it is off screen, and turns five seconds after it is back', () => {
     render(<Welcome />);
-    // Its own observer watches the carousel, stage and dots: the box that
-    // holds the dots and is not a reveal.
-    const dots = screen.getAllByRole('button', { name: /^Show screenshot/ });
-    const carousel = observers.find((o) =>
-      o.targets.some((t) => t.contains(dots[0]) && !t.hasAttribute('data-reveal'))
-    )!;
+    const carousel = carouselObserver();
     const seen = (isIntersecting: boolean) =>
       act(() =>
         carousel.callback(
@@ -114,6 +118,26 @@ describe('the hero carousel', () => {
     expect(shown()).toBe(0);
     wait(100);
     expect(shown()).toBe(1);
+  });
+
+  it('holds its shot while the tab is in the background', () => {
+    render(<Welcome />);
+    const tab = (state: DocumentVisibilityState) => {
+      Object.defineProperty(document, 'visibilityState', { configurable: true, value: state });
+      act(() => {
+        document.dispatchEvent(new Event('visibilitychange'));
+      });
+    };
+    try {
+      tab('hidden');
+      wait(12_000);
+      expect(shown()).toBe(0);
+      tab('visible');
+      wait(5000);
+      expect(shown()).toBe(1);
+    } finally {
+      delete (document as { visibilityState?: unknown }).visibilityState;
+    }
   });
 
   it('turns when the mascot is clicked', () => {

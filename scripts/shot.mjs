@@ -86,7 +86,7 @@ import { join } from 'node:path';
 
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const MANTINE_KEY = 'mantine-color-scheme-value';
-/** `NewsletterModal`'s flag; `useLocalStorage` stores the boolean as JSON. */
+/** `NewsletterModal`'s flag (`DISMISSED_KEY`), which it stores as the JSON `true`. */
 const PROMPT_KEY = 'findergit-newsletter-prompt-dismissed';
 
 const [url, prefix, ...rest] = process.argv.slice(2);

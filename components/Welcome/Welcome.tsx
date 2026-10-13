@@ -46,6 +46,7 @@ import {
   Center,
   VisuallyHidden,
 } from '@mantine/core';
+import { useDocumentVisibility } from '@mantine/hooks';
 import config from '@/config';
 import { DirectoryBadges } from '@/components/DirectoryBadges/DirectoryBadges';
 import { DiscordCallToAction } from '@/components/Discord/DiscordCallToAction';
@@ -397,12 +398,14 @@ function HeroCarousel({ shots }: { shots: HeroShot[] }) {
     setWarm((w) => Math.max(w, index + 1));
   }, [index]);
 
-  // Off screen it holds its shot. A turn nobody sees still re-rendered the
-  // carousel, told the mascot in the corner its new caption, and cross-faded
-  // two screenshots and the dots, every five seconds for as long as the page
-  // stayed open (2026-10-13 audit). Back on screen, the shot it holds gets its
-  // full five seconds. Where nothing can say whether it is on screen, it
-  // turns as it always did.
+  // Off screen, or in a tab in the background, it holds its shot. A turn
+  // nobody sees still re-rendered the carousel, told the mascot in the corner
+  // its new caption, and cross-faded two screenshots and the dots, every five
+  // seconds for as long as the page stayed open (2026-10-13 audit). Back in
+  // view, the shot it holds gets its full five seconds. Where nothing can say
+  // whether it is on screen, it turns as it always did. The tab is asked
+  // separately: an observer reports nothing while the tab is hidden.
+  const visibility = useDocumentVisibility();
   const root = useRef<HTMLDivElement>(null);
   const [onScreen, setOnScreen] = useState(true);
   useEffect(() => {
@@ -419,12 +422,14 @@ function HeroCarousel({ shots }: { shots: HeroShot[] }) {
   // by the timer, a dot or the mascot, gets its full five seconds. An interval
   // kept its own beat, so a shot picked by hand could turn a moment later.
   useEffect(() => {
-    if (paused || held || zoomed || !onScreen || shots.length < 2) return;
+    if (paused || held || zoomed || !onScreen || visibility === 'hidden' || shots.length < 2) {
+      return;
+    }
     const id = setTimeout(() => {
       setIndex((i) => (i + 1) % shots.length);
     }, 5000);
     return () => clearTimeout(id);
-  }, [index, paused, held, zoomed, onScreen, shots.length]);
+  }, [index, paused, held, zoomed, onScreen, visibility, shots.length]);
 
   const active = shots[index];
 
