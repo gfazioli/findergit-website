@@ -1,6 +1,6 @@
 'use client';
 
-import { type CSSProperties, useEffect, useState } from 'react';
+import { type CSSProperties, useEffect, useRef, useState } from 'react';
 import NextImage from 'next/image';
 import Link from 'next/link';
 import { TextAnimate } from '@gfazioli/mantine-text-animate';
@@ -397,16 +397,34 @@ function HeroCarousel({ shots }: { shots: HeroShot[] }) {
     setWarm((w) => Math.max(w, index + 1));
   }, [index]);
 
+  // Off screen it holds its shot. A turn nobody sees still re-rendered the
+  // carousel, told the mascot in the corner its new caption, and cross-faded
+  // two screenshots and the dots, every five seconds for as long as the page
+  // stayed open (2026-10-13 audit). Back on screen, the shot it holds gets its
+  // full five seconds. Where nothing can say whether it is on screen, it
+  // turns as it always did.
+  const root = useRef<HTMLDivElement>(null);
+  const [onScreen, setOnScreen] = useState(true);
+  useEffect(() => {
+    const el = root.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return undefined;
+    const observer = new IntersectionObserver((entries) => {
+      setOnScreen(entries[entries.length - 1].isIntersecting);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   // A timeout keyed on the shot rather than an interval: every change of shot,
   // by the timer, a dot or the mascot, gets its full five seconds. An interval
   // kept its own beat, so a shot picked by hand could turn a moment later.
   useEffect(() => {
-    if (paused || held || zoomed || shots.length < 2) return;
+    if (paused || held || zoomed || !onScreen || shots.length < 2) return;
     const id = setTimeout(() => {
       setIndex((i) => (i + 1) % shots.length);
     }, 5000);
     return () => clearTimeout(id);
-  }, [index, paused, held, zoomed, shots.length]);
+  }, [index, paused, held, zoomed, onScreen, shots.length]);
 
   const active = shots[index];
 
@@ -422,7 +440,7 @@ function HeroCarousel({ shots }: { shots: HeroShot[] }) {
   useEffect(() => clearCarousel, []);
 
   return (
-    <Box>
+    <Box ref={root}>
       {/* Fixed-ratio stage so the fade doesn't jolt the layout when shots
           differ slightly in height; each shot is contained within it. The
           ratio is the shots' own (all 2000x1282): at 16/13 every one was

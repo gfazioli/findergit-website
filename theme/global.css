@@ -237,17 +237,6 @@ html {
 }
 
 /*
- * How far the light on a card's rim is through its run (`Motion.module.css`).
- * Registered, so that it can be ANIMATED: an unregistered custom property
- * jumps from its first value to its last.
- */
-@property --glint {
-  syntax: '<number>';
-  inherits: false;
-  initial-value: 1;
-}
-
-/*
  * Mantine's own variables, for the night. `html:root`, one step more specific
  * than Mantine's own selector: the provider injects its variables later in
  * the cascade under the SAME selector, so an equal-specificity override
