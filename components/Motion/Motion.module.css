@@ -55,10 +55,11 @@
    * per property, from the pose the armed rules below name. In longhands, so
    * the names are plain identifiers the CSS-module hashing always reaches.
    *
-   * Opacity and transform only, the two properties the compositor runs
-   * (`Motion.css.test.ts` holds it). Until 2026-10-13 every item also came in
-   * from a `filter: blur()`, which Chrome never runs there: each of the home
-   * page's 93 entrances ticked on the main thread for its whole curve.
+   * Opacity and transform only, which the compositor runs (`Motion.css.test.ts`
+   * holds it). It also runs a filter that moves no pixels, but never one that
+   * does: until 2026-10-13 every item also came in from a `filter: blur()`,
+   * and each of the home page's 93 entrances ticked on the main thread for its
+   * whole curve.
    */
   .item {
     --reveal-at: calc(var(--reveal-hold) + var(--reveal-delay));

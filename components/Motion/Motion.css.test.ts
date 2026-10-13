@@ -90,23 +90,26 @@ describe('Motion.module.css, the entrance at rest', () => {
 
 /*
  * Everything here moves on the compositor, or the page's scroll pays for it.
- * Chrome runs only opacity and transform there: a `filter: blur()` that moves
- * pixels, a custom property or a box-shadow ticks on the main thread, once a
- * frame for each item that moves, and the home page moves 93 of them.
+ * Chrome runs opacity and the transforms there (and a filter that moves no
+ * pixels, which nothing here needs); a `filter: blur()`, a custom property or
+ * a box-shadow ticks on the main thread, once a frame for each item that
+ * moves, and the home page moves 93 of them.
  */
+const COMPOSITED = ['opacity', 'transform', 'translate', 'scale', 'rotate'];
+
 describe('Motion.module.css, on the compositor', () => {
   const keyframes = [...css.matchAll(/@keyframes ([\w-]+) \{/g)].map((match) => match[1]);
 
-  it.each(keyframes)('@keyframes %s moves only opacity and transform', (name) => {
+  it.each(keyframes)('@keyframes %s moves only what the compositor runs', (name) => {
     // A keyframe's own timing function is a descriptor, not a property it moves.
     const properties = [...body(`@keyframes ${name} {`).matchAll(/([\w-]+):/g)]
       .map((match) => match[1])
       .filter((p) => p !== 'animation-timing-function');
     expect(properties.length).toBeGreaterThan(0);
-    expect(properties.filter((p) => p !== 'opacity' && p !== 'transform')).toEqual([]);
+    expect(properties.filter((p) => !COMPOSITED.includes(p))).toEqual([]);
   });
 
-  it('transitions only opacity and transform', () => {
+  it('transitions only what the compositor runs', () => {
     const transitions = [...css.matchAll(/transition:([^;]+);/g)].map((match) => match[1]);
     expect(transitions.length).toBeGreaterThan(0);
     for (const list of transitions) {
@@ -116,7 +119,7 @@ describe('Motion.module.css, on the compositor', () => {
         flat = flat.replace(/\([^()]*\)/g, '');
       }
       const properties = flat.split(',').map((one) => one.trim().split(/\s+/)[0]);
-      expect(properties.filter((p) => p !== 'opacity' && p !== 'transform')).toEqual([]);
+      expect(properties.filter((p) => !COMPOSITED.includes(p))).toEqual([]);
     }
   });
 

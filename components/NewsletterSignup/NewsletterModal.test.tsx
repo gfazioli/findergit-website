@@ -11,6 +11,7 @@ import { PROMPT_OPEN_ATTRIBUTE } from './prompt-open';
 describe('NewsletterModal', () => {
   let frames: Map<number, FrameRequestCallback>;
   let nextFrame: number;
+  let jsdomScrollY: PropertyDescriptor | undefined;
 
   const runFrames = () =>
     act(() => {
@@ -39,12 +40,17 @@ describe('NewsletterModal', () => {
     jest.spyOn(window, 'cancelAnimationFrame').mockImplementation((id) => {
       frames.delete(id);
     });
+    jsdomScrollY = Object.getOwnPropertyDescriptor(window, 'scrollY');
     Object.defineProperty(window, 'scrollY', { configurable: true, value: 0 });
   });
 
   afterEach(() => {
     jest.restoreAllMocks();
-    delete (window as { scrollY?: number }).scrollY;
+    if (jsdomScrollY) {
+      Object.defineProperty(window, 'scrollY', jsdomScrollY);
+    } else {
+      delete (window as { scrollY?: number }).scrollY;
+    }
   });
 
   it('opens once the page has scrolled past 1200px, and not before', () => {
@@ -94,6 +100,15 @@ describe('NewsletterModal', () => {
 
     fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' });
     expect(localStorage.getItem(DISMISSED_KEY)).toBe('true');
+  });
+
+  it('stays closed when the visitor closed it in another tab since the page loaded', () => {
+    render(<NewsletterModal />);
+    runFrames();
+    localStorage.setItem(DISMISSED_KEY, 'true');
+    scrollTo(1300);
+    runFrames();
+    expect(isOpen()).toBe(false);
   });
 
   it('renders nothing for a scroll once the visitor has closed it', () => {
