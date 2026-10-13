@@ -1,10 +1,7 @@
 import { Profiler } from 'react';
-import { act } from '@testing-library/react';
-import { render } from '@/test-utils';
-import { NewsletterModal } from './NewsletterModal';
+import { act, fireEvent, render, screen } from '@/test-utils';
+import { DISMISSED_KEY, NewsletterModal } from './NewsletterModal';
 import { PROMPT_OPEN_ATTRIBUTE } from './prompt-open';
-
-const DISMISSED_KEY = 'findergit-newsletter-prompt-dismissed';
 
 /*
  * The prompt watches the scroll on every page of the site, so what it costs
@@ -87,6 +84,16 @@ describe('NewsletterModal', () => {
     render(<NewsletterModal />);
     runFrames();
     expect(isOpen()).toBe(true);
+  });
+
+  it('remembers that the visitor closed it', () => {
+    render(<NewsletterModal />);
+    scrollTo(1300);
+    runFrames();
+    expect(isOpen()).toBe(true);
+
+    fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' });
+    expect(localStorage.getItem(DISMISSED_KEY)).toBe('true');
   });
 
   it('renders nothing for a scroll once the visitor has closed it', () => {

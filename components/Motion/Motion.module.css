@@ -55,12 +55,10 @@
    * per property, from the pose the armed rules below name. In longhands, so
    * the names are plain identifiers the CSS-module hashing always reaches.
    *
-   * Opacity and transform only, the two properties the compositor runs. Until
-   * 2026-10-13 every item also came in from a `filter: blur()`, and Chrome
-   * runs no filter that moves pixels on the compositor: all 93 entrances of
-   * the home page ran on the main thread, and taking the blur out cut a
-   * third of the layer work and a sixth of the GPU time of a scroll down the
-   * page (measured on production, CPU 4x).
+   * Opacity and transform only, the two properties the compositor runs
+   * (`Motion.css.test.ts` holds it). Until 2026-10-13 every item also came in
+   * from a `filter: blur()`, which Chrome never runs there: each of the home
+   * page's 93 entrances ticked on the main thread for its whole curve.
    */
   .item {
     --reveal-at: calc(var(--reveal-hold) + var(--reveal-delay));
@@ -173,15 +171,12 @@
    * each to its corner and lets it reach along the edges. The radius comes
    * from the card, or from `--reveal-radius` on a wrapper that has none.
    *
-   * Only its opacity moves, which the compositor runs. Until 2026-10-13 a
-   * registered `--glint` ran 0 -> 1 and drove both the opacity (its sine) and
-   * the reach (45% to 100% of 104px). Chrome cannot run a custom property on
-   * the compositor, so each of the home page's 25 cards repainted its four
-   * shadows and two masks on the main thread, every frame for 900 ms: a third
-   * of the paint and of the GPU time of a scroll down the page (measured on
-   * production, CPU 4x). The reach is now held where the old curve had it at
-   * its brightest, and the opacity runs that curve's own values, its ease-out
-   * baked into the keyframes. At rest, and wherever nothing runs, it is off.
+   * Only its opacity moves, which the compositor runs; at rest, and wherever
+   * nothing runs, it is off. Until 2026-10-13 a registered custom property
+   * drove the opacity and the reach (47 to 104px), and Chrome runs no custom
+   * property on the compositor: each card repainted its shadows and masks on
+   * the main thread every frame of the 900 ms. The reach is held at 75px, where
+   * that curve had it at its brightest.
    *
    * Behind `@supports` on the mask, which is what keeps the light in its two
    * corners: an engine with no mask would light the whole rim, the lit frame
@@ -194,9 +189,6 @@
     }
 
     .item[data-reveal='morph']::after {
-      /* 104px * (0.45 + 0.55 * 0.5): the old reach at its peak. */
-      --reach: 75px;
-
       position: absolute;
       inset: 3px;
       border-radius: var(--reveal-radius, inherit);
@@ -209,10 +201,10 @@
         inset 6px -6px 24px -6px var(--fg-lilac);
       opacity: 0;
       mask:
-        radial-gradient(circle var(--reach) at 100% 0, #000, rgb(0 0 0 / 0.55) 40%, transparent),
-        radial-gradient(circle var(--reach) at 0 100%, #000, rgb(0 0 0 / 0.55) 40%, transparent);
+        radial-gradient(circle 75px at 100% 0, #000, rgb(0 0 0 / 0.55) 40%, transparent),
+        radial-gradient(circle 75px at 0 100%, #000, rgb(0 0 0 / 0.55) 40%, transparent);
       /* At rest it catches the light as it lands from the first paint. */
-      animation: glint 900ms linear calc(var(--reveal-at) + 220ms) both;
+      animation: glint 900ms calc(var(--reveal-at) + 220ms) backwards;
     }
 
     .scope[data-armed]:not([data-revealed]) .item[data-reveal='morph']::after,
@@ -222,55 +214,25 @@
 
     .scope[data-revealed] .item[data-reveal='morph']::after,
     .scope.item[data-reveal='morph'][data-revealed]::after {
-      animation: glint 900ms linear calc(var(--reveal-delay) + 220ms) both;
+      animation: glint 900ms calc(var(--reveal-delay) + 220ms) backwards;
     }
   }
 }
 
 /*
- * 0.9 * sin(180deg * ease-out(t)), sampled every tenth: the curve the light
- * ran when it was driven by `--glint`, so it flares and fades as it did.
- * Played `linear`, because the ease-out is already in the values.
+ * The light flares to 0.9 at a third of the run and fades: the curve it always
+ * ran, 0.9 * sin(180deg * ease-out(t)), which these two segments follow within
+ * 0.01 of opacity.
  */
 @keyframes glint {
   0% {
     opacity: 0;
+    animation-timing-function: cubic-bezier(0.45, 0.8, 0.7, 1);
   }
 
-  10% {
-    opacity: 0.435;
-  }
-
-  20% {
-    opacity: 0.742;
-  }
-
-  30% {
-    opacity: 0.887;
-  }
-
-  40% {
-    opacity: 0.878;
-  }
-
-  50% {
-    opacity: 0.753;
-  }
-
-  60% {
-    opacity: 0.562;
-  }
-
-  70% {
-    opacity: 0.356;
-  }
-
-  80% {
-    opacity: 0.175;
-  }
-
-  90% {
-    opacity: 0.048;
+  34% {
+    opacity: 0.9;
+    animation-timing-function: cubic-bezier(0.3, 0, 0.65, 1);
   }
 
   100% {
