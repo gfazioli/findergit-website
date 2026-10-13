@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { Modal } from '@mantine/core';
 import { readLocalStorageValue, useDisclosure } from '@mantine/hooks';
 import { NewsletterCallToAction } from './NewsletterCallToAction';
-import { PROMPT_OPEN_ATTRIBUTE } from './prompt-open';
+import { DISMISSED_KEY, PROMPT_OPEN_ATTRIBUTE } from './prompt-open';
 
 /**
  * Scroll-triggered newsletter prompt.
@@ -15,8 +15,6 @@ import { PROMPT_OPEN_ATTRIBUTE } from './prompt-open';
  * in the root layout.
  */
 const SCROLL_TRIGGER_PX = 1200;
-/** Stored as `true` (JSON) once the visitor closes the prompt. */
-export const DISMISSED_KEY = 'findergit-newsletter-prompt-dismissed';
 
 const isDismissed = () => readLocalStorageValue({ key: DISMISSED_KEY, defaultValue: false });
 
@@ -72,7 +70,8 @@ export function NewsletterModal() {
     try {
       window.localStorage.setItem(DISMISSED_KEY, JSON.stringify(true));
     } catch {
-      // Storage refused (a private window, a full quota): it closes for now.
+      // Storage refused (site data blocked, a full quota): it closes for this
+      // page load, and the watcher has already stopped.
     }
     close();
   };
