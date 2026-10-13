@@ -43,9 +43,6 @@ function value(block: string, property: string) {
 
 const ENTRANCES = [
   'reveal-fade',
-  'reveal-blur',
-  'reveal-blur-text',
-  'reveal-blur-chip',
   'reveal-morph',
   'reveal-rise',
   'reveal-pop',
@@ -84,18 +81,54 @@ describe('Motion.module.css, the entrance at rest', () => {
     expect(value(body(`@keyframes ${frames} {`), 'transform')).toBe(value(armed, 'transform'));
   });
 
-  it.each([
-    ["'rise'", 'reveal-blur-text'],
-    ["'pop'", 'reveal-blur-chip'],
-  ])('blurs a %s item as much as its armed rule does', (variant, frames) => {
-    const armed = body(`.scope[data-armed]:not([data-revealed]) .item[data-reveal=${variant}],`);
-    expect(value(body(`@keyframes ${frames} {`), 'filter')).toBe(value(armed, 'filter'));
-  });
-
-  it('blurs every other item as much as the armed rule does', () => {
+  it('fades every item in from where the armed rule has it', () => {
     const armed = body('.scope[data-armed]:not([data-revealed]) .item,');
-    expect(value(body('@keyframes reveal-blur {'), 'filter')).toBe(value(armed, 'filter'));
     expect(value(armed, 'opacity')).toBe('0');
     expect(value(body('@keyframes reveal-fade {'), 'opacity')).toBe('0');
+  });
+});
+
+/*
+ * Everything here moves on the compositor, or the page's scroll pays for it.
+ * Chrome runs only opacity and transform there: a `filter: blur()` that moves
+ * pixels, a custom property, or a box-shadow all run on the main thread, once
+ * a frame for each item that moves -- and the home page moves 93 of them.
+ * Taking the blur and the rim's `--glint` out cut half of the GPU time of a
+ * scroll down the page (measured on production, 2026-10-13).
+ */
+describe('Motion.module.css, on the compositor', () => {
+  const keyframes = [...css.matchAll(/@keyframes ([\w-]+) \{/g)].map((match) => match[1]);
+
+  it.each(keyframes)('@keyframes %s moves only opacity and transform', (name) => {
+    const properties = [...body(`@keyframes ${name} {`).matchAll(/([\w-]+):/g)].map(
+      (match) => match[1]
+    );
+    expect(properties.length).toBeGreaterThan(0);
+    expect(properties.filter((p) => p !== 'opacity' && p !== 'transform')).toEqual([]);
+  });
+
+  it('transitions only opacity and transform', () => {
+    const transitions = [...css.matchAll(/transition:([^;]+);/g)].map((match) => match[1]);
+    expect(transitions.length).toBeGreaterThan(0);
+    for (const list of transitions) {
+      // The commas inside cubic-bezier() and calc() are not between transitions.
+      let flat = list;
+      while (/\([^()]*\)/.test(flat)) {
+        flat = flat.replace(/\([^()]*\)/g, '');
+      }
+      const properties = flat.split(',').map((one) => one.trim().split(/\s+/)[0]);
+      expect(properties.filter((p) => p !== 'opacity' && p !== 'transform')).toEqual([]);
+    }
+  });
+
+  it('keeps the rim off at rest, and its keyframes start and end dark', () => {
+    const opacities = [...body('@keyframes glint {').matchAll(/opacity: ([\d.]+);/g)].map((match) =>
+      Number(match[1])
+    );
+    expect(opacities).toHaveLength(11);
+    expect(opacities[0]).toBe(0);
+    expect(opacities.at(-1)).toBe(0);
+    expect(Math.max(...opacities)).toBeLessThanOrEqual(0.9);
+    expect(value(body(".item[data-reveal='morph']::after {"), 'opacity')).toBe('0');
   });
 });
