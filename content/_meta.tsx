@@ -53,6 +53,7 @@ export default {
   '---dashboards': { type: 'separator', title: 'Dashboards' },
   overview: nav(IconLayoutGrid, 'Overview', 'blue'),
   account: nav(IconUserCircle, 'Account', 'cyan'),
+  'profile-card': nav(IconSparkles, 'Profile Card', 'violet'),
   cleaning: nav(IconBrush, 'Cleaning', 'teal'),
   agents: nav(IconBrain, 'Agents', 'pink'),
   '---guides': { type: 'separator', title: 'Guides' },
