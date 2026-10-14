@@ -1,17 +1,57 @@
-@keyframes pulse {
+/*
+ * A footer link's NEW badge (`new: true` in the footer's links): a halo swells
+ * out of it and fades, every 1.5 s, for as long as the page is open.
+ *
+ * The halo is a layer of its own behind the label, grown and faded:
+ * transform and opacity run on the compositor. It used to be the badge's own
+ * box-shadow spread, animated forever, which repaints every frame: three such
+ * pulses on this site cost 1.03 s of main thread per 10 s at rest, against
+ * 0.08 s with the three stopped (2026-09-29, ReleaseCadence.module.css). No
+ * link shows the badge today; this keeps it free for the day one does.
+ *
+ * The halo starts as the badge itself and grows to the old 10px spread on
+ * every side of the default badge (39 x 16px, measured): 59/39 and 36/16. A
+ * scale that differs on the two axes would squash a pill's round ends, so
+ * the halo's corners are drawn wider than tall, in the ratio of the two
+ * scales, and land round. It takes the badge's own colour (`--badge-bg`), as
+ * the `color` prop asks; the shadow was pure red whatever the prop said.
+ */
+.badgeNew {
+  position: relative;
+  /* Mantine's Badge clips its root, which would clip the halo; the label
+     clips its own text. */
+  overflow: visible;
+  /* So the halo can sit behind the label and above nothing else. */
+  isolation: isolate;
+}
+
+.badgeNew::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: calc(var(--badge-height) / 2 * 2.25 / 1.5) / calc(var(--badge-height) / 2);
+  background: var(--badge-bg);
+  pointer-events: none;
+  content: '';
+  opacity: 0;
+  animation: badge-halo 1.5s infinite;
+}
+
+@keyframes badge-halo {
   0% {
-    box-shadow: 0 0 0 0 rgb(255, 0, 0, 0.7);
+    opacity: 0.7;
+    transform: scale(1);
   }
 
-  70% {
-    box-shadow: 0 0 0 10px rgb(255, 0, 0, 0);
-  }
-
+  70%,
   100% {
-    box-shadow: 0 0 0 0 rgb(255, 0, 0, 0);
+    opacity: 0;
+    transform: scale(1.5, 2.25);
   }
 }
 
-.badgeNew {
-  animation: pulse 1.5s infinite;
+@media (prefers-reduced-motion: reduce) {
+  .badgeNew::after {
+    animation: none;
+  }
 }
