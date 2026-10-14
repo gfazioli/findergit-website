@@ -652,6 +652,15 @@ const features: Feature[] = [
     since: '0.13.0',
   },
   {
+    icon: IconSparkles,
+    title: 'Profile Card',
+    description:
+      'Your GitHub profile on one card, in nine looks \u2014 Halloween and Christmas in season \u2014 saved as an image or a PDF, copied, or shared in a click.',
+    color: 'violet',
+    href: '/docs/profile-card',
+    since: '0.52.0',
+  },
+  {
     icon: IconBrush,
     title: 'Cleaning',
     description:
