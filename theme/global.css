@@ -40,12 +40,12 @@ html {
 
   /*
    * The night's surfaces, cut from the outline's navy. One token each, so
-   * everything that has to dissolve INTO the page (the marquee's fade, a
-   * section's feathered edge, Nextra's own chrome) names the colour the body
-   * is painted with. Declared on :root, not on the body: a var() inside a
-   * custom property resolves where it is declared, so a token Nextra reads
-   * from html (`--x-color-nextra-bg: var(--fg-page)`) would keep the root's
-   * value whatever the body said. Measured on netfox.app.
+   * everything that has to dissolve INTO the page (a section's feathered
+   * edge, Nextra's own chrome) names the colour the body is painted with.
+   * Declared on :root, not on the body: a var() inside a custom property
+   * resolves where it is declared, so a token Nextra reads from html
+   * (`--x-color-nextra-bg: var(--fg-page)`) would keep the root's value
+   * whatever the body said. Measured on netfox.app.
    *
    * - `--fg-page`    #0b1628, the page.
    * - `--fg-top`     #0f2547, the navy the home page starts with; its navbar
@@ -273,10 +273,6 @@ body:has(.fg-home) {
 /* Titles in white: the body text is the dark scale's near-white. */
 .mantine-Title-root {
   color: var(--mantine-color-white);
-}
-
-* {
-  --marquee-fade-edge-color: var(--fg-page);
 }
 
 body {
