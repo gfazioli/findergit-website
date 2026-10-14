@@ -28,7 +28,7 @@ export const Content = () => {
           </Button>
         </Stack>
 
-        <Marquee fadeEdges pauseOnHover gap="xl">
+        <Marquee fadeEdges pauseOnHover>
           <Button
             size="xl"
             component="a"
