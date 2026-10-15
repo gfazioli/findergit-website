@@ -180,13 +180,13 @@ export const faqItems: { value: string; question: string; answer: ReactNode }[] 
         fetched directly from the forge a repo lives on — GitHub with your own credentials;
         Codeberg, GitLab and Bitbucket without credentials, so they are not told who you are —
         though, like any direct request, it reaches them from your own IP address. With a GitHub
-        account connected, the Account dashboard, star alerts and the Clone window read from GitHub
-        too, and FinderGit reads GitHub’s public status page at launch, when you refresh and after a
-        failed request. Commit authors’ avatars come from GitHub or, for other email addresses, from
-        a public avatar service that is sent a hash of the address; turn off Show author avatars in
-        Settings → Appearance to stop both. The About &amp; Support window loads its sponsors’
-        pictures from GitHub. Update checks read the release feed on findergit.app, unless you turn
-        automatic checks off in Settings. And the optional{' '}
+        account connected, the Account dashboard and its Profile Card, star alerts and the Clone
+        window read from GitHub too, and FinderGit reads GitHub’s public status page at launch, when
+        you refresh and after a failed request. Commit authors’ avatars come from GitHub or, for
+        other email addresses, from a public avatar service that is sent a hash of the address; turn
+        off Show author avatars in Settings → Appearance to stop both. The About &amp; Support
+        window loads its sponsors’ pictures from GitHub. Update checks read the release feed on
+        findergit.app, unless you turn automatic checks off in Settings. And the optional{' '}
         <Anchor href="/docs/ai-commit-messages" size="sm">
           AI commit message
         </Anchor>{' '}
