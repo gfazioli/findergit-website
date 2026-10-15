@@ -27,6 +27,11 @@
   <img src="public/screenshot-hero.png" alt="FinderGit window showing the Finder-style tree view with Branch, Status and Changes columns" width="820" />
 </p>
 
+<div align="center">
+  <p><img src="https://raw.githubusercontent.com/gfazioli/gfazioli/master/glancecard/findergit-website.svg" width="880" alt="findergit-website at a glance, refreshed daily: commits, releases, stars, issues and pull requests, a year of commit activity, the weekly rhythm, languages, latest commits and releases, contributors" /><br>
+  <sub>Made with <a href="https://github.com/gfazioli/glancecard">glancecard</a> · refreshed daily</sub></p>
+</div>
+
 ## What is FinderGit?
 
 FinderGit is a native macOS app that combines file browsing with Git intelligence. Instead of switching between Finder and a Git client, you get everything in one window:
