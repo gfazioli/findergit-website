@@ -36,16 +36,16 @@ afterEach(() => {
 
 describe('fetchReleaseCadence', () => {
   it('counts across pages when the last one is short', async () => {
-    // 100 x 10 on the first page is exactly 1,000, the downloads threshold: a
-    // sum that stopped at page one would still print a figure, just the wrong
-    // one.
-    const full = Array.from({ length: 100 }, (_, i) => release(i + 100, i + 200, 10));
+    // The first page alone reaches the site's downloads threshold, so a sum
+    // that stopped there would still print a figure, just the wrong one.
+    const each = Math.ceil(config.releaseCadence.downloadsShownFrom / 100);
+    const full = Array.from({ length: 100 }, (_, i) => release(i + 100, i + 200, each));
     const tail = Array.from({ length: 7 }, (_, i) => release(i, i + 1, 5));
     global.fetch = servePages([full, tail]);
 
     const cadence = await fetchReleaseCadence(NOW);
     expect(cadence.total).toBe(107);
-    expect(cadence.downloads).toBe('1,035');
+    expect(cadence.downloads).toBe((100 * each + 35).toLocaleString('en-US'));
     expect(global.fetch).toHaveBeenCalledTimes(2);
   });
 

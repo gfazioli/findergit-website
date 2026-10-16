@@ -38,16 +38,16 @@ export function ReleaseCadence({ cadence }: { cadence: Cadence }) {
           </Text>
         </Group>
 
-        <Group gap={6} wrap="wrap" justify="center">
+        <Group className={classes.facts} gap={6} wrap="wrap" justify="center">
           {hasCount && (
-            <Text className={classes.fact} size="xs" c="dimmed">
+            <Text size="xs" c="dimmed">
               <ScrollNumber value={total} /> releases since {since}
             </Text>
           )}
           {isFull && (
             <>
               <Separator />
-              <Text className={classes.fact} size="xs" c="dimmed">
+              <Text size="xs" c="dimmed">
                 <ScrollNumber value={downloads} /> downloads
               </Text>
             </>
