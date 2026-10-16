@@ -63,4 +63,15 @@ describe('ReleaseCadence', () => {
     expect(screen.queryByText(/downloads/)).not.toBeInTheDocument();
     expect(screen.getByText(/releases since/)).toBeInTheDocument();
   });
+
+  it('moves the link to its own phone line only when both figures are there', () => {
+    // Without the downloads the line fits a phone as it always did, so the
+    // link must stay on it: the classes that break it out are not set.
+    const { unmount } = render(<ReleaseCadence cadence={FRESH} />);
+    expect(screen.getByRole('link', { name: /what's new/i })).toHaveClass('link');
+    unmount();
+
+    render(<ReleaseCadence cadence={{ ...FRESH, downloads: null }} />);
+    expect(screen.getByRole('link', { name: /what's new/i })).not.toHaveClass('link');
+  });
 });
