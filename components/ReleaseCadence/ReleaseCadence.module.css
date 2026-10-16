@@ -4,8 +4,32 @@
  * still gradient with nothing to blur, so the filter only cost a repaint.
  */
 .strip {
+  padding-inline: var(--mantine-spacing-xl);
   background: var(--fg-glass);
   border-color: var(--fg-rule);
+}
+
+/*
+ * On a phone the facts line no longer fits, and wherever it breaks it leaves a
+ * "·" hanging at the end of a line. So below `xs` the link takes a line of its
+ * own and loses its separator, and the strip gives back some of its padding so
+ * the releases and the downloads still share one line (down to a 360px
+ * screen). Padding here and not as Paper's `px`: a style prop is an inline
+ * style, which a media query cannot override.
+ */
+@media (max-width: $mantine-breakpoint-xs) {
+  .strip {
+    padding-inline: var(--mantine-spacing-md);
+  }
+
+  .beforeLink {
+    display: none;
+  }
+
+  .link {
+    flex-basis: 100%;
+    text-align: center;
+  }
 }
 
 /*
