@@ -59,19 +59,18 @@ describe('ReleaseCadence', () => {
     expect(screen.getByText(/releases since/)).toBeInTheDocument();
   });
 
-  it('takes the phone layout only when both figures are there', () => {
-    // Without the downloads the line fits a phone as it always did, so the
-    // strip must keep its layout there: `data-full` is what the phone rules key
-    // on, `facts` is the row they turn into a column, and `separator` what they
-    // hide.
-    const strip = () => screen.getByRole('link', { name: /what's new/i }).closest('.strip');
+  it('gives the phone rules their hooks with or without the downloads', () => {
+    // On a phone every strip stacks, the count-only one too (it hung a dot at
+    // 320px): `facts` is the row the rules turn into a column and `separator`
+    // what they hide, so both must be there in either state.
+    const row = () => screen.getByRole('link', { name: /what's new/i }).parentElement;
     const { unmount } = render(<ReleaseCadence cadence={FRESH} />);
-    expect(strip()).toHaveAttribute('data-full');
+    expect(row()).toHaveClass('facts');
     screen.getAllByText('·').forEach((dot) => expect(dot).toHaveClass('separator'));
-    expect(screen.getByText(/downloads/).parentElement).toHaveClass('facts');
     unmount();
 
     render(<ReleaseCadence cadence={{ ...FRESH, downloads: null }} />);
-    expect(strip()).not.toHaveAttribute('data-full');
+    expect(row()).toHaveClass('facts');
+    screen.getAllByText('·').forEach((dot) => expect(dot).toHaveClass('separator'));
   });
 });
