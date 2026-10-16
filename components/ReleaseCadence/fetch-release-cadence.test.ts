@@ -3,10 +3,18 @@ import { fetchReleaseCadence } from './fetch-release-cadence';
 
 const NOW = new Date('2026-08-31T18:00:00Z');
 
-/** One app release, dated `days` before NOW so the ordering is predictable. */
-function release(n: number, days: number) {
+/**
+ * One app release, dated `days` before NOW so the ordering is predictable,
+ * with its disk image downloaded `downloads` times.
+ */
+function release(n: number, days: number, downloads = 0) {
   const at = new Date(NOW.getTime() - days * 86_400_000).toISOString();
-  return { name: `FinderGit 0.${n}.0`, tag_name: `v0.${n}.0`, published_at: at };
+  return {
+    name: `FinderGit 0.${n}.0`,
+    tag_name: `v0.${n}.0`,
+    published_at: at,
+    assets: [{ name: `FinderGit-0.${n}.0.dmg`, download_count: downloads }],
+  };
 }
 
 /** Serves the given pages in order, then empty pages. */
@@ -28,50 +36,33 @@ afterEach(() => {
 
 describe('fetchReleaseCadence', () => {
   it('counts across pages when the last one is short', async () => {
-    const full = Array.from({ length: 100 }, (_, i) => release(i + 100, i + 200));
-    const tail = Array.from({ length: 7 }, (_, i) => release(i, i + 1));
+    // 100 x 10 on the first page is exactly 1,000, the downloads threshold: a
+    // sum that stopped at page one would still print a figure, just the wrong
+    // one.
+    const full = Array.from({ length: 100 }, (_, i) => release(i + 100, i + 200, 10));
+    const tail = Array.from({ length: 7 }, (_, i) => release(i, i + 1, 5));
     global.fetch = servePages([full, tail]);
 
     const cadence = await fetchReleaseCadence(NOW);
     expect(cadence.total).toBe(107);
+    expect(cadence.downloads).toBe('1,035');
     expect(global.fetch).toHaveBeenCalledTimes(2);
-  });
-
-  it('adds up the downloads of every page, not only the first', async () => {
-    // 100 x 10 on the first page is exactly 1,000, the threshold: a sum that
-    // stopped at page one would still print a figure, just the wrong one.
-    const withDownloads = (n: number, days: number, count: number) => ({
-      ...release(n, days),
-      assets: [{ name: `FinderGit-0.${n}.0.dmg`, download_count: count }],
-    });
-    const full = Array.from({ length: 100 }, (_, i) => withDownloads(i + 100, i + 200, 10));
-    const tail = Array.from({ length: 7 }, (_, i) => withDownloads(i, i + 1, 5));
-    global.fetch = servePages([full, tail]);
-
-    expect((await fetchReleaseCadence(NOW)).downloads).toBe('1,035');
-  });
-
-  it('states no downloads when the paging cap leaves the total unknown', async () => {
-    const full = Array.from({ length: 100 }, (_, i) => ({
-      ...release(i, i + 1),
-      assets: [{ name: `FinderGit-0.${i}.0.dmg`, download_count: 50 }],
-    }));
-    global.fetch = servePages([full, full, full, full, full]);
-
-    expect((await fetchReleaseCadence(NOW)).downloads).toBeNull();
   });
 
   it('reports NO count when the paging cap is hit with a full page', async () => {
     // The discriminating case. Five full pages do not prove there is nothing
     // after them, so summarising them would publish 500 as a total when the
     // real number is 500-or-more. Before this was guarded the function returned
-    // exactly that.
-    const full = Array.from({ length: 100 }, (_, i) => release(i, i + 1));
+    // exactly that. The 50 downloads each keep the downloads check honest: with
+    // none, a sum that ignored the cap would come out under the threshold and
+    // read null anyway.
+    const full = Array.from({ length: 100 }, (_, i) => release(i, i + 1, 50));
     global.fetch = servePages([full, full, full, full, full]);
 
     const cadence = await fetchReleaseCadence(NOW);
     expect(cadence.total).toBeNull();
     expect(cadence.since).toBeNull();
+    expect(cadence.downloads).toBeNull();
     // Still a usable strip: the config date stands in.
     expect(cadence.latestDate).toContain('2026');
   });

@@ -205,10 +205,16 @@ describe('summariseReleases', () => {
             { name: 'FinderGit-0.52.1.dSYM.zip', download_count: 2 },
           ],
         },
+        {
+          // Upper case is still the disk image: /download would serve it.
+          name: 'FinderGit 0.52.0',
+          published_at: '2026-10-14T10:00:00Z',
+          assets: [{ name: 'FinderGit-0.52.0.DMG', download_count: 5 }],
+        },
       ],
       prefix
     );
-    expect(summary?.downloads).toBe(43);
+    expect(summary?.downloads).toBe(48);
   });
 
   it('adds nothing for a count that is not one, nor for a missing asset list', () => {

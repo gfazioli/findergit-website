@@ -11,23 +11,24 @@
 
 /*
  * On a phone the line with both figures no longer fits, and wherever it breaks
- * it leaves a "·" hanging at the end of a line. So below `xs` the link takes a
- * line of its own and loses its separator (the component sets the two classes
- * only on that line: without the downloads the line still fits), and the strip
- * gives back some of its padding so the releases and the downloads still share
- * one line (down to a 360px screen). Padding here and not as Paper's `px`: a
- * style prop is an inline style, which a media query cannot override.
+ * it leaves a "·" hanging at the end of a line. So below `xs` a strip carrying
+ * both (`.full`, set by the component) moves the link to a line of its own,
+ * drops its separator, and gives back some padding so the releases and the
+ * downloads still share one line, down to a 360px screen. Without the
+ * downloads the line fits as it always did, and nothing here applies. The
+ * padding lives here, beside the rule it moves with, rather than as a
+ * responsive `px` on the Paper.
  */
 @media (max-width: $mantine-breakpoint-xs) {
-  .strip {
+  .full {
     padding-inline: var(--mantine-spacing-md);
   }
 
-  .beforeLink {
+  .full .beforeLink {
     display: none;
   }
 
-  .link {
+  .full .link {
     flex-basis: 100%;
     text-align: center;
   }

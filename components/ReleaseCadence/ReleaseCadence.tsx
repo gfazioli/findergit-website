@@ -18,12 +18,17 @@ export function ReleaseCadence({ cadence }: { cadence: Cadence }) {
   const isFresh = freshness !== null;
   const hasCount = total !== null && since !== null;
   const hasDownloads = downloads !== null;
-  // Only the line with both figures outgrows a phone, so only that one moves
-  // the link to a line of its own there (ReleaseCadence.module.css).
+  // Only the line with both figures outgrows a phone, so only that strip takes
+  // the phone layout (`.full` in ReleaseCadence.module.css).
   const isFull = hasCount && hasDownloads;
 
   return (
-    <Paper className={classes.strip} radius="xl" py={10} withBorder>
+    <Paper
+      className={isFull ? `${classes.strip} ${classes.full}` : classes.strip}
+      radius="xl"
+      py={10}
+      withBorder
+    >
       <Stack gap={2} align="center">
         <Group gap={8} wrap="nowrap">
           {/*
@@ -50,15 +55,8 @@ export function ReleaseCadence({ cadence }: { cadence: Cadence }) {
               <ScrollNumber value={downloads} /> downloads
             </Text>
           )}
-          {(hasCount || hasDownloads) && (
-            <Separator className={isFull ? classes.beforeLink : undefined} />
-          )}
-          <Anchor
-            className={isFull ? classes.link : undefined}
-            href="/docs/release-notes"
-            size="xs"
-            fw={500}
-          >
+          {(hasCount || hasDownloads) && <Separator className={classes.beforeLink} />}
+          <Anchor className={classes.link} href="/docs/release-notes" size="xs" fw={500}>
             What&apos;s new
           </Anchor>
         </Group>
