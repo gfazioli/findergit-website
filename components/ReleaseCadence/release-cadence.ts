@@ -135,13 +135,16 @@ export function summariseReleases(
   releases: readonly ReleaseRecord[],
   prefix: string
 ): ReleaseSummary | null {
-  const app = releases.filter(
-    (r) => typeof r?.name === 'string' && r.name.startsWith(prefix) && r.draft !== true
-  );
-  const dated = app
-    .map((r) => r.published_at ?? r.created_at)
-    .filter((at): at is string => typeof at === 'string' && !Number.isNaN(Date.parse(at)))
-    .sort((a, b) => Date.parse(a) - Date.parse(b));
+  // One set of releases behind both figures, so "N releases" and "M downloads"
+  // never describe different populations: an undated release counts in neither.
+  const counted = releases
+    .filter((r) => typeof r?.name === 'string' && r.name.startsWith(prefix) && r.draft !== true)
+    .map((release) => ({ release, at: release.published_at ?? release.created_at }))
+    .filter(
+      (c): c is { release: ReleaseRecord; at: string } =>
+        typeof c.at === 'string' && !Number.isNaN(Date.parse(c.at))
+    );
+  const dated = counted.map((c) => c.at).sort((a, b) => Date.parse(a) - Date.parse(b));
 
   if (dated.length === 0) {
     return null;
@@ -151,19 +154,22 @@ export function summariseReleases(
     total: dated.length,
     firstISO: dated[0],
     latestISO: dated[dated.length - 1],
-    downloads: app.reduce((sum, r) => sum + diskImageDownloads(r), 0),
+    downloads: counted.reduce((sum, c) => sum + diskImageDownloads(c.release), 0),
   };
 }
 
 /**
- * Downloads of one release's disk images. Only `.dmg` assets count: that is
- * the app, the one file each release ships, and the auto-updater fetches the
- * same file, so an update is a download as well. Anything else a release
- * might carry later (a checksum, symbols) is not the app and is left out.
+ * Downloads of one release's disk images, as GitHub counts them: every fetch
+ * of the file, by a person, by the auto-updater (an update is a download too)
+ * or by a crawler that followed /download through. That is why the strip says
+ * downloads and nothing more. Only `.dmg` assets count: that is the app, and
+ * anything else a release might carry later (a checksum, symbols) is not.
  *
  * A release whose asset list is missing adds nothing. GitHub's releases list
- * can leave a fresh upload out for most of an hour, and a release that new has
- * hardly been downloaded yet, so the total can fall short but never overstate.
+ * can leave a fresh upload out for most of an hour (51 minutes, the one time
+ * it was measured), and that is the very hour the auto-updater fetches the new
+ * disk image, so the figure can read well short for that while. Short, never
+ * high: it catches up at the next revalidation after the list does.
  */
 function diskImageDownloads(release: ReleaseRecord): number {
   return (release.assets ?? []).reduce((sum, asset) => {

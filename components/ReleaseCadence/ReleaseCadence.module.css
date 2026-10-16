@@ -12,25 +12,35 @@
 /*
  * On a phone the line with both figures no longer fits, and wherever it breaks
  * it leaves a "·" hanging at the end of a line. So below `xs` a strip carrying
- * both (`.full`, set by the component) moves the link to a line of its own,
- * drops its separator, and gives back some padding so the releases and the
- * downloads still share one line, down to a 360px screen. Without the
- * downloads the line fits as it always did, and nothing here applies. The
- * padding lives here, beside the rule it moves with, rather than as a
- * responsive `px` on the Paper.
+ * both (`[data-full]`, set by the component) moves the link to a line of its
+ * own, drops its separator, and gives back some padding so the releases and
+ * the downloads still share one line, measured at 390 and 360px. Narrower
+ * than that the two facts no longer fit side by side either, so the one
+ * between them goes too and they stack. Both cut-offs are in em, like the
+ * text they make room for, so a larger default font moves them with it.
+ * Without the downloads the line fits as it always did, and nothing here
+ * applies. The padding lives here, beside the rule it moves with, rather than
+ * as a responsive `px` on the Paper.
  */
 @media (max-width: $mantine-breakpoint-xs) {
-  .full {
+  .strip[data-full] {
     padding-inline: var(--mantine-spacing-md);
   }
 
-  .full .beforeLink {
+  .strip[data-full] .beforeLink {
     display: none;
   }
 
-  .full .link {
+  .strip[data-full] .link {
     flex-basis: 100%;
     text-align: center;
+  }
+}
+
+/* Under 360px (22.5em at the default 16px). */
+@media (max-width: 22.49em) {
+  .strip[data-full] .between {
+    display: none;
   }
 }
 
