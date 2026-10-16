@@ -154,9 +154,9 @@ export default {
     {
       name: 'Product Hunt',
       placement: 'hero',
-      href: 'https://www.producthunt.com/products/findergit/launches/findergit?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-findergit',
-      src: 'https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1126262&theme=neutral&t=1780989836593',
-      alt: "FinderGit - See every Git repo's status from one native Mac window | Product Hunt",
+      href: 'https://www.producthunt.com/products/findergit?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-findergit-2',
+      src: 'https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1270630&theme=neutral&t=1792153040797',
+      alt: 'FinderGit - Every Git repo on your Mac: browse, commit, review, clean | Product Hunt',
       width: 250,
       height: 54,
     },
