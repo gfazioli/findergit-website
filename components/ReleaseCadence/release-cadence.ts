@@ -119,14 +119,16 @@ export function formatSince(firstISO: string): string | null {
 }
 
 /**
- * Reduce a raw releases payload to a count and its endpoints.
+ * Reduce a raw releases payload to a count, its endpoints and the downloads.
  *
- * Two filters, each of which would otherwise put a wrong number on the
+ * Three filters, each of which would otherwise put a wrong number on the
  * homepage. The releases live on the WEBSITE repo, which also tags its own
  * `v6.x` template releases, so only names carrying the app prefix count (the
  * same rule `/api/github-releases` applies to the release-notes feed). And
  * drafts are excluded: an authenticated read can see unpublished releases, and
- * counting one claims a release that nobody can download.
+ * counting one claims a release that nobody can download. And a release with
+ * no usable date is left out of the count AND of the downloads, so the two
+ * figures printed side by side always describe the same releases.
  *
  * Returns null rather than a zero count, so a payload that matched nothing
  * degrades to "no count" instead of asserting the app has never shipped.
@@ -135,8 +137,6 @@ export function summariseReleases(
   releases: readonly ReleaseRecord[],
   prefix: string
 ): ReleaseSummary | null {
-  // One set of releases behind both figures, so "N releases" and "M downloads"
-  // never describe different populations: an undated release counts in neither.
   const counted = releases
     .filter((r) => typeof r?.name === 'string' && r.name.startsWith(prefix) && r.draft !== true)
     .map((release) => ({ release, at: release.published_at ?? release.created_at }))
@@ -169,7 +169,9 @@ export function summariseReleases(
  * can leave a fresh upload out for most of an hour (51 minutes, the one time
  * it was measured), and that is the very hour the auto-updater fetches the new
  * disk image, so the figure can read well short for that while. Short, never
- * high: it catches up at the next revalidation after the list does.
+ * high: it catches up at the next revalidation after the list does. A disk
+ * image deleted and uploaded again starts its count from zero, so the total
+ * can also drop by everything that file had gathered.
  */
 function diskImageDownloads(release: ReleaseRecord): number {
   return (release.assets ?? []).reduce((sum, asset) => {

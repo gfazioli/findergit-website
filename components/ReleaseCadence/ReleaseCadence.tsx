@@ -23,7 +23,7 @@ export function ReleaseCadence({ cadence }: { cadence: Cadence }) {
   const isFull = hasCount && downloads !== null;
 
   return (
-    <Paper className={classes.strip} mod={{ full: isFull }} radius="xl" py={10} withBorder>
+    <Paper className={classes.strip} mod={{ full: isFull }} radius="xl" px="xl" py={10} withBorder>
       <Stack gap={2} align="center">
         <Group gap={8} wrap="nowrap">
           {/*
@@ -38,7 +38,7 @@ export function ReleaseCadence({ cadence }: { cadence: Cadence }) {
           </Text>
         </Group>
 
-        <Group gap={6} wrap="wrap" justify="center">
+        <Group className={classes.facts} gap={6} wrap="wrap" justify="center">
           {hasCount && (
             <Text size="xs" c="dimmed">
               <ScrollNumber value={total} /> releases since {since}
@@ -46,14 +46,14 @@ export function ReleaseCadence({ cadence }: { cadence: Cadence }) {
           )}
           {isFull && (
             <>
-              <Separator className={classes.between} />
+              <Separator />
               <Text size="xs" c="dimmed">
                 <ScrollNumber value={downloads} /> downloads
               </Text>
             </>
           )}
-          {hasCount && <Separator className={classes.beforeLink} />}
-          <Anchor className={classes.link} href="/docs/release-notes" size="xs" fw={500}>
+          {hasCount && <Separator />}
+          <Anchor href="/docs/release-notes" size="xs" fw={500}>
             What&apos;s new
           </Anchor>
         </Group>
@@ -62,9 +62,9 @@ export function ReleaseCadence({ cadence }: { cadence: Cadence }) {
   );
 }
 
-function Separator({ className }: { className?: string }) {
+function Separator() {
   return (
-    <Text className={className} size="xs" c="dimmed" aria-hidden="true">
+    <Text className={classes.separator} size="xs" c="dimmed" aria-hidden="true">
       &middot;
     </Text>
   );
