@@ -174,7 +174,12 @@ export function summariseReleases(
  * can also drop by everything that file had gathered.
  */
 function diskImageDownloads(release: ReleaseRecord): number {
-  return (release.assets ?? []).reduce((sum, asset) => {
+  // Anything but an array adds nothing: a throw here would cost the strip its
+  // count and date too, not only this release's downloads.
+  if (!Array.isArray(release.assets)) {
+    return 0;
+  }
+  return release.assets.reduce((sum, asset) => {
     const count = asset?.download_count;
     // Case-blind, as /download picks the disk image it serves.
     if (typeof asset?.name !== 'string' || !asset.name.toLowerCase().endsWith('.dmg')) {

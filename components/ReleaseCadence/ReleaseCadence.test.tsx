@@ -62,11 +62,13 @@ describe('ReleaseCadence', () => {
   it('takes the phone layout only when both figures are there', () => {
     // Without the downloads the line fits a phone as it always did, so the
     // strip must keep its layout there: `data-full` is what the phone rules key
-    // on, and `separator` is what they hide.
+    // on, `fact` is what they give a line each, and `separator` what they hide.
     const strip = () => screen.getByRole('link', { name: /what's new/i }).closest('.strip');
     const { unmount } = render(<ReleaseCadence cadence={FRESH} />);
     expect(strip()).toHaveAttribute('data-full');
     screen.getAllByText('·').forEach((dot) => expect(dot).toHaveClass('separator'));
+    expect(screen.getByText(/releases since/)).toHaveClass('fact');
+    expect(screen.getByText(/downloads/)).toHaveClass('fact');
     unmount();
 
     render(<ReleaseCadence cadence={{ ...FRESH, downloads: null }} />);
