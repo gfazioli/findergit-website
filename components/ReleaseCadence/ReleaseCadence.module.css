@@ -10,12 +10,13 @@
 }
 
 /*
- * On a phone the facts line no longer fits, and wherever it breaks it leaves a
- * "·" hanging at the end of a line. So below `xs` the link takes a line of its
- * own and loses its separator, and the strip gives back some of its padding so
- * the releases and the downloads still share one line (down to a 360px
- * screen). Padding here and not as Paper's `px`: a style prop is an inline
- * style, which a media query cannot override.
+ * On a phone the line with both figures no longer fits, and wherever it breaks
+ * it leaves a "·" hanging at the end of a line. So below `xs` the link takes a
+ * line of its own and loses its separator (the component sets the two classes
+ * only on that line: without the downloads the line still fits), and the strip
+ * gives back some of its padding so the releases and the downloads still share
+ * one line (down to a 360px screen). Padding here and not as Paper's `px`: a
+ * style prop is an inline style, which a media query cannot override.
  */
 @media (max-width: $mantine-breakpoint-xs) {
   .strip {
