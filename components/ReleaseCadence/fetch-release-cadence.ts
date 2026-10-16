@@ -7,12 +7,12 @@ import {
   toCadence,
 } from './release-cadence';
 
-/** GitHub caps a releases page at 100. 47 app releases as of 0.28.0. */
+/** GitHub caps a releases page at 100. 74 app releases as of 0.52.1. */
 const PER_PAGE = 100;
 /**
  * Hard bound on the paging loop, so a bug cannot walk it forever during a
  * build. It is NOT a claim that 500 releases are enough: past this many the
- * function reports no count rather than a floor. 47 as of 0.28.0.
+ * function reports no count rather than a floor. 74 as of 0.52.1.
  */
 const MAX_PAGES = 5;
 const TIMEOUT_MS = 10_000;
@@ -32,8 +32,10 @@ const TIMEOUT_MS = 10_000;
 export const CADENCE_REVALIDATE_SECONDS = 21_600;
 
 /**
- * The release count and dates behind the homepage strip, read straight from
- * the GitHub releases API on the server.
+ * The release count, dates and downloads behind the homepage strip, read
+ * straight from the GitHub releases API on the server. The downloads cost no
+ * request of their own: every release in the list carries its assets and
+ * their download counts.
  *
  * Server-side and not through `/api/github-releases`, for three reasons: that
  * route slices the payload to the three releases the notes page renders, so it

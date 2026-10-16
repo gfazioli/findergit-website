@@ -242,6 +242,29 @@ describe('summariseReleases', () => {
     );
     expect(summary?.downloads).toBe(31);
   });
+
+  it('leaves an undated release out of both figures, not just the count', () => {
+    // The strip prints the two side by side, so they have to describe the same
+    // releases: an undated one is not counted, and neither are its downloads.
+    const summary = summariseReleases(
+      [
+        {
+          name: 'FinderGit 0.52.1',
+          published_at: '2026-10-15T10:00:00Z',
+          assets: [{ name: 'FinderGit-0.52.1.dmg', download_count: 43 }],
+        },
+        {
+          name: 'FinderGit 0.52.0',
+          published_at: null,
+          created_at: 'not a date',
+          assets: [{ name: 'FinderGit-0.52.0.dmg', download_count: 31 }],
+        },
+      ],
+      prefix
+    );
+    expect(summary?.total).toBe(1);
+    expect(summary?.downloads).toBe(43);
+  });
 });
 
 describe('formatDownloads', () => {
@@ -263,7 +286,7 @@ describe('formatDownloads', () => {
 });
 
 describe('toCadence', () => {
-  it('formats the strip is five fields off one summary', () => {
+  it('formats the five fields of the strip off one summary', () => {
     expect(
       toCadence(
         {

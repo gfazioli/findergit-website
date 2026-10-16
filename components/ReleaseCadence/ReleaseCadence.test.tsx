@@ -61,13 +61,15 @@ describe('ReleaseCadence', () => {
 
   it('takes the phone layout only when both figures are there', () => {
     // Without the downloads the line fits a phone as it always did, so the
-    // strip must keep its layout there: `.full` is what the phone rules key on.
+    // strip must keep its layout there: `data-full` is what the phone rules key
+    // on, and `between` is the separator they drop on the narrowest screens.
     const strip = () => screen.getByRole('link', { name: /what's new/i }).closest('.strip');
     const { unmount } = render(<ReleaseCadence cadence={FRESH} />);
-    expect(strip()).toHaveClass('full');
+    expect(strip()).toHaveAttribute('data-full');
+    expect(screen.getAllByText('·')[0]).toHaveClass('between');
     unmount();
 
     render(<ReleaseCadence cadence={{ ...FRESH, downloads: null }} />);
-    expect(strip()).not.toHaveClass('full');
+    expect(strip()).not.toHaveAttribute('data-full');
   });
 });
