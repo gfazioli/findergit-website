@@ -9,23 +9,23 @@
 }
 
 /*
- * On a phone the line with both figures and the link does not fit, and
- * wherever it wraps it can leave a "·" hanging at the end of a line: where
- * depends on the width, the default font size and how long the figures have
- * grown, so no breakpoint can promise it fits. So below `xs` a strip carrying
- * both (`[data-full]`, set by the component) turns the row into a column,
- * one line each for the releases, the downloads and the link, and drops the
- * separators, which holds at any width. A column and not full-width items: the
- * pill then sizes to its widest line instead of to the one-line row it no
- * longer draws, and the link's tap target stays the size of its text. Without
- * the downloads nothing here applies.
+ * On a phone the strip's line (the releases, the downloads when shown, the
+ * link) does not reliably fit, and wherever it wraps it can leave a "·"
+ * hanging at the end of a line: at 320px even the line without the downloads
+ * did (findergit-website#122). Where it breaks depends on the width, the
+ * default font size and how long the figures have grown, so no breakpoint can
+ * promise it fits. So below `xs` the row is always a column, one line each,
+ * with the separators hidden, which holds at any width. A column and not
+ * full-width items: the pill then sizes to its widest line, and the link's tap
+ * target stays the size of its text. Two classes, so the direction beats the
+ * one Mantine's Group sets whatever order the stylesheets load in.
  */
 @media (max-width: $mantine-breakpoint-xs) {
-  .strip[data-full] .separator {
+  .strip .separator {
     display: none;
   }
 
-  .strip[data-full] .facts {
+  .strip .facts {
     flex-direction: column;
   }
 }

@@ -18,12 +18,11 @@ export function ReleaseCadence({ cadence }: { cadence: Cadence }) {
   const isFresh = freshness !== null;
   const hasCount = total !== null && since !== null;
   // The downloads come out of the same summary as the count, so they never
-  // stand without it. Only the line with both figures outgrows a phone, so
-  // only that strip takes the phone layout (`[data-full]` in the CSS module).
-  const isFull = hasCount && downloads !== null;
+  // stand without it.
+  const hasDownloads = hasCount && downloads !== null;
 
   return (
-    <Paper className={classes.strip} mod={{ full: isFull }} radius="xl" px="xl" py={10} withBorder>
+    <Paper className={classes.strip} radius="xl" px="xl" py={10} withBorder>
       <Stack gap={2} align="center">
         <Group gap={8} wrap="nowrap">
           {/*
@@ -44,7 +43,7 @@ export function ReleaseCadence({ cadence }: { cadence: Cadence }) {
               <ScrollNumber value={total} /> releases since {since}
             </Text>
           )}
-          {isFull && (
+          {hasDownloads && (
             <>
               <Separator />
               <Text size="xs" c="dimmed">
