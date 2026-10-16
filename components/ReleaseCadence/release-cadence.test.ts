@@ -4,6 +4,7 @@ import {
   formatDownloads,
   formatFreshness,
   formatSince,
+  type ReleaseAsset,
   summariseReleases,
   toCadence,
 } from './release-cadence';
@@ -237,10 +238,18 @@ describe('summariseReleases', () => {
           ],
         },
         { name: 'FinderGit 0.51.0', published_at: '2026-10-14T08:00:00Z', assets: null },
+        {
+          // Not an array at all: it must cost this release its downloads,
+          // never throw and cost the strip its count.
+          name: 'FinderGit 0.50.1',
+          published_at: '2026-10-13T08:00:00Z',
+          assets: { name: 'FinderGit-0.50.1.dmg' } as unknown as ReleaseAsset[],
+        },
       ],
       prefix
     );
     expect(summary?.downloads).toBe(31);
+    expect(summary?.total).toBe(4);
   });
 
   it('leaves an undated release out of both figures, not just the count', () => {
