@@ -37,6 +37,30 @@ describe('fetchReleaseCadence', () => {
     expect(global.fetch).toHaveBeenCalledTimes(2);
   });
 
+  it('adds up the downloads of every page, not only the first', async () => {
+    // 100 x 10 on the first page is exactly 1,000, the threshold: a sum that
+    // stopped at page one would still print a figure, just the wrong one.
+    const withDownloads = (n: number, days: number, count: number) => ({
+      ...release(n, days),
+      assets: [{ name: `FinderGit-0.${n}.0.dmg`, download_count: count }],
+    });
+    const full = Array.from({ length: 100 }, (_, i) => withDownloads(i + 100, i + 200, 10));
+    const tail = Array.from({ length: 7 }, (_, i) => withDownloads(i, i + 1, 5));
+    global.fetch = servePages([full, tail]);
+
+    expect((await fetchReleaseCadence(NOW)).downloads).toBe('1,035');
+  });
+
+  it('states no downloads when the paging cap leaves the total unknown', async () => {
+    const full = Array.from({ length: 100 }, (_, i) => ({
+      ...release(i, i + 1),
+      assets: [{ name: `FinderGit-0.${i}.0.dmg`, download_count: 50 }],
+    }));
+    global.fetch = servePages([full, full, full, full, full]);
+
+    expect((await fetchReleaseCadence(NOW)).downloads).toBeNull();
+  });
+
   it('reports NO count when the paging cap is hit with a full page', async () => {
     // The discriminating case. Five full pages do not prove there is nothing
     // after them, so summarising them would publish 500 as a total when the

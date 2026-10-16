@@ -20,6 +20,12 @@ export interface ReleaseCadence {
   total: number | null;
   /** Month and year of the FIRST app release, e.g. "April 2026". */
   since: string | null;
+  /**
+   * Every download of the app's disk images, all releases together, already
+   * grouped for reading ("2,531"); null when the live count failed or is
+   * still under `config.releaseCadence.downloadsShownFrom`.
+   */
+  downloads: string | null;
 }
 
 /** Shape of the fields this module reads off the GitHub releases API. */
@@ -29,12 +35,19 @@ export interface ReleaseRecord {
   draft?: boolean;
   created_at?: string | null;
   published_at?: string | null;
+  assets?: readonly ReleaseAsset[] | null;
+}
+
+export interface ReleaseAsset {
+  name?: string | null;
+  download_count?: number | null;
 }
 
 export interface ReleaseSummary {
   total: number;
   firstISO: string;
   latestISO: string;
+  downloads: number;
 }
 
 /**
@@ -122,8 +135,10 @@ export function summariseReleases(
   releases: readonly ReleaseRecord[],
   prefix: string
 ): ReleaseSummary | null {
-  const dated = releases
-    .filter((r) => typeof r?.name === 'string' && r.name.startsWith(prefix) && r.draft !== true)
+  const app = releases.filter(
+    (r) => typeof r?.name === 'string' && r.name.startsWith(prefix) && r.draft !== true
+  );
+  const dated = app
     .map((r) => r.published_at ?? r.created_at)
     .filter((at): at is string => typeof at === 'string' && !Number.isNaN(Date.parse(at)))
     .sort((a, b) => Date.parse(a) - Date.parse(b));
@@ -136,7 +151,41 @@ export function summariseReleases(
     total: dated.length,
     firstISO: dated[0],
     latestISO: dated[dated.length - 1],
+    downloads: app.reduce((sum, r) => sum + diskImageDownloads(r), 0),
   };
+}
+
+/**
+ * Downloads of one release's disk images. Only `.dmg` assets count: that is
+ * the app, the one file each release ships, and the auto-updater fetches the
+ * same file, so an update is a download as well. Anything else a release
+ * might carry later (a checksum, symbols) is not the app and is left out.
+ *
+ * A release whose asset list is missing adds nothing. GitHub's releases list
+ * can leave a fresh upload out for most of an hour, and a release that new has
+ * hardly been downloaded yet, so the total can fall short but never overstate.
+ */
+function diskImageDownloads(release: ReleaseRecord): number {
+  return (release.assets ?? []).reduce((sum, asset) => {
+    const count = asset?.download_count;
+    if (typeof asset?.name !== 'string' || !asset.name.endsWith('.dmg')) {
+      return sum;
+    }
+    return typeof count === 'number' && Number.isSafeInteger(count) && count > 0
+      ? sum + count
+      : sum;
+  }, 0);
+}
+
+/**
+ * The downloads figure as the strip prints it, or null below the configured
+ * threshold. Grouped on the server, in English like the rest of the site.
+ */
+export function formatDownloads(
+  downloads: number,
+  shownFrom: number = config.releaseCadence.downloadsShownFrom
+): string | null {
+  return downloads >= shownFrom ? downloads.toLocaleString('en-US') : null;
 }
 
 /** The summary rendered as the strip's strings. */
@@ -146,6 +195,7 @@ export function toCadence(summary: ReleaseSummary, now: Date): ReleaseCadence {
     latestDate: formatReleaseDate(summary.latestISO, summary.latestISO),
     total: summary.total,
     since: formatSince(summary.firstISO),
+    downloads: formatDownloads(summary.downloads),
   };
 }
 
@@ -162,5 +212,6 @@ export function fallbackReleaseCadence(now: Date = new Date()): ReleaseCadence {
     latestDate: formatReleaseDate(iso, iso),
     total: null,
     since: null,
+    downloads: null,
   };
 }
