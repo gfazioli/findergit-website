@@ -13,20 +13,20 @@
  * wherever it wraps it can leave a "·" hanging at the end of a line: where
  * depends on the width, the default font size and how long the figures have
  * grown, so no breakpoint can promise it fits. So below `xs` a strip carrying
- * both (`[data-full]`, set by the component) gives each figure a line of its
- * own and drops the separators, which holds at any width. The link needs no
- * rule: with the line before it full it wraps by itself, centred, and its tap
- * target stays the size of its text. Without the downloads nothing here
- * applies.
+ * both (`[data-full]`, set by the component) turns the row into a column,
+ * one line each for the releases, the downloads and the link, and drops the
+ * separators, which holds at any width. A column and not full-width items: the
+ * pill then sizes to its widest line instead of to the one-line row it no
+ * longer draws, and the link's tap target stays the size of its text. Without
+ * the downloads nothing here applies.
  */
 @media (max-width: $mantine-breakpoint-xs) {
   .strip[data-full] .separator {
     display: none;
   }
 
-  .strip[data-full] .fact {
-    flex-basis: 100%;
-    text-align: center;
+  .strip[data-full] .facts {
+    flex-direction: column;
   }
 }
 
