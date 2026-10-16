@@ -168,7 +168,8 @@ export function summariseReleases(
 function diskImageDownloads(release: ReleaseRecord): number {
   return (release.assets ?? []).reduce((sum, asset) => {
     const count = asset?.download_count;
-    if (typeof asset?.name !== 'string' || !asset.name.endsWith('.dmg')) {
+    // Case-blind, as /download picks the disk image it serves.
+    if (typeof asset?.name !== 'string' || !asset.name.toLowerCase().endsWith('.dmg')) {
       return sum;
     }
     return typeof count === 'number' && Number.isSafeInteger(count) && count > 0
