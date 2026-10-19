@@ -266,6 +266,11 @@ function FullscreenImageModal({
       padding={0}
       radius={0}
       transitionProps={{ transition: 'fade', duration: 180 }}
+      // On the element with role="dialog": a plain `aria-label` lands on the
+      // modal's root <div>, where it names nothing.
+      attributes={{ content: { 'aria-label': 'Enlarged screenshot' } }}
+      // An icon alone names nothing, and the focus lands on it as it opens.
+      closeButtonProps={{ 'aria-label': 'Close' }}
       styles={{
         content: { backgroundColor: 'transparent', boxShadow: 'none' },
         body: {
