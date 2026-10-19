@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.53.1 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.53.1</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.53.1 — Sections you can see, and Agents finds more</p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>See what each section does.</strong> In the glancecard window the preview now draws a repository card too: pick <strong>Repository</strong> above it, or tick a section, and a sketch shows each section where glancecard puts it — Rhythm beside Code, Latest commits beside Releases, and the one left taking the full width when its neighbour goes. The first section is now called <strong>Summary</strong>: it is the panel under the card's title, not the header, which every card keeps.</li>
+<li><strong>A place's findings in one go.</strong> On Agents, a place's row in Launch Weight shows its warnings and suggestions while closed and, opened, hands every one of them to Claude Code or Codex in one session, writing only where that place's own files are.</li>
+<li><strong>Found where Claude Code looks.</strong> Skills are listed the way Claude Code lists them, so a large folder inside one skill can no longer hide the skills after it, and a skill one folder too deep shows as Ignored, with a suggestion. Each place's memory is found where Claude Code keeps it: a linked worktree reads its main checkout's, and a memory folder moved in the settings is followed.</li>
+</ul>
+<h2>Bug fixes</h2>
+<ul>
+<li>The workflow and the README lines in the glancecard window keep each line whole and scroll sideways: a long list of sections wrapped to the left margin and looked like broken YAML. What you copied was always right.</li>
+<li>With no repository listed, the sections only a repository card draws are set aside, and the workflow no longer writes a sections line that changes nothing. Stars stays a choice, the one section the profile card draws.</li>
+<li>Cards stay still as they open and close: their figures no longer count up from zero again, an open card no longer jumps on a refresh, and resizing the window keeps an open panel's figures at rest.</li>
+</ul>
+<h2>Under the hood</h2>
+<ul>
+<li>The repository sketch follows glancecard's own layout (its renderer's order, pairs and section heights) in the look picked, with shapes in place of the figures: the app draws no repository card of its own. It wears the Profile Card's frame and panels, and its two grids are drawn as one canvas each.</li>
+<li>Which sections a setup can draw is one rule in the app's core, read by both the workflow and the checkboxes.</li>
+<li>The Agents page comes from AgentsKit 0.9.4 → 0.9.9, shared with Lancetta.</li>
+<li>Translated into Italian, French, German and Spanish.</li>
+</ul>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.53.1.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
