@@ -1,4 +1,4 @@
-import { act, render, screen } from '@/test-utils';
+import { act, fireEvent, render, screen, waitFor } from '@/test-utils';
 import { Welcome } from './Welcome';
 
 describe('Welcome component', () => {
@@ -23,6 +23,14 @@ describe('Welcome component', () => {
         '(width < 62em) calc(100vw - 2rem), (width < 82.5em) calc((100vw - 2rem) * 7 / 12 - 3.5rem * 5 / 12), 45.5rem'
       );
     }
+  });
+
+  it('enlarges a screenshot in a dialog with a name, and a Close button that takes the focus', async () => {
+    render(<Welcome />);
+    fireEvent.click(screen.getAllByRole('button', { name: /^Open enlarged screenshot:/ })[0]);
+    expect(await screen.findByRole('dialog')).toHaveAccessibleName('Enlarged screenshot');
+    // Mantine moves the focus in on a timer of its own.
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Close' })).toHaveFocus());
   });
 
   describe('the In action rows', () => {
