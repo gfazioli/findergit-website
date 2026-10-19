@@ -21,8 +21,9 @@ const isDismissed = () => readLocalStorageValue({ key: DISMISSED_KEY, defaultVal
 export function NewsletterModal() {
   const [opened, { open, close }] = useDisclosure(false);
   // Mantine ignores Reduce Motion unless the theme opts in, and this one does
-  // not: the pop and the overlay's fade are skipped by hand.
-  const reduced = useReducedMotion();
+  // not: the pop and the overlay's fade are skipped by hand. Otherwise the
+  // durations stay Mantine's own (the pop 250 ms, the overlay 200).
+  const reduced = useReducedMotion(false);
 
   // Watches the scroll only until the prompt opens, at most once a frame, and
   // not at all for a visitor who has closed it. Mantine's `useWindowScroll`,
@@ -87,7 +88,7 @@ export function NewsletterModal() {
       size="md"
       radius="lg"
       overlayProps={{ blur: 2 }}
-      transitionProps={{ transition: 'pop', duration: reduced ? 0 : 250 }}
+      transitionProps={{ transition: 'pop', ...(reduced ? { duration: 0 } : {}) }}
       // On the element with role="dialog", which has no title to be named by.
       // A plain `aria-label` lands on the modal's root <div>, where it names
       // nothing (read in Chrome on lancetta.app, 2026-10-19).

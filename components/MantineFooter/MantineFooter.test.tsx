@@ -53,10 +53,7 @@ describe('MantineFooter directory badges', () => {
   });
 });
 
-/**
- * The newsletter band leads the footer on every page. An h2, so a page with no
- * h2 of its own (Legal, the FAQ) goes h1, h2 rather than skipping a level.
- */
+// Why an h2: `NewsletterCallToAction`.
 describe('MantineFooter newsletter band', () => {
   it('is an h2', () => {
     render(<MantineFooter year={2026} />);
