@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { Profiler } from 'react';
-import { act, cleanup, fireEvent, render, screen } from '@/test-utils';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@/test-utils';
 import { NewsletterModal } from './NewsletterModal';
 import { DISMISSED_KEY, PROMPT_OPEN_ATTRIBUTE } from './prompt-open';
 
@@ -67,6 +67,17 @@ describe('NewsletterModal', () => {
     scrollTo(1300);
     runFrames();
     expect(isOpen()).toBe(true);
+  });
+
+  it('is a dialog with a name of its own, and so is the button the focus lands on', async () => {
+    render(<NewsletterModal />);
+    scrollTo(1300);
+    runFrames();
+    expect(screen.getByRole('dialog')).toHaveAccessibleName(
+      'Subscribe to the FinderGit newsletter'
+    );
+    // Mantine moves the focus in on a timer of its own.
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Close' })).toHaveFocus());
   });
 
   it('reads the scroll at most once a frame', () => {
