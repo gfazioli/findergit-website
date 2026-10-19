@@ -52,3 +52,14 @@ describe('MantineFooter directory badges', () => {
     expect(screen.getByText('Listed on')).toBeInTheDocument();
   });
 });
+
+/**
+ * The newsletter band leads the footer on every page. An h2, so a page with no
+ * h2 of its own (Legal, the FAQ) goes h1, h2 rather than skipping a level.
+ */
+describe('MantineFooter newsletter band', () => {
+  it('is an h2', () => {
+    render(<MantineFooter year={2026} />);
+    expect(screen.getByRole('heading', { level: 2, name: 'Get release updates' })).toBeVisible();
+  });
+});
