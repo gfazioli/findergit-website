@@ -55,6 +55,7 @@ The Overview tab is a dashboard of the selected repository, and a map of the tab
 - **The repository at a glance** — how alive it is (*Active*, *Steady*, *Quiet* or *Dormant*, from its newest commit), when its history starts, its latest tag and how many commits sit on top of it, and whether one person wrote it. The headline is the forge's description, or the opening sentence of the README when there isn't one, with the topics under it and an **Open on GitHub** button (the label follows the remote's host). Beside it, the commits of the last 30 days over a 26-week sparkline.
 - **A tile for every count** — Changes, Stashes, Commits, Upstream, Branches, Worktrees, Tags, Issues, Pull Requests, Stars, On Disk and Findings. Each tile wears its tab's colour and icon, and a click opens that tab; Stars opens the repository on its forge. A local-only repo has no Issues, Pull Requests or Stars tiles.
 - **Activity** — the last year as a calendar, one square per day, with the current and the longest streak. Hover a day to read how many commits it holds.
+- **Stars** — on a GitHub remote, the repository's stars since it was created: the running total, the stars of the last 30 days, of the last year once it has one, and of the best week. A switch beside them draws the history as steps, a smooth line, or bars of each month's new stars.
 - **Rhythm** — the same commits by weekday and hour, with the busiest day and the peak hour.
 - **Codebase** — the languages by size, and whether the repository carries a README, a license, a `.gitignore`, a contributing guide, a security policy and CI.
 - **Latest commits** and **Releases** — the five newest commits and the five newest tags as timelines, with how often a release ships and how many commits are still unreleased. A row opens the Commits or Release tab.
@@ -67,6 +68,8 @@ The numbers follow the repository as it changes: a commit, a pull, a checkout or
 ### Saving it as an image or a PDF
 
 **Export**, beside **Open on GitHub**, saves the Overview as a PNG or a PDF, or copies it as an image to paste anywhere. The picture is the whole dashboard at full height and two columns wide, whatever the size of the window, with the repository's name, its branch and the date on top. It follows the app's light or dark appearance, at your display's resolution, and it is drawn from what the Overview already shows, so the numbers are the ones on screen.
+
+On a GitHub repository the same menu holds **Put It in Your README with glancecard…**, which opens the glancecard window with that repository added, to show a card of it that redraws itself every day (see [Profile Card](/docs/profile-card#on-your-github-profile)).
 
 ![Overview dashboard — the repository's pulse and age above a tile for every count, then a year of activity](/screenshot-detail-overview.png)
 

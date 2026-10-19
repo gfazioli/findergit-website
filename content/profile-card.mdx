@@ -4,7 +4,7 @@ description: "The Profile Card puts your GitHub profile on one picture: nine loo
 
 # Profile Card
 
-The **Profile Card** is the [Account](/docs/account) page with every card open at once, laid out as one picture made to be shared: your profile, ten figures, a year of contributions, your most starred repositories and your languages.
+The **Profile Card** is the [Account](/docs/account) page with every card open at once, laid out as one picture made to be shared: your profile, ten figures, a year of contributions, your stars over the years, your most starred repositories and your languages.
 
 ![A Profile Card in the Midnight look](/screenshot-profile-card.png)
 
@@ -12,13 +12,13 @@ The **Profile Card** is the [Account](/docs/account) page with every card open a
 
 On the **Account** page, click **Profile Card**, the gradient button at the top right of the page. The card opens in a window of its own, and its tiles land one after another, as they do on the Account page.
 
-![The Profile Card window: the Style menu, the calendar-or-graph switch and the Backdrop switch above the card, the ways to save it below](/screenshot-profile-card-window.png)
+![The Profile Card window: the Style menu, the calendar-or-graph switch, the stars menu and the Backdrop switch above the card, the ways to save it below](/screenshot-profile-card-window.png)
 
 ## What it shows, and what it leaves out
 
 The card is made to be posted, so its repository figures come from your **public** repositories only:
 
-- **Stars**, **Forks** (how many times others have forked your repositories), **Top repositories** and **Languages** count public repositories only. A private repository's name never appears on the card.
+- **Stars**, the **Stars** panel, **Forks** (how many times others have forked your repositories), **Top repositories** and **Languages** count public repositories only. A private repository's name never appears on the card.
 - **Pull requests** and **Issues** count those in public repositories.
 - **Followers**, **Following**, **Public repos** and **Years on GitHub** are what your public profile shows.
 - **Commits**, **Contributed** and the contribution calendar are the year as GitHub shows it to you. Like your profile with *Include private contributions* turned on, they count private contributions too: numbers only, never a name.
@@ -41,6 +41,16 @@ Beside the **Style** menu, a switch draws your year as GitHub's calendar or as a
 
 ![The Profile Card with its contributions drawn as a graph](/screenshot-profile-card-graph.png)
 
+## Stars over the years
+
+Under the year, the **Stars** panel draws the stars your public repositories have gathered since the first one, with the stars of the last 30 days, of the last year and of the best week. The menu beside the calendar-or-graph switch draws them three ways:
+
+- **Steps** — the running total, exactly.
+- **Smooth** — a soft line through it.
+- **Bars** — the new stars of each month.
+
+It is the same choice as the Stars panel of a repository's [Overview](/docs/detail-panel#overview). The first time, FinderGit reads the whole history from GitHub, which can take up to a minute for a profile with many repositories; after that it keeps it on your Mac and asks only for what is new. **Copy**, **Share…** and the two **Save** buttons wait until it is read, so a picture is never missing its stars.
+
 ## Backdrop
 
 Turn on **Backdrop** to set the card on a coloured ground in its look's colours, with a margin and a shadow: ready for a post, where a feed would otherwise show the card's rounded corners on whatever ground it has.
@@ -57,3 +67,17 @@ The file is the card you see, at rest: the animations play in the window, never 
 <Callout type="info" emoji="🔒">
 The card's public figures are asked of GitHub when the window opens, with the same sign-in as the Account page.
 </Callout>
+
+## On your GitHub profile
+
+**Put It on Your GitHub Profile**, the link at the bottom of the window, opens the **glancecard** window. [glancecard](https://gfazioli.github.io/glancecard/) is a free, open-source GitHub Action that draws this card, and a card for each repository you pick, in your profile's README, and redraws them every day.
+
+![The glancecard window: the cards, look, sections and schedule on the left, the card in the look picked in the middle, the workflow to copy on the right, with two private repositories and the token they need](/screenshot-glancecard-window.png)
+
+The window starts from what FinderGit already knows: your account, your three most starred public repositories, and which repositories are private. Pick the look (one that follows the reader's light or dark theme, or always the same), the year as a chart or a grid, how the stars are drawn, the sections of a repository card, and when the cards are redrawn; the preview shows your card in that look. Then copy what you need:
+
+- **Workflow** — the file that draws the cards, and a Dependabot file that brings each new glancecard release as a pull request.
+- **README** — the lines that show the cards.
+- **Prompt** — one paste for Claude Code or Codex, which sets it all up for you.
+
+A private repository can have a card too: the workflow then reads it with a personal access token you save as the secret `GLANCECARD_TOKEN`, and the prompt walks you through it. FinderGit only writes the text: it sends nothing anywhere.
