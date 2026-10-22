@@ -655,7 +655,7 @@ fieldset:disabled .mantine-active:active {
       [data-offset-scrollbars='y'],
       [data-offset-scrollbars='present']
     ):not([data-vertical-hidden]) {
-        padding-inline-end: var(--scrollarea-scrollbar-size);
+        padding-inline-end: var(--scrollarea-offset-size, var(--scrollarea-scrollbar-size));
         padding-inline-start: unset;
       }
 
@@ -665,7 +665,7 @@ fieldset:disabled .mantine-active:active {
       [data-offset-scrollbars='present']
     ):not([data-vertical-hidden]):where([data-vertical-scrollbar-position='left']) {
           padding-inline-end: unset;
-          padding-left: var(--scrollarea-scrollbar-size);
+          padding-left: var(--scrollarea-offset-size, var(--scrollarea-scrollbar-size));
           padding-right: unset;
         }
 
@@ -676,7 +676,7 @@ fieldset:disabled .mantine-active:active {
     ):not([data-vertical-hidden]):where([data-vertical-scrollbar-position='right']) {
           padding-inline-end: unset;
           padding-left: unset;
-          padding-right: var(--scrollarea-scrollbar-size);
+          padding-right: var(--scrollarea-offset-size, var(--scrollarea-scrollbar-size));
         }
 
 .m_c0783ff9:where([data-scrollbars='xy'], [data-scrollbars='x']):where(
@@ -692,7 +692,7 @@ fieldset:disabled .mantine-active:active {
       [data-offset-scrollbars='x'],
       [data-offset-scrollbars='present']
     ):not([data-horizontal-hidden]) {
-        padding-bottom: var(--scrollarea-scrollbar-size);
+        padding-bottom: var(--scrollarea-offset-size, var(--scrollarea-scrollbar-size));
       }
 
 .m_f8f631dd {
