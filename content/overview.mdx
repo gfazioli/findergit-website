@@ -25,6 +25,8 @@ A grid of at-a-glance counters across your whole workspace:
 - **Critical Findings** — supply-chain dropper artifacts surfaced by [Repo Trust](/docs/repo-trust).
 - **GitHub** — how fast your own requests to GitHub are coming back right now (see [GitHub connection](#github-connection) below).
 
+The cards come in groups, in the order you'd ask the questions: the working tree first (repositories, clean, modified, unpushed, worktrees, tree health, needs attention, critical findings), then the disk, then GitHub (connection, stars, forks). A card that opens sits right after the figure it details: **Largest on disk** beside **On Disk**, **Top starred** beside **Stars**.
+
 Four cards open: **GitHub**, **Needs attention**, **Top starred** and **Largest on disk**. Click one and it grows into its panel right under its row; one is open at a time, a second click closes it, and FinderGit remembers which was open. **Needs attention** is open the first time. The other cards are figures and stay as they are.
 
 Each card shows a small spinner while its data is still loading, so you can tell live numbers from ones still being fetched.
@@ -43,13 +45,21 @@ The card's panel is the list you'll actually act on: every repo that is dirty, a
 
 **Largest on disk** ranks repositories by `.git` size, which answers a different question from the one you're asking when you look at it: a monorepo is legitimately gigabytes, and a fork whose `.git` swallowed one weighs the same and is a mistake.
 
-Repositories holding far more history than their checkout needs get a warning marker in that list, with an estimate of how much is reclaimable in the tooltip. From there, the repository's [Maintenance tab](/docs/repo-maintenance) has the diagnosis and the cleanup.
+Repositories holding far more history than their checkout needs get a warning marker, in the list and beside the name in the bars and the donut, with an estimate of how much is reclaimable in the tooltip. From there, the repository's [Maintenance tab](/docs/repo-maintenance) has the diagnosis and the cleanup.
 
 The check runs only on repositories big enough for the answer to be able to be yes, so the dashboard doesn't pay for it on the small ones.
 
 ## Top starred & Largest on disk
 
-Two more highlight lists: your most-starred repositories, and the ones eating the most disk (a quick path to [Repo Maintenance](/docs/repo-maintenance)). Every row is clickable.
+Two rankings: your most-starred repositories, and the ones eating the most disk (a quick path to [Repo Maintenance](/docs/repo-maintenance)). Each panel has a switch at its top right between three views, and FinderGit remembers your choice for each panel:
+
+- **Donut** (the default) sets every repository against the whole: the largest ones as slices, everything else folded into one grey **Other**, and the total in the middle. Hover a name in the legend and its slice lights up, with its figure in the middle.
+- **Bars** draw each repository against the biggest one, with its figure and its share of the total.
+- **List** is the plain list: a folder icon, the name, the figure.
+
+![Largest on disk as a donut: the biggest repositories as slices, the rest folded into Other, the total in the middle](/screenshot-overview-largest.png)
+
+Every repository is clickable in all three views, and hovering a repository shows its full path, which tells two clones with the same name apart. When the panel is narrow, at a large zoom, the legend moves under the donut and the bars stack their figures over the bar, so nothing is squeezed out.
 
 ## GitHub connection
 
