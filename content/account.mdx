@@ -28,7 +28,7 @@ A grid of stat tiles covering both your social proof and your activity:
 
 The tiles land one after another as the page opens, their figures rolling up from zero, and roll again when you refresh.
 
-Three more cards follow them: **Contributions**, **Top repositories** and **Languages**. Click one and it grows into its panel right under its row; one is open at a time, a second click closes it, and FinderGit remembers which was open. **Contributions** is open the first time.
+The cards are grouped by subject: people (Followers, Following, Organizations), repositories (Public and Private Repos, Forks, Languages), stars (Stars, Top repositories) and activity (Commits, Contributed, Contributions, Pull Requests, Issues). Five of them open: **Organizations**, **Languages**, **Stars**, **Top repositories** and **Contributions**. Click one and it grows into its panel right under its row; one is open at a time, a second click closes it, and FinderGit remembers which was open. **Contributions** is open the first time.
 
 <Callout type="info" emoji="🔒">
 Because FinderGit runs entirely on your Mac with your own GitHub sign-in, it can show your **private** numbers too — private repo counts and the like — that a public profile page hides.
@@ -44,19 +44,25 @@ The **Contributions** card opens a full 52-week contribution calendar, with mont
 
 ![The contribution panel switched to the line-graph view](/screenshot-account-graph.png)
 
-## Top repositories, languages & organizations
+## Top repositories & languages, as charts
 
-**Top repositories** opens your most-starred repositories, and **Languages** a breakdown of the languages you work in, with the organizations you're part of at its foot.
+**Top repositories** opens your most-starred repositories, and **Languages** a breakdown of the languages you work in. Each panel has a switch at its top right between a **donut**, **bars** and the plain **list**, and FinderGit remembers the choice for each panel. The donut (the default) sets every entry against the whole and folds the rest into one grey **Other**, with the total in the middle; hover a name and its slice lights up. In Top repositories a click opens the repository on GitHub. The same switch is on the [Overview](/docs/overview#top-starred--largest-on-disk)'s two rankings.
+
+![Languages as a donut: each language a slice in its own colour, the rest folded into Other, the number of repositories in the middle](/screenshot-account-languages.png)
+
+## Organizations
+
+**Organizations** is a card that opens: one row for each organization you belong to, with its name and its login, and a click takes you to its page on GitHub. The card counts every membership; the panel lists the ones GitHub returns for display.
 
 ## New-star notifications
 
 FinderGit can keep an eye on your repositories while it's running and let you know the moment one earns a star — naming the repository, not just bumping a number.
 
-- A pulsing **(+) badge** appears on the **Stars** tile whenever a repo gains a star; click it for a popover listing exactly which repositories were starred, and click through to open any of them.
+- A green **+** appears beside the chevron of the **Stars** card whenever a repo gains a star. Open the card and its panel lists exactly which repositories were starred, with how many and when; click a row to open that repository on GitHub. Opening the card marks the stars as seen.
 - Optionally, enable **desktop notifications** in **Settings → Git → Star Notifications** (off by default) and pick how often to check (every 10 / 30 / 60 minutes). The in-app badge works either way — turning notifications off doesn't hide your new stars.
 
-![The Recent stars popover, listing which repositories gained stars, how many, and when](/screenshot-recent-stars.png)
+![The Recent stars list the Stars card opens into: which repositories gained stars, how many, and when](/screenshot-recent-stars.png)
 
 <Callout type="info" emoji="💡">
-The badge and notifications share one baseline, so you're never told about the same star twice — and a relaunch won't re-announce stars earned while the app was closed.
+The marker and notifications share one baseline, so you're never told about the same star twice — and a relaunch won't re-announce stars earned while the app was closed.
 </Callout>
