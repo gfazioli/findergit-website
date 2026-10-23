@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.56.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.56.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.56.0 — Rankings as charts, cards in order</p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>Rankings you can see at a glance.</strong> Largest on disk, Top starred (Overview), Top repositories and Languages (Account) open as a donut, as bars or as the list they were, with a switch in each panel. The donut sets every repository against the whole and folds the rest into Other; it is the default, and each panel remembers your choice. Hovering a name lights its slice, and a click on a repository opens it.</li>
+<li><strong>Cards in a better order.</strong> On the Overview the working tree comes first, then the disk, then GitHub, and each figure that opens follows the card it details: disk next to Largest on disk, stars next to Top starred. On Account, people, repositories, stars and activity are grouped the same way.</li>
+<li><strong>Organizations opens.</strong> Account's Organizations card now opens into a row per organization, with its name and login and a link to its page on GitHub, in place of the chips that were cut short at the bottom of Languages.</li>
+<li><strong>Stars opens like the others.</strong> The Stars card on Account opens into the repositories that recently gained stars, instead of a popover behind a + badge. The green + stays beside its chevron to say there is news, and opening the card marks it seen.</li>
+</ul>
+<h2>Under the hood</h2>
+<ul>
+<li>One shared chart view draws the four rankings, and lays itself out for a narrow panel at a large zoom: the legend moves under the donut and the bars stack their figures over the bar.</li>
+<li>Translated into Italian, French, German and Spanish.</li>
+</ul>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.56.0.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
