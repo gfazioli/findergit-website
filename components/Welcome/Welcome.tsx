@@ -687,7 +687,7 @@ const features: Feature[] = [
     icon: IconStar,
     title: 'New-Star Alerts',
     description:
-      'Know the moment one of your repositories earns a star \u2014 named, with an in-app badge and optional desktop notifications.',
+      'Know the moment one of your repositories earns a star \u2014 named, with a marker on the Stars card and optional desktop notifications.',
     color: 'yellow',
     href: '/docs/account#new-star-notifications',
     since: '0.13.0',

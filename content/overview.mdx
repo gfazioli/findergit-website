@@ -6,7 +6,7 @@ description: "The Overview dashboard sums up every repository under your root fo
 
 The **Overview** is a global dashboard that aggregates **every repository under all your root folders** — so you know what needs attention across your whole workspace without clicking into a single repo. Reach it any time from the sidebar's **Dashboards** section (the [Repository List](/docs/repository-list) is the app's default landing view).
 
-![The Overview dashboard — stat cards, working-tree health, and highlight lists across every repository](/screenshot-hero-overview.png)
+![The Overview dashboard — stat cards, working-tree health, and rankings across every repository](/screenshot-hero-overview.png)
 
 ## Why this exists
 
@@ -18,12 +18,12 @@ A grid of at-a-glance counters across your whole workspace:
 
 - **Repositories** — how many were discovered, across how many root folders.
 - **Clean / Modified / Unpushed** — working-tree state, summed.
-- **Tree health** — the share of those repositories that are clean, as a ring, with how many are still pending while their status loads.
 - **Worktrees** — how many of the repositories found are linked worktrees of another one.
-- **On Disk** — the total git footprint of every repo. Once any repository is found to be *bloated* rather than merely large, the card says how many.
-- **Stars / Forks** — your GitHub social proof, with a "behind upstream" count for forks.
+- **Tree health** — the share of those repositories that are clean, as a ring, with how many are still pending while their status loads.
 - **Critical Findings** — supply-chain dropper artifacts surfaced by [Repo Trust](/docs/repo-trust).
+- **On Disk** — the total git footprint of every repo. Once any repository is found to be *bloated* rather than merely large, the card says how many.
 - **GitHub** — how fast your own requests to GitHub are coming back right now (see [GitHub connection](#github-connection) below).
+- **Stars / Forks** — your GitHub social proof, with a "behind upstream" count for forks.
 
 The cards come in groups, in the order you'd ask the questions: the working tree first (repositories, clean, modified, unpushed, worktrees, tree health, needs attention, critical findings), then the disk, then GitHub (connection, stars, forks). A card that opens sits right after the figure it details: **Largest on disk** beside **On Disk**, **Top starred** beside **Stars**.
 
