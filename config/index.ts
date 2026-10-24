@@ -143,39 +143,22 @@ export default {
   // too. The link has to carry no nofollow, sponsored or ugc. `width` and
   // `height` are the size in the directory's embed code, and only their ratio
   // is used: the stylesheet draws every badge at one height. The ratio has to
-  // be the SVG's own (its viewBox): LaunchNest's 220x56 is its 590x150.
+  // be the SVG's own (its viewBox).
   //
   // `src` is the directory's own URL, exactly as its embed code gives it,
   // never a copy served from here: the verifier looks for its badge IMAGE as
-  // well as the link. A copy in `public/badges/` (3.3 KB instead of LaunchNest's
-  // 29.6) shipped on 2026-10-08 and LaunchNest's Verify & publish answered
-  // "We couldn't find the badge image on that page" the same day.
+  // well as the link (LaunchNest refused a copy in `public/badges/`: "We couldn't
+  // find the badge image on that page"). LaunchNest and ProgrammerNeeds were
+  // dropped on 2026-10-24 (the user).
   directoryBadges: [
     {
       name: 'Product Hunt',
-      placement: 'hero',
+      // Widened: no directory is in the footer now, but the row is still there for the next one.
+      placement: 'hero' as 'hero' | 'footer',
       href: 'https://www.producthunt.com/products/findergit?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-findergit-2',
       src: 'https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1270630&theme=neutral&t=1792153040797',
       alt: 'FinderGit - Every Git repo on your Mac: browse, commit, review, clean | Product Hunt',
       width: 250,
-      height: 54,
-    },
-    {
-      name: 'LaunchNest',
-      placement: 'footer',
-      href: 'https://launchnest.io/p/findergit',
-      src: 'https://launchnest.io/badge/findergit.svg?variant=listed&theme=light',
-      alt: 'FinderGit on LaunchNest',
-      width: 220,
-      height: 56,
-    },
-    {
-      name: 'ProgrammerNeeds',
-      placement: 'footer',
-      href: 'https://programmerneeds.com/tools/findergit?utm_source=maker-site&utm_medium=badge&utm_campaign=findergit',
-      src: 'https://programmerneeds.com/api/badge/findergit?v=9',
-      alt: 'Find FinderGit on ProgrammerNeeds',
-      width: 220,
       height: 54,
     },
   ],

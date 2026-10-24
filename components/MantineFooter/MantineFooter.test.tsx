@@ -39,17 +39,16 @@ describe('MantineFooter publisher line', () => {
  * home page, which this footer closes.
  */
 describe('MantineFooter directory badges', () => {
-  it('links every footer directory under the Support card', () => {
+  it('links every footer directory under the Support card, and draws no row when there is none', () => {
     render(<MantineFooter year={2026} />);
     const footerBadges = config.directoryBadges.filter((badge) => badge.placement === 'footer');
-    expect(footerBadges.length).toBeGreaterThan(0);
     for (const badge of footerBadges) {
       expect(screen.getByRole('img', { name: badge.alt }).closest('a')).toHaveAttribute(
         'href',
         badge.href
       );
     }
-    expect(screen.getByText('Listed on')).toBeInTheDocument();
+    expect(screen.queryByText('Listed on') !== null).toBe(footerBadges.length > 0);
   });
 });
 
