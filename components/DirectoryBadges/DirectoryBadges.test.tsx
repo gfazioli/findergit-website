@@ -94,9 +94,8 @@ describe('DirectoryBadges', () => {
 
   it("labels the footer's row and serves its badges", () => {
     const html = served(<ListedOn />);
-    expect(html).toContain('Listed on');
-    expect(anchors(html)).toHaveLength(
-      config.directoryBadges.filter((badge) => badge.placement === 'footer').length
-    );
+    const count = config.directoryBadges.filter((badge) => badge.placement === 'footer').length;
+    expect(html.includes('Listed on')).toBe(count > 0);
+    expect(anchors(html)).toHaveLength(count);
   });
 });
