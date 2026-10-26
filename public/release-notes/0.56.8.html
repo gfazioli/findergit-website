@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.56.8 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.56.8</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.56.8 — a security update</p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>A repository you open can't run code while FinderGit reads it.</strong> FinderGit looks at your repositories on its own, and a repository could tell git to run a program of its own during that read — so opening one you didn't create could run its code. FinderGit now turns that off.</li>
+<li><strong>More hardening throughout</strong>, including the updater and keeping your sign-in tokens out of caches on disk.</li>
+</ul>
+<h2>Under the hood</h2>
+<ul>
+<li>Every git invocation now passes <code class="notranslate">-c core.fsmonitor=false</code>, so a repository's configured <code class="notranslate">core.fsmonitor</code> program never runs during the automatic <code class="notranslate">status</code> / <code class="notranslate">ls-files</code> / <code class="notranslate">fetch</code> FinderGit performs on your repositories. The remaining repo-config execution surfaces (clean/smudge filters, hooks, a remote's <code class="notranslate">uploadpack</code> / <code class="notranslate">sshCommand</code>) are tracked in #375 for a trust gate.</li>
+<li>The Hardened Runtime's <code class="notranslate">disable-library-validation</code> exception is removed: Sparkle is signed with the app's own Developer ID team, so library validation already admits it. <code class="notranslate">release.sh</code> now reads the signed app back and refuses one carrying <code class="notranslate">disable-library-validation</code> or <code class="notranslate">get-task-allow</code>.</li>
+<li>The GitHub API session no longer uses a caching URL configuration, so an authenticated response can't leave the bearer token in the on-disk URL cache.</li>
+</ul>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.56.8.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
