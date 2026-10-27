@@ -34,6 +34,28 @@ describe('MantineFooter publisher line', () => {
 });
 
 /**
+ * The icon row links FinderGit's own YouTube channel, never the author's
+ * personal one: the URL is pinned here, not read back from `config`.
+ */
+describe('MantineFooter social links', () => {
+  it("lists the icon row in order, with FinderGit's own YouTube channel", () => {
+    render(<MantineFooter year={2026} />);
+    // The icon row, found through its first icon: the text above it links to
+    // Discord too.
+    const icons = screen.getByRole('link', { name: 'GitHub' }).parentElement as HTMLElement;
+    expect(
+      within(icons)
+        .getAllByRole('link')
+        .map((link) => link.getAttribute('aria-label'))
+    ).toEqual(['GitHub', 'X', 'Discord', 'YouTube', 'Newsletter']);
+    expect(within(icons).getByRole('link', { name: 'YouTube' })).toHaveAttribute(
+      'href',
+      'https://www.youtube.com/@FinderGit-app'
+    );
+  });
+});
+
+/**
  * The footer's "Listed on" row carries every directory badge but Product
  * Hunt's (that one is under the hero). A directory verifies its badge on the
  * home page, which this footer closes.
