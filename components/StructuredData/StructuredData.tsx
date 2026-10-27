@@ -48,6 +48,8 @@ export function WebsiteJsonLd() {
             name: 'FinderGit',
             url: `${SITE}/`,
             logo: { '@type': 'ImageObject', url: `${SITE}/icon-512x512.png` },
+            // The app's own profiles elsewhere, so search can tie them to this site.
+            sameAs: [config.community.youtube],
           },
         ],
       }}
