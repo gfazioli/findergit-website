@@ -132,6 +132,9 @@ export default {
     // opened" badge decays from it like the feature cards' NEW (`isRecent`):
     // gone two minor releases on, with no one having to remember it.
     discordSince: '0.47.0',
+    // FinderGit's own YouTube channel since 2026-10-27: the footer links this,
+    // never the author's personal channel.
+    youtube: 'https://www.youtube.com/@FinderGit-app',
   },
   // The directories FinderGit is listed on, as badges, in this order.
   // `placement` says where each one goes: Product Hunt's alone stays under the
