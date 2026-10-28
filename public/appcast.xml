@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><!-- sparkle-sign-warning:
+IMPORTANT: This file was signed by Sparkle. Any modifications to this file requires re-signing this file with generate_appcast or sign_update! The signed signature will be embedded at the end of this file.
+--><rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
     <channel>
         <title>FinderGit</title>
         <link>https://findergit.app/appcast.xml</link>
@@ -7,16 +8,23 @@
         <language>en</language>
         <!-- release.sh inserts new <item> entries right below this marker -->
 <item>
+            <title>Version 0.56.11</title>
+            <pubDate>Wed, 28 Oct 2026 18:23:07 +0000</pubDate>
+            <sparkle:version>954</sparkle:version>
+            <sparkle:shortVersionString>0.56.11</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.56.11.html</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.11/FinderGit-0.56.11.dmg" sparkle:edSignature="UYbumT0o94J5fiSVbxWFD3amu7+kbJlMXKDbCMWoECgj7aRWcYmLzT41RzpGMn0kqZ/aUl0I0Xcgg1GgzDdiBA==" length="31948497" type="application/octet-stream"></enclosure>
+        </item>
+
+<item>
             <title>Version 0.56.10</title>
             <pubDate>Tue, 27 Oct 2026 08:34:44 +0000</pubDate>
             <sparkle:version>950</sparkle:version>
             <sparkle:shortVersionString>0.56.10</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.56.10.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.10/FinderGit-0.56.10.dmg"
-                sparkle:edSignature="kzRL2ZWfMaz7zWL500/QT8ulFmtdQgioCSjhpGIXnuCOGsqztje+c/iZqz0g2yKxc612Xg4GZFEUArSoJlSCBg==" length="31947651"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.10/FinderGit-0.56.10.dmg" sparkle:edSignature="kzRL2ZWfMaz7zWL500/QT8ulFmtdQgioCSjhpGIXnuCOGsqztje+c/iZqz0g2yKxc612Xg4GZFEUArSoJlSCBg==" length="31947651" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -26,10 +34,7 @@
             <sparkle:shortVersionString>0.56.9</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.56.9.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.9/FinderGit-0.56.9.dmg"
-                sparkle:edSignature="wZqBt9b3BH3t0fCz1fFwZ2BYECuBBLIFwLSN9lHTPOmRCjZj/6QrrSl86Gw1DAsUo5D3BhuU19S47OQlwGU5AA==" length="31848971"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.9/FinderGit-0.56.9.dmg" sparkle:edSignature="wZqBt9b3BH3t0fCz1fFwZ2BYECuBBLIFwLSN9lHTPOmRCjZj/6QrrSl86Gw1DAsUo5D3BhuU19S47OQlwGU5AA==" length="31848971" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -39,10 +44,7 @@
             <sparkle:shortVersionString>0.56.8</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.56.8.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.8/FinderGit-0.56.8.dmg"
-                sparkle:edSignature="810TGPOGPCp7YzoXKqxN3B6kSBzqTL6Hc9HJCGpFNyG0k8ErsLsv0jAXOKsrH7sjE5Xc+FWhLTGFerklbP+OAw==" length="30992795"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.8/FinderGit-0.56.8.dmg" sparkle:edSignature="810TGPOGPCp7YzoXKqxN3B6kSBzqTL6Hc9HJCGpFNyG0k8ErsLsv0jAXOKsrH7sjE5Xc+FWhLTGFerklbP+OAw==" length="30992795" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -52,10 +54,7 @@
             <sparkle:shortVersionString>0.56.7</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.56.7.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.7/FinderGit-0.56.7.dmg"
-                sparkle:edSignature="78WGP1BHdGif6EDtiF0cVjwGQ9rBVfVY2+gw/uu+bQfqDiieV4Ye7zUXYxLoHatnFfMaiLWGDU207ZOl+ThJCA==" length="30988492"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.7/FinderGit-0.56.7.dmg" sparkle:edSignature="78WGP1BHdGif6EDtiF0cVjwGQ9rBVfVY2+gw/uu+bQfqDiieV4Ye7zUXYxLoHatnFfMaiLWGDU207ZOl+ThJCA==" length="30988492" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -65,10 +64,7 @@
             <sparkle:shortVersionString>0.56.6</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.56.6.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.6/FinderGit-0.56.6.dmg"
-                sparkle:edSignature="TWV0SThzNCUg/zfgCoODVNtQX+Jzcq9BcteedqAFoKXsAPvqhtJ4ROQW1TZS1m1U1cc4+XwiNWk/NHeB2SudCA==" length="30986436"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.6/FinderGit-0.56.6.dmg" sparkle:edSignature="TWV0SThzNCUg/zfgCoODVNtQX+Jzcq9BcteedqAFoKXsAPvqhtJ4ROQW1TZS1m1U1cc4+XwiNWk/NHeB2SudCA==" length="30986436" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -78,10 +74,7 @@
             <sparkle:shortVersionString>0.56.5</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.56.5.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.5/FinderGit-0.56.5.dmg"
-                sparkle:edSignature="LSb2jsB55Irablm/Y7jh1Y/sLxdfEBfAM6XI3m6PULLcsOl48uHVwgFWcKGbWTXQncHbzGLlH3O5/lBJ0VFCAQ==" length="30980867"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.5/FinderGit-0.56.5.dmg" sparkle:edSignature="LSb2jsB55Irablm/Y7jh1Y/sLxdfEBfAM6XI3m6PULLcsOl48uHVwgFWcKGbWTXQncHbzGLlH3O5/lBJ0VFCAQ==" length="30980867" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -91,10 +84,7 @@
             <sparkle:shortVersionString>0.56.4</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.56.4.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.4/FinderGit-0.56.4.dmg"
-                sparkle:edSignature="7yM1mxat/S946xvBwGeRYpk48LluVaaoNob3LL+Xd29yMp6yNlBgoSvZnEHmxHaNNUEr8NLEmUUWXdSoQFBGDQ==" length="30976555"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.4/FinderGit-0.56.4.dmg" sparkle:edSignature="7yM1mxat/S946xvBwGeRYpk48LluVaaoNob3LL+Xd29yMp6yNlBgoSvZnEHmxHaNNUEr8NLEmUUWXdSoQFBGDQ==" length="30976555" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -104,10 +94,7 @@
             <sparkle:shortVersionString>0.56.3</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.56.3.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.3/FinderGit-0.56.3.dmg"
-                sparkle:edSignature="MMJ4wAp1Y5bqx7VVIB07k7PqoqoGA8l6FQNnhEHdCjAJCv04rcV6Ij1Z5/aAW3oZnxGGxLkPWmt1v1hqnLTCAw==" length="30976602"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.3/FinderGit-0.56.3.dmg" sparkle:edSignature="MMJ4wAp1Y5bqx7VVIB07k7PqoqoGA8l6FQNnhEHdCjAJCv04rcV6Ij1Z5/aAW3oZnxGGxLkPWmt1v1hqnLTCAw==" length="30976602" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -117,10 +104,7 @@
             <sparkle:shortVersionString>0.56.2</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.56.2.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.2/FinderGit-0.56.2.dmg"
-                sparkle:edSignature="iR9kkqehQ0pPSwe9s88k85vaNX2rNlOKchGLTXqe2ww1Q2faEXZePAat/ePjPuRYJJpgPja3KCKiBfTEiLdCBg==" length="30955992"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.2/FinderGit-0.56.2.dmg" sparkle:edSignature="iR9kkqehQ0pPSwe9s88k85vaNX2rNlOKchGLTXqe2ww1Q2faEXZePAat/ePjPuRYJJpgPja3KCKiBfTEiLdCBg==" length="30955992" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -130,10 +114,7 @@
             <sparkle:shortVersionString>0.56.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.56.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.1/FinderGit-0.56.1.dmg"
-                sparkle:edSignature="y0l3SICpnNHdne6Qtm2bMz/elNr+2yxzOg6t87+mG1zY9qMpO6fjP9yYLFZ6zwdY8/oaWjVN0vSZB8zglrd0Bg==" length="30921092"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.1/FinderGit-0.56.1.dmg" sparkle:edSignature="y0l3SICpnNHdne6Qtm2bMz/elNr+2yxzOg6t87+mG1zY9qMpO6fjP9yYLFZ6zwdY8/oaWjVN0vSZB8zglrd0Bg==" length="30921092" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -143,10 +124,7 @@
             <sparkle:shortVersionString>0.56.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.56.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.0/FinderGit-0.56.0.dmg"
-                sparkle:edSignature="ZSytRbg/midaJfJu+2HNer2Opb1dqPz4kg0VWrjIOqZSQQQUUnblTnvMRtrg7VLTT9xPdKJHXB4C9dl/5AzOBw==" length="30914628"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.0/FinderGit-0.56.0.dmg" sparkle:edSignature="ZSytRbg/midaJfJu+2HNer2Opb1dqPz4kg0VWrjIOqZSQQQUUnblTnvMRtrg7VLTT9xPdKJHXB4C9dl/5AzOBw==" length="30914628" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -156,10 +134,7 @@
             <sparkle:shortVersionString>0.55.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.55.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.55.0/FinderGit-0.55.0.dmg"
-                sparkle:edSignature="EvgpeyasCIZrmTcrDSsDZw2zBSd8xVUD0svNTBiilYipjp4Isv+YtVH+M4QJxHV+8faWge4YPiiu/4la0sSlAA==" length="30736365"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.55.0/FinderGit-0.55.0.dmg" sparkle:edSignature="EvgpeyasCIZrmTcrDSsDZw2zBSd8xVUD0svNTBiilYipjp4Isv+YtVH+M4QJxHV+8faWge4YPiiu/4la0sSlAA==" length="30736365" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -169,10 +144,7 @@
             <sparkle:shortVersionString>0.54.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.54.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.54.1/FinderGit-0.54.1.dmg"
-                sparkle:edSignature="k853WTuWaBBiKC30yqFr3WB4WdjlBi33dM9vEXVMx2SAq9IHxSYi8eNM6coKWI6M3dNnA94r3n0DKX1QGqvEAA==" length="30577732"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.54.1/FinderGit-0.54.1.dmg" sparkle:edSignature="k853WTuWaBBiKC30yqFr3WB4WdjlBi33dM9vEXVMx2SAq9IHxSYi8eNM6coKWI6M3dNnA94r3n0DKX1QGqvEAA==" length="30577732" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -182,10 +154,7 @@
             <sparkle:shortVersionString>0.54.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.54.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.54.0/FinderGit-0.54.0.dmg"
-                sparkle:edSignature="Nx9qre04hHrHaNnKf/3MzDB0ulRMZq7lSDib+TtJuYKLX05Vm0tK7nlhQcfAQvDKffNbzi2he+cQ5gHZWoJrAw==" length="30561118"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.54.0/FinderGit-0.54.0.dmg" sparkle:edSignature="Nx9qre04hHrHaNnKf/3MzDB0ulRMZq7lSDib+TtJuYKLX05Vm0tK7nlhQcfAQvDKffNbzi2he+cQ5gHZWoJrAw==" length="30561118" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -195,10 +164,7 @@
             <sparkle:shortVersionString>0.53.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.53.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.53.1/FinderGit-0.53.1.dmg"
-                sparkle:edSignature="S5YvBC3amCbPzQH4sQsPwV47koHRZEJul+jAkRvEYMW2chg4yef7KLEmXqRmL6E+GI74tktbPfx2DYakJSYbDQ==" length="29261443"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.53.1/FinderGit-0.53.1.dmg" sparkle:edSignature="S5YvBC3amCbPzQH4sQsPwV47koHRZEJul+jAkRvEYMW2chg4yef7KLEmXqRmL6E+GI74tktbPfx2DYakJSYbDQ==" length="29261443" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -208,10 +174,7 @@
             <sparkle:shortVersionString>0.53.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.53.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.53.0/FinderGit-0.53.0.dmg"
-                sparkle:edSignature="foOyhY28orYmRf9nn2TV9vburqIOomJc1Mxa24DFMLo1fdjLZWLegwWIn1ezq3d65Sf0rTR6tfkx5TtX4vs7Aw==" length="28918860"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.53.0/FinderGit-0.53.0.dmg" sparkle:edSignature="foOyhY28orYmRf9nn2TV9vburqIOomJc1Mxa24DFMLo1fdjLZWLegwWIn1ezq3d65Sf0rTR6tfkx5TtX4vs7Aw==" length="28918860" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -221,10 +184,7 @@
             <sparkle:shortVersionString>0.52.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.52.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.52.1/FinderGit-0.52.1.dmg"
-                sparkle:edSignature="YHtpVIU8vj7UoV8lOxyNhhZ0sPFEEZ/rgUwu9Ssox/CpAsRzo81mfqQEqULlKjmroh1yKWKaFMHHdSaJ3OoNCg==" length="28086626"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.52.1/FinderGit-0.52.1.dmg" sparkle:edSignature="YHtpVIU8vj7UoV8lOxyNhhZ0sPFEEZ/rgUwu9Ssox/CpAsRzo81mfqQEqULlKjmroh1yKWKaFMHHdSaJ3OoNCg==" length="28086626" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -234,10 +194,7 @@
             <sparkle:shortVersionString>0.52.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.52.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.52.0/FinderGit-0.52.0.dmg"
-                sparkle:edSignature="2OjA+EiKEPjNO3Td5INR6qebR2859BldsNRaUNhLUA+z1xZCke3G6soNiFp5chUj+JR2ccUXljEyfrv6CkriCA==" length="27987498"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.52.0/FinderGit-0.52.0.dmg" sparkle:edSignature="2OjA+EiKEPjNO3Td5INR6qebR2859BldsNRaUNhLUA+z1xZCke3G6soNiFp5chUj+JR2ccUXljEyfrv6CkriCA==" length="27987498" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -247,10 +204,7 @@
             <sparkle:shortVersionString>0.51.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.51.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.51.0/FinderGit-0.51.0.dmg"
-                sparkle:edSignature="2xQ0/Uq8pzPi7o6rgVEItcAHtZ4YerLmmkbGPXPRoVxWroD2jEqssXdKAaej70/p8j3urPv5WkbZZUV1UJp1CA==" length="27244724"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.51.0/FinderGit-0.51.0.dmg" sparkle:edSignature="2xQ0/Uq8pzPi7o6rgVEItcAHtZ4YerLmmkbGPXPRoVxWroD2jEqssXdKAaej70/p8j3urPv5WkbZZUV1UJp1CA==" length="27244724" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -260,10 +214,7 @@
             <sparkle:shortVersionString>0.50.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.50.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.50.1/FinderGit-0.50.1.dmg"
-                sparkle:edSignature="wIMxj6DUlGeUrMdNlim/OS3cegQ9q4XpUwSadaYMiBXZycJ0go+9sXlwjwn7jp2CFLCaH5u2X/eDadT2JrSoAA==" length="26805298"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.50.1/FinderGit-0.50.1.dmg" sparkle:edSignature="wIMxj6DUlGeUrMdNlim/OS3cegQ9q4XpUwSadaYMiBXZycJ0go+9sXlwjwn7jp2CFLCaH5u2X/eDadT2JrSoAA==" length="26805298" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -273,10 +224,7 @@
             <sparkle:shortVersionString>0.50.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.50.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.50.0/FinderGit-0.50.0.dmg"
-                sparkle:edSignature="24U2nQdOOlS9fZUPmkrRFpVpKqCWO7UBgMo3iJlh1/vb959kGyIo4m4cWf+6byduieK/oqUMyHn0IgHDcm5aCg==" length="26426732"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.50.0/FinderGit-0.50.0.dmg" sparkle:edSignature="24U2nQdOOlS9fZUPmkrRFpVpKqCWO7UBgMo3iJlh1/vb959kGyIo4m4cWf+6byduieK/oqUMyHn0IgHDcm5aCg==" length="26426732" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -286,10 +234,7 @@
             <sparkle:shortVersionString>0.47.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.47.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.47.0/FinderGit-0.47.0.dmg"
-                sparkle:edSignature="k16Gyf5t9P74f+coQNiW7NbM0jblJYS9WrX2fSTt9L+RYBYE58xalfE7Rxjy6MbPgnO9YG7KQKB3K5Qxcqu1Ag==" length="23860148"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.47.0/FinderGit-0.47.0.dmg" sparkle:edSignature="k16Gyf5t9P74f+coQNiW7NbM0jblJYS9WrX2fSTt9L+RYBYE58xalfE7Rxjy6MbPgnO9YG7KQKB3K5Qxcqu1Ag==" length="23860148" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -299,10 +244,7 @@
             <sparkle:shortVersionString>0.46.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.46.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.46.0/FinderGit-0.46.0.dmg"
-                sparkle:edSignature="uDK3kV2fCFRFqOevWL+ENWcZrqum/nucgJJZQN4Ui6bDyWOKeL6c+kh6GbLTr6R3qXXHXyXN9ZB/rL3b/aSkBg==" length="23620778"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.46.0/FinderGit-0.46.0.dmg" sparkle:edSignature="uDK3kV2fCFRFqOevWL+ENWcZrqum/nucgJJZQN4Ui6bDyWOKeL6c+kh6GbLTr6R3qXXHXyXN9ZB/rL3b/aSkBg==" length="23620778" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -312,10 +254,7 @@
             <sparkle:shortVersionString>0.45.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.45.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.45.1/FinderGit-0.45.1.dmg"
-                sparkle:edSignature="yqngjfO9roTprCHANGeJemCa64ShZLKwf7ob3TYbMpz8ovFz4f17eSS48Utm+H3nzv09wcNbfGjQ60KPrx55CQ==" length="23513309"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.45.1/FinderGit-0.45.1.dmg" sparkle:edSignature="yqngjfO9roTprCHANGeJemCa64ShZLKwf7ob3TYbMpz8ovFz4f17eSS48Utm+H3nzv09wcNbfGjQ60KPrx55CQ==" length="23513309" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -325,10 +264,7 @@
             <sparkle:shortVersionString>0.45.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.45.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.45.0/FinderGit-0.45.0.dmg"
-                sparkle:edSignature="zO5Ws3ApHFuPpT2DPx4FDRWPHMCeZHw6FG3c4sTEhaqI5Uatma1c8mlsrFuMZ49vsXDYS2tNewtWyH3eo4MbBA==" length="23507100"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.45.0/FinderGit-0.45.0.dmg" sparkle:edSignature="zO5Ws3ApHFuPpT2DPx4FDRWPHMCeZHw6FG3c4sTEhaqI5Uatma1c8mlsrFuMZ49vsXDYS2tNewtWyH3eo4MbBA==" length="23507100" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -338,10 +274,7 @@
             <sparkle:shortVersionString>0.44.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.44.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.44.0/FinderGit-0.44.0.dmg"
-                sparkle:edSignature="Ej475LOI9FIVshBjw5A6kz/QHZOJ2Xg54h7J4yKutMWXsh2POZSOh5G6Gm4Fj3FUPs2phcuk+LhfVQ3tfKOiDA==" length="22771111"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.44.0/FinderGit-0.44.0.dmg" sparkle:edSignature="Ej475LOI9FIVshBjw5A6kz/QHZOJ2Xg54h7J4yKutMWXsh2POZSOh5G6Gm4Fj3FUPs2phcuk+LhfVQ3tfKOiDA==" length="22771111" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -351,10 +284,7 @@
             <sparkle:shortVersionString>0.43.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.43.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.43.1/FinderGit-0.43.1.dmg"
-                sparkle:edSignature="mwMUcffinC5VDJjvwfKHf3UMAIAVgCx303Gr6w1XlFZk/manyNs1EnR/qml4lKhmRrV4jvypEKhukHcXKElpDw==" length="22137304"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.43.1/FinderGit-0.43.1.dmg" sparkle:edSignature="mwMUcffinC5VDJjvwfKHf3UMAIAVgCx303Gr6w1XlFZk/manyNs1EnR/qml4lKhmRrV4jvypEKhukHcXKElpDw==" length="22137304" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -364,10 +294,7 @@
             <sparkle:shortVersionString>0.43.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.43.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.43.0/FinderGit-0.43.0.dmg"
-                sparkle:edSignature="aYz4HVrAqcjzKVEMothFULzRSjiKYKtHvvAW34lQixiCtepFgELI+dyWtjvXXTQeRwRThteKCx3Cm1GaJZqxAg==" length="22133782"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.43.0/FinderGit-0.43.0.dmg" sparkle:edSignature="aYz4HVrAqcjzKVEMothFULzRSjiKYKtHvvAW34lQixiCtepFgELI+dyWtjvXXTQeRwRThteKCx3Cm1GaJZqxAg==" length="22133782" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -377,10 +304,7 @@
             <sparkle:shortVersionString>0.42.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.42.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.42.0/FinderGit-0.42.0.dmg"
-                sparkle:edSignature="ytuzDYBuTdq03jyfs8AviyUDHBwpjdIU3Sv8hZz/5zrENrCsz4VMXTaY6XbBgOe8O5t28fD8E/bhnghmylG3Bw==" length="22058445"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.42.0/FinderGit-0.42.0.dmg" sparkle:edSignature="ytuzDYBuTdq03jyfs8AviyUDHBwpjdIU3Sv8hZz/5zrENrCsz4VMXTaY6XbBgOe8O5t28fD8E/bhnghmylG3Bw==" length="22058445" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -390,10 +314,7 @@
             <sparkle:shortVersionString>0.41.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.41.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.41.0/FinderGit-0.41.0.dmg"
-                sparkle:edSignature="TcZIlHuIqVMFwSkxrZZPYJj8IsOz1MfqKvxaoTYnCQccHbyw4I/lPIwlc0lf4NAl+E42hupZv+Vrh8drltGeAA==" length="21992796"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.41.0/FinderGit-0.41.0.dmg" sparkle:edSignature="TcZIlHuIqVMFwSkxrZZPYJj8IsOz1MfqKvxaoTYnCQccHbyw4I/lPIwlc0lf4NAl+E42hupZv+Vrh8drltGeAA==" length="21992796" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -403,10 +324,7 @@
             <sparkle:shortVersionString>0.40.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.40.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.40.0/FinderGit-0.40.0.dmg"
-                sparkle:edSignature="pFjDYCkWttgna9blItm2zadMNtzmkqjs1TfjOdooTbkibLEQiroElrXi1TkF4cQuG1DHtlgceA6Ld5yOeQP3BQ==" length="21892887"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.40.0/FinderGit-0.40.0.dmg" sparkle:edSignature="pFjDYCkWttgna9blItm2zadMNtzmkqjs1TfjOdooTbkibLEQiroElrXi1TkF4cQuG1DHtlgceA6Ld5yOeQP3BQ==" length="21892887" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -416,10 +334,7 @@
             <sparkle:shortVersionString>0.39.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.39.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.39.0/FinderGit-0.39.0.dmg"
-                sparkle:edSignature="nziN6CNrZ5WzHht7u72IykgYS9INhxGymF5lpfeyasd+b5o5r7mij0lUeurAiXiMnrsRSfR1g0i5kJTuaw0rCA==" length="21724538"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.39.0/FinderGit-0.39.0.dmg" sparkle:edSignature="nziN6CNrZ5WzHht7u72IykgYS9INhxGymF5lpfeyasd+b5o5r7mij0lUeurAiXiMnrsRSfR1g0i5kJTuaw0rCA==" length="21724538" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -429,10 +344,7 @@
             <sparkle:shortVersionString>0.38.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.38.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.38.0/FinderGit-0.38.0.dmg"
-                sparkle:edSignature="sngyrX7/3fYRI0r5+uQFoRT05nD903gUTErRySlK4Jajj77xuiQNmPkULPjz205tW1C9zTpMwQpDIoTrDnKVAA==" length="20986753"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.38.0/FinderGit-0.38.0.dmg" sparkle:edSignature="sngyrX7/3fYRI0r5+uQFoRT05nD903gUTErRySlK4Jajj77xuiQNmPkULPjz205tW1C9zTpMwQpDIoTrDnKVAA==" length="20986753" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -442,10 +354,7 @@
             <sparkle:shortVersionString>0.37.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.37.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.37.0/FinderGit-0.37.0.dmg"
-                sparkle:edSignature="tMvJ6zbmnufUMWKaSKlvHdqLPz+rC5ACGaWDOL+A5qw9FiAHq7vw5ozQRTnIU/6tcZZW2A2UfA65m9F3piIPBA==" length="20574001"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.37.0/FinderGit-0.37.0.dmg" sparkle:edSignature="tMvJ6zbmnufUMWKaSKlvHdqLPz+rC5ACGaWDOL+A5qw9FiAHq7vw5ozQRTnIU/6tcZZW2A2UfA65m9F3piIPBA==" length="20574001" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -455,10 +364,7 @@
             <sparkle:shortVersionString>0.36.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.36.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.36.0/FinderGit-0.36.0.dmg"
-                sparkle:edSignature="AoXGltNtkJ8YzDG1bfyAboHwwlQMmTZjfoiej3lltK1B9Ip1bmsd/ZUAd1kacokKz3lesZGuRGnL8kdiuZdNCw==" length="20557016"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.36.0/FinderGit-0.36.0.dmg" sparkle:edSignature="AoXGltNtkJ8YzDG1bfyAboHwwlQMmTZjfoiej3lltK1B9Ip1bmsd/ZUAd1kacokKz3lesZGuRGnL8kdiuZdNCw==" length="20557016" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -468,10 +374,7 @@
             <sparkle:shortVersionString>0.35.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.35.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.35.0/FinderGit-0.35.0.dmg"
-                sparkle:edSignature="zF30XIRJ6uJdxh/PQarH3IQnrP1PcLLQALnbFegedj9Q+6X8YZSLO2IQUIfMU4dIrRV84wc/id8BIEHWrMbvBw==" length="20625941"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.35.0/FinderGit-0.35.0.dmg" sparkle:edSignature="zF30XIRJ6uJdxh/PQarH3IQnrP1PcLLQALnbFegedj9Q+6X8YZSLO2IQUIfMU4dIrRV84wc/id8BIEHWrMbvBw==" length="20625941" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -481,10 +384,7 @@
             <sparkle:shortVersionString>0.34.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.34.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.34.1/FinderGit-0.34.1.dmg"
-                sparkle:edSignature="vNJn/pkI1yAaCPCGPyYCAjHD7zeixglmZGy/wP4+3yXUj21HkimtTkMWvKrEce8wcvjRSSS3xho4FvwZNmlhDw==" length="20562361"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.34.1/FinderGit-0.34.1.dmg" sparkle:edSignature="vNJn/pkI1yAaCPCGPyYCAjHD7zeixglmZGy/wP4+3yXUj21HkimtTkMWvKrEce8wcvjRSSS3xho4FvwZNmlhDw==" length="20562361" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -494,10 +394,7 @@
             <sparkle:shortVersionString>0.34.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.34.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.34.0/FinderGit-0.34.0.dmg"
-                sparkle:edSignature="sc9SzHBpDneVVluoRhjHCwiN8iWdQ3SVenMCcWL3atky6Jche5/ipsV54kul5eb4zXCD1KDlc5YUXhfpMb6lCQ==" length="20552516"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.34.0/FinderGit-0.34.0.dmg" sparkle:edSignature="sc9SzHBpDneVVluoRhjHCwiN8iWdQ3SVenMCcWL3atky6Jche5/ipsV54kul5eb4zXCD1KDlc5YUXhfpMb6lCQ==" length="20552516" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -507,10 +404,7 @@
             <sparkle:shortVersionString>0.33.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.33.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.33.0/FinderGit-0.33.0.dmg"
-                sparkle:edSignature="W/HDlkBkIv/KSl67ljaW5/GVmY8wJCOubQ0s7q0zgRviT13lMQYxqkWLobBcWlhiiYmTliCFaDI4TukGRjdTAg==" length="20234190"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.33.0/FinderGit-0.33.0.dmg" sparkle:edSignature="W/HDlkBkIv/KSl67ljaW5/GVmY8wJCOubQ0s7q0zgRviT13lMQYxqkWLobBcWlhiiYmTliCFaDI4TukGRjdTAg==" length="20234190" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -520,10 +414,7 @@
             <sparkle:shortVersionString>0.32.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.32.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.32.0/FinderGit-0.32.0.dmg"
-                sparkle:edSignature="2Kkxoj8UAhz2ANuFYrCvkBbLcuigUHHcWn5aMJB6k6gcIXbd3jG504EBJ+T1KVzTPtlvUChr+juOxQ/08vnQBA==" length="20158195"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.32.0/FinderGit-0.32.0.dmg" sparkle:edSignature="2Kkxoj8UAhz2ANuFYrCvkBbLcuigUHHcWn5aMJB6k6gcIXbd3jG504EBJ+T1KVzTPtlvUChr+juOxQ/08vnQBA==" length="20158195" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -533,10 +424,7 @@
             <sparkle:shortVersionString>0.31.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.31.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.31.0/FinderGit-0.31.0.dmg"
-                sparkle:edSignature="nyWueUQ7HNLFUxSMtBO7wQf0Dgo+CLptMTcRW/Mc2jiXrlkUZ59rGVAxjlTSml8MGuOdaEhNt6k8yglkXHnsDA==" length="20052300"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.31.0/FinderGit-0.31.0.dmg" sparkle:edSignature="nyWueUQ7HNLFUxSMtBO7wQf0Dgo+CLptMTcRW/Mc2jiXrlkUZ59rGVAxjlTSml8MGuOdaEhNt6k8yglkXHnsDA==" length="20052300" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -546,10 +434,7 @@
             <sparkle:shortVersionString>0.30.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.30.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.30.0/FinderGit-0.30.0.dmg"
-                sparkle:edSignature="4lWJeNrHFFWhqxsQH9Unb/BwcuFiPinOeKUcofzOcP76mocO+wDEhwQXO2qRdpQvdqpe5dkFAmjm0NcQyyGxCg==" length="18992794"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.30.0/FinderGit-0.30.0.dmg" sparkle:edSignature="4lWJeNrHFFWhqxsQH9Unb/BwcuFiPinOeKUcofzOcP76mocO+wDEhwQXO2qRdpQvdqpe5dkFAmjm0NcQyyGxCg==" length="18992794" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -559,10 +444,7 @@
             <sparkle:shortVersionString>0.29.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.29.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.29.0/FinderGit-0.29.0.dmg"
-                sparkle:edSignature="UV3OVoPFWh6Fyz9FcZFPg8wHDmKkK5BJs7gjT1WdX4JFs88d/gcuyh0HZ4hyGDHY82jRfpseD6iLZ5wk2o/JBg==" length="18724484"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.29.0/FinderGit-0.29.0.dmg" sparkle:edSignature="UV3OVoPFWh6Fyz9FcZFPg8wHDmKkK5BJs7gjT1WdX4JFs88d/gcuyh0HZ4hyGDHY82jRfpseD6iLZ5wk2o/JBg==" length="18724484" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -572,10 +454,7 @@
             <sparkle:shortVersionString>0.28.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.28.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.28.0/FinderGit-0.28.0.dmg"
-                sparkle:edSignature="DTjzVtoOyd+AJl+NZ7rkVPy0qXNoTaLuA9ghyibmB8AZ0empbuW5znihbh0drVi/Cx9AuvFxAd8qCT5wBrN1Cg==" length="18072688"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.28.0/FinderGit-0.28.0.dmg" sparkle:edSignature="DTjzVtoOyd+AJl+NZ7rkVPy0qXNoTaLuA9ghyibmB8AZ0empbuW5znihbh0drVi/Cx9AuvFxAd8qCT5wBrN1Cg==" length="18072688" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -585,10 +464,7 @@
             <sparkle:shortVersionString>0.27.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.27.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.27.1/FinderGit-0.27.1.dmg"
-                sparkle:edSignature="ma3PaIMkcpAofZd6I5eYcakWkzSbEI5WDzI9swyKDPDDreB9sR7+QkPxiRMcb7Zyg9didoA9GAzXTACxjqwiCQ==" length="17918864"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.27.1/FinderGit-0.27.1.dmg" sparkle:edSignature="ma3PaIMkcpAofZd6I5eYcakWkzSbEI5WDzI9swyKDPDDreB9sR7+QkPxiRMcb7Zyg9didoA9GAzXTACxjqwiCQ==" length="17918864" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -598,10 +474,7 @@
             <sparkle:shortVersionString>0.27.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.27.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.27.0/FinderGit-0.27.0.dmg"
-                sparkle:edSignature="Y6YfYcx6xyKWOAryGgvQneM/RpFftSHplVuWRAvUaY9AQGdN/3iWZzHyu7vEIXqOi+XcCGnKVwbBxvlYURPrAw==" length="17919486"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.27.0/FinderGit-0.27.0.dmg" sparkle:edSignature="Y6YfYcx6xyKWOAryGgvQneM/RpFftSHplVuWRAvUaY9AQGdN/3iWZzHyu7vEIXqOi+XcCGnKVwbBxvlYURPrAw==" length="17919486" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -611,10 +484,7 @@
             <sparkle:shortVersionString>0.26.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.26.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.26.0/FinderGit-0.26.0.dmg"
-                sparkle:edSignature="u7YdY3dNJYxj1Xh+OMD2EPSfoNsmzB6fX6ogmkceTToLO+kEg2deM6u0f0OxNG6dsP8pGuPr0Kwu1MGyE3LCBg==" length="17812137"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.26.0/FinderGit-0.26.0.dmg" sparkle:edSignature="u7YdY3dNJYxj1Xh+OMD2EPSfoNsmzB6fX6ogmkceTToLO+kEg2deM6u0f0OxNG6dsP8pGuPr0Kwu1MGyE3LCBg==" length="17812137" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -624,10 +494,7 @@
             <sparkle:shortVersionString>0.25.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.25.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.25.1/FinderGit-0.25.1.dmg"
-                sparkle:edSignature="N85gWEOpbf1Zu0tY28pUCCB0ToSJkWb+4NRUlcx/8GRWwnFr8ebvCsorMXI8vq3fG1A3ziTQ8dv+Plj9kjHjCQ==" length="17781066"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.25.1/FinderGit-0.25.1.dmg" sparkle:edSignature="N85gWEOpbf1Zu0tY28pUCCB0ToSJkWb+4NRUlcx/8GRWwnFr8ebvCsorMXI8vq3fG1A3ziTQ8dv+Plj9kjHjCQ==" length="17781066" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -637,10 +504,7 @@
             <sparkle:shortVersionString>0.25.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.25.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.25.0/FinderGit-0.25.0.dmg"
-                sparkle:edSignature="iQTeU/NkoClCSBbNC2AiQaCJ9/ylCXC/7vofsN1x/LpUsqAhWrDNV0WknSLUWvf4EatFi/MmIq0w30qpmxfUAA==" length="17769648"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.25.0/FinderGit-0.25.0.dmg" sparkle:edSignature="iQTeU/NkoClCSBbNC2AiQaCJ9/ylCXC/7vofsN1x/LpUsqAhWrDNV0WknSLUWvf4EatFi/MmIq0w30qpmxfUAA==" length="17769648" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -650,10 +514,7 @@
             <sparkle:shortVersionString>0.24.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.24.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.24.0/FinderGit-0.24.0.dmg"
-                sparkle:edSignature="w78FBJSNkNr0cZIqbhkXozIs//CvYWI04wDlmE1js12J13SMpbFVsUyc2heklB29bLF2aj2S6Hyz9QjBc6ONBg==" length="17462464"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.24.0/FinderGit-0.24.0.dmg" sparkle:edSignature="w78FBJSNkNr0cZIqbhkXozIs//CvYWI04wDlmE1js12J13SMpbFVsUyc2heklB29bLF2aj2S6Hyz9QjBc6ONBg==" length="17462464" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -663,10 +524,7 @@
             <sparkle:shortVersionString>0.23.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.23.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.23.0/FinderGit-0.23.0.dmg"
-                sparkle:edSignature="1P00owsZDPSOUm6zClqVzoWhwTnEOAWBCzS+eiyAUsxHC3rVLIQIDLn3rnG0E8XagKy02qdvxwtwvvJ5N27fCA==" length="17394459"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.23.0/FinderGit-0.23.0.dmg" sparkle:edSignature="1P00owsZDPSOUm6zClqVzoWhwTnEOAWBCzS+eiyAUsxHC3rVLIQIDLn3rnG0E8XagKy02qdvxwtwvvJ5N27fCA==" length="17394459" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -676,10 +534,7 @@
             <sparkle:shortVersionString>0.22.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.22.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.22.0/FinderGit-0.22.0.dmg"
-                sparkle:edSignature="TC6xVlhaj335S+qpihbQCnzxGlsQMAZhSqNLRqUan1jZrOcd9e8DY7DC0Y/JVWJT0c0cA2oe1E6hztwPy8V6AQ==" length="17102179"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.22.0/FinderGit-0.22.0.dmg" sparkle:edSignature="TC6xVlhaj335S+qpihbQCnzxGlsQMAZhSqNLRqUan1jZrOcd9e8DY7DC0Y/JVWJT0c0cA2oe1E6hztwPy8V6AQ==" length="17102179" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -689,10 +544,7 @@
             <sparkle:shortVersionString>0.21.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.21.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.21.0/FinderGit-0.21.0.dmg"
-                sparkle:edSignature="l42BWkf8Pu5+UH33xGJygJ+fxPzXbt3PjQrKv1s9AAZVInOv3p/kS7BQhu8e+i32YIgqo56XxJ5DtTYtXIzNCg==" length="17072837"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.21.0/FinderGit-0.21.0.dmg" sparkle:edSignature="l42BWkf8Pu5+UH33xGJygJ+fxPzXbt3PjQrKv1s9AAZVInOv3p/kS7BQhu8e+i32YIgqo56XxJ5DtTYtXIzNCg==" length="17072837" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -702,10 +554,7 @@
             <sparkle:shortVersionString>0.20.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.20.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.20.0/FinderGit-0.20.0.dmg"
-                sparkle:edSignature="aiUSmpTeloM72BlmnT/HvnK3MKdhMy0FH9Nflk5480apxUkJaeR68D9jtrgz9AqrhV+wMBwtNO6HXkRMeME3Dg==" length="17048339"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.20.0/FinderGit-0.20.0.dmg" sparkle:edSignature="aiUSmpTeloM72BlmnT/HvnK3MKdhMy0FH9Nflk5480apxUkJaeR68D9jtrgz9AqrhV+wMBwtNO6HXkRMeME3Dg==" length="17048339" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -715,10 +564,7 @@
             <sparkle:shortVersionString>0.19.2</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.19.2.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.19.2/FinderGit-0.19.2.dmg"
-                sparkle:edSignature="VCNuhgjE3gE+VwV/vzrqhqbze7TwOUVHM/svNMGE5fnM1V9xDLsUM+f5rCx4+Fu8Qfz08qHDsAl9fqNJYTudAQ==" length="16962415"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.19.2/FinderGit-0.19.2.dmg" sparkle:edSignature="VCNuhgjE3gE+VwV/vzrqhqbze7TwOUVHM/svNMGE5fnM1V9xDLsUM+f5rCx4+Fu8Qfz08qHDsAl9fqNJYTudAQ==" length="16962415" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -728,10 +574,7 @@
             <sparkle:shortVersionString>0.19.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.19.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.19.1/FinderGit-0.19.1.dmg"
-                sparkle:edSignature="Jj2qnm0btTHS+1c5sJXTyXMr/QTYhMUSYKKI3g6e/Y8wiiWqSlmMmgzwYp9IXc7BfWybz6u8v6jsvP7FaaxIBQ==" length="16961395"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.19.1/FinderGit-0.19.1.dmg" sparkle:edSignature="Jj2qnm0btTHS+1c5sJXTyXMr/QTYhMUSYKKI3g6e/Y8wiiWqSlmMmgzwYp9IXc7BfWybz6u8v6jsvP7FaaxIBQ==" length="16961395" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -741,10 +584,7 @@
             <sparkle:shortVersionString>0.19.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.19.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.19.0/FinderGit-0.19.0.dmg"
-                sparkle:edSignature="2v9bpRCOCOzxgkra8VyMG3bfpbR9KUTPQR+B8iFXIVq/9wu2ia0hQK5ZtZVsJeqamRlePZKDnxndZYSlJwdRCA==" length="16955286"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.19.0/FinderGit-0.19.0.dmg" sparkle:edSignature="2v9bpRCOCOzxgkra8VyMG3bfpbR9KUTPQR+B8iFXIVq/9wu2ia0hQK5ZtZVsJeqamRlePZKDnxndZYSlJwdRCA==" length="16955286" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -754,10 +594,7 @@
             <sparkle:shortVersionString>0.18.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.18.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.18.0/FinderGit-0.18.0.dmg"
-                sparkle:edSignature="p9cthE4AsJo0O41qB3g1KkkKVFQ3mjl6BkDLJpm7fk8MLFfaA/YPWomSetvs/Iiqpj23ZnkXd1qf7dQr5g3WAg==" length="16684017"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.18.0/FinderGit-0.18.0.dmg" sparkle:edSignature="p9cthE4AsJo0O41qB3g1KkkKVFQ3mjl6BkDLJpm7fk8MLFfaA/YPWomSetvs/Iiqpj23ZnkXd1qf7dQr5g3WAg==" length="16684017" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -767,10 +604,7 @@
             <sparkle:shortVersionString>0.17.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.17.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.17.1/FinderGit-0.17.1.dmg"
-                sparkle:edSignature="C1kWgoKe8nDZT/DU5KUPBK6MyQAVBJIpMmdWpkXQG01pIYUtUmguCDGdBxLlJTvCXY7L1+ukV99vveZH4h3IAQ==" length="16559906"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.17.1/FinderGit-0.17.1.dmg" sparkle:edSignature="C1kWgoKe8nDZT/DU5KUPBK6MyQAVBJIpMmdWpkXQG01pIYUtUmguCDGdBxLlJTvCXY7L1+ukV99vveZH4h3IAQ==" length="16559906" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -780,10 +614,7 @@
             <sparkle:shortVersionString>0.17.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.17.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.17.0/FinderGit-0.17.0.dmg"
-                sparkle:edSignature="8vn7YZ75tYuGlE2IfEz3bJSUa5XF/2UmaY9DGSPWSXbUzMTa43quiMYkMqk13vWT7BoSSS/d//1kpz+ZlXyNAg==" length="16558449"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.17.0/FinderGit-0.17.0.dmg" sparkle:edSignature="8vn7YZ75tYuGlE2IfEz3bJSUa5XF/2UmaY9DGSPWSXbUzMTa43quiMYkMqk13vWT7BoSSS/d//1kpz+ZlXyNAg==" length="16558449" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -793,10 +624,7 @@
             <sparkle:shortVersionString>0.16.3</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.16.3.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.16.3/FinderGit-0.16.3.dmg"
-                sparkle:edSignature="DXmsCI0SViM5KoJXf78d0Om5YZLpaKNq6IvYm0jtIzGFyOoQlm98YhbRkd29Ud3IoA1FH5BHDRYdwi8O47XACw==" length="16534347"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.16.3/FinderGit-0.16.3.dmg" sparkle:edSignature="DXmsCI0SViM5KoJXf78d0Om5YZLpaKNq6IvYm0jtIzGFyOoQlm98YhbRkd29Ud3IoA1FH5BHDRYdwi8O47XACw==" length="16534347" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -806,10 +634,7 @@
             <sparkle:shortVersionString>0.16.2</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.16.2.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.16.2/FinderGit-0.16.2.dmg"
-                sparkle:edSignature="KsBezkpk2Vie1hBFLEfxlPkCtC/8Ofk45jdRubf1XbxMyTTpKT1O0iqEiUst+bfiDT68UidwZP1oq0k78FqxAw==" length="16528186"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.16.2/FinderGit-0.16.2.dmg" sparkle:edSignature="KsBezkpk2Vie1hBFLEfxlPkCtC/8Ofk45jdRubf1XbxMyTTpKT1O0iqEiUst+bfiDT68UidwZP1oq0k78FqxAw==" length="16528186" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -819,10 +644,7 @@
             <sparkle:shortVersionString>0.16.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.16.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.16.1/FinderGit-0.16.1.dmg"
-                sparkle:edSignature="olLlP+xVN1Uc8SghDMc3z4uxSgxF0Iu3j6blGYkuZ9rgUG15HQGNoXLO6QekN5h4vjiV/CpEVMfUolh9R5gAAA==" length="16494883"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.16.1/FinderGit-0.16.1.dmg" sparkle:edSignature="olLlP+xVN1Uc8SghDMc3z4uxSgxF0Iu3j6blGYkuZ9rgUG15HQGNoXLO6QekN5h4vjiV/CpEVMfUolh9R5gAAA==" length="16494883" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -832,10 +654,7 @@
             <sparkle:shortVersionString>0.16.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.16.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.16.0/FinderGit-0.16.0.dmg"
-                sparkle:edSignature="7AxKIzWY6ovJI2GtPMoLteSVY9M54PAl7+h6ixOYV0mctCZktQfolEFMiYTYOrsTHCmnqnh4LElMrFIfs9sWDQ==" length="16493743"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.16.0/FinderGit-0.16.0.dmg" sparkle:edSignature="7AxKIzWY6ovJI2GtPMoLteSVY9M54PAl7+h6ixOYV0mctCZktQfolEFMiYTYOrsTHCmnqnh4LElMrFIfs9sWDQ==" length="16493743" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -845,10 +664,7 @@
             <sparkle:shortVersionString>0.15.2</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.15.2.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.15.2/FinderGit-0.15.2.dmg"
-                sparkle:edSignature="9O3o1mxM7XXDy0mPEE1ViKIQGlXyU6UnnU9iXChcMo+gTV352mjPyqZF/FpVHnbRAqYJe7uZVV8zzNt4DHQ+AA==" length="15904130"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.15.2/FinderGit-0.15.2.dmg" sparkle:edSignature="9O3o1mxM7XXDy0mPEE1ViKIQGlXyU6UnnU9iXChcMo+gTV352mjPyqZF/FpVHnbRAqYJe7uZVV8zzNt4DHQ+AA==" length="15904130" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -858,10 +674,7 @@
             <sparkle:shortVersionString>0.15.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.15.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.15.1/FinderGit-0.15.1.dmg"
-                sparkle:edSignature="wMMYDxeAZh0olq/RwBOancLOaUiMSf3mJqPi+LdfspqtzB7a/RbbTEfNP2BIfcOVukkvKxWBHOxatz+F2+JrCg==" length="15892192"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.15.1/FinderGit-0.15.1.dmg" sparkle:edSignature="wMMYDxeAZh0olq/RwBOancLOaUiMSf3mJqPi+LdfspqtzB7a/RbbTEfNP2BIfcOVukkvKxWBHOxatz+F2+JrCg==" length="15892192" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -871,10 +684,7 @@
             <sparkle:shortVersionString>0.15.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.15.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.15.0/FinderGit-0.15.0.dmg"
-                sparkle:edSignature="aVIfqruh72C0XCt3dYcdwHBWccKGphmIrpfV5EmzgoR5XCuIZgQgzVJbQj9JRStnl2XqiZfDVBDclPBAprC7Ag==" length="15745285"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.15.0/FinderGit-0.15.0.dmg" sparkle:edSignature="aVIfqruh72C0XCt3dYcdwHBWccKGphmIrpfV5EmzgoR5XCuIZgQgzVJbQj9JRStnl2XqiZfDVBDclPBAprC7Ag==" length="15745285" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -884,10 +694,7 @@
             <sparkle:shortVersionString>0.14.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.14.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.14.0/FinderGit-0.14.0.dmg"
-                sparkle:edSignature="ibZyRlHBTdTBfFwL5G1XrJ4VoKMfqurHZSInyZBlj6UdwAuuMhiViwvSahieokY4rFdeK5pKkz2+iUhtWkEbBQ==" length="15532433"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.14.0/FinderGit-0.14.0.dmg" sparkle:edSignature="ibZyRlHBTdTBfFwL5G1XrJ4VoKMfqurHZSInyZBlj6UdwAuuMhiViwvSahieokY4rFdeK5pKkz2+iUhtWkEbBQ==" length="15532433" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -897,10 +704,7 @@
             <sparkle:shortVersionString>0.13.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.13.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.13.0/FinderGit-0.13.0.dmg"
-                sparkle:edSignature="S42BssGaRoYhoND13HSSgLJl/U+TTrJ/wvdN3zLlaKERLB0UedBk3osrVrk1W4sekL7C8hPwLd3L+KZDvMPLCQ==" length="15405438"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.13.0/FinderGit-0.13.0.dmg" sparkle:edSignature="S42BssGaRoYhoND13HSSgLJl/U+TTrJ/wvdN3zLlaKERLB0UedBk3osrVrk1W4sekL7C8hPwLd3L+KZDvMPLCQ==" length="15405438" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -910,10 +714,7 @@
             <sparkle:shortVersionString>0.12.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.12.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.12.0/FinderGit-0.12.0.dmg"
-                sparkle:edSignature="1JgLOFYTBiXexcfCRsqtevEL0ZYd89vnuE/D/bac3briEmHsdYmzZsiNhP4eGXoo1lWvs3kRBU7ab4vlOBuLBg==" length="14477685"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.12.0/FinderGit-0.12.0.dmg" sparkle:edSignature="1JgLOFYTBiXexcfCRsqtevEL0ZYd89vnuE/D/bac3briEmHsdYmzZsiNhP4eGXoo1lWvs3kRBU7ab4vlOBuLBg==" length="14477685" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -923,10 +724,7 @@
             <sparkle:shortVersionString>0.11.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.11.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.11.0/FinderGit-0.11.0.dmg"
-                sparkle:edSignature="tPc/g8/Ju58yWqNOxBIy9+3LYUCnTZvSSUu3By+Qto+nhNIQlLa7rTxTwkLDRE4135b0uEnOrTD8O3ho+eNtBQ==" length="14310301"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.11.0/FinderGit-0.11.0.dmg" sparkle:edSignature="tPc/g8/Ju58yWqNOxBIy9+3LYUCnTZvSSUu3By+Qto+nhNIQlLa7rTxTwkLDRE4135b0uEnOrTD8O3ho+eNtBQ==" length="14310301" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -936,10 +734,7 @@
             <sparkle:shortVersionString>0.10.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.10.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.10.1/FinderGit-0.10.1.dmg"
-                sparkle:edSignature="K/gAx0Fa8MJVdvC6S/4jW358HOnMk6M9B7jK+0UE93LmAjIojaewNBPiWh9u+yoBgZHpo82oM6ZoSNffki0dAQ==" length="13939925"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.10.1/FinderGit-0.10.1.dmg" sparkle:edSignature="K/gAx0Fa8MJVdvC6S/4jW358HOnMk6M9B7jK+0UE93LmAjIojaewNBPiWh9u+yoBgZHpo82oM6ZoSNffki0dAQ==" length="13939925" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -949,10 +744,7 @@
             <sparkle:shortVersionString>0.10.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.10.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.10.0/FinderGit-0.10.0.dmg"
-                sparkle:edSignature="3dKQF8/8n1EGFpN8J/34rY8BErjtGQI+Z5XUhTmF5oumnhgChaxHN5O+cnYgVhDc43uTKxguB5Bxs4HNHWDNDA==" length="13932442"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.10.0/FinderGit-0.10.0.dmg" sparkle:edSignature="3dKQF8/8n1EGFpN8J/34rY8BErjtGQI+Z5XUhTmF5oumnhgChaxHN5O+cnYgVhDc43uTKxguB5Bxs4HNHWDNDA==" length="13932442" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -962,10 +754,7 @@
             <sparkle:shortVersionString>0.9.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.9.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.9.1/FinderGit-0.9.1.dmg"
-                sparkle:edSignature="4yJRgSk6O0IgGKUsQQNAY28J6RTUWqtAabw2C/RESYuP1TV2eOIUO8KlNTpbPmPxHXS7b0He9+CjeZRuVh9aCg==" length="13208717"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.9.1/FinderGit-0.9.1.dmg" sparkle:edSignature="4yJRgSk6O0IgGKUsQQNAY28J6RTUWqtAabw2C/RESYuP1TV2eOIUO8KlNTpbPmPxHXS7b0He9+CjeZRuVh9aCg==" length="13208717" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -975,10 +764,7 @@
             <sparkle:shortVersionString>0.9.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.9.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.9.0/FinderGit-0.9.0.dmg"
-                sparkle:edSignature="YKwsKh473BNwt1CvqP83StjE6pjeBymIzRghhIqBjQ9LBPo3nmIuGKhdUJb6Jk9hF7NSFGovG33cj2tBo6tFBg==" length="13209316"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.9.0/FinderGit-0.9.0.dmg" sparkle:edSignature="YKwsKh473BNwt1CvqP83StjE6pjeBymIzRghhIqBjQ9LBPo3nmIuGKhdUJb6Jk9hF7NSFGovG33cj2tBo6tFBg==" length="13209316" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -988,10 +774,7 @@
             <sparkle:shortVersionString>0.8.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.8.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.8.0/FinderGit-0.8.0.dmg"
-                sparkle:edSignature="6ADKKpJfPKWdUpdzgn4NjLFU+G2vIyJ0Qf33BWah6xLaq7KbsjL6N/lA3KmhJkprHVRx79L8FMya+yBHV592CA==" length="12922647"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.8.0/FinderGit-0.8.0.dmg" sparkle:edSignature="6ADKKpJfPKWdUpdzgn4NjLFU+G2vIyJ0Qf33BWah6xLaq7KbsjL6N/lA3KmhJkprHVRx79L8FMya+yBHV592CA==" length="12922647" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -1001,10 +784,7 @@
             <sparkle:shortVersionString>0.7.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.7.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.7.1/FinderGit-0.7.1.dmg"
-                sparkle:edSignature="pWriRAoZUU+ttRvc78a6LKpDu5v/IBYZOg+m6trtHVOHton/mS2WlgB79Jtw8GdgySkqFgREEqXs7r7yOXyKAw==" length="12217362"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.7.1/FinderGit-0.7.1.dmg" sparkle:edSignature="pWriRAoZUU+ttRvc78a6LKpDu5v/IBYZOg+m6trtHVOHton/mS2WlgB79Jtw8GdgySkqFgREEqXs7r7yOXyKAw==" length="12217362" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -1014,10 +794,7 @@
             <sparkle:shortVersionString>0.7.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.7.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.7.0/FinderGit-0.7.0.dmg"
-                sparkle:edSignature="CdWarb/NMMzxQth2MMlwJ1Ji0G1HNHWEWjgPOKOKiYQyGgDvEGqJeU6Y1V2mYVtRRDNaiXuq1pTdQGTuNR23AA==" length="12217354"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.7.0/FinderGit-0.7.0.dmg" sparkle:edSignature="CdWarb/NMMzxQth2MMlwJ1Ji0G1HNHWEWjgPOKOKiYQyGgDvEGqJeU6Y1V2mYVtRRDNaiXuq1pTdQGTuNR23AA==" length="12217354" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -1027,10 +804,7 @@
             <sparkle:shortVersionString>0.6.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.6.1.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.6.1/FinderGit-0.6.1.dmg"
-                sparkle:edSignature="M7DXtbE+N2TqLaHIjFBxP6kebSlbnKf8yNdsJhLYLqz5W5UhTkqX2C4DKfWk9FN9BGwMrXReJ1E7IwlzRCZYCw==" length="11413722"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.6.1/FinderGit-0.6.1.dmg" sparkle:edSignature="M7DXtbE+N2TqLaHIjFBxP6kebSlbnKf8yNdsJhLYLqz5W5UhTkqX2C4DKfWk9FN9BGwMrXReJ1E7IwlzRCZYCw==" length="11413722" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -1040,10 +814,7 @@
             <sparkle:shortVersionString>0.6.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.6.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.6.0/FinderGit-0.6.0.dmg"
-                sparkle:edSignature="sobldp6S+Vcr/6rNmZRhMprZb9dwt2jnU6nr+QrvkrjhzU3vWrfSoBeGJ/LR09hxvzmT4BOAd0DfHAnpauaGBg==" length="11412209"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.6.0/FinderGit-0.6.0.dmg" sparkle:edSignature="sobldp6S+Vcr/6rNmZRhMprZb9dwt2jnU6nr+QrvkrjhzU3vWrfSoBeGJ/LR09hxvzmT4BOAd0DfHAnpauaGBg==" length="11412209" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -1053,10 +824,7 @@
             <sparkle:shortVersionString>0.5.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.5.0.html</sparkle:releaseNotesLink>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.5.0/FinderGit-0.5.0.dmg"
-                sparkle:edSignature="1UK1QSd8MrKtTbP8FCDFlSdk/+5XOFuDiON8IBEOT7y1wd6MQ4GSgR6WAWfizS4Te2KlmNLpLd/TQKhFI57WDA==" length="11108013"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.5.0/FinderGit-0.5.0.dmg" sparkle:edSignature="1UK1QSd8MrKtTbP8FCDFlSdk/+5XOFuDiON8IBEOT7y1wd6MQ4GSgR6WAWfizS4Te2KlmNLpLd/TQKhFI57WDA==" length="11108013" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -1065,10 +833,7 @@
             <sparkle:version>72</sparkle:version>
             <sparkle:shortVersionString>0.4.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.4.1/FinderGit-0.4.1.dmg"
-                sparkle:edSignature="qalqM4LiW7WAImUw6mBxCek9GXJAiUnRVvv7X0PGzepaGm++G4qwOohkfmfmxdCFK2LpvKWDpCe2Kts0JxoICA==" length="10993480"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.4.1/FinderGit-0.4.1.dmg" sparkle:edSignature="qalqM4LiW7WAImUw6mBxCek9GXJAiUnRVvv7X0PGzepaGm++G4qwOohkfmfmxdCFK2LpvKWDpCe2Kts0JxoICA==" length="10993480" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -1077,10 +842,7 @@
             <sparkle:version>70</sparkle:version>
             <sparkle:shortVersionString>0.4.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.4.0/FinderGit-0.4.0.dmg"
-                sparkle:edSignature="Y+CwXflyhxLSDIpzw/sPt/1rBlEI0f2Vluk/sh1ptAs+3a1ruFMeEDfS4XRWsQ5wAwWLcZUUSx6YBqqFTbnUCA==" length="10929492"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.4.0/FinderGit-0.4.0.dmg" sparkle:edSignature="Y+CwXflyhxLSDIpzw/sPt/1rBlEI0f2Vluk/sh1ptAs+3a1ruFMeEDfS4XRWsQ5wAwWLcZUUSx6YBqqFTbnUCA==" length="10929492" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -1089,10 +851,7 @@
             <sparkle:version>67</sparkle:version>
             <sparkle:shortVersionString>0.3.2</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.3.2/FinderGit-0.3.2.dmg"
-                sparkle:edSignature="lhpHDr9aHQIcu/PQuqhkL5jrNxFYTJYV7hzzXyNWRE5mTS2GaJVW4EMvYDuU342Q+0cDgfMZCmS+7wG4teZnDA==" length="10819958"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.3.2/FinderGit-0.3.2.dmg" sparkle:edSignature="lhpHDr9aHQIcu/PQuqhkL5jrNxFYTJYV7hzzXyNWRE5mTS2GaJVW4EMvYDuU342Q+0cDgfMZCmS+7wG4teZnDA==" length="10819958" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -1101,10 +860,7 @@
             <sparkle:version>65</sparkle:version>
             <sparkle:shortVersionString>0.3.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.3.1/FinderGit-0.3.1.dmg"
-                sparkle:edSignature="atau6CKZ+Dor+6SFhXk4nfBeL76sKAbXfI3dBsNzLGHJZIViV3GB3k1xa6b/mKzhMPHDp3AHcftd9oMOb7uHBQ==" length="10762516"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.3.1/FinderGit-0.3.1.dmg" sparkle:edSignature="atau6CKZ+Dor+6SFhXk4nfBeL76sKAbXfI3dBsNzLGHJZIViV3GB3k1xa6b/mKzhMPHDp3AHcftd9oMOb7uHBQ==" length="10762516" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -1113,10 +869,7 @@
             <sparkle:version>63</sparkle:version>
             <sparkle:shortVersionString>0.3.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.3.0/FinderGit-0.3.0.dmg"
-                sparkle:edSignature="HBa6HA0tye9wM7899jIO5N/gquMB5YOCY49fTXgbSWUUytwB4lpeOqomx6sBa6r+JCzHWjRWFCFqP20v7BFCAw==" length="10745036"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.3.0/FinderGit-0.3.0.dmg" sparkle:edSignature="HBa6HA0tye9wM7899jIO5N/gquMB5YOCY49fTXgbSWUUytwB4lpeOqomx6sBa6r+JCzHWjRWFCFqP20v7BFCAw==" length="10745036" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -1125,10 +878,7 @@
             <sparkle:version>47</sparkle:version>
             <sparkle:shortVersionString>0.2.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.2.0/FinderGit-0.2.0.dmg"
-                sparkle:edSignature="iC4HrFGqgJmWlTMoHLcUIykuIcTPPfOAZad6aVuY4U3TDX7Fp6R8wf+cGLqf9SuJE5w3dKTYIZTJE3SRrBJACw==" length="10567448"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.2.0/FinderGit-0.2.0.dmg" sparkle:edSignature="iC4HrFGqgJmWlTMoHLcUIykuIcTPPfOAZad6aVuY4U3TDX7Fp6R8wf+cGLqf9SuJE5w3dKTYIZTJE3SRrBJACw==" length="10567448" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -1137,10 +887,7 @@
             <sparkle:version>32</sparkle:version>
             <sparkle:shortVersionString>0.1.2</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.1.2/FinderGit-0.1.2.dmg"
-                sparkle:edSignature="QpCXhBSYPz+S8Kh1y/VqYw6Pvsobcz8ruGRKuCpeDAMtGCLthO9c4Ag30KG9MIn3VDc0RssqZfkVX1pqFCGTDQ==" length="8719088"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.1.2/FinderGit-0.1.2.dmg" sparkle:edSignature="QpCXhBSYPz+S8Kh1y/VqYw6Pvsobcz8ruGRKuCpeDAMtGCLthO9c4Ag30KG9MIn3VDc0RssqZfkVX1pqFCGTDQ==" length="8719088" type="application/octet-stream"></enclosure>
         </item>
 
 <item>
@@ -1149,10 +896,7 @@
             <sparkle:version>1</sparkle:version>
             <sparkle:shortVersionString>0.1.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.1.1/FinderGit-0.1.1.dmg"
-                sparkle:edSignature="+7zc1kDhJxkvKY9NM4z4C4e5RvUNo1sw8PktE0y/vr1ZItv6ZJTU2VdRBEhHv6sdW9luHWM+gN/5jaiiuj11Bw==" length="8714837"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.1.1/FinderGit-0.1.1.dmg" sparkle:edSignature="+7zc1kDhJxkvKY9NM4z4C4e5RvUNo1sw8PktE0y/vr1ZItv6ZJTU2VdRBEhHv6sdW9luHWM+gN/5jaiiuj11Bw==" length="8714837" type="application/octet-stream"></enclosure>
         </item>
 
         <item>
@@ -1172,10 +916,10 @@
                     <li>Auto-updates via Sparkle</li>
                 </ul>
             ]]></description>
-            <enclosure
-                url="https://github.com/gfazioli/findergit-website/releases/download/v0.1.0/FinderGit-0.1.0.dmg"
-                sparkle:edSignature="c6BhViASKQn7EMYM5LdBjl7Ggq7oL9PUxzLkKZuNR34Fcd2CAaqdDf4RmXBDaPg/QmserL+bcKzgc3zE+8kADw==" length="8706092"
-                type="application/octet-stream" />
+            <enclosure url="https://github.com/gfazioli/findergit-website/releases/download/v0.1.0/FinderGit-0.1.0.dmg" sparkle:edSignature="c6BhViASKQn7EMYM5LdBjl7Ggq7oL9PUxzLkKZuNR34Fcd2CAaqdDf4RmXBDaPg/QmserL+bcKzgc3zE+8kADw==" length="8706092" type="application/octet-stream"></enclosure>
         </item>
     </channel>
-</rss>
+</rss><!-- sparkle-signatures:
+edSignature: xPwY8MaI/G46ukp7ltvVoLcGeaGBjQEgmpwooUoQRfRf9ldCRaaAaIci+X0sCyvpqwxt+HKwUztGV7fD8iT2Cg==
+length: 67853
+-->
