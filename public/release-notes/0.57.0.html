@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.57.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.57.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.57.0 — groups inside groups</p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>Groups in Root Folders can hold other groups.</strong> Right-click a group and choose <strong>New Group Inside…</strong> to start one, or <strong>Move to Group</strong> to put an existing group inside another, or back at the <strong>Top Level</strong>. A group lists its own groups first, then its roots, and every group remembers whether it is open or closed.</li>
+<li><strong>Move to Group names every group by its full path</strong> (<em>Work › Clients</em>), so two groups with the same name stay apart. A group can't be moved inside itself or one of its own groups, and the menu leaves those out.</li>
+<li><strong>Deleting a group keeps what it held.</strong> Its groups and roots move one level up, into the group it sat in, or out of any group when it was at the top.</li>
+</ul>
+<h2>Under the hood</h2>
+<ul>
+<li>Each group now records the group it sits in. Groups saved by earlier versions are read unchanged and become top-level groups, and a damaged list (a group whose parent is gone, or a loop) is repaired when it loads instead of hiding groups.</li>
+<li>The tree's rules (order per level, moves, deletion, repair) are tested on their own, without touching your saved groups.</li>
+</ul>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.57.0.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications (or open it from there, and it offers to move itself)</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
