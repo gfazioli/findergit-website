@@ -8,6 +8,19 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
         <language>en</language>
         <!-- release.sh inserts new <item> entries right below this marker -->
 <item>
+            <title>Version 0.56.12</title>
+            <pubDate>Thu, 29 Oct 2026 16:30:11 +0000</pubDate>
+            <sparkle:version>960</sparkle:version>
+            <sparkle:shortVersionString>0.56.12</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <sparkle:releaseNotesLink>https://findergit.app/release-notes/0.56.12.html</sparkle:releaseNotesLink>
+            <enclosure
+                url="https://github.com/gfazioli/findergit-website/releases/download/v0.56.12/FinderGit-0.56.12.dmg"
+                sparkle:edSignature="y7M7kREl9I3vSV89N5iYFy71T9gohjyc4n6sNsxeeDNPGvpJ2OWlED2P3fhS/9f3G6vIqUnsXBV8Vyrr5o89Dw==" length="31948412"
+                type="application/octet-stream" />
+        </item>
+
+<item>
             <title>Version 0.56.11</title>
             <pubDate>Wed, 28 Oct 2026 18:23:07 +0000</pubDate>
             <sparkle:version>954</sparkle:version>
@@ -920,6 +933,6 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
         </item>
     </channel>
 </rss><!-- sparkle-signatures:
-edSignature: xPwY8MaI/G46ukp7ltvVoLcGeaGBjQEgmpwooUoQRfRf9ldCRaaAaIci+X0sCyvpqwxt+HKwUztGV7fD8iT2Cg==
-length: 67853
+edSignature: gZb+etvEBlDz3ZO2Ub8KeTRIm60pIAIDXiwFkiR4oO3d6eAWZ1ghX0am95R+b9OnVwTfaNr9vkrfHcAmEZZsDg==
+length: 68639
 -->

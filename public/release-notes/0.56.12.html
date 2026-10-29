@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.56.12 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.56.12</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.56.12 — branches that share a name with a tag</p>
+<h2>Bug fixes</h2>
+<ul>
+<li><strong>A branch with the same name as a tag now behaves like a branch.</strong> With a branch and a tag both called <code class="notranslate">main</code>, the branch list showed <code class="notranslate">heads/main</code>, and switching to it left the repository on a detached HEAD; renaming or deleting it failed. It now appears under its own name and switching keeps you on it. Merging it, rebasing onto it and starting a new branch from it use the branch's commit, never the tag's.</li>
+<li><strong>History cleanup always protects the branch you are on.</strong> When a tag shared its name, the checked-out branch could be offered for removal, and the check meant to refuse it did not recognise it. It is now kept out of the candidates and refused.</li>
+<li><strong>The Agents page reads your repositories with the git you chose in Settings from its very first scan.</strong> The first scan after launch used the system git, and what it reported went to the system log instead of the Activity feed.</li>
+</ul>
+<h2>Under the hood</h2>
+<ul>
+<li>Each branch now carries two spellings: its name, for checkout, rename, delete and the match with <code class="notranslate">git status</code>, and the unambiguous revision git prints with <code class="notranslate">%(refname:short)</code> (<code class="notranslate">heads/main</code> when a tag shadows it), for merge sources, rebase upstreams and start points. The current branch is read from the full <code class="notranslate">symbolic-ref</code>, not its shortened form.</li>
+<li>The Agents host settings (git and the Activity feed) are set at launch rather than when the page appears, since the dashboard's own first scan starts before the page's appear handler runs; the git path follows Settings when it changes.</li>
+</ul>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.56.12.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications (or open it from there, and it offers to move itself)</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
