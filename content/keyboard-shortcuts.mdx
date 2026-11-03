@@ -30,11 +30,14 @@ FinderGit supports many keyboard shortcuts for fast navigation and Git operation
 ## Navigation
 
 <ShortcutsTable shortcuts={[
-  { keys: ['⌘', 'T'], action: 'Open a new tab — each tab gets its own sidebar selection and drill-down history' },
-  { keys: ['⌘', 'F'], action: 'Focus the filter field — start typing to narrow the current tree by name' },
-  { keys: ['⌘', '['], action: 'Back — pop the drill-down history' },
-  { keys: ['⌘', ']'], action: 'Forward — replay the most recent back' },
+  { keys: ['⌘', 'T'], action: 'Open a new tab — each tab gets its own sidebar selection and back/forward history' },
+  { keys: ['⌘', '1'], action: 'Open the Overview (⌘2 Account, ⌘3 Cleaning, ⌘4 Agents), also in the View menu' },
+  { keys: ['⌘', 'F'], action: 'Edit → Search: focus the filter field and start typing to narrow the current tree by name (in Settings, its search field)' },
+  { keys: ['⌘', '['], action: 'Back — to the folder you came from or the sidebar view you were on, as in Finder (View → Back)' },
+  { keys: ['⌘', ']'], action: 'Forward — undo the last Back (View → Forward)' },
 ]} />
+
+The menus show each shortcut with your keyboard's own keys: on an Italian keyboard, for example, Back reads <Kbd>⌘</Kbd> <Kbd>ò</Kbd>.
 
 ## View
 

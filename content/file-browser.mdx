@@ -12,13 +12,13 @@ Click the disclosure triangle (▸) next to any directory to expand it and see i
 
 ### Drill into a folder
 
-Double-click a directory (or press <Kbd>↩</Kbd>) to **re-root the tree** on that folder — Finder-style. A back/forward capsule and a clickable breadcrumb appear above the table:
+Double-click a directory (or press <Kbd>↩</Kbd>) to **re-root the tree** on that folder — Finder-style. A clickable breadcrumb appears above the table, and the window's back and forward arrows, in the toolbar beside its title, retrace the folders you opened together with the sidebar views you visited, as in Finder:
 
-- <Kbd>⌘</Kbd> <Kbd>[</Kbd> — back
-- <Kbd>⌘</Kbd> <Kbd>]</Kbd> — forward
+- <Kbd>⌘</Kbd> <Kbd>[</Kbd> — back (also **View → Back**)
+- <Kbd>⌘</Kbd> <Kbd>]</Kbd> — forward (also **View → Forward**)
 - Click any segment in the breadcrumb to jump directly to that depth
 
-![A repository drilled into — the back/forward capsule and the breadcrumb sit above the table, and the folder's own files are top-level rows rather than children of an expanded one](/screenshot-drilldown.png)
+![A repository drilled into — the breadcrumb sits above the table, and the folder's own files are top-level rows rather than children of an expanded one](/screenshot-drilldown.png)
 
 ### Tabs
 
@@ -133,7 +133,7 @@ On repository rows, the **Size** column shows how much disk space the repo's Git
 
 A header strip pinned above the file browser hosts both controls:
 
-- **Filter files** field — filter the tree by name. The filter applies across the entire tree with a 300ms debounce. <Kbd>⌘</Kbd> <Kbd>F</Kbd> focuses the field from anywhere in the window.
+- **Filter files** field — filter the tree by name. The filter applies across the entire tree with a 300ms debounce. <Kbd>⌘</Kbd> <Kbd>F</Kbd> (**Edit → Search**) focuses the field from anywhere in the window.
 - **Git Only** toggle — hide every file and directory that isn't (or isn't inside) a Git repository.
 
 Both controls are scoped to the file browser column and stay anchored above it as the window resizes.
