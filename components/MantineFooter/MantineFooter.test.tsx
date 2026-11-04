@@ -14,11 +14,11 @@ describe('MantineFooter publisher line', () => {
     render(<MantineFooter year={2026} />);
     const line = screen.getByText(/P\.IVA/).closest('p');
     expect(line?.textContent).toBe(
-      `© 2026 ${config.legal.brand} — ${config.legal.owner}·P.IVA ${config.legal.vatNumber}·Legal·Privacy`
+      `© 2026 ${config.legal.brand} — ${config.legal.owner}·P.IVA ${config.legal.vatNumber}·Legal·Privacy·Terms`
     );
   });
 
-  it('links to the legal notice and the privacy policy', () => {
+  it('links to the legal notice, the privacy policy and the terms of use', () => {
     render(<MantineFooter year={2026} />);
     // Scoped to the line: a footer column may carry a Privacy link of its own.
     const line = screen.getByText(/P\.IVA/).closest('p') as HTMLElement;
@@ -29,6 +29,10 @@ describe('MantineFooter publisher line', () => {
     expect(within(line).getByRole('link', { name: 'Privacy' })).toHaveAttribute(
       'href',
       '/docs/privacy'
+    );
+    expect(within(line).getByRole('link', { name: 'Terms' })).toHaveAttribute(
+      'href',
+      '/docs/terms'
     );
   });
 });
