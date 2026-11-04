@@ -5,7 +5,8 @@
 The MIT licence in [LICENSE](LICENSE) covers the source code of this website, and nothing else.
 
 - **The FinderGit app is not open source.** The app published in this repository's [Releases](https://github.com/gfazioli/findergit-website/releases) is free to download and use under its [Terms of Use](https://findergit.app/docs/terms). Its code is not in this repository.
-- **Brand assets are not licensed.** The FinderGit name, the app icon, the logos, the mascot artwork and the screenshots remain the property of Giovambattista Fazioli (Undolog), all rights reserved.
+- **The site's text and brand assets are not licensed.** The pages in `content/`, this README and the other prose, the FinderGit name, the app icon, the logos, the mascot artwork and the screenshots remain the property of Giovambattista Fazioli (Undolog), all rights reserved.
+- **Third-party names and logos** shown on the site belong to their owners.
 
 ## Third-party code
 
