@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://github.com/gfazioli/findergit-website/releases/latest"><img src="https://img.shields.io/github/v/release/gfazioli/findergit-website?label=Download&color=blue" alt="Latest Release" /></a>
   <a href="https://www.apple.com/macos/"><img src="https://img.shields.io/badge/macOS-15%2B-blue" alt="macOS 15+" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License" /></a>
+  <a href="NOTICE.md"><img src="https://img.shields.io/badge/website%20code-MIT-green" alt="Website code: MIT License" /></a>
 </p>
 
 <p align="center">
@@ -87,4 +87,4 @@ Then visit [http://localhost:3000](http://localhost:3000).
 
 ## License
 
-MIT
+The website's source code is released under the [MIT License](LICENSE). The FinderGit app published in [Releases](https://github.com/gfazioli/findergit-website/releases) is not open source: it is free to use under its [Terms of Use](https://findergit.app/docs/terms). What the licence covers, brand assets and third-party notices: [NOTICE.md](NOTICE.md).

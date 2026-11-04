@@ -294,12 +294,12 @@ export const MantineFooter = ({ year }: { year: number }) => {
 
         {/*
           Who publishes the site, on every page: brand, owner and VAT number,
-          with the legal notice and the privacy policy one click away (see
-          `legal` in config/index.ts). The year comes from the layout, which
-          renders on the server, so a build in late December cannot hydrate
-          with a different year. Separators sit in template literals: a space
-          next to JSX text across lines can vanish, and oxfmt removes an
-          explicit {' '}.
+          with the legal notice, the privacy policy and the terms of use one
+          click away (see `legal` in config/index.ts). The year comes from the
+          layout, which renders on the server, so a build in late December
+          cannot hydrate with a different year. Separators sit in template
+          literals: a space next to JSX text across lines can vanish, and oxfmt
+          removes an explicit {' '}.
         */}
         <Text fz={12} c="dimmed" className={classes.legal}>
           {`© ${year} ${legal.brand} — ${legal.owner}`}
@@ -318,6 +318,12 @@ export const MantineFooter = ({ year }: { year: number }) => {
           </span>
           <Anchor fz={12} href="/docs/privacy">
             Privacy
+          </Anchor>
+          <span className={classes.dot} aria-hidden>
+            ·
+          </span>
+          <Anchor fz={12} href="/docs/terms">
+            Terms
           </Anchor>
         </Text>
       </Container>
