@@ -53,7 +53,7 @@ Repositories (directories containing `.git/`) show inline status. The badge refl
 - **N changes** (orange) — count of uncommitted changes in the working tree (takes priority over any sync state)
 - **↑N** (blue) — N commits ahead of upstream (push to sync)
 - **↓N** (purple) — N commits behind upstream (pull to sync)
-- **↑N ↓N** (red) — diverged: commits on both sides (pull then push, or rebase)
+- **↑N ↓N** (red) — diverged: commits on both sides (reconcile with a merge or a rebase; a plain pull cannot)
 
 Hover the badge for a tooltip with the exact meaning. Ahead/behind counts are only accurate after a `git fetch` has brought the latest remote refs — Settings → Git → **Fetch on launch** (on by default) runs one fetch at startup so the counts are correct from the first moment.
 
@@ -150,7 +150,7 @@ The detail panel on the right follows the most recently added item in the select
 
 ### Bulk actions
 
-When you have multiple files selected, the context menu collapses to a shorter list that operates on the whole set: Open, Reveal in Finder, Copy, Copy Paths, and — when all selected files live in the same repo — **Stage N** / **Unstage N**. At the bottom, **Move N Items to Trash** handles delete.
+When you have multiple files selected, the context menu collapses to a shorter list that operates on the whole set: Open (when every item is a file), Reveal in Finder, Copy, Copy Paths, **Fetch N Repos** / **Pull N Repos** / **Push N Repos** when the selection holds repositories, and — when all selected files live in the same repo — **Stage N Files** / **Unstage N Files**. At the bottom, **Move N Items to Trash** handles delete.
 
 Press <Kbd>⌫</Kbd> (Delete) to trash the whole selection in one go. <Kbd>⌘</Kbd> <Kbd>Z</Kbd> restores every file to its original path — if a path has been reclaimed in the meantime, the trashed copy is revealed in Finder so nothing silently disappears.
 
@@ -165,7 +165,7 @@ Grab the **icon** of any file or folder and drop it anywhere that accepts a file
 Right-click any item in the tree to get a context-sensitive menu with an icon beside each item. On a single item the menu adapts to what you right-clicked:
 
 - **Repository folder** — Open in Finder / Terminal, Add to Root Folders, Quick Look, Get Info, Duplicate, Copy / Copy Path, Fetch / Pull / Push, **Open on GitHub** (or GitLab / Bitbucket / Codeberg — the label follows the remote's host; shown only when the repo has a recognized remote), **Switch Branch** (a submenu of the repository's local branches), Stage All, Move to Trash
-- **File inside a repo** — Open, Quick Look, Reveal in Finder, Get Info, Duplicate, Copy / Copy Path, Stage / Unstage (when applicable), Move to Trash
+- **File inside a repo** — Open, Quick Look, Reveal in Finder, Get Info, Duplicate, Copy / Copy Path, Stage This File / Unstage This File (when applicable), Move to Trash
 
 ![The context menu on a single repository folder. Open on GitHub is not drawn here: this repository's remote is not a forge FinderGit recognises, and a link into a 404 is worse than no link](/screenshot-context-menu.png)
 

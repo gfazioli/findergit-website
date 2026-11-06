@@ -113,7 +113,7 @@ One click and the fork is current both on GitHub and on disk — no opening the 
 
 A fast-forward isn't always available. A fork whose history has **diverged** — it has its own commits *and* is missing upstream commits — can't be synced that way, on GitHub or anywhere else. And even a fork that is merely behind can't use the one-click Sync if your token can't push to it, or if you never set one up.
 
-Both cases have the same way out, and FinderGit does it for you. The **Update** menu on the fork's Overview banner offers:
+Both cases have the same way out, and FinderGit does it for you. On a diverged fork the Overview banner shows an **Update** menu; on one that is merely behind, the same choices sit in the dropdown beside **Sync**. They are:
 
 - **Merge** — brings the upstream commits in and creates a merge commit, keeping your own commits where they are.
 - **Rebase** — replays your commits on top of the upstream's, giving a linear history.
@@ -125,7 +125,7 @@ Two things it deliberately does *not* do:
 - **It never pushes.** After a rebase your history has been rewritten, so the next push needs a force — that's your call to make, not a decision to take on your behalf. FinderGit tells you which case you're in when it finishes.
 - **It never repoints an `upstream` you already configured.** If one exists and points somewhere other than the fork's parent, FinderGit stops and names both, rather than quietly fetching from a repository you didn't mean.
 
-If the merge or rebase stops on a conflict, it's left in place and the usual [conflict strip](/docs/git-actions#when-a-merge-or-rebase-stops-on-a-conflict) picks it up with **Finish** and **Abort** — the same path a conflicted pull already takes.
+If the merge or rebase stops on a conflict, it's left in place and the usual [conflict strip](/docs/git-actions#when-a-merge-or-rebase-stops-on-a-conflict) picks it up with **Finish Merge** or **Continue Rebase**, and **Abort** — the same path a conflicted pull already takes.
 
 ![A fork's Overview showing its upstream-sync state, with the rest of the repos in the list](/screenshot-fork-sync.png)
 

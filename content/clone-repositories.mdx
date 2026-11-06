@@ -12,7 +12,7 @@ Cloning is an action, not a place you live in, so it opens in its own window —
 
 - **File → Clone Repositories…** (`⌘⇧K`)
 - The **Clone from GitHub…** button on the [Overview](/docs/overview) dashboard
-- The **Clone…** button on the [Account](/docs/account) dashboard
+- The same **Clone from GitHub…** button on the [Account](/docs/account) dashboard
 
 It uses the same GitHub access as the rest of FinderGit — see [GitHub Integration](/docs/github-integration) for setup. If neither the GitHub CLI nor a token is configured, the window shows a **Connect to GitHub** prompt with a shortcut to Settings.
 
@@ -38,10 +38,10 @@ Each row shows the repository name, a one-line description, its primary language
 
 Each repository clones into its own folder inside the destination, a few at a time, with a live status beside it: a spinner, then a green check or a red ✗ (hover for the error). You can **close the window while it's working** — reopen it and the run is still in progress.
 
-When the batch finishes, the destination is added to your [Root Folders](/docs/file-browser) (or rescanned if it's already one), so the fresh checkouts appear in the file browser right away.
+When at least one clone succeeds, the destination is added to your [Root Folders](/docs/file-browser) (or rescanned if it's already one), so the fresh checkouts appear in the file browser right away.
 
 ## Notes
 
 - Cloning a few repositories at a time keeps a large selection from flooding the network.
-- A repository that already exists in the destination is skipped rather than overwritten.
+- A repository whose folder already exists in the destination is never overwritten: it gets a red ✗ that says so, and the rest of the batch carries on.
 - For one-off clones you can keep using `git clone` or your favourite tool — this window is for pulling down many repositories in a single pass.

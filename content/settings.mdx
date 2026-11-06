@@ -4,7 +4,7 @@ description: "Configure FinderGit: startup and scanning, the layout and sidebar,
 
 # Settings
 
-Open Settings with <Kbd>⌘</Kbd> <Kbd>,</Kbd> or from the menu **FinderGit → Settings**.
+Open Settings with <Kbd>⌘</Kbd> <Kbd>,</Kbd> or from the menu **FinderGit → Settings…**.
 
 Pick a pane in the sidebar, or type in its search field (<Kbd>⌘</Kbd> <Kbd>F</Kbd>) to jump straight to a setting. The arrows at the top go back and forward through the panes you opened, as in System Settings, with the name of the pane beside them; <Kbd>⌘</Kbd> <Kbd>[</Kbd> and <Kbd>⌘</Kbd> <Kbd>]</Kbd> do the same, from **View → Back** and **View → Forward**.
 
@@ -53,10 +53,10 @@ Everything that changes how FinderGit looks without changing what it does: where
 ### Commits
 
 #### Commit history count
-How many recent commits the **Commits** tab lists. Default: **4** — keeps the tab skim-friendly. Range: 1 to 50. Takes effect on next refresh or repo selection.
+The **Show last N commits** row sets how many recent commits the **Commits** tab lists. Default: **4** — keeps the tab skim-friendly. Range: 1 to 50. Takes effect on next refresh or repo selection.
 
 #### Show author avatars
-Show each commit author's avatar to the left of the row. Avatars are resolved from the author's GitHub account (via their commit email), with a Gravatar fallback; when neither is available, a colored monogram of the author's initials is shown instead. On by default.
+Show each commit author's avatar to the left of the row. Avatars come from the author's GitHub account when the commit uses a GitHub noreply email, and from Gravatar otherwise; when neither is available, a colored monogram of the author's initials is shown instead. On by default.
 
 #### Show tag and branch badges
 Mark commits that a tag or branch points at with a badge — **tags in gold**, branches and remote-tracking refs (`origin/main`, …) in grey. On by default.
@@ -114,13 +114,13 @@ Configures the **✨ AI** commit-message generator added in 0.5.0. See the dedic
 - **Use Conventional Commits format** — wraps the subject as `type(scope): subject` (default on)
 - **Prefix with a relevant emoji** — let the model pick one matching emoji (default off)
 - **Tone** — Professional / Casual / Friendly
-- **Length** — Short (subject only) / Normal (subject + brief body) / Long (with body) — a subject plus a bulleted body
+- **Length** — Short (default; one line) / Normal (one line, with a short paragraph when it helps) / Long (with body) — a subject plus a bulleted body
 
 ### Provider
 - **Generate with** — *FinderGit (no key needed)* (default), *Anthropic*, or *OpenAI-compatible*
 - **Base URL** — for an OpenAI-compatible endpoint: the API root the provider documents. FinderGit appends `/chat/completions`
 - **Model** — required for a direct provider, and never defaulted
-- **API key** — validated against the provider before it is stored in the macOS Keychain; optional for a local server such as Ollama
+- **API key** — checked against the provider when you save it, and stored in the macOS Keychain unless the provider rejects it (the row says when the check could not be completed); optional for a local server such as Ollama
 
 See [Bring your own key](/docs/ai-commit-messages#bring-your-own-key) for the full guide.
 

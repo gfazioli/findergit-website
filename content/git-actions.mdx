@@ -14,7 +14,7 @@ Git operations are spread across three surfaces of the [Detail Panel](/docs/deta
 - **Unstage tab** — the changes list, per-file Stage / Unstage, and the commit form.
 - **Context menus** in the file browser — right-click any repo for quick Fetch / Pull / Push / Stage All / Open in Terminal; right-click a file for Stage / Unstage.
 
-The repository-level commands (Fetch / Pull / Push) all run against the upstream of the currently checked-out branch. The first push sets it with `--set-upstream origin <branch>` automatically.
+Pull and Push run against the upstream of the currently checked-out branch, and Fetch fetches every remote. The first push sets it with `--set-upstream origin <branch>` automatically.
 
 ![Unstage tab — changes list with inline diff and the commit form, docked action bar at the bottom](/screenshot-detail-unstage.png)
 
@@ -55,7 +55,7 @@ Stopping is a real interruption, not just the app looking away — the underlyin
 
 - A stopped **Fetch** is harmless. Nothing in your working tree changes and you can simply run it again.
 - A stopped **Push** leaves the remote either updated or untouched, never half-way: Git updates each branch atomically.
-- A stopped **Pull** is the one to know about. If it was still downloading, nothing has changed. If it had started merging, you may be left mid-merge — and FinderGit notices that and offers **Finish** and **Abort** in the strip above the action bar, the same way it does for a merge that stopped on a conflict.
+- A stopped **Pull** is the one to know about. If it was still downloading, nothing has changed. If it had started merging, you may be left mid-merge — and FinderGit notices that and offers **Finish Merge** (or **Continue Rebase**) and **Abort** in the strip above the action bar, the same way it does for a merge that stopped on a conflict.
 
 **Refresh** has no stop control, because it's a local re-read that finishes before you could click it.
 
@@ -82,7 +82,7 @@ Stage / Unstage and the commit form live in the [Unstage tab](/docs/detail-panel
 Each file in either section has a **Stage** or **Unstage** button:
 - **Stage** — runs `git add <file>`
 - **Unstage** — runs `git restore --staged <file>`
-- **Stage All** ↔ **Unstage All** — the header button toggles based on state: stages everything when there are unstaged changes, switches to **Unstage All** (orange tint) when the index is fully caught up so you can reset it in one click
+- **Stage All** and **Unstage All** — each section has its own: **Stage All** in the *Unstaged Changes* header (beside **Discard All**) stages everything, and **Unstage All** (orange tint) in the *Staged Changes* header resets the index in one click
 
 The per-file buttons appear intelligently: "Stage" only shows for files with unstaged changes, "Unstage" only for staged files.
 
@@ -122,7 +122,7 @@ Switching between branches is covered in [Branches](/docs/detail-panel#branches)
 
 **New branch…** sits at the top of the branch dropdown. The sheet asks for a name, a starting point (the current branch by default, though any local or remote branch will do) and whether to check the new branch out once it exists.
 
-The name is checked as you type: **Create stays disabled** and the field says why — `"name" already exists`, or the character Git will not take — rather than letting the command fail after you have committed to it.
+The name is checked as you type: **Create stays disabled** and the field says why — `“name” already exists`, or the character Git will not take — rather than letting the command fail after you have committed to it.
 
 ### Renaming, merging, rebasing and deleting
 
@@ -191,7 +191,7 @@ In the [Unstage tab](/docs/detail-panel#unstage) each unmerged file is tagged **
 Select **more than one repository** in the file browser — ⌘-click or ⇧-click to build a selection, even across different root folders — and FinderGit can Fetch, Pull, or Push all of them in one go.
 
 - **Right-click** the selection → **Fetch N Repos** / **Pull N Repos** / **Push N Repos**
-- Or the **Repository menu** → **Fetch / Pull / Push Selected Repos**
+- Or the **Repository menu** → **Fetch N Selected Repos** / **Pull N Selected Repos** / **Push N Selected Repos…**
 
 A small progress card appears while the batch runs, with one row per repository — a spinner while it works, then a green check, a red ✗ (hover for the error), or a *skipped* note. It tidies itself away after a fully clean run and stays put if anything failed, so you can read what happened.
 

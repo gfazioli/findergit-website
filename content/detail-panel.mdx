@@ -118,7 +118,7 @@ If a pop hits a conflict, git writes the conflict into your files and **keeps th
 
 A scrollable list of recent commits from local `git log`. Each row shows:
 
-- The author's avatar on the left — resolved from their GitHub account (via the commit email) with a Gravatar fallback, or a colored monogram of their initials when neither is available
+- The author's avatar on the left — from their GitHub account when the commit uses a GitHub noreply email, from Gravatar otherwise, or a colored monogram of their initials when neither is available
 - The commit subject (up to two lines)
 - Tag and branch badges when a ref points at the commit — **tags in gold**, branches and remote-tracking refs (`origin/main`, …) in grey, the current branch in the accent color
 - The short SHA, author, and a relative date
@@ -221,15 +221,15 @@ The line under the name is **not always the same sentence**, and which one it is
 
 `git tag` lists what is in **your clone**, which is not the same set as what is on `origin` — and the difference is invisible in every tool that shows you one list. A tag you made and never pushed looks identical to one everybody has. A tag a colleague pushed this morning does not appear at all until you fetch.
 
-So every row says which of the three it is:
+So every row is in one of three states, and the two that need you carry a badge:
 
-- **on both** — nothing to do; Push would be a no-op and deleting locally leaves origin's copy
 - **local only** — it exists here and not on origin. This is the one Push is for
 - **not fetched** — origin has it and you do not. There is no local tag to delete, and **Fetch** on the row brings it down
+- no badge — on both, nothing to do; Push would be a no-op and deleting locally leaves origin's copy
 
 **Check remote** is what asks `origin`, and it is a separate button because it is the one thing here that touches the network — the tag list itself is local git and answers instantly. Until it has answered, no row claims either way: FinderGit will not tell you a tag is unpushed on the strength of a lookup it never made.
 
-When the answer comes back with tags you are missing, the header offers **Fetch N tag** to bring all of them down at once. And each action is offered only where it can do something: Push appears on local-only rows, Fetch on not-fetched ones, and neither is drawn on a row where it would be meaningless.
+When the answer comes back with more than one tag you are missing, the header offers **Fetch N tags** to bring all of them down at once; a single one is fetched from its row. And each action is offered only where it can do something: Push appears on local-only rows, Fetch on not-fetched ones, and neither is drawn on a row where it would be meaningless.
 
 ### Finding one tag among hundreds
 

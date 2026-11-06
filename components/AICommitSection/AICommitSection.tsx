@@ -114,8 +114,8 @@ export function AICommitSection() {
                   Privacy-first
                 </Text>
                 <Text c="dimmed" size="sm">
-                  Your staged diff is processed in-flight, never logged or stored. No personal
-                  credentials required.
+                  By default, your staged diff is processed in-flight, never logged or stored. No
+                  personal credentials required.
                 </Text>
               </List.Item>
             </List>
