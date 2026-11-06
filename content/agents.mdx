@@ -8,7 +8,7 @@ Coding agents read a stack of files before your first prompt: a `CLAUDE.md` in t
 
 **Agents** reads those files across every repository, the folders above them and your home folder, shows what each one costs, and guides the fix: made for you when it needs no choosing, handed to Claude Code or Codex when it does. It also finds what the agents left on disk that nothing uses any more, and moves it to the Trash when you say so: see [Storage](#storage).
 
-![The Agents dashboard — the summary of warnings and the heaviest start with Fix All and Copy Findings, nine cards by kind with Storage last, and the Instructions list with the files that need fixing first](/screenshot-hero-agents.png)
+![The Agents dashboard — the summary of warnings and the heaviest start with Fix All and Copy Findings, the cards by kind with Storage last, and the Instructions list with the files that need fixing first](/screenshot-hero-agents.png)
 
 ## What it reads
 
@@ -29,10 +29,11 @@ Your organization's policy counts too, when an administrator has set one: the ma
 **Agents** sits under **Cleaning** in the sidebar's dashboards. The first visit scans; press refresh (or pull the page down on macOS 27) to scan again.
 
 - **The summary** counts the warnings and suggestions, and shows the heaviest start: the place where Claude Code's startup warning counts the most, against the limit it warns at. **Fix All** makes every fix that needs no choosing at once (see [All of them at once](#all-of-them-at-once)). **Copy Findings** puts every finding shown on the clipboard as Markdown, ready to paste into a session that will fix them: suggestions you hide and checks you switch off stay out. **Settings…** opens [Settings › Agents](#settings).
-- **Cards**, in rows of four (two in a narrow window): Instructions, Rules, Skills, Commands & Subagents, Settings & MCP, Memory, Launch Weight, Background Sessions and Storage: Background Sessions while it has some to show, Storage once FinderGit has looked. Click one and it opens into its panel right under its row; one is open at a time, and a click on it again closes it. Every card and row that opens does so from the keyboard and VoiceOver too.
+- **Cards**, in rows of four (two in a narrow window): Instructions, Rules, Skills, Commands & Subagents, Settings & MCP, Memory, Launch Weight, Background Sessions, Codex Sessions and Storage: Background Sessions and Codex Sessions while they have some to show, Storage once FinderGit has looked. Click one and it opens into its panel right under its row; one is open at a time, and a click on it again closes it. Every card and row that opens does so from the keyboard and VoiceOver too.
 - **The six kinds of file** list their files, the ones that need fixing first. Narrow the list to one problem with the chips over it, search it, or sort it. Each row shows the agents that read the file, its lines and characters and its findings; click it to see when it loads and how to fix it. The two buttons open the file and show it in the Finder.
 - **Launch Weight** has a row for every place a session can start in, its bar against the limit in layers: your own files, a folder above, the place's own. It counts what Claude Code's startup warning counts: the `CLAUDE.md` files, what they import and the rules that load in every session, a folder above's included. The memory index loads too, and is not counted. Each row shows the place's warnings and suggestions; open it for the files it adds to yours, in the order Claude Code reads them, and to hand all its findings to one agent (see [When it needs a judgement](#when-it-needs-a-judgement)).
 - **Background Sessions**: what Claude Code's ended background sessions still keep on disk, how many finished and how many stopped waiting for your answer (see [Background sessions](#background-sessions)).
+- **Codex Sessions**: the sessions Codex keeps for its own list, your conversations and one for every `codex exec` and `codex review` a command or an agent ran, and archiving or deleting the ones you no longer need, through Codex itself (see [Codex sessions](#codex-sessions)).
 - **Storage**: what the agents left on disk that nothing uses any more, and what moving it to the Trash frees (see [Storage](#storage)).
 
 ## What it checks
@@ -131,8 +132,19 @@ Claude Code keeps a folder for every background session, with the files it wrote
 
 Tick the ones to go and press **Remove**, which names what they take up (**Remove 65 MB…**): each goes through Claude Code's own `claude rm`, and the Activity panel lists what was removed. Its folder goes, and so does a worktree it made, unless that worktree holds work not yet pushed, which Claude Code refuses to drop. The conversation stays: `claude --resume` opens it again.
 
+**Delete** (**Delete 65 MB…**) does the same and also moves each session's conversation to the Trash: `claude --resume` no longer finds it, and the Finder can put it back until you empty the Trash. Before `claude rm` it checks that no program has the conversation open, and leaves the session alone when one does. It checks again once the session is removed: if a program has opened the conversation in the meantime, the session is gone but the conversation stays.
+
 - A session that is still running, or idle and waiting for a follow-up, is never listed, and each removal checks again first.
 - Nothing is ticked for you. **Select Finished** ticks every session that finished and leaves those that stopped waiting for your answer, marked **Waiting**.
+
+## Codex sessions
+
+Codex saves a session for every conversation, and one for every `codex exec` and `codex review` a command or an agent runs, and they pile up in its list. The **Codex Sessions** card shows them, read from Codex itself, when Codex is on in [Settings › Agents](#settings) and has some. The **Task threads** each review runs in come first, together in one row; then your conversations, newest first; then **From commands** and **Archived**, two groups that open with a click. Each session's row gives its title, what started it, its folder, when it was last active and its size on disk.
+
+- **Select Commands** ticks every session a command ran and every task thread, and leaves your conversations.
+- **Archive N…** is Codex's own archive: a session leaves Codex's list and its file is compressed into `~/.codex/archived_sessions`, where `codex unarchive` followed by its id brings it back. The agents a session spawned are archived with it.
+- **Delete N…** is Codex's own delete, and for good: the session's file and Codex's record of it go, and nothing brings them back. It works on archived sessions too.
+- A session open in a Codex window or another program is marked **In use**, and one written to within the hour **Recent**: neither can be ticked. Each session is looked at again before Codex acts on it, and the Activity panel says which were left alone and why.
 
 ## Storage
 
@@ -162,7 +174,7 @@ A row says what it frees, how many items it holds, when it last changed and wher
 
 - **Context window** — 200K or 1M. Claude Code's startup warnings scale with it: past 40,000 characters in one file and 120,000 in all the files it counts together at 200K, past 150,000 for both at 1M.
 - **Flag instruction files over** — the line target, 200 by default.
-- **Agents** — the agents whose files are listed and checked. A file several agents read stays while any of them is on. An agent switched off has its leftovers skipped in [Storage](#storage) too.
+- **Agents** — the agents whose files are listed and checked. A file several agents read stays while any of them is on. An agent switched off has its leftovers skipped in [Storage](#storage) too, and with Codex off the Codex Sessions card is not shown.
 - **Include your home folder's configuration** — list and check `~/.claude`, `~/.codex`, `~/.gemini` and the memory. On by default. Your organization's policy files stay listed either way.
 - **Show suggestions** — on by default; warnings are always shown.
 - **Flag a paragraph repeated in** — how many repositories must share it, 3 by default.
@@ -173,5 +185,5 @@ Characters are counted the way Claude Code counts them, so the totals match the 
 </Callout>
 
 <Callout type="info" emoji="🛡️">
-Agents reads, and sends nothing anywhere. For Storage that includes asking macOS which files running programs hold, on this Mac, so that nothing in use is offered. It changes something only when you ask it to: a fix or a listing choice you saw whole and applied, **Move to Trash…** on a file no agent uses or on what Storage offers, and **Remove** on ended background sessions, each after a confirmation. **Fix with Claude Code** and **Fix with Codex** start your own agent, which then works as any session of yours does.
+Agents reads, and sends nothing anywhere. For Storage that includes asking macOS which files running programs hold, on this Mac, so that nothing in use is offered. It changes something only when you ask it to: a fix or a listing choice you saw whole and applied, **Move to Trash…** on a file no agent uses or on what Storage offers, **Remove** and **Delete** on ended background sessions, and **Archive** and **Delete** on Codex sessions, each after a confirmation. For Codex sessions it asks Codex itself, through a `codex app-server` running on this Mac. **Fix with Claude Code** and **Fix with Codex** start your own agent, which then works as any session of yours does.
 </Callout>
