@@ -225,7 +225,7 @@ So every row is in one of three states, and the two that need you carry a badge:
 
 - **local only** — it exists here and not on origin. This is the one Push is for
 - **not fetched** — origin has it and you do not. There is no local tag to delete, and **Fetch** on the row brings it down
-- no badge — on both, nothing to do; Push would be a no-op and deleting locally leaves origin's copy
+- no badge — on both once **Check remote** has answered (before that, nothing is known either way): nothing to do; Push would be a no-op and deleting locally leaves origin's copy
 
 **Check remote** is what asks `origin`, and it is a separate button because it is the one thing here that touches the network — the tag list itself is local git and answers instantly. Until it has answered, no row claims either way: FinderGit will not tell you a tag is unpushed on the strength of a lookup it never made.
 

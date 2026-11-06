@@ -53,7 +53,7 @@ Repositories (directories containing `.git/`) show inline status. The badge refl
 - **N changes** (orange) — count of uncommitted changes in the working tree (takes priority over any sync state)
 - **↑N** (blue) — N commits ahead of upstream (push to sync)
 - **↓N** (purple) — N commits behind upstream (pull to sync)
-- **↑N ↓N** (red) — diverged: commits on both sides (reconcile with a merge or a rebase; a plain pull cannot)
+- **↑N ↓N** (red) — diverged: commits on both sides (reconcile with a merge or a rebase; the default fast-forward-only pull cannot)
 
 Hover the badge for a tooltip with the exact meaning. Ahead/behind counts are only accurate after a `git fetch` has brought the latest remote refs — Settings → Git → **Fetch on launch** (on by default) runs one fetch at startup so the counts are correct from the first moment.
 
