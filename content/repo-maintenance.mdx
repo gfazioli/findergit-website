@@ -27,7 +27,7 @@ Treat the number as a **floor, not a ceiling**: it's the minimum you'll get back
 
 Optimize and Deep Clean reclaim loose objects and redundant packs. But sometimes a repository's `.git` is huge for a different reason: its **history** holds far more than your working copy needs — a stale branch left behind after a big merge, or a clone that pulled in a much larger upstream. A routine cleanup can't help there, because Git can't drop history a branch still points to.
 
-The Maintenance tab's **Analyze** button (under *History & bloat*) diagnoses exactly this. It's **read-only** — it never changes anything, it just shows you where the weight is:
+The Maintenance tab's **Analyze history** button (under *History & bloat*) diagnoses exactly this. It's **read-only** — it never changes anything, it just shows you where the weight is:
 
 - **A verdict** — whether the repo's history looks bloated, with an estimate of how much space is held beyond what your current branch actually needs.
 - **The skew** — how many files you have checked out versus how many commits the whole history carries. A few dozen files against tens of thousands of commits is the tell-tale sign of foreign history riding along.

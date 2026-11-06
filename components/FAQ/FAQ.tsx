@@ -37,7 +37,7 @@ export const faqItems: { value: string; question: string; answer: ReactNode }[] 
     value: 'appstore',
     question: 'Is FinderGit on the App Store? How do updates work?',
     answer:
-      'FinderGit is distributed directly from findergit.app as a signed and notarized DMG — it’s not on the App Store. Updates are automatic: the app checks for new releases and installs them in place, so you’re always one click away from the latest version.',
+      'FinderGit is distributed directly from findergit.app as a signed and notarized DMG — it’s not on the App Store. Updates are built in: the app checks for new releases and offers to install them in place, so you’re always one click away from the latest version.',
   },
   {
     value: 'macos',
