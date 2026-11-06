@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.59.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.59.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.59.0 — Codex sessions, and sessions gone for good</p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>A Codex Sessions card in Agents.</strong> Codex saves a session for every conversation and for every <code class="notranslate">codex exec</code> and <code class="notranslate">codex review</code> a command or an agent runs, and they pile up in its list. The card shows them, read from Codex itself, each with its size on disk: the task threads every review runs in, together in one row, your conversations newest first, then the sessions from commands and the archived ones.</li>
+<li><strong>Archive or delete them through Codex.</strong> <strong>Select Commands</strong> ticks every session a command ran and leaves your conversations. <strong>Archive</strong> is Codex's own: the session leaves its list, and <code class="notranslate">codex unarchive</code> brings it back. <strong>Delete</strong> removes it for good. A session open in Codex or another program, or written to within the hour, is marked and left alone, and every session is checked again just before Codex acts on it.</li>
+<li><strong>Delete next to Remove in Background Sessions.</strong> <strong>Remove</strong> runs <code class="notranslate">claude rm</code> and keeps the conversation for <code class="notranslate">claude --resume</code>. <strong>Delete</strong> does the same and also moves the conversation to the Trash, where the Finder can put it back. It checks first that no program has the conversation open, and leaves the session alone when one does; a conversation opened while the session was being removed stays where it is.</li>
+<li><strong>Terms of Use and Privacy Policy</strong> are a click away, in the Help menu and the About FinderGit window.</li>
+</ul>
+<h2>Bug fixes</h2>
+<ul>
+<li>In Spanish, French and Dutch, the Remove and Delete buttons of Background Sessions and their confirmations read the same, though one keeps the conversation and the other does not. They now read differently in every language.</li>
+<li>The help for <strong>Show author avatars</strong> said every author's picture came from their GitHub account. It now says what happens: GitHub only for a GitHub noreply commit email, Gravatar, which receives a hash of the address, for everyone else.</li>
+</ul>
+<h2>Under the hood</h2>
+<ul>
+<li>The Agents dashboard comes from AgentsKit 0.18.2. Codex sessions are archived and deleted through Codex's own app-server (<code class="notranslate">thread/archive</code>, <code class="notranslate">thread/delete</code>), never by moving its files, and only sessions with a valid id are sent. Claude Code conversations go to the Trash only after Claude Code's own listing and an open-file check both say nothing holds them.</li>
+</ul>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.59.0.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications (or open it from there, and it offers to move itself)</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
