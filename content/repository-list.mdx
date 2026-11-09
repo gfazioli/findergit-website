@@ -67,15 +67,15 @@ The directories you've added for scanning, plus the Tower-style **groups** you o
 
 By default FinderGit counts the **outermost** repository on each path: if a root folder is itself a Git repository, the scan stops there. When a "container" repo holds independent clones inside it — a folder of related projects that also happens to be under version control — those inner repositories aren't counted.
 
-Turn on **Discover nested repositories** to also count the repositories nested inside a repository. It's off by default and available three ways: Settings → General → File Browser, the **View** menu (<Kbd>⌘</Kbd> <Kbd>⇧</Kbd> <Kbd>N</Kbd>), or a toolbar toggle next to Refresh. The difference is immediate — here the same workspace jumps from 7 to 63 repositories:
+Turn on **Discover nested repositories** to also count the repositories nested inside a repository. It's off by default and available three ways: Settings → General → File Browser, the **View** menu (<Kbd>⌘</Kbd> <Kbd>⇧</Kbd> <Kbd>N</Kbd>), or a toolbar toggle next to Refresh. The difference is immediate — here a `workspace` repository holds an independent clone at `packages/parser`, and the list goes from 15 to 16 repositories:
 
-![Overview with nested discovery off — 7 repositories across 5 root folders](/screenshot-nested-off.png)
+![All Repositories with nested discovery off — 15 repositories, the workspace container among them](/screenshot-nested-off.png)
 
-![Overview with nested discovery on — 63 repositories, including the clones nested inside a container repo](/screenshot-nested-on.png)
+![All Repositories with nested discovery on — 16 repositories, now including the parser clone nested inside workspace](/screenshot-nested-on.png)
 
 The file browser always lists the nested repositories in the tree, each with its own branch and status; the toggle only controls whether they feed the counts, the Smart Views, and the Overview. It stays bounded by your [scan depth and excluded folders](/docs/settings#file-browser), and submodules are never counted.
 
-![A container repository expanded in the file browser, each nested clone showing its own branch and status](/screenshot-nested-tree.png)
+![The workspace repository expanded in the file browser, its nested parser clone showing its own branch and status](/screenshot-nested-tree.png)
 
 ### Linked worktrees
 

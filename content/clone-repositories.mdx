@@ -1,10 +1,10 @@
 ---
-description: "Clone many GitHub repositories at once: filter and multi-select them, pick a destination, and follow each clone's progress in one window."
+description: "Clone many GitHub repositories at once, your own or the ones you starred: filter and multi-select them, pick a destination, and follow each clone's progress."
 ---
 
 # Clone Repositories
 
-The **Clone Repositories** window lists every repository your GitHub account can reach and lets you clone any number of them at once into a folder you choose — no copy-pasting URLs, no cloning one at a time.
+The **Clone Repositories** window lists every repository your GitHub account can reach, or the ones you starred, and lets you clone any number of them at once into a folder you choose — no copy-pasting URLs, no cloning one at a time.
 
 ## Opening it
 
@@ -16,18 +16,29 @@ Cloning is an action, not a place you live in, so it opens in its own window —
 
 It uses the same GitHub access as the rest of FinderGit — see [GitHub Integration](/docs/github-integration) for setup. If neither the GitHub CLI nor a token is configured, the window shows a **Connect to GitHub** prompt with a shortcut to Settings.
 
-![The Clone Repositories window — your account's repositories with filters, multi-select checkboxes, and a destination picker](/screenshot-clone-repos.png)
+![The Clone Repositories window — the My Repositories / Starred switch at the top, your account's repositories with filters, multi-select checkboxes, an Open on GitHub arrow on each row, and a destination picker](/screenshot-clone-repos.png)
+
+## Your repositories, or the ones you starred
+
+The switch at the top of the window picks the list:
+
+- **My Repositories** — everything you can reach: repositories you **own**, ones you **collaborate** on, and ones from your **organizations**.
+- **Starred** — the repositories you starred on GitHub, whoever owns them, newest star first.
+
+FinderGit remembers the choice, and each list keeps its own sort. GitHub hands over at most 2,000 repositories per list; past that, the window says some may be missing.
 
 ## Finding the repositories you want
 
-The window lists everything you can reach — repositories you **own**, ones you **collaborate** on, and ones from your **organizations**.
-
 - **Search** by name, owner, or description.
 - **Owner** — narrow to a single account or organization.
-- **Type** — Sources, Forks, Private, Public, or Archived.
-- **Sort** — by Updated, Name, or Stars.
+- **Type** — Sources, Forks, Private, Public, Archived, or **Not on This Mac**.
+- **Sort** — by Updated, Name, or Stars; the Starred list also sorts by the date you starred each one.
 
 Each row shows the repository name, a one-line description, its primary language, stargazer count, and when it was last updated, plus small badges for **private**, **fork**, and **archived** repos. The counter in the top-right (e.g. *39 of 368*) tells you how many match the current filter.
+
+A repository that is **already on this Mac** — anywhere in your [Root Folders](/docs/file-browser), whatever its folder is called — shows a drive icon instead of a checkbox and can't be picked again; hover the icon to see where it is. FinderGit matches on the checkout's GitHub remote, so a folder you renamed or moved still counts.
+
+The arrow at the end of each row opens the repository on GitHub. Right-click a row for **Open on GitHub**, and on a repository you already have, **Reveal in Finder**.
 
 ## Selecting and cloning
 

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.60.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.60.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.60.0 — starred repositories, anyone's public profile</p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>Your starred repositories in Clone Repositories.</strong> A switch at the top of the window picks <strong>My Repositories</strong> or <strong>Starred</strong>: the repositories you starred on GitHub, whoever owns them, newest star first, with a sort by the date you starred each one. FinderGit remembers the choice, and each list keeps its own sort. With a fine-grained token, add <strong>Starring: Read</strong> to see the list; without it, the list says which permission is missing.</li>
+<li><strong>Already on this Mac, at a glance.</strong> A repository you already have anywhere in your root folders shows a drive icon instead of a checkbox, and hovering it shows where it is. FinderGit matches the checkout's GitHub remote, so a folder you renamed or moved still counts. <strong>Not on This Mac</strong> in the Type menu hides the ones you have.</li>
+<li><strong>Open on GitHub from any row.</strong> The arrow at the end of each row opens the repository on GitHub; right-click for <strong>Open on GitHub</strong> and, on a repository you already have, <strong>Reveal in Finder</strong>.</li>
+<li><strong>Anyone's public GitHub profile in Account.</strong> The menu beside the title offers <strong>View Another Account…</strong>: type a username, <code class="notranslate">@username</code>, or paste a profile URL. You can <strong>Save</strong> the profiles you look at often, and <strong>Back to My Account</strong> returns to yours. Right-click a repository and choose <strong>View Owner's Profile</strong> to open its owner. Another person's profile is marked <strong>Public profile</strong> and shows only what GitHub makes public. Organizations aren't supported yet, and FinderGit says so.</li>
+<li><strong>Updates are checked more strictly.</strong> FinderGit now accepts an update list and release notes only when they are signed with its own key, and it verifies each download before opening it.</li>
+</ul>
+<h2>Bug fixes</h2>
+<ul>
+<li>The Overview could keep showing stale numbers while it was open: stars, issues, pull requests, sizes and security findings loaded in another window reached it only on the next refresh. They now reach the open Overview within a moment.</li>
+</ul>
+<h2>Under the hood</h2>
+<ul>
+<li>The starred list uses GitHub's <code class="notranslate">/user/starred</code> (REST) or <code class="notranslate">gh api</code> (GitHub CLI), up to 2,000 repositories, cached like the repository list. "On this Mac" resolves every root's remotes when the window opens and keeps them current across late scans, moves and Refresh.</li>
+<li>A public profile is one GraphQL request. A rate limit or other GraphQL error is reported as such, never as "no such user", and the profile reloads when the token changes.</li>
+<li>The Overview observes the size, trust, remote-counts and fork stores, and it rebuilds from the window whose summary it last showed.</li>
+<li>The Sparkle feed must now carry a valid EdDSA signature (<code class="notranslate">SURequireSignedFeed</code>), each download is verified before extraction (<code class="notranslate">SUVerifyUpdateBeforeExtraction</code>), and the release-notes link carries its own signature.</li>
+</ul>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.60.0.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications (or open it from there, and it offers to move itself)</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
