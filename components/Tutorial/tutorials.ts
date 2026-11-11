@@ -1,5 +1,3 @@
-import config from '@/config';
-
 /**
  * The FinderGit Tutorials on the app's YouTube channel, by their number.
  *
@@ -32,11 +30,21 @@ export interface TutorialFilm {
   published: string;
 }
 
-/** Where the series is: the channel, until the films have a playlist of their own. */
-export const TUTORIALS_PLAYLIST = config.community.youtube;
+/** Where the series is: the FinderGit Tutorials playlist, in the films' own order. */
+export const TUTORIALS_PLAYLIST = 'https://www.youtube.com/playlist?list=PLJUGERD4xMGs';
 
-/** None is on YouTube yet. 01 and 04 are rendered, and their posters are in `public/tutorials/`. */
-export const TUTORIALS: TutorialFilm[] = [];
+/** 04 is rendered too, with its poster in `public/tutorials/`, and waits for its day. */
+export const TUTORIALS: TutorialFilm[] = [
+  {
+    n: 1,
+    id: 'xv-upkW-cBk',
+    title: 'Add all your Git repositories at once',
+    summary:
+      'FinderGit starts empty. In this first FinderGit tutorial, add the folder where your projects live as a root folder, see every Git repository inside it with its branch and its status, and open All Repositories for the whole list.',
+    seconds: 54.9,
+    published: '2026-11-11T17:22:47+01:00',
+  },
+];
 
 /** The film numbered `n`; a number with no film is a typo in a page, or a film not out yet, and fails the build. */
 export function tutorial(n: number): TutorialFilm {
