@@ -9,6 +9,7 @@ import {
   IconShieldLock,
   type Icon,
 } from '@tabler/icons-react';
+import Link from 'next/link';
 import { Accordion, Anchor, Text } from '@mantine/core';
 import { discordLinkProps } from '@/components/Discord/discord';
 import classes from './FAQ.module.css';
@@ -28,8 +29,12 @@ export const faqItems: { value: string; question: string; answer: ReactNode }[] 
         Yes, FinderGit is currently free. If you find it useful, consider{' '}
         <Anchor href="https://github.com/sponsors/gfazioli" size="sm">
           sponsoring the project
+        </Anchor>{' '}
+        or getting the{' '}
+        <Anchor component={Link} href="/goodies" prefetch={false} size="sm">
+          FinderGit Goodies
         </Anchor>
-        .
+        , a small paid pack of screen savers, wallpapers and emoji.
       </>
     ),
   },
