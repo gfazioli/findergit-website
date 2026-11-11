@@ -6,6 +6,10 @@ export default {
   index: {
     display: 'hidden',
   },
+  // The Goodies shop pages (app/goodies): kept out of the docs sidebar.
+  goodies: {
+    display: 'hidden',
+  },
   // The home page's feature grid, as on netfox.app. An anchor, so Nextra
   // shows no external arrow.
   features: {
