@@ -54,15 +54,21 @@
 }
 
 /*
- * The film's sound, asked for: the docs tutorials' Play pill (`.fg-tutorial-play`
- * in app/global.css), on the right because this film's headlines are set at the
- * bottom left. It acts, so it answers the pointer and the keyboard. Under 48em
- * it is the icon alone: its words stay for a screen reader, off the picture.
+ * The film's two controls, Pause and its sound: the docs tutorials' Play pill
+ * (`.fg-tutorial-play` in app/global.css), on the right because this film's
+ * headlines are set at the bottom left. They act, so they answer the pointer
+ * and the keyboard. Pause is its icon alone; under 48em the sound is too. The
+ * words of both stay for a screen reader, off the picture.
  */
-.sound {
+.filmControls {
   position: absolute;
   right: 3%;
   bottom: 4%;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filmControl {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
@@ -82,17 +88,18 @@
     color 150ms ease;
 }
 
-.sound:hover,
-.sound:focus-visible {
+.filmControl:hover,
+.filmControl:focus-visible {
   background: var(--fg-sky);
   color: var(--fg-page);
 }
 
-.sound:focus-visible {
+.filmControl:focus-visible {
   outline: 2px solid var(--fg-sky);
   outline-offset: 2px;
 }
 
+.hiddenLabel,
 .soundLabel {
   position: absolute;
   width: 1px;
