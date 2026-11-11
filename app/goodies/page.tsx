@@ -229,6 +229,32 @@ export default function GoodiesPage() {
                 </Text>
               </Stack>
             ))}
+            <Stack gap="xs">
+              <div className={`${classes.picture} ${classes.emojiTile}`}>
+                {/* 128px is 4x the art's 32px grid: drawn at its own size, never scaled. */}
+                <NextImage
+                  className={classes.emoji}
+                  src="/goodies/goodies-emoji-stand.png"
+                  alt="The pixel folder character, standing"
+                  width={128}
+                  height={128}
+                  unoptimized
+                  loading="lazy"
+                />
+                <NextImage
+                  className={classes.emoji}
+                  src="/goodies/goodies-emoji-wave.png"
+                  alt="The pixel folder character, waving"
+                  width={128}
+                  height={128}
+                  unoptimized
+                  loading="lazy"
+                />
+              </div>
+              <Text size="sm" fw={600}>
+                Pixel folder emoji
+              </Text>
+            </Stack>
           </SimpleGrid>
         </Container>
 
