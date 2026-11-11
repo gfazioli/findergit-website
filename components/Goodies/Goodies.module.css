@@ -1,0 +1,102 @@
+/*
+ * The Goodies shop's own pieces: the hero's wash and its pair of saver stills,
+ * the pictures' frame and the cards of what the pack holds. Everything else on
+ * its pages is Mantine. Dark only, like the rest of the site: the tokens are
+ * theme/global.css's.
+ */
+
+/*
+ * The hero's ground: the home page's wash (Welcome.module.css), cut a little
+ * lower because the product sits on the right here, not in the middle.
+ */
+.heroGround {
+  background:
+    radial-gradient(38% 34% at 12% 30%, rgb(125 195 235 / 18%), transparent 70%),
+    radial-gradient(40% 36% at 86% 50%, rgb(193 197 245 / 14%), transparent 70%),
+    radial-gradient(45% 26% at 50% 85%, rgb(51 93 143 / 22%), transparent 70%);
+}
+
+/*
+ * The hero's copy sits on the lightest stretch of the page gradient, where
+ * the dark scale's dimmed grey measures about 4.3:1: Mantine's own variable is
+ * redefined here, as on the home page, so every dimmed text and link follows.
+ */
+.night {
+  --mantine-color-dimmed: rgb(255 255 255 / 84%);
+  --mantine-color-anchor: var(--fg-sky);
+}
+
+/* A picture of the pack: a still, with a hairline edge and a deep shadow. */
+.picture {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid var(--fg-rule);
+  background: var(--fg-footer);
+}
+
+.shadowed {
+  box-shadow: 0 24px 64px -24px rgb(0 0 0 / 60%);
+}
+
+/*
+ * The hero's product: the Mainline still behind, the Streak still in front,
+ * shifted down and left so both read. Stacked in one column on a phone, where
+ * an overlap would hide half of each.
+ */
+.pair {
+  display: grid;
+  gap: var(--mantine-spacing-md);
+}
+
+@media (min-width: 48em) {
+  .pair {
+    position: relative;
+    display: block;
+    padding-bottom: 22%;
+  }
+
+  .pairFront {
+    position: absolute;
+    bottom: 0;
+    left: -8%;
+    width: 72%;
+  }
+
+  .pairBack {
+    width: 88%;
+    margin-left: auto;
+  }
+}
+
+/*
+ * A card of what the pack holds. It opens nothing, so it never lifts or glows
+ * on hover: information does not wear a control's face.
+ */
+.card {
+  position: relative;
+  height: 100%;
+  padding: var(--mantine-spacing-xl);
+  border-radius: 16px;
+  border: 1px solid var(--fg-rule);
+  background:
+    radial-gradient(
+      120% 120% at 0% 0%,
+      color-mix(in srgb, var(--card-color) 10%, transparent) 0%,
+      transparent 55%
+    ),
+    var(--fg-glass);
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--mantine-radius-md);
+  color: var(--card-color);
+  border: 1px solid color-mix(in srgb, var(--card-color) 32%, transparent);
+  background: color-mix(in srgb, var(--card-color) 14%, transparent);
+}

@@ -25,6 +25,22 @@ export default withNextra(
     images: {
       formats: ['image/avif', 'image/webp'],
     },
+    // The shop's pictures (public/goodies) carry no hash in their names: a day
+    // fresh, then a week stale while revalidating. Matched by extension because
+    // /goodies/thanks and /goodies/licence are pages.
+    async headers() {
+      return [
+        {
+          source: '/goodies/:asset([^/]+\\.jpg)',
+          headers: [
+            {
+              key: 'Cache-Control',
+              value: 'public, max-age=86400, stale-while-revalidate=604800',
+            },
+          ],
+        },
+      ];
+    },
     experimental: {
       optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
     },
