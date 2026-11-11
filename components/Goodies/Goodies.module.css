@@ -100,3 +100,22 @@
   border: 1px solid color-mix(in srgb, var(--card-color) 32%, transparent);
   background: color-mix(in srgb, var(--card-color) 14%, transparent);
 }
+
+/*
+ * The emoji's tile, the gallery's sixth: the character twice on the night's
+ * ground. Pixel art, so each is drawn at its file's own size (4x the art's
+ * grid) and never smoothed or scaled by a fraction.
+ */
+.emojiTile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mantine-spacing-xl);
+  background: radial-gradient(60% 80% at 50% 50%, rgb(96 155 227 / 16%), var(--fg-footer));
+}
+
+.emoji {
+  width: 128px;
+  height: 128px;
+  image-rendering: pixelated;
+}
