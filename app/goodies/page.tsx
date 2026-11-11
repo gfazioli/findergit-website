@@ -76,8 +76,12 @@ const WALLPAPERS = [
 const GALLERY_SIZES =
   '(width < 48em) calc(100vw - 2rem), (width < 75em) calc(50vw - 2.5rem), 22rem';
 
-/** The hero's pair: the left column of the 71.25rem container from 62em, the full width below it. */
-const HERO_SIZES = '(width < 48em) calc(100vw - 2rem), (width < 75em) 45vw, 34rem';
+/**
+ * The hero's pair: stacked at full width on a phone, overlapping from 48em (the
+ * wider picture is 88% of its column), and in half the 71.25rem container from 62em.
+ */
+const HERO_SIZES =
+  '(width < 48em) calc(100vw - 2rem), (width < 62em) 88vw, (width < 75em) 45vw, 34rem';
 
 /** A saver's still, two to a row from 48em. */
 const SAVER_SIZES = '(width < 48em) calc(100vw - 2rem), (width < 75em) calc(50vw - 2.5rem), 34rem';
