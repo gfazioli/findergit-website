@@ -37,7 +37,9 @@ const VISIBLE = 0.25;
  *
  * `pause()` on a film still loading rejects its pending `play()` with an
  * AbortError: that is the reader scrolling past, not a browser refusing, and
- * it must not bring the browser's controls out.
+ * it must not bring the browser's controls out. A browser that did refuse is
+ * not asked again: with its controls the film is the visitor's to start, stop
+ * and hear, and coming back on screen never restarts one they paused there.
  *
  * The preference is read on the first render (`getInitialValueInEffect: false`):
  * nothing in the markup depends on it, and read in an effect it would let the
@@ -51,6 +53,8 @@ export function GoodiesFilm() {
   const [held, setHeld] = useState(false);
   // the observer outlives a render: it reads the visitor's pause from here
   const heldRef = useRef(false);
+  // and whether the browser refused to play: from then on the film is the visitor's to start
+  const refusedRef = useRef(false);
 
   /** Plays, and settles whose controls the film has: ours once it plays, the browser's if it refuses. */
   const play = (video: HTMLVideoElement) =>
@@ -64,6 +68,7 @@ export function GoodiesFilm() {
           return; // paused while loading: nobody refused anything
         }
         // A browser that refuses (low-power mode) leaves the poster and the controls.
+        refusedRef.current = true;
         video.muted = true;
         video.controls = true;
         setOurs(false);
@@ -86,13 +91,15 @@ export function GoodiesFilm() {
         // `threshold` decides when this runs, not `isIntersecting`: a sliver on screen is still
         // "intersecting" as the film leaves, so the ratio decides.
         if (entry.isIntersecting && entry.intersectionRatio >= VISIBLE) {
-          if (!heldRef.current) {
+          if (!heldRef.current && !refusedRef.current) {
             void play(video);
           }
         } else {
           video.pause();
-          video.muted = true;
-          setSound(false);
+          if (!refusedRef.current) {
+            video.muted = true;
+            setSound(false);
+          }
         }
       },
       { threshold: VISIBLE }

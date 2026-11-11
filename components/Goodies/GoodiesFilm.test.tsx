@@ -101,15 +101,17 @@ describe('GoodiesFilm', () => {
     expect(screen.queryByRole('button')).toBeNull();
   });
 
-  it('takes its own controls back when a refused film plays after all', async () => {
+  it('does not ask a browser that refused again: the film is the visitor’s to start', async () => {
     render(<GoodiesFilm />);
     scroll(0.3);
     await settle(() => plays[0].reject(named('NotAllowedError')));
+    film().muted = false; // the visitor, with the browser's controls
     scroll(0);
-    scroll(0.3);
-    await settle(() => plays[1].resolve());
-    expect(film().controls).toBe(false);
-    expect(screen.getByRole('button', { name: 'Pause the film' })).toBeInTheDocument();
+    expect(pause).toHaveBeenCalled();
+    expect(film().muted).toBe(false); // their volume is theirs
+    scroll(0.5);
+    expect(plays).toHaveLength(1); // one they paused there is not restarted
+    expect(film().controls).toBe(true);
   });
 
   it('stays paused once the visitor paused it, until they play it again', async () => {
