@@ -1,5 +1,5 @@
 import { Group } from '@mantine/core';
-import { IconBrandDiscordFilled, IconCoffee, IconHeartFilled } from '@tabler/icons-react';
+import { IconBrandDiscordFilled, IconCoffee, IconGift, IconHeartFilled } from '@tabler/icons-react';
 import config from '@/config';
 
 export default {
@@ -83,6 +83,16 @@ export default {
           </Group>
         ),
         href: 'https://donate.stripe.com/fZu4gy4Tn3b1dgudGx0co00',
+      },
+      // Not `goodies`: that key is the hidden page entry above.
+      'findergit-goodies': {
+        title: (
+          <Group component="span" gap={8} wrap="nowrap" align="center">
+            <IconGift size={16} />
+            FinderGit Goodies
+          </Group>
+        ),
+        href: '/goodies',
       },
     },
   },

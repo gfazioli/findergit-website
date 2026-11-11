@@ -8,6 +8,7 @@ import {
   IconBrandX,
   IconBrandYoutubeFilled,
   IconCoffee,
+  IconGift,
   IconHeartFilled,
   IconMailHeart,
   IconPlus,
@@ -254,6 +255,16 @@ export const MantineFooter = ({ year }: { year: number }) => {
                 }}
               >
                 Buy me a coffee
+              </Button>
+              {/* The pack sold on this site: same tab, and the theme's primary
+                  carries its own text colour (autoContrast). */}
+              <Button
+                component="a"
+                href="/goodies"
+                leftSection={<IconGift size={16} />}
+                radius="xl"
+              >
+                FinderGit Goodies
               </Button>
             </Group>
           </div>
