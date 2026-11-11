@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { IconVolume, IconVolumeOff } from '@tabler/icons-react';
+import { IconPlayerPause, IconPlayerPlay, IconVolume, IconVolumeOff } from '@tabler/icons-react';
 import { useReducedMotion } from '@mantine/hooks';
 import classes from './Goodies.module.css';
 
@@ -21,17 +21,23 @@ const VISIBLE = 0.25;
  * browser's controls. Without scripts the poster stays, which is the film's own
  * end card and its first frame.
  *
- * Asking for the sound starts the film again from the top, so the narrator
- * begins at the first line and not in the middle of one. The sound goes off
- * again when the film leaves the screen: coming back to it never plays aloud
- * on its own.
+ * Two controls sit on the film, drawn only while they work: once it is playing
+ * by this component's hand, and never beside the browser's own controls
+ * (reduced motion, or a browser that refused to play), which have both.
  *
- * On a phone the pill is its icon alone, its words kept for a screen reader:
- * the film is 200px tall there, and the words would cover its end card.
+ * - Pause: a loop that starts by itself must be stoppable by whoever is
+ *   reading beside it. A film the visitor paused stays paused when it comes
+ *   back on screen: only they start it again.
+ * - Sound: asking for it starts the film again from the top, so the narrator
+ *   begins at the first line and not in the middle of one. The sound goes off
+ *   again when the film leaves the screen: coming back to it never plays aloud
+ *   on its own. On a phone the pill is its icon alone, its words kept for a
+ *   screen reader: the film is 200px tall there, and the words would cover its
+ *   end card.
  *
- * The pill is drawn only while it works: once the film is playing by this
- * component's hand, and never beside the browser's own controls (reduced
- * motion, or a browser that refused to play), which have the volume.
+ * `pause()` on a film still loading rejects its pending `play()` with an
+ * AbortError: that is the reader scrolling past, not a browser refusing, and
+ * it must not bring the browser's controls out.
  *
  * The preference is read on the first render (`getInitialValueInEffect: false`):
  * nothing in the markup depends on it, and read in an effect it would let the
@@ -40,8 +46,30 @@ const VISIBLE = 0.25;
 export function GoodiesFilm() {
   const ref = useRef<HTMLVideoElement>(null);
   const reduce = useReducedMotion(false, { getInitialValueInEffect: false });
-  const [pill, setPill] = useState(false);
+  const [ours, setOurs] = useState(false);
   const [sound, setSound] = useState(false);
+  const [held, setHeld] = useState(false);
+  // the observer outlives a render: it reads the visitor's pause from here
+  const heldRef = useRef(false);
+
+  /** Plays, and settles whose controls the film has: ours once it plays, the browser's if it refuses. */
+  const play = (video: HTMLVideoElement) =>
+    video.play().then(
+      () => {
+        video.controls = false;
+        setOurs(true);
+      },
+      (error: unknown) => {
+        if ((error as { name?: string } | null)?.name === 'AbortError') {
+          return; // paused while loading: nobody refused anything
+        }
+        // A browser that refuses (low-power mode) leaves the poster and the controls.
+        video.muted = true;
+        video.controls = true;
+        setOurs(false);
+        setSound(false);
+      }
+    );
 
   useEffect(() => {
     const video = ref.current;
@@ -58,14 +86,9 @@ export function GoodiesFilm() {
         // `threshold` decides when this runs, not `isIntersecting`: a sliver on screen is still
         // "intersecting" as the film leaves, so the ratio decides.
         if (entry.isIntersecting && entry.intersectionRatio >= VISIBLE) {
-          video.play().then(
-            () => setPill(true),
-            // A browser that refuses (low-power mode) leaves the poster and the controls.
-            () => {
-              video.controls = true;
-              setPill(false);
-            }
-          );
+          if (!heldRef.current) {
+            void play(video);
+          }
         } else {
           video.pause();
           video.muted = true;
@@ -77,6 +100,25 @@ export function GoodiesFilm() {
     observer.observe(video);
     return () => observer.disconnect();
   }, [reduce]);
+
+  const hold = (value: boolean) => {
+    heldRef.current = value;
+    setHeld(value);
+  };
+
+  const togglePlay = () => {
+    const video = ref.current;
+    if (!video) {
+      return;
+    }
+    if (held) {
+      hold(false);
+      void play(video);
+    } else {
+      hold(true);
+      video.pause();
+    }
+  };
 
   const toggleSound = () => {
     const video = ref.current;
@@ -91,11 +133,8 @@ export function GoodiesFilm() {
     video.currentTime = 0;
     video.muted = false;
     setSound(true);
-    video.play().catch(() => {
-      // refused aloud: back to the silent film
-      video.muted = true;
-      setSound(false);
-    });
+    hold(false);
+    void play(video);
   };
 
   return (
@@ -113,11 +152,25 @@ export function GoodiesFilm() {
         preload="none"
         aria-label="The FinderGit Goodies film: the two screen savers, the five wallpapers, then the iPhone wallpapers, a video-call background and the pixel folder emoji"
       />
-      {pill && !reduce && (
-        <button type="button" className={classes.sound} onClick={toggleSound}>
-          {sound ? <IconVolumeOff size={18} aria-hidden /> : <IconVolume size={18} aria-hidden />}
-          <span className={classes.soundLabel}>{sound ? 'Mute' : 'Play with sound'}</span>
-        </button>
+      {ours && !reduce && (
+        <div className={classes.filmControls}>
+          <button type="button" className={classes.filmControl} onClick={togglePlay}>
+            {held ? (
+              <IconPlayerPlay size={18} aria-hidden />
+            ) : (
+              <IconPlayerPause size={18} aria-hidden />
+            )}
+            <span className={classes.hiddenLabel}>{held ? 'Play the film' : 'Pause the film'}</span>
+          </button>
+          <button
+            type="button"
+            className={`${classes.filmControl} ${classes.sound}`}
+            onClick={toggleSound}
+          >
+            {sound ? <IconVolumeOff size={18} aria-hidden /> : <IconVolume size={18} aria-hidden />}
+            <span className={classes.soundLabel}>{sound ? 'Mute' : 'Play with sound'}</span>
+          </button>
+        </div>
       )}
     </div>
   );
