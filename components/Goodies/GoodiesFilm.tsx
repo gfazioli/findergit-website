@@ -81,7 +81,8 @@ export function GoodiesFilm() {
     if (!video) {
       return;
     }
-    video.controls = reduce;
+    // a browser that refused keeps its controls whatever the preference becomes: nothing else starts the film
+    video.controls = reduce || refusedRef.current;
     if (reduce) {
       video.pause(); // the visitor plays it with the controls, or not at all
       return;
