@@ -187,7 +187,7 @@ describe('the series', () => {
 
 /** Every `<Tutorial n={N} />` in a page's source. */
 const embedsIn = (source: string) =>
-  [...source.matchAll(/<Tutorial\s+n=\{(\d+)\}/g)].map((m) => Number(m[1]));
+  [...source.matchAll(/<Tutorial\s+n=\{\s*(\d+)\s*\}/g)].map((m) => Number(m[1]));
 
 /** Every page of the docs, from the site's root. */
 function docsPages(): string[] {
@@ -217,9 +217,9 @@ describe('the docs', () => {
   // No page has a film yet, so the net is proved on its own two halves.
   it('are read by a net that reaches the pages and finds an embed', () => {
     expect(pages).toContain(join('content', 'getting-started.mdx'));
-    expect(embedsIn('Intro.\n\n<Tutorial n={4} />\n\n## Next\n<Tutorial  n={10}/>')).toEqual([
-      4, 10,
-    ]);
+    expect(
+      embedsIn('Intro.\n\n<Tutorial n={4} />\n\n## Next\n<Tutorial  n={10}/>\n<Tutorial n={ 7 } />')
+    ).toEqual([4, 10, 7]);
   });
 
   it('embed a film only once it is listed and public', () => {
