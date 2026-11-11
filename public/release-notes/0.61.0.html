@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.61.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.61.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.61.0 — pull a whole smart view at once</p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>Select several repositories in the repository list.</strong> ⌘-click, ⇧-click or Select All (⌘A) in All Repositories, Favorites, Recents, any smart view or host filter. The panel beside the list becomes the selection's summary: how many, how many are clean, dirty, ahead and behind, and <strong>Fetch</strong>, <strong>Pull</strong> and <strong>Push</strong> for the whole group. Right-click the selection for the same three, plus <strong>Reveal in Finder</strong>; the Repository menu's <em>Selected Repos</em> commands act on it too.</li>
+<li><strong>Pull All in Behind, Push All… in Ahead.</strong> A strip above the list says how many repositories are ready — <em>12 repositories ready to pull</em> — and one click pulls every one of them, with the progress card showing each. Push All… asks before it pushes, like every bulk push.</li>
+<li><strong>Diverged repositories are left out, and the strip says so.</strong> A diverged repository sits in Behind and in Ahead, but a plain pull or push cannot settle it, and a merge or a rebase across a dozen repositories at once is not a decision one button should make. The strip counts them — <em>2 diverged, left out</em> — and the Diverged view is where each one gets its choice.</li>
+<li><strong>After a bulk pull, the list keeps up.</strong> Repositories that caught up leave Behind, and leave the selection with it, so the next button acts only on what is still there.</li>
+</ul>
+<h2>Bug fixes</h2>
+<ul>
+<li>The repository list keeps keyboard focus from the first click on a row. Opening the detail panel used to rebuild the list without it, so the arrow keys needed a second click.</li>
+</ul>
+<h2>Under the hood</h2>
+<ul>
+<li>The table's selection is a set of URLs. One row shows the repository's detail panel as before; several show the summary, and a group selection is intersected with the visible rows whenever they change. Only a lone selection is recorded in Recents, so sweeping forty rows to pull them is not forty visits.</li>
+<li>The table, the detail panel and its resize handle now live in one container (<code class="notranslate">AnyLayout</code>) instead of three branches, so the table is not rebuilt when the panel appears or the layout flips — which is what took its keyboard focus.</li>
+<li>Pull All and Push All reuse the existing bulk runner: a few repositories at a time, repositories without an upstream skipped rather than failed, the push behind the same confirmation. Which rows they take is a pure function with tests that go red if diverged rows are included.</li>
+<li>The Fetch / Pull / Push buttons of a multi-selection are one view, shared by the file browser and the repository list.</li>
+</ul>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.61.0.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications (or open it from there, and it offers to move itself)</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>

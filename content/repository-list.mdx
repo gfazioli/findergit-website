@@ -50,6 +50,10 @@ Dynamic, status-driven filters — each shows a running count and updates in rea
 
 ![The Smart Views section filtering the list to repositories that need attention](/screenshot-smart-views.png)
 
+**Behind** and **Ahead** can be settled in one click. A strip above the table counts what is ready — *3 repositories ready to pull* — and its **Pull All** runs a [bulk pull](/docs/git-actions#bulk-actions-across-repositories) on every one of them; in Ahead the button is **Push All…**, which asks before it pushes. Diverged repositories sit in both views and are left out, and the strip says how many: a merge or a rebase is a choice for you to make, one repository at a time, from the **Diverged** view.
+
+![The Behind view with a strip above the table: "1 repository ready to pull · 1 diverged, left out", and a Pull All button on the right](/screenshot-fleet-pull-all.png)
+
 ### Filters
 
 Group the list by where each repository's `origin` remote points:
@@ -103,6 +107,14 @@ One row per repository. Every column is sortable — click a header to sort, cli
 - **Size** — the repository's Git-data footprint on disk (see [Repo Maintenance](/docs/repo-maintenance)).
 
 Selecting a repository reveals the **[Detail Panel](/docs/detail-panel)** beside (or below) the table — the same nine-tab panel, with the docked Fetch / Pull / Push / Stash… / Refresh actions. **Double-click** a row (or **Browse Files** from its context menu) to open that repository in the [File Browser](/docs/file-browser).
+
+### Selecting several repositories
+
+⌘-click or ⇧-click to select more than one row, or <Kbd>⌘</Kbd> <Kbd>A</Kbd> to select them all. The panel then becomes the selection's summary: how many, their clean / dirty / ahead / behind tallies, and **Fetch**, **Pull** and **Push** for the whole group, run as a [bulk action](/docs/git-actions#bulk-actions-across-repositories). Right-click the selection for the same three, plus **Reveal in Finder**.
+
+A row that leaves the view leaves the selection too: after a bulk pull in **Behind**, the repositories that caught up are gone from the list, and from what the next button would act on.
+
+![Three repositories selected in the list, and below it their summary: 3 Repositories Selected, the tallies, and Fetch 3 Repos, Pull 3 Repos, Push 3 Repos](/screenshot-fleet-selection.png)
 
 ### Row actions
 

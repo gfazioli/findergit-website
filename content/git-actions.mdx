@@ -188,10 +188,12 @@ In the [Unstage tab](/docs/detail-panel#unstage) each unmerged file is tagged **
 
 ## Bulk actions across repositories
 
-Select **more than one repository** in the file browser — ⌘-click or ⇧-click to build a selection, even across different root folders — and FinderGit can Fetch, Pull, or Push all of them in one go.
+Select **more than one repository** — in the [repository list](/docs/repository-list#selecting-several-repositories), or in the file browser, even across different root folders — with ⌘-click or ⇧-click, and FinderGit can Fetch, Pull, or Push all of them in one go.
 
 - **Right-click** the selection → **Fetch N Repos** / **Pull N Repos** / **Push N Repos**
 - Or the **Repository menu** → **Fetch N Selected Repos** / **Pull N Selected Repos** / **Push N Selected Repos…**
+- In the repository list, the selection's summary carries the same three buttons.
+- In the **Behind** and **Ahead** smart views, **Pull All** / **Push All…** above the list acts on every repository in the view that a plain pull or push can settle, leaving diverged ones out (see [Smart Views](/docs/repository-list#smart-views)).
 
 A small progress card appears while the batch runs, with one row per repository — a spinner while it works, then a green check, a red ✗ (hover for the error), or a *skipped* note. It tidies itself away after a fully clean run and stays put if anything failed, so you can read what happened.
 
@@ -201,7 +203,7 @@ A small progress card appears while the batch runs, with one row per repository 
 
 Repositories are processed a few at a time, so a large selection doesn't flood the network.
 
-![Three repository folders selected in the file browser, with the context menu offering Fetch 3 Repos, Pull 3 Repos and Push 3 Repos — the items only exist on a selection, and only in the file browser](/screenshot-bulk-fetch.png)
+![Three repository folders selected in the file browser, with the context menu offering Fetch 3 Repos, Pull 3 Repos and Push 3 Repos — the items appear only on a selection of more than one](/screenshot-bulk-fetch.png)
 
 ## Activity — what happened while you were looking elsewhere
 
