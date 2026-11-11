@@ -146,6 +146,32 @@ describe('GoodiesFilm', () => {
     expect(screen.getByRole('button', { name: 'Play with sound' })).toBeInTheDocument();
   });
 
+  it('plays silent again when a visitor who unmuted it under reduced motion turns that off', async () => {
+    let reduced = true;
+    const listeners: ((event: { matches: boolean }) => void)[] = [];
+    (window.matchMedia as jest.Mock).mockImplementation((query: string) => ({
+      get matches() {
+        return reduced && query.includes('prefers-reduced-motion');
+      },
+      media: query,
+      addEventListener: (_: string, listener: (event: { matches: boolean }) => void) =>
+        listeners.push(listener),
+      removeEventListener: jest.fn(),
+    }));
+    render(<GoodiesFilm />);
+    expect(film().controls).toBe(true);
+    film().muted = false; // with the browser's controls
+
+    reduced = false;
+    act(() => listeners.forEach((listener) => listener({ matches: false })));
+    expect(film().controls).toBe(false);
+    expect(film().muted).toBe(true);
+
+    scroll(0.3);
+    await settle(() => plays[0].resolve());
+    expect(screen.getByRole('button', { name: 'Play with sound' })).toBeInTheDocument();
+  });
+
   it('gives a visitor who asked for less motion the poster and the browser controls', () => {
     (window.matchMedia as jest.Mock).mockImplementation((query: string) => ({
       matches: query.includes('prefers-reduced-motion'),

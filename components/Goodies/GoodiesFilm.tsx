@@ -87,6 +87,12 @@ export function GoodiesFilm() {
       video.pause(); // the visitor plays it with the controls, or not at all
       return;
     }
+    if (!refusedRef.current) {
+      // The film is this component's to play again (also after a visitor turned reduced motion
+      // off): it starts silent, whatever the browser's controls left its volume at.
+      video.muted = true;
+      setSound(false);
+    }
     const observer = new IntersectionObserver(
       ([entry]) => {
         // `threshold` decides when this runs, not `isIntersecting`: a sliver on screen is still
