@@ -61,6 +61,18 @@ describe('goodiesShop', () => {
     );
     expect(goodiesShop({ ...full, STRIPE_SECRET_KEY: ' \n' })).toBeNull();
   });
+
+  it('reads a token with a newline inside as missing, and never logs it', () => {
+    const warned = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    try {
+      expect(goodiesShop({ ...full, GOODIES_GITHUB_TOKEN: 'github\ntoken' })).toBeNull();
+      expect(warned).toHaveBeenCalledTimes(1);
+      expect(String(warned.mock.calls[0][0])).toContain('GOODIES_GITHUB_TOKEN');
+      expect(String(warned.mock.calls[0][0])).not.toContain('token');
+    } finally {
+      warned.mockRestore();
+    }
+  });
 });
 
 describe('isSessionId', () => {
@@ -162,6 +174,42 @@ describe('packDownload', () => {
 
     global.fetch = jest.fn(async () => json(404, {})) as unknown as typeof fetch;
     await expect(packDownload(SHOP, 'mac')).resolves.toBeNull();
+  });
+
+  it('follows a renamed repository through the API, and hands out only the signed URL', async () => {
+    const moved = 'https://api.github.com/repositories/42/releases/assets/2';
+    const fetchMock = jest.fn(async (url: string) => {
+      if (url.endsWith('/releases/latest')) {
+        return json(200, { tag_name: 'v1.0', assets: RELEASE });
+      }
+      return new Response(null, {
+        status: url === moved ? 302 : 301,
+        headers: { location: url === moved ? SIGNED : moved },
+      });
+    });
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    await expect(packDownload(SHOP, 'mac')).resolves.toEqual({ url: SIGNED, tag: 'v1.0' });
+    const [url, init] = fetchMock.mock.calls[2] as unknown as [string, RequestInit];
+    expect(url).toBe(moved);
+    expect((init.headers as Record<string, string>).Authorization).toBe('Bearer github-token');
+  });
+
+  it('gives nothing, and no API address, when GitHub keeps redirecting to itself', async () => {
+    const warned = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    global.fetch = jest.fn(async (url: string) =>
+      url.endsWith('/releases/latest')
+        ? json(200, { tag_name: 'v1.0', assets: RELEASE })
+        : new Response(null, {
+            status: 301,
+            headers: { location: 'https://api.github.com/repositories/42/releases/assets/2' },
+          })
+    ) as unknown as typeof fetch;
+    try {
+      await expect(packDownload(SHOP, 'mac')).resolves.toBeNull();
+    } finally {
+      warned.mockRestore();
+    }
   });
 
   it('still hands out the file when the release answers without a tag', async () => {

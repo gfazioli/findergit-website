@@ -31,13 +31,25 @@ export interface GoodiesShop {
   stripeKey: string;
 }
 
-/** Read from the environment, trimmed: a value pasted into the Vercel dashboard can carry a newline. */
+/**
+ * Read from the environment, trimmed: a value pasted into the Vercel dashboard
+ * can carry a newline. One with a control character inside is read as missing:
+ * `fetch` rejects such a header with an error that quotes the whole value, and
+ * a token would then land in the function log.
+ */
 export function readSetting(env: NodeJS.ProcessEnv, key: string): string | undefined {
-  return env[key]?.trim() || undefined;
+  const value = env[key]?.trim();
+  if (!value) {
+    return undefined;
+  }
+  if ([...value].some((c) => c < ' ' || c === '\u007f')) {
+    console.warn(`[goodies] ${key} holds a control character and is ignored`);
+    return undefined;
+  }
+  return value;
 }
 
 export function goodiesShop(env: NodeJS.ProcessEnv = process.env): GoodiesShop | null {
-  // A newline in a token makes `fetch` reject the Authorization header.
   const read = (key: string) => readSetting(env, key);
   const paymentLinkUrl = read('GOODIES_PAYMENT_LINK_URL');
   const paymentLinkId = read('GOODIES_PAYMENT_LINK_ID');
@@ -216,6 +228,9 @@ function github(shop: GoodiesShop, accept = 'application/vnd.github+json') {
   };
 }
 
+/** How many times the asset request follows GitHub's API to itself before giving up. */
+const API_HOPS = 3;
+
 /** A file of the pack to hand out: its short-lived URL, and the tag of the release it comes from. */
 export interface PackDownload {
   url: string;
@@ -258,17 +273,27 @@ export async function packDownload(
       warn('asset lookup', `no asset ending in ${suffix}`);
       return null;
     }
-    const asset = await fetch(`${api}/releases/assets/${pack.id}`, {
-      headers: { ...headers, Accept: 'application/octet-stream' },
-      redirect: 'manual',
-      ...uncached(),
-    });
-    const location = asset.headers.get('location');
-    if (asset.status >= 300 && asset.status < 400 && location?.startsWith('https://')) {
-      // A release always has a tag; the fallback only keeps a malformed answer from costing the file.
-      return { url: location, tag: typeof tag === 'string' && tag ? tag : 'unknown' };
+    let url = `${api}/releases/assets/${pack.id}`;
+    for (let hop = 0; hop < API_HOPS; hop += 1) {
+      const asset = await fetch(url, {
+        headers: { ...headers, Accept: 'application/octet-stream' },
+        redirect: 'manual',
+        ...uncached(),
+      });
+      const location = asset.headers.get('location');
+      if (asset.status < 300 || asset.status >= 400 || !location?.startsWith('https://')) {
+        warn('asset redirect', `HTTP ${asset.status}`);
+        return null;
+      }
+      if (new URL(location).origin !== new URL(api).origin) {
+        // A release always has a tag; the fallback only keeps a malformed answer from costing the file.
+        return { url: location, tag: typeof tag === 'string' && tag ? tag : 'unknown' };
+      }
+      // A renamed repository answers with GitHub's API again: that address needs
+      // the token and names the repository, so it is followed here, never handed out.
+      url = location;
     }
-    warn('asset redirect', `HTTP ${asset.status}`);
+    warn('asset redirect', 'GitHub kept redirecting to its own API');
     return null;
   } catch (error) {
     warn('download lookup', error);
