@@ -7,7 +7,6 @@ import '@gfazioli/mantine-text-animate/styles.css';
 // Mantine theme overrides (body background, etc.)
 import '@/theme/global.css';
 
-import { Analytics } from '@vercel/analytics/react';
 import { Layout } from 'nextra-theme-docs';
 import { Banner, Head } from 'nextra/components';
 import { getPageMap } from 'nextra/page-map';
@@ -16,6 +15,7 @@ import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/c
 
 import { MantineFooter, MantineNavBar } from '@/components';
 import { NewsletterModal } from '@/components/NewsletterSignup/NewsletterModal';
+import { SiteAnalytics } from '@/components/SiteAnalytics/SiteAnalytics';
 import { WebsiteJsonLd } from '@/components/StructuredData/StructuredData';
 import config from '@/config';
 import { theme } from '../theme';
@@ -105,7 +105,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <NewsletterModal />
         </MantineProvider>
         <WebsiteJsonLd />
-        <Analytics />
+        <SiteAnalytics />
       </body>
     </html>
   );

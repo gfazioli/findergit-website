@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { readdirSync } from 'node:fs';
 import path from 'node:path';
 import config from '@/config';
+import { goodiesIndexable } from '@/lib/goodies';
 
 /**
  * Build-time sitemap. Enumerates the MDX pages under `content/` (served by
@@ -30,5 +31,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       return { url, changeFrequency: 'weekly', priority };
     });
 
-  return [{ url: `${base}/`, changeFrequency: 'weekly', priority: 1 }, ...docs];
+  const entries: MetadataRoute.Sitemap = [
+    { url: `${base}/`, changeFrequency: 'weekly', priority: 1 },
+    ...docs,
+  ];
+
+  // The Goodies shop, once it takes real payments (`goodiesIndexable`): before that
+  // its pages answer 404 in production, or are a test-mode preview.
+  if (goodiesIndexable()) {
+    for (const route of ['/goodies', '/goodies/licence']) {
+      entries.push({ url: `${base}${route}`, changeFrequency: 'monthly', priority: 0.7 });
+    }
+  }
+
+  return entries;
 }
