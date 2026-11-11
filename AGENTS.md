@@ -24,6 +24,14 @@ The site is dark only, forced in `app/layout.tsx`; the theme's traps are comment
 - **The shop counts its own sales and downloads** (`lib/goodies-events.ts`): server-side Web Analytics custom events, `Goodies purchase` and `Goodies download`, each naming its buyer by a 12-hex hash of the session id (`findergit-goodies:` prefix), never the id. `components/SiteAnalytics` drops the thank-you page's query string from the visit statistics.
 - The pictures in `public/goodies` keep their file names when the finals replace the drafts.
 
+## Tutorials in the docs
+
+`<Tutorial n={N} />` puts a FinderGit Tutorial (the YouTube series, `components/Tutorial/tutorials.ts`) in the docs section that covers it: the poster and a Play pill until clicked, nothing from YouTube before that, a VideoObject in the served HTML. The films' subtitles are burned into the picture, so the player starts with YouTube's own captions off (`TutorialPlayer`, as on netfox-website); the viewer's CC button still works.
+
+- A film is listed on the day it goes out, with its YouTube id and its `published` time: a page that names a film not listed fails the build, and `Tutorial.test.tsx` fails a page that embeds one before that time (an early embed shows "Video unavailable"). That day: add the entry, and the one line to its page. No film is listed yet; 01 and 04 are rendered and their posters are already in `public/tutorials/`.
+- Sections, in the series' order: 01 `getting-started` · 02, 03, 04 `repository-list` · 05 `file-browser` · 06 `detail-panel` · 07 `diff-viewer` · 08, 09 `git-actions` · 10 `overview`.
+- Posters are `public/tutorials/findergit-tutorial-NN.jpg`, 1280x720, the film's opening card, through ImageOptim.
+
 ## Content Guidelines
 
 - All website content is in **English**
@@ -50,7 +58,7 @@ Reasoning: end users care about what the feature does for them, not which vendor
 
 <!-- BEGIN:nextjs-agent-rules -->
 
-# This is NOT the Next.js you know
+## This is NOT the Next.js you know
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
 
