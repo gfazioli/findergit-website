@@ -16,6 +16,7 @@ import {
   Title,
 } from '@mantine/core';
 import classes from '@/components/Goodies/Goodies.module.css';
+import { GoodiesFilm } from '@/components/Goodies/GoodiesFilm';
 import { GoodiesInside } from '@/components/Goodies/GoodiesInside';
 import config from '@/config';
 import { GOODIES_PRICE, GOODIES_SUPPORT_EMAIL, goodiesRobots, goodiesShop } from '@/lib/goodies';
@@ -163,6 +164,16 @@ export default function GoodiesPage() {
             </Grid>
           </Container>
         </Box>
+
+        <Container size="lg" py={64}>
+          <Stack align="center" gap="md" mb={40}>
+            <Text {...EYEBROW}>The film</Text>
+            <Title order={2} ta="center" fz={{ base: 30, sm: 40 }} fw={900}>
+              The whole pack in 36 seconds
+            </Title>
+          </Stack>
+          <GoodiesFilm />
+        </Container>
 
         <Container size="lg" py={64}>
           <Stack align="center" gap="md" mb={40}>

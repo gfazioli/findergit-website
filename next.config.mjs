@@ -25,13 +25,13 @@ export default withNextra(
     images: {
       formats: ['image/avif', 'image/webp'],
     },
-    // The shop's pictures (public/goodies) carry no hash in their names: a day
+    // The shop's pictures and its film (public/goodies) carry no hash in their names: a day
     // fresh, then a week stale while revalidating. Matched by extension because
     // /goodies/thanks and /goodies/licence are pages.
     async headers() {
       return [
         {
-          source: '/goodies/:asset([^/]+\\.jpg)',
+          source: '/goodies/:asset([^/]+\\.(?:mp4|jpg))',
           headers: [
             {
               key: 'Cache-Control',

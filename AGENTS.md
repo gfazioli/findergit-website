@@ -23,6 +23,7 @@ The site is dark only, forced in `app/layout.tsx`; the theme's traps are comment
 - The pack lives in the private repo named by `GOODIES_RELEASES_REPO`; the download route picks the latest release's assets by suffix (`.dmg`, `.zip`), and the licence page reads the release's `pack/License.txt`. Never link that repo.
 - **The shop counts its own sales and downloads** (`lib/goodies-events.ts`): server-side Web Analytics custom events, `Goodies purchase` and `Goodies download`, each naming its buyer by a 12-hex hash of the session id (`findergit-goodies:` prefix), never the id. `components/SiteAnalytics` drops the thank-you page's query string from the visit statistics.
 - The pictures in `public/goodies` keep their file names when the finals replace the drafts.
+- The pack's film (`components/Goodies/GoodiesFilm.tsx`) is `public/goodies/goodies-film.mp4`, the promo's master at 1280x720 (H.264 at CRF 24, AAC 96k, faststart), with its first frame as `goodies-film-poster.jpg` through ImageOptim. It plays silent while on screen and fetches nothing before that; its sound is asked for with the pill. A new cut replaces both files under the same names.
 
 ## Tutorials in the docs
 
