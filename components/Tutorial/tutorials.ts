@@ -30,7 +30,10 @@ export interface TutorialFilm {
   published: string;
 }
 
-/** Where the series is: the FinderGit Tutorials playlist, in the films' own order. */
+/**
+ * Where the series is: the FinderGit Tutorials playlist, in the films' own order.
+ * The id is whole: this channel's playlist ids are 13 characters, not the usual 34.
+ */
 export const TUTORIALS_PLAYLIST = 'https://www.youtube.com/playlist?list=PLJUGERD4xMGs';
 
 /** 04 is rendered too, with its poster in `public/tutorials/`, and waits for its day. */
