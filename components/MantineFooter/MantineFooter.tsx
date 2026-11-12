@@ -31,6 +31,7 @@ import { NewsletterSignup } from '@/components/NewsletterSignup/NewsletterSignup
 import { ShareButtons } from '@/components/ShareButtons/ShareButtons';
 import config from '@/config';
 import { AnimateBadge } from './AnimateBadge';
+import { FooterWordmark } from './FooterWordmark';
 import { apps, highlights, resources, sponsors } from './links';
 import classes from './MantineFooter.module.css';
 
@@ -338,6 +339,8 @@ export const MantineFooter = ({ year }: { year: number }) => {
           </Anchor>
         </Text>
       </Container>
+
+      <FooterWordmark name="FinderGit" />
     </footer>
   );
 };

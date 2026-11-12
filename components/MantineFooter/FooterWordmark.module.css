@@ -1,0 +1,180 @@
+/*
+ * The page closes on the name: a wordmark as wide as the footer's content,
+ * lit from above and fading into the floor. Ported from the Undolog portfolio
+ * (gfazioli.github.io, `SiteFooter`), 2026-11-12, with this site's colours.
+ *
+ * - The size is the content width in container units: `font-size` is that
+ *   width divided by the name's own width in em (`--wm-em`, measured in
+ *   Chrome on this font, period included, for a name about 94% as wide as the
+ *   content), so it fits at every window width and nothing measures it at run
+ *   time.
+ * - The colours are the tokens on `.mark`; the rest is the same on every site
+ *   that carries the wordmark.
+ * - Every animation here moves `transform` or `opacity` only, so it runs on
+ *   the compositor. The portfolio sweeps its band of light by animating
+ *   `background-position`, which repaints the name every frame; here the band
+ *   is a window that slides across while the glyphs inside it slide back by
+ *   as much, so the light moves and the letters stay put.
+ */
+.mark {
+  --wm-em: 4.25;
+  --wm-top: rgb(234 244 253 / 55%);
+  --wm-bottom: rgb(96 155 227 / 24%);
+  --wm-glint: rgb(248 252 255);
+  --wm-glint-opacity: 0.75;
+  --wm-period: linear-gradient(180deg, #7dc3eb, #2f73cc);
+
+  container-type: inline-size;
+
+  /* One clock for the rise and the band: the mark itself never moves. */
+  view-timeline: --wordmark;
+
+  /* The Container's content box: 1140 px less its 16 px gutters. */
+  width: min(100% - 32px, 1108px);
+  margin: 8px auto 0;
+
+  /* At a line height under 1 the glyphs' content area hangs below the line
+     box, and Chrome counts it as scrollable overflow: the page went on 31 px
+     past the footer, a band of the page's lighter ground under the floor.
+     Clipping here costs nothing visible (the mask has faded the name out by
+     then), makes the name rise out of the floor rather than float up, and
+     hides the band of light while it waits off either edge. */
+  overflow: clip;
+  pointer-events: none;
+  user-select: none;
+}
+
+.wordmark {
+  position: relative;
+  display: block;
+  font-size: calc(100cqi / var(--wm-em));
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  text-align: center;
+  white-space: nowrap;
+
+  /* Fades into the floor */
+  mask-image: linear-gradient(180deg, #000 22%, transparent 92%);
+}
+
+/* Each part clips its own fill to its glyphs: a text-clipped background
+   does not reach into a nested inline, which would paint as a box. */
+.name,
+.period {
+  display: inline-block;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Lit from above. The padding reaches the glyphs' overhang: with the tight
+   tracking the last letter's ink ends past the box, where a text-clipped
+   background is not painted, and the band of light lit a crossbar the name
+   itself had lost. The margin gives the space back. */
+.name {
+  margin-inline-end: -0.1em;
+  padding-inline-end: 0.1em;
+  background-image: linear-gradient(180deg, var(--wm-top), var(--wm-bottom));
+}
+
+.period {
+  background-image: var(--wm-period);
+}
+
+/* The band of light: a window half the name's width, soft at both edges,
+   holding the name again in the light's colour. Drawn only while it can
+   travel (below); at rest it does not exist. */
+.glint {
+  position: absolute;
+  inset: 0 auto 0 0;
+  display: none;
+  width: 50%;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 50%, transparent);
+
+  /* On the window, not in the colour: where two glyphs overlap, a
+     translucent colour paints twice and lit a seam between them. */
+  opacity: var(--wm-glint-opacity);
+}
+
+/* The same line as `.wordmark`, as wide as it, so every glyph lands on the
+   one under it. Generated content, so the name is not in the page twice; the
+   period holds its place without being lit. */
+.glintText {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 200%;
+  color: var(--wm-glint);
+
+  &::before {
+    content: attr(data-name);
+  }
+
+  &::after {
+    content: '.';
+    color: transparent;
+  }
+}
+
+/* As the footer comes into view the wordmark rises into place and the band
+   of light passes over it once, left to right. Scroll-driven, so it costs
+   nothing at rest and waits on no script; without scroll timelines, or with
+   reduced motion, the wordmark simply stands there. */
+@keyframes wordmark-rise {
+  from {
+    opacity: 0;
+    transform: translateY(28%);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The window goes from just off the left edge (its width, half the name's,
+   to the left) to just off the right one (twice its width to the right)... */
+@keyframes wordmark-glint {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(200%);
+  }
+}
+
+/* ...and the glyphs it holds go back by the same distance, in their own
+   width, which is the name's: +50% to -100%. */
+@keyframes wordmark-glint-hold {
+  from {
+    transform: translateX(50%);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .wordmark {
+      animation: wordmark-rise linear both;
+      animation-timeline: --wordmark;
+      animation-range: entry 0% entry 100%;
+    }
+
+    .glint {
+      display: block;
+      animation: wordmark-glint linear both;
+      animation-timeline: --wordmark;
+      animation-range: entry 10% entry 100%;
+    }
+
+    .glintText {
+      animation: wordmark-glint-hold linear both;
+      animation-timeline: --wordmark;
+      animation-range: entry 10% entry 100%;
+    }
+  }
+}
