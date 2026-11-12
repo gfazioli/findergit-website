@@ -1,6 +1,6 @@
 /*
  * The page closes on the name: a wordmark as wide as the footer's content,
- * lit from above and fading into the floor. Ported from the Undolog portfolio
+ * lit from above and fading into the floor, its period whole. Ported from the Undolog portfolio
  * (gfazioli.github.io, `SiteFooter`), 2026-11-12, with this site's colours.
  *
  * - The size is the content width in container units: `font-size` is that
@@ -53,27 +53,35 @@
   letter-spacing: -0.055em;
   text-align: center;
   white-space: nowrap;
+}
 
-  /* Fades into the floor */
+/* The name fades into the floor; the period does not. It sits on the
+   baseline, right where the fade reaches nothing (92% of the line), and
+   faded with the rest it read as a dot cut in half. Whole, it is the
+   brand's full stop, as in "Undolog.". */
+.name,
+.glintText {
   mask-image: linear-gradient(180deg, #000 22%, transparent 92%);
 }
 
 /* Each part clips its own fill to its glyphs: a text-clipped background
-   does not reach into a nested inline, which would paint as a box. */
+   does not reach into a nested inline, which would paint as a box.
+   The padding reaches the glyphs' overhang: with the tight tracking each
+   part's last glyph ends past its box, where a text-clipped background is
+   not painted. It cut the right side off the period, and the band of light
+   lit a crossbar the name itself had lost. The margin gives the space back,
+   so the line is laid out as before. */
 .name,
 .period {
   display: inline-block;
+  margin-inline-end: -0.1em;
+  padding-inline-end: 0.1em;
   background-clip: text;
   color: transparent;
 }
 
-/* Lit from above. The padding reaches the glyphs' overhang: with the tight
-   tracking the last letter's ink ends past the box, where a text-clipped
-   background is not painted, and the band of light lit a crossbar the name
-   itself had lost. The margin gives the space back. */
+/* Lit from above. */
 .name {
-  margin-inline-end: -0.1em;
-  padding-inline-end: 0.1em;
   background-image: linear-gradient(180deg, var(--wm-top), var(--wm-bottom));
 }
 
