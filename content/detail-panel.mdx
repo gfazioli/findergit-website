@@ -187,15 +187,17 @@ Both tabs share the same row shape:
 
 Click anywhere on a row and it unfolds in place: the **description rendered as Markdown** — headings, lists, links, inline and fenced code — under the author and when they opened it, followed by the **comment thread**. A long description folds after the first stretch with a **Show more** link, so one verbose issue cannot push the rest of the list off screen. One row is open at a time.
 
+**The HTML a forge allows in Markdown is drawn, not printed.** A collapsed section (`<details>`) is a row you click to open, the way it is on the forge's page, so a bot's long review comment is a few titles rather than a wall; bold, links, line breaks, lists, tables and callouts (`> [!NOTE]`) read as what they are. Code is left exactly as written, and so is anything that only looks like a tag — `Array<String>` stays `Array<String>`.
+
 On a **pull request** the preview shows the whole discussion, not just the conversation tab: the body a reviewer submitted with their verdict, and the notes pinned to lines of a file, each labelled for what it is. A pull request reviewed entirely inline — which is how most of them are — would otherwise look as though nobody had said anything.
 
 The description costs nothing extra — every forge already returns it with the list. The comments are fetched only when you open a row, capped at the first 30, and cached for a minute like everything else in these tabs. That is the same on GitHub, Codeberg and Bitbucket; GitLab shows comments only to a signed-in user, so its preview says so instead (see [GitLab](/docs/github-integration#gitlab)).
 
 **Images in a description are not downloaded.** An issue body is written by anyone who can open an issue, so every image URL in it is chosen by someone else — and fetching one would tell them your IP address and when you read their issue, or reach a service only your Mac can see. FinderGit shows a placeholder and leaves the fetching to your browser, which is what the **Open in browser** button is for.
 
-Under the preview, **Open in browser** and **Copy link** are there for when you do want github.com — a permalink to paste into a message, or the parts FinderGit does not render yet.
+At the top of the preview, **Copy link** and **Open in browser** are there for when you do want github.com — a permalink to paste into a message, or the parts FinderGit does not render yet; under a discussion they are repeated, where you are when you have read it. You do not have to open a thread for its link: the **link button** at the right of each row copies it, and a **right-click** on the row copies the link, a Markdown link (`[#12 Title](…)`), the title, the number or, on a pull request, the branch name. A link in a thread opens only if it is a web or mail address.
 
-![An issue opened in place — labels, the author and when they filed it, then the description rendered as Markdown with headings, inline code and a fenced block, folded behind Show more, with Open in browser and Copy link underneath](/screenshot-issue-preview.png)
+![An issue opened in place — labels, the author and when they filed it, then the description rendered as Markdown with headings, inline code and a fenced block, folded behind Show more, with Copy link and Open in browser above it](/screenshot-issue-preview.png)
 
 Each tab's header has a **New Issue / New Pull Request** button (opens the corresponding "new" page), an **Open on GitHub** button (opens the full Issues / Pull Requests list page — the label follows the remote's host), and a **Refresh** button that bypasses the 60-second cache when you want fresh data.
 
