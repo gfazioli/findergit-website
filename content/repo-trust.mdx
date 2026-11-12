@@ -8,7 +8,7 @@ Cloning or pulling a repository can quietly arm it to run code on your machine �
 
 FinderGit's **Repo Trust** surfaces that **auto-run surface** for every repository — the files that can run code without you asking — so you can review it before you trust an unfamiliar repo. It's a read-only surfacer: **FinderGit never executes, installs, or evaluates anything it finds.** It only reads and shows you what's there.
 
-![The Trust tab — auto-run hooks with a plain-language "what runs" for each](/screenshot-feature-trust.png)
+![The Trust card open — auto-run hooks with a plain-language "what runs" for each](/screenshot-feature-trust.png)
 
 ## Why this exists
 
@@ -43,9 +43,9 @@ Repo Trust is the control that matches this new shape. It can't make a repo safe
 
 None of this means auto-run hooks are bad — most are perfectly legitimate (a build task, a formatter hook, a setup script). The point isn't to alarm you about every repo; it's to make a surface you couldn't easily see **reviewable**, so *you* decide what to trust.
 
-## The Trust tab
+## The Trust card
 
-Select any repository and open the **Trust** tab in the [Detail Panel](/docs/detail-panel). FinderGit scans the repo's auto-run surface and lists each entry point it finds, scariest first:
+Select any repository and open its **Trust** card in the [Detail Panel](/docs/detail-panel). FinderGit scans the repo's auto-run surface and lists each entry point it finds, scariest first:
 
 - **What triggers it** — a plain-language line such as *"Runs when you open this folder in your editor"* or *"Runs when an AI coding agent loads this folder."*
 - **What runs** — the actual command pulled out of the (often minified) config, so the row reads as *the command that executes*, not a wall of raw JSON.
@@ -53,7 +53,7 @@ Select any repository and open the **Trust** tab in the [Detail Panel](/docs/det
 
 ![The full-file preview popover open on an agent config](/screenshot-trust-preview.png)
 
-If nothing in the repo runs code automatically, the tab says so plainly.
+If nothing in the repo runs code automatically, the section says so plainly.
 
 ![The clean state — nothing in this repo runs code automatically](/screenshot-trust-clean.png)
 
@@ -73,7 +73,7 @@ It does **not** flag a routine `husky` setup, a chained test pipeline (`npm run 
 
 ## The badge in the file browser
 
-You don't have to open the Trust tab to know which repos deserve a look. The [File Browser](/docs/file-browser) shows a badge on a repo's name, a shield or, for the loudest alert, an octagon:
+You don't have to open the Trust card to know which repos deserve a look. The [File Browser](/docs/file-browser) shows a badge on a repo's name, a shield or, for the loudest alert, an octagon:
 
 - **Red** — a **dropper artifact** was found, in the working tree or on any branch. This is the loudest alert and outranks the others; it shows even on trusted repos.
 - **Orange** — the auto-run surface **changed since you last saw it** (see below) — the higher-signal of the two ordinary alerts.
@@ -85,7 +85,7 @@ A repo with a clean surface shows no badge at all.
 
 Presence alone isn't always the signal — a `postinstall` that's been in a repo since you cloned it is part of its normal shape. The real red flag is a hook that **appears or changes after a pull**, which is precisely the supply-chain pattern.
 
-FinderGit records a fingerprint of each repo's auto-run surface the first time it sees the repo clean, and again whenever you review it. When a later scan differs, the Trust tab shows a **Changed since last seen** panel listing exactly what's **new**, **modified**, or **removed**, and the orange badge appears in the browser — even on repos you've trusted, because trust covered the *old* surface.
+FinderGit records a fingerprint of each repo's auto-run surface the first time it sees the repo clean, and again whenever you review it. When a later scan differs, the Trust section shows a **Changed since last seen** panel listing exactly what's **new**, **modified**, or **removed**, and the orange badge appears in the browser — even on repos you've trusted, because trust covered the *old* surface.
 
 When you've looked and you're satisfied, click **Mark as reviewed** to accept the current surface as the new baseline. The alert returns only if it drifts again.
 
@@ -98,13 +98,13 @@ When you've looked and you're satisfied, click **Mark as reviewed** to accept th
 
 ## Trust this repo
 
-Most auto-run hooks are perfectly legitimate — your own build task, a setup hook, an agent config you wrote. When a repo is one you recognise and trust, click **Trust this repo** in the Trust tab. The yellow badge disappears for that repository, while the hooks stay listed in the tab for reference. You can undo it any time with **Untrust**.
+Most auto-run hooks are perfectly legitimate — your own build task, a setup hook, an agent config you wrote. When a repo is one you recognise and trust, click **Trust this repo** in the Trust card. The yellow badge disappears for that repository, while the hooks stay listed in the Trust section for reference. You can undo it any time with **Untrust**.
 
 Trusting a repo records its current surface as reviewed, so the **Changed since last seen** alert still fires later if that surface drifts — trusting silences the *presence* badge, never the *drift* one.
 
 ## If a repo looks compromised
 
-When FinderGit finds a dropper artifact, the Trust tab swaps its usual "most of these are legitimate" summary for a short **incident runbook** — because at that point the advice is no longer "review it", it's "don't run it, and clean it up". The danger is *running* the repo: opening it in an editor or running an install/test script. Don't, until it's clean.
+When FinderGit finds a dropper artifact, the Trust section swaps its usual "most of these are legitimate" summary for a short **incident runbook** — because at that point the advice is no longer "review it", it's "don't run it, and clean it up". The danger is *running* the repo: opening it in an editor or running an install/test script. Don't, until it's clean.
 
 The runbook walks two steps, and it's pure guidance — FinderGit hands you the right links and the exact commands, but never runs a destructive command for you:
 

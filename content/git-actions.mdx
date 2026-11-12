@@ -10,19 +10,19 @@ FinderGit lets you perform common Git operations directly from the app, without 
 
 Git operations are spread across three surfaces of the [Detail Panel](/docs/detail-panel):
 
-- **Docked action bar** (bottom edge of the panel, visible from every tab) — Fetch · Pull · Push · Stash… · Refresh, plus a compact branch · upstream · ahead/behind summary.
-- **Unstage tab** — the changes list, per-file Stage / Unstage, and the commit form.
+- **Docked action bar** (bottom edge of the panel, visible whichever card is open) — Fetch · Pull · Push · Stash… · Refresh, plus a compact branch · upstream · ahead/behind summary.
+- **Changes card** — the changes list, per-file Stage / Unstage, and the commit form.
 - **Context menus** in the file browser — right-click any repo for quick Fetch / Pull / Push / Stage All / Open in Terminal; right-click a file for Stage / Unstage.
 
 Pull and Push run against the upstream of the currently checked-out branch, and Fetch fetches every remote. The first push sets it with `--set-upstream origin <branch>` automatically.
 
-![Unstage tab — changes list with inline diff and the commit form, docked action bar at the bottom](/screenshot-detail-unstage.png)
+![The Changes card open — changes list with inline diff and the commit form, docked action bar at the bottom](/screenshot-detail-unstage.png)
 
 ## Available actions
 
 ### Docked action bar
 
-The bar sits at the bottom of the [Detail Panel](/docs/detail-panel) and stays reachable from every tab — you never leave Commits to push or leave Issues to pull.
+The bar sits at the bottom of the [Detail Panel](/docs/detail-panel) and stays reachable whichever card is open — you never leave Commits to push or leave Issues to pull.
 
 - **Fetch** — fetches from all remotes (`git fetch --all`)
 - **Pull** — pulls from the upstream using your [pull strategy](/docs/settings#pull-strategy), always passed explicitly (`--ff-only`, `--no-rebase` or `--rebase`), so pulling behaves the same on every machine. Turns into a menu when the branch has [diverged](#when-your-branch-has-diverged)
@@ -74,7 +74,7 @@ Widen the panel and the full layout returns automatically.
 
 ### Staging and unstaging
 
-Stage / Unstage and the commit form live in the [Unstage tab](/docs/detail-panel#unstage). The changes list is grouped into two clearly labelled sections:
+Stage / Unstage and the commit form live in the [Changes card](/docs/detail-panel#changes). The changes list is grouped into two clearly labelled sections:
 
 - **Staged Changes (N)** — files already in the index, ready to be committed
 - **Unstaged Changes (N)** — files modified or untracked in the working tree, not yet staged (not in the index)
@@ -94,7 +94,7 @@ Unstaged rows additionally carry a red **Discard** (and the section header a **D
 
 The list below the commit form runs `git stash pop`, `git stash apply` and `git stash drop` against the entry you pick, and reports what it is doing above the rows while it works — with a Stop once it has been running a few seconds. A conflicting pop behaves the way git does — the conflict lands in your files and the entry is kept — so the work is still recoverable. If the entry you picked has been applied or dropped somewhere else since the panel last read the list, the action says so rather than acting on whatever moved into its place. See [Stashed changes](/docs/detail-panel#stashed-changes) for what each row shows.
 
-The branch summary in the docked action bar carries the stash count whenever it is non-zero, so a stash you made and forgot is visible without opening the tab.
+The branch summary in the docked action bar carries the stash count whenever it is non-zero, so a stash you made and forgot is visible without opening the Changes card.
 
 ### Committing
 
@@ -126,16 +126,16 @@ The name is checked as you type: **Create stays disabled** and the field says wh
 
 ### Renaming, merging, rebasing and deleting
 
-**Right-click any branch row** in the Branches tab:
+**Right-click any branch row** in the Branches card:
 
-- **Rename** — also on the checked-out branch's own card at the top of the tab, which is where you actually notice a typo: you create a branch, you are already standing on it, and what it has is a card rather than a row.
+- **Rename** — also on the checked-out branch's own card at the top of the section, which is where you actually notice a typo: you create a branch, you are already standing on it, and what it has is a card rather than a row.
 - **Merge into `<current>`** — brings that branch into the one you are on.
 - **Rebase onto `<current>`** — replays it on top of the current branch. The confirmation says the part nothing on screen would suggest: Git **checks out the branch being rebased**, so you right-click a branch you are not on and you end up standing on it. That is Git's own behaviour rather than something FinderGit adds, which is exactly why it is said before you agree to it.
 - **Delete** — offers both exits in the same dialog: the ordinary delete, and the forced one for a branch whose work is not merged anywhere. Reporting Git's refusal and stopping there is a dead end you would have to leave the app to get out of.
 
 **A remote row offers Merge only.** Renaming or deleting `origin/foo` is a push to the remote — a different operation with a different blast radius, and one that belongs to whoever owns that remote.
 
-Neither delete frees a branch a **worktree** is holding, and the forced one does not override that either. The Branches tab lists worktrees under the branch groups for exactly that reason — see [Worktrees](/docs/detail-panel#worktrees).
+Neither delete frees a branch a **worktree** is holding, and the forced one does not override that either. The Branches section lists worktrees under the branch groups for exactly that reason — see [Worktrees](/docs/detail-panel#worktrees).
 
 Every one of these acts on **the commit the row was showing**. If the branch has moved since the panel last read it — you committed in a terminal, another window pushed — the action says so instead of acting on whatever has taken its place.
 
@@ -184,7 +184,7 @@ Git integrates what it can on its own and stops on the first real conflict, leav
 - **Finish Merge** / **Continue Rebase** concludes it — enabled only once every conflicting file is staged.
 - **Pull and Push are disabled** while it's open, with a tooltip saying why. Git would refuse them anyway; this says it before the click.
 
-In the [Unstage tab](/docs/detail-panel#unstage) each unmerged file is tagged **CONFLICT** and sits in *Unstaged Changes* until you settle it. Edit it to keep the version you want, then **Mark Resolved** (that's `git add` — how you tell Git the conflict is settled). Per-file *Discard* is deliberately hidden for conflicted files: use Abort if you want out of the whole operation.
+In the [Changes card](/docs/detail-panel#changes) each unmerged file is tagged **CONFLICT** and sits in *Unstaged Changes* until you settle it. Edit it to keep the version you want, then **Mark Resolved** (that's `git add` — how you tell Git the conflict is settled). Per-file *Discard* is deliberately hidden for conflicted files: use Abort if you want out of the whole operation.
 
 ## Bulk actions across repositories
 

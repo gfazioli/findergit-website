@@ -58,7 +58,7 @@ Three badges say why something is not ticked: **In use**, **Recent**, and **Revi
 
 - Folders are **deleted for good**, not moved to the Trash: freeing the space is the point, and a `node_modules` in the Trash frees nothing.
 - Caches whose tool knows them better are cleaned **by that tool**, pointed at exactly the folder that was measured: `pnpm store prune` keeps what your projects still link, `go clean -modcache` handles Go's read-only module tree. If the tool is not installed, FinderGit empties the folder itself. Homebrew's downloads are emptied directly — never with `brew cleanup`, which would also uninstall old versions of your formulae.
-- Repositories are **repacked with `git gc`** — the same Optimize as the [Maintenance](/docs/repo-maintenance) tab, which keeps all history.
+- Repositories are **repacked with `git gc`** — the same Optimize as the [Maintenance](/docs/repo-maintenance) section, which keeps all history.
 
 The card shows what was freed when it ends, and the result goes to the Activity panel too.
 

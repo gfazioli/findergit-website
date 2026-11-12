@@ -98,7 +98,7 @@ The control panel. Four dashboards sit at the top without a header (Overview, Ac
 Either the **Repository List** — one sortable row per repo (Repository, Branch, Status, Ahead/Behind, Files, Size) — or, when you select a Root Folder (or double-click a repo), the Finder-style **[File Browser](/docs/file-browser)** tree.
 
 ### Detail Panel (right or bottom)
-Select a repository to reveal its detail — a nine-tab panel (Overview · Unstage · Commits · Branches · Release · Issues · Pull Requests · Maintenance · Trust) with the global Fetch / Pull / Push / Stash… / Refresh actions docked at its edge, reachable from any tab. See [Detail Panel](/docs/detail-panel). For a file you get its info and an inline diff; for a non-git file, basic info (size, date, type).
+Select a repository to reveal its detail — one page, the repository's Overview, with a card for each section (Changes · Commits · Branches · Tags · Issues · Pull Requests · Stars · Maintenance · Trust) that opens under it, and the global Fetch / Pull / Push / Stash… / Refresh actions docked at its edge, reachable whichever card is open. See [Detail Panel](/docs/detail-panel). For a file you get its info and an inline diff; for a non-git file, basic info (size, date, type).
 
 ### Summary bar (bottom)
 A live tally across the whole list — repository count, clean / dirty / ahead / behind (plus diverged, when any are), and total size.
@@ -120,7 +120,7 @@ FinderGit ships in 🇬🇧 **English**, 🇮🇹 **Italian**, 🇫🇷 **French
 ## Next steps
 
 - **[Repository List](/docs/repository-list)** — the flat all-repos table, the status sidebar (Smart Views + Filters), Favorites/Recents, and the summary bar.
-- **[Detail Panel](/docs/detail-panel)** — what each of the nine tabs (Overview, Unstage, Commits, Branches, Release, Issues, Pull Requests, Maintenance, Trust) shows when a repo is selected.
-- **[GitHub Integration](/docs/github-integration)** — turn on the Issues, Pull Requests and Overview tabs, plus the file-browser Issues / PRs / Stars columns, by pointing FinderGit at your GitHub auth (`gh` CLI or a token).
-- **[Git Actions](/docs/git-actions)** — the operations available from the docked action bar, the Unstage tab, and the context menus, with their keyboard shortcuts.
-- **[AI Commit Messages](/docs/ai-commit-messages)** — the ✨ button inside the Unstage tab's commit form.
+- **[Detail Panel](/docs/detail-panel)** — what the Overview and each of its cards (Changes, Commits, Branches, Tags, Issues, Pull Requests, Stars, Maintenance, Trust) show when a repo is selected.
+- **[GitHub Integration](/docs/github-integration)** — turn on the Issues, Pull Requests and Stars cards and the Overview, plus the file-browser Issues / PRs / Stars columns, by pointing FinderGit at your GitHub auth (`gh` CLI or a token).
+- **[Git Actions](/docs/git-actions)** — the operations available from the docked action bar, the Changes card, and the context menus, with their keyboard shortcuts.
+- **[AI Commit Messages](/docs/ai-commit-messages)** — the ✨ button inside the Changes card's commit form.

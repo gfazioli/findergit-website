@@ -10,7 +10,7 @@ FinderGit reads forge data — open issues, pull requests, repository metadata, 
 
 The integration powers:
 
-- The **Overview**, **Issues**, and **Pull Requests** tabs in the [Detail Panel](/docs/detail-panel)
+- The **Overview** page and the **Issues**, **Pull Requests** and **Stars** cards in the [Detail Panel](/docs/detail-panel)
 - Three columns in the [File Browser](/docs/file-browser): **Issues**, **PRs**, and **Stars**
 - **Fork awareness** — a badge on forks, how far they trail their upstream, and one-click sync
 
@@ -25,7 +25,7 @@ There are two ways to authenticate, and FinderGit picks the right one automatica
 1. **GitHub CLI (`gh`)** — preferred. If you already use `gh` and have run `gh auth login`, FinderGit inherits that authentication and you don't need to manage a token.
 2. **Personal Access Token (PAT)** — fallback. If `gh` isn't installed or isn't authenticated, FinderGit reads a token you've pasted into Settings (stored in the macOS Keychain, never on disk in FinderGit's own files).
 
-If neither is configured, the tabs and columns for **GitHub** repos degrade gracefully: a short hint replaces the empty list, and the rest of FinderGit keeps working. Codeberg, GitLab and Bitbucket repos are unaffected — they need no credentials in the first place.
+If neither is configured, the cards and columns for **GitHub** repos degrade gracefully: a short hint replaces the empty list, and the rest of FinderGit keeps working. Codeberg, GitLab and Bitbucket repos are unaffected — they need no credentials in the first place.
 
 ### Option 1: `gh` CLI (recommended)
 
@@ -36,7 +36,7 @@ brew install gh
 gh auth login
 ```
 
-That's the whole setup. The first time you open a GitHub repo in FinderGit, the Issues / PRs / Overview tabs and the file-browser counts columns will populate.
+That's the whole setup. The first time you open a GitHub repo in FinderGit, the Issues / PRs / Stars cards, the Overview and the file-browser counts columns will populate.
 
 ### Option 2: Personal Access Token
 
@@ -54,27 +54,27 @@ Once stored, the token lives in the Keychain under the entry for `github.com`. U
 
 ## What populates from GitHub
 
-### Overview tab
+### Overview
 
 Most of the [Overview dashboard](/docs/detail-panel#overview) comes from the repository itself. GitHub adds:
 
 - The description, used as the dashboard's headline (the README's opening sentence stands in when there is none)
-- Stars, forks and watchers, and the open issues and pull requests on their own tiles
+- Stars, forks and watchers, and the open issues and pull requests on their own cards
 - For a fork: a **Forked from owner/parent** line (clickable → the upstream on GitHub.com), how many commits it's behind upstream, and a **Sync** button (see [Fork awareness](#fork-awareness))
 - Homepage URL (clickable) and repository topics
 - Contributors' avatars, clickable → their GitHub profile. How many people wrote the repository is counted from its own history, because GitHub lists only the first page and leaves out authors with no account.
 
-### Issues tab
+### Issues card
 
 Open issues for the repo, with state icon, number, title, when it was opened and by whom, labels, and author avatar. Click any row and it unfolds in place — the description rendered as Markdown, then the comment thread — one row at a time; **Open in browser** at the top of it takes you to the issue on the forge it lives on (see [Reading a thread without leaving the app](/docs/detail-panel#reading-a-thread-without-leaving-the-app)). The **link button** at the right of every row copies the issue's address without opening it, and a right-click on the row offers the rest: open it on the forge, copy the link, a Markdown link, the title or the number. The **New Issue** button opens the new-issue form, and **Open on GitHub** opens the full Issues page in your browser (the label follows the remote's host — GitHub, GitLab, Bitbucket, or Codeberg).
 
-![Issues tab on a public GitHub repository — the open count badged on the tab itself, then each issue with its state icon, number, title and labels](/screenshot-detail-issues.png)
+![The Issues card open on a public GitHub repository — its open count as the card's figure, then each issue with its state icon, number, title and labels](/screenshot-detail-issues.png)
 
-### Pull Requests tab
+### Pull Requests card
 
 Same shape as Issues — including the line saying when it was opened and by whom, which here also carries the `head → base` branch pair — with three state colours (green for open, purple for merged, red for closed-not-merged) plus a grey **Draft** pill for draft PRs. The link button and the right-click menu are the same, and on a pull request the menu also copies the **branch name**. The **New Pull Request** button opens the compare page on GitHub.com, and **Open on GitHub** opens the full Pull Requests page in your browser.
 
-![Pull Requests tab on a Codeberg repository, where the tab needs no credentials — the open count badged on the tab, the first pull request opened in place with its description](/screenshot-detail-prs.png)
+![The Pull Requests card on a Codeberg repository, which needs no credentials — the open count as the card's figure, the first pull request opened in place with its description](/screenshot-detail-prs.png)
 
 ### File-browser columns
 
@@ -102,7 +102,7 @@ Git itself has no concept of a "fork", so this comes from GitHub: FinderGit read
 
 ### Sync a fork
 
-When a fork is behind, **Sync** brings it up to date in one step — from the **Overview** tab, or by right-clicking the repo → **Sync Fork**. FinderGit:
+When a fork is behind, **Sync** brings it up to date in one step — from the **Overview**, or by right-clicking the repo → **Sync Fork**. FinderGit:
 
 1. Fast-forwards the fork's default branch from its upstream **on GitHub**, then
 2. **pulls** your local clone so the working copy matches.
@@ -133,11 +133,11 @@ If the merge or rebase stops on a conflict, it's left in place and the usual [co
 
 To respect GitHub's rate limits and keep the UI snappy:
 
-- **Issues** and **Pull Requests** lists cache for **60 seconds** — fast enough that the tab strip can be flipped without re-fetching, slow enough to suppress redundant calls in the same browsing session.
+- **Issues** and **Pull Requests** lists cache for **60 seconds** — fast enough that cards can be opened and closed without re-fetching, slow enough to suppress redundant calls in the same browsing session.
 - **File-browser counts** cache for **5 minutes** — these numbers change slowly and the file browser may show dozens of repos at once, so a 60-second TTL would churn the network on every scroll.
 - **Fork status** caches for **5 minutes** too — fork drift moves slowly. The toolbar **Refresh** re-checks every loaded repo, and syncing a fork re-checks that one immediately.
 
-Each tab has a **Refresh** button that bypasses the cache when you want immediate fresh data.
+Each of these sections has a **Refresh** button that bypasses the cache when you want immediate fresh data.
 
 ## Privacy and rate limits
 
@@ -153,7 +153,7 @@ Codeberg repos are enriched too, and unlike GitHub they need **no setup at all**
 
 What works on a Codeberg repo:
 
-- The **Issues** and **Pull Requests** tabs, with labels, authors and state.
+- The **Issues** and **Pull Requests** cards, with labels, authors and state.
 - The **file-browser columns** — stars, open issues, open pull requests.
 - **Overview** metadata: description, stars, forks, topics, website, and the latest release.
 - The **fork badge** and its parent repository.
@@ -174,7 +174,7 @@ GitLab repos are enriched with **no setup** as well: GitLab's public API answers
 
 What works on a GitLab repo:
 
-- The **Issues** and **Merge Requests** tabs (the latter under Pull Requests), with labels, authors, drafts and state.
+- The **Issues** and **Merge Requests** cards (the latter under Pull Requests), with labels, authors, drafts and state.
 - The **file-browser columns** — stars, open issues, open merge requests.
 - **Overview** metadata: description, stars, forks, topics, and the latest release.
 - The **fork badge** and its parent project, subgroups included.
@@ -194,8 +194,8 @@ What does not, and why:
 
 Bitbucket Cloud repos are enriched anonymously too, within what the platform still offers — and around one thing it no longer does:
 
-- **Bitbucket retired its issue tracker.** The API endpoints behind it were removed in August 2026, so the **Issues** tab says so and the Issues column stays empty, rather than showing a zero for a tracker that does not exist.
-- The **Pull Requests** tab works — drafts, state, and the comment thread in the preview (the first 30, like every other forge), inline review comments included.
+- **Bitbucket retired its issue tracker.** The API endpoints behind it were removed in August 2026, so the **Issues** card says so and the Issues column stays empty, rather than showing a zero for a tracker that does not exist.
+- The **Pull Requests** card works — drafts, state, and the comment thread in the preview (the first 30, like every other forge), inline review comments included.
 - The **Stars** column shows **watchers**, the closest thing Bitbucket has to a star.
 - **Overview**: description, website, watchers and forks. Bitbucket has no topics or releases to show.
 - The **fork badge** and its parent repository. "N behind" is not available — Bitbucket has no cross-repository compare — so the banner says so instead of implying the fork is current.

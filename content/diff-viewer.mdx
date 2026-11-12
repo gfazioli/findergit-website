@@ -12,7 +12,13 @@ FinderGit includes an inline diff viewer that shows changes for any modified fil
 
 ### From the Detail Panel
 
-When a repository is selected, the changes list shows all modified files. Click on a **file name** (not the Stage/Unstage button) to load its diff. The selected file name turns blue, and the diff appears below.
+When a repository is selected, open its **Changes** card: the changes list shows all modified files. Click on a **file name** (not the Stage/Unstage button) to load its diff. The selected file name turns blue, and the diff appears below.
+
+### A commit's diff, in its own window
+
+In the **Commits** card, expand a commit to list its files and click one: its diff for that commit opens in a window of its own, drawn the same way as the diff above. The window can be moved and resized, so you can keep it beside the commit list, and one file gets one window — asking for the same file again brings its window forward.
+
+The window's header shows the file's path, the commit's short SHA and subject, and the +/− counts. **Wrap lines** in the header wraps long lines at the window's edge (on by default); turn it off to cut them there instead. **Esc** or **Space** closes the window. The window is read-only: nothing in it stages, discards or reverts.
 
 ### From file selection
 
@@ -23,13 +29,15 @@ When you select a single modified file in the tree view, the detail panel automa
 The diff view shows:
 
 - **Header** — file path and stats (+N additions / -M deletions)
-- **Line numbers** — old line number (left) and new line number (right)
-- **Added lines** — green background with `+` prefix
-- **Removed lines** — red background with `−` prefix
+- **Line numbers** — old line number (left) and new line number (right), in a gutter
+- **Added lines** — a green edge, a green tint and a `+` glyph
+- **Removed lines** — a red edge, a red tint and a `−` glyph
 - **Context lines** — no background, showing surrounding unchanged code
-- **Hunk headers** — light blue background showing `@@ -start,count +start,count @@`
+- **Hunk bands** — each hunk sits under a band that gives the lines it covers and the function or type it is in, instead of git's raw `@@ -start,count +start,count @@` line
 
-The diff scrolls vertically for large diffs. A line too long for the panel is cut off at its edge rather than scrolling sideways.
+Git's own header lines (`diff --git`, `index`, `---` and `+++`) are not shown: the header above the diff already names the file.
+
+The diff scrolls vertically for large diffs. A line too long for the panel is cut off at its edge rather than scrolling sideways; the [commit diff window](#a-commits-diff-in-its-own-window) can wrap long lines instead.
 
 ## Diff types
 
@@ -59,7 +67,7 @@ The two cases where one side does not exist are handled rather than reported as 
 
 ### Diff All — every change as one changeset
 
-At the top of the file list on the **Unstage** tab, **Diff All in Kaleidoscope** sends every change at once — staged and unstaged, in the order the tab draws them — as a single Kaleidoscope changeset rather than a tab per file. When the tab is filtered to a directory, only that directory's changes go.
+At the top of the file list in the **Changes** card, **Diff All in Kaleidoscope** sends every change at once — staged and unstaged, in the order the list draws them — as a single Kaleidoscope changeset rather than a tab per file. When the list is filtered to a directory, only that directory's changes go.
 
 - **One document.** It opens whole or not at all, named for the repository, so a second repository's changeset in the same window is still told apart from this one.
 - **Every side is pinned to one commit.** The committed side of every file is read from the same commit, so a commit or a branch switch while the files are being prepared cannot mix two baselines into one comparison.

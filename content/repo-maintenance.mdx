@@ -4,13 +4,13 @@ description: "Reclaim disk space: see where each repository's Git data goes, fin
 
 # Repo Maintenance
 
-Over time a Git repository accumulates loose objects, redundant pack files, and stale reflog entries — disk space that no longer earns its keep. FinderGit surfaces all of it in a dedicated **Maintenance** tab and lets you reclaim it without opening a terminal or remembering the right incantation.
+Over time a Git repository accumulates loose objects, redundant pack files, and stale reflog entries — disk space that no longer earns its keep. FinderGit surfaces all of it in a dedicated **Maintenance** card and lets you reclaim it without opening a terminal or remembering the right incantation.
 
-![Maintenance tab — disk-usage report with the Size column and its hover popover](/screenshot-feature-maintenance.png)
+![The Maintenance card open — disk-usage report with the Size column and its hover popover](/screenshot-feature-maintenance.png)
 
-## The Maintenance tab
+## The Maintenance card
 
-Select any repository and open the **Maintenance** tab in the [Detail Panel](/docs/detail-panel). At the top you get a plain-language **disk-usage report** for the repo's Git data:
+Select any repository and open its **Maintenance** card in the [Detail Panel](/docs/detail-panel). At the top you get a plain-language **disk-usage report** for the repo's Git data:
 
 - **Git directory** — the total size of the repo's `.git` folder. This is the headline number: everything Git stores about your history, objects, and refs.
 - **Packs** — how many pack files exist and their combined size. Packs are the compressed, deduplicated form your history eventually settles into.
@@ -27,7 +27,7 @@ Treat the number as a **floor, not a ceiling**: it's the minimum you'll get back
 
 Optimize and Deep Clean reclaim loose objects and redundant packs. But sometimes a repository's `.git` is huge for a different reason: its **history** holds far more than your working copy needs — a stale branch left behind after a big merge, or a clone that pulled in a much larger upstream. A routine cleanup can't help there, because Git can't drop history a branch still points to.
 
-The Maintenance tab's **Analyze history** button (under *History & bloat*) diagnoses exactly this. It's **read-only** — it never changes anything, it just shows you where the weight is:
+The Maintenance section's **Analyze history** button (under *History & bloat*) diagnoses exactly this. It's **read-only** — it never changes anything, it just shows you where the weight is:
 
 - **A verdict** — whether the repo's history looks bloated, with an estimate of how much space is held beyond what your current branch actually needs.
 - **The skew** — how many files you have checked out versus how many commits the whole history carries. A few dozen files against tens of thousands of commits is the tell-tale sign of foreign history riding along.
@@ -123,11 +123,11 @@ Expand **Deep Clean options** to tune exactly how aggressive the cleanup is:
 
 After a cleanup, FinderGit reports exactly what it recovered — for example *Recovered 21.8 MB (23.9 MB → 2.2 MB)* — so the payoff is concrete, not a vague "done". The disk-usage report and the floor estimate refresh in place to reflect the slimmed-down repo.
 
-![Post-clean result — Recovered 21.8 MB (23.9 MB to 2.2 MB), with a "nothing loose" estimate afterwards](/screenshot-maintenance-result.png)
+![Post-clean result — the last line of the Maintenance section reads Recovered 111 KB (270 KB to 160 KB), and the card above it shows the new size](/screenshot-maintenance-result.png)
 
 ## The Size column
 
-You don't have to open the Maintenance tab to see which repos are heavy. The [File Browser](/docs/file-browser) carries a **Size** column that shows each repository's Git-data size right in the table.
+You don't have to open the Maintenance card to see which repos are heavy. The [File Browser](/docs/file-browser) carries a **Size** column that shows each repository's Git-data size right in the table.
 
 - **Computed lazily, per repo** — the size is measured only for repos as they come into view, so adding the column never stalls a big folder. Rows fill in as you browse.
 - **Hover for detail** — hover the value to get a popover that breaks the number down (for example *Git data on disk*), so you can judge at a glance whether a repo is worth a cleanup.

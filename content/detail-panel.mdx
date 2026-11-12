@@ -1,43 +1,62 @@
 ---
-description: "The detail panel for the selected repository: tabs for staging, commits, branches, tags, releases, issues and pull requests, with Fetch, Pull and Push below."
+description: "The detail panel for the selected repository: one Overview page whose cards open staging, commits, branches, tags, issues and pull requests, with Fetch, Pull and Push below."
 ---
 
 import { Kbd } from '@/components/Kbd';
 
 # Detail Panel
 
-When you select a repository — in the [Repository List](/docs/repository-list) or the file browser — the detail panel splits into a **tab strip on top**, an **informational body in the middle**, and a **docked action bar pinned at the bottom**. Tabs hold the depth; the action bar holds the affordances that always need to be one click away.
+When you select a repository — in the [Repository List](/docs/repository-list) or the file browser — the detail panel is one page. A **header** stays at the top (name, path, last commit, the branch menu and ahead/behind), the **page** scrolls under it, and a **docked action bar** is pinned at the bottom. There is no tab strip: the page is always the repository's Overview, and its **cards** are the way into everything else.
 
-![Detail panel showing the Overview dashboard — the repository's pulse, a tile for every count, and a year of activity, with Fetch/Pull/Push/Refresh docked at the bottom](/screenshot-detail-overview.png)
+![Detail panel showing the Overview page — the repository's pulse, a card for every section, and a year of activity, with Fetch/Pull/Push/Refresh docked at the bottom](/screenshot-detail-overview.png)
 
-The tabs:
+The page holds, from the top:
 
-- **Overview** — a dashboard of the repository: how alive it is, a tile for every count that opens its tab, a year of activity, its languages, its latest commits and releases, plus the [fork banner](/docs/github-integration#fork-awareness) when the repo is a fork
-- **Unstage** — working-tree changes, the diff, the commit form (including the AI commit button)
-- **Commits** — recent local history from `git log`
-- **Branches** — local and remote branches, with one-click checkout
-- **Release** — every tag beside the release cut from it, and what only exists on one side
+- **Notes** — the linked worktrees of the repository and, when it is a fork, the [fork banner](/docs/github-integration#fork-awareness)
+- **The hero** — how alive the repository is, its age and latest tag, its description, **Open on GitHub** (the label follows the remote's host), the **Export** menu and the commits of the last 30 days as a sparkline
+- **The cards** — one per section, each with a figure and a line of detail
+- **The charts** — the year of activity, rhythm, codebase, latest commits and releases, and contributors
+
+The cards, in the order they appear:
+
+- **Changes** — working-tree changes, the diff, the commit form (including the AI commit button) and the stashes
+- **Commits** — the repository's history, loaded as you scroll
+- **Branches** — local and remote branches with one-click checkout, and the linked worktrees
+- **Tags** — every tag beside the release cut from it, and what only exists on one side
 - **Issues** — open issues on the repo's forge
 - **Pull Requests** — open pull requests (merge requests on GitLab) on the repo's forge
+- **Stars** — the star history, on GitHub
 - **Maintenance** — disk-space breakdown and cleanup (see [Repo Maintenance](/docs/repo-maintenance))
 - **Trust** — the repo's auto-run surface (see [Repo Trust](/docs/repo-trust))
 
-They read left to right by what they are about: what you are doing right now, then this repository's refs, then what the forge says about it, then looking after the place. Release sits beside Branches because a tag is a ref and the two answer the same kind of question.
+A repository on GitHub has all nine. On another forge there are eight (no Stars), and with no remote there are six (no Issues, Pull Requests or Stars). The cards read in order of what they are about: what you are doing right now, then this repository's refs, then what the forge says about it, then looking after the place. Tags sits beside Branches because a tag is a ref and the two answer the same kind of question.
 
-The selected tab is filled with the colour its panel starts from, so the two read as one surface rather than a button above a card. The active tab is remembered across selections and across app launches, so the panel always opens where you left it.
+## Opening a card
+
+Click a card to open its section. The card grows into a panel under its row, joined to the row as one shape in the card's colour; the other cards step back and the charts give way. Click the open card, or the **×** at the panel's top right, to close it and bring the charts back. One card is open at a time.
+
+The open card is remembered: select another repository and the same card is open there, when that repository has it, and so is the next launch. A repository that lacks the card (Issues on one with no remote) does not lose your choice — the next repository that has it opens it again.
+
+### Scrolling inside the panel
+
+The panel stops at the bottom edge of the window. A long list — commits, a hundred tags, an expanded issue — scrolls inside it while the header, the hero and the cards stay where they are. The controls a section pins stay at the top of the panel as the list moves under them: **New Issue**, **Open on…** and **Refresh** in Issues and Pull Requests, and the tag bar in Tags.
+
+### Buttons and hover
+
+Everything that acts in a section is a button with an icon, tinted by what it does, and with a hover state: Stage, Unstage, Discard, the stash actions, the tag bar's **Check remote**, **New tag**, **Open on GitHub** and **Refresh**, and the actions on a row. Rows highlight under the pointer in the card's colour. Forge labels are solid chips, with text chosen to read on them.
 
 ## Pull to refresh
 
-On macOS 27, pull down from the top of the detail panel to refresh the selected tab. This works with short lists, empty results and load errors too. The spinner lets go after at most a couple of seconds while slower work continues.
+On macOS 27, pull down from the top of the detail panel to refresh its cards and the open section. This works with short lists, empty results and load errors too. The spinner lets go after at most a couple of seconds while slower work continues.
 
-- **Overview** re-reads the repository's history and tags, forge metadata and counts, fork information and worktrees, and draws its charts again.
-- **Unstage**, **Commits** and **Branches** re-read local status, history or branch lists.
-- **Issues** and **Pull Requests** bypass the cache and refresh their badges and any expanded thread.
-- **Release** reloads local tags and forge releases, and repeats the remote-tag check if it was already loaded.
+- The **cards** re-read their figures: the repository's history and tags, forge metadata and counts, fork information and worktrees. With no card open, the charts are drawn again.
+- **Changes**, **Commits** and **Branches** re-read local status, history or branch lists.
+- **Issues** and **Pull Requests** bypass the cache and refresh their counts and any expanded thread.
+- **Tags** reloads local tags and forge releases, and repeats the remote-tag check if it was already loaded.
 - **Maintenance** re-runs the disk-space report; expensive history analyses remain opt-in.
 - **Trust** re-scans the selected repository without changing its trust setting.
 
-Pulling never performs Fetch, Pull, Push or cleanup. The Issue, Pull Request and Release headers remain sticky. On older macOS versions, use the existing refresh buttons.
+Pulling never performs Fetch, Pull, Push or cleanup. The Issues, Pull Requests and Tags controls stay pinned at the top of their panel. On older macOS versions, use the existing refresh buttons.
 
 ## Docked action bar
 
@@ -46,22 +65,33 @@ The bottom edge of the panel carries:
 - A compact **branch summary** — `branch · upstream · ↑N ↓M` (and stash count when non-zero), ending with **"Last fetched Xm ago"** so the background auto-fetch has visible evidence it's keeping the repo current
 - The five repo-global actions: **Fetch · Pull · Push · Stash… · Refresh** — on a narrow panel, the ones that don't fit fold into a **⋯** menu (see [Responsive compact mode](/docs/git-actions#responsive-compact-mode))
 
-Because the bar is docked outside the scroll area, the actions stay reachable from every tab — you don't have to leave Commits to push, or leave Issues to pull.
+Because the bar is docked outside the scroll area, the actions stay reachable whichever card is open — you don't have to leave Commits to push, or leave Issues to pull.
 
 ## Overview
 
-The Overview tab is a dashboard of the selected repository, and a map of the tabs beside it. Most of it is read from the repository itself, so it fills in for a local-only repo too; a remote on GitHub, Codeberg, GitLab or Bitbucket adds the description, the stars, and the open issues and pull requests (see [GitHub Integration](/docs/github-integration#what-populates-from-github) for what each forge can fill in).
+The Overview is the page itself: a dashboard of the selected repository, and a map of the sections the cards open. Most of it is read from the repository itself, so it fills in for a local-only repo too; a remote on GitHub, Codeberg, GitLab or Bitbucket adds the description, the stars, and the open issues and pull requests (see [GitHub Integration](/docs/github-integration#what-populates-from-github) for what each forge can fill in).
 
 - **The repository at a glance** — how alive it is (*Active*, *Steady*, *Quiet* or *Dormant*, from its newest commit), when its history starts, its latest tag and how many commits sit on top of it, and whether one person wrote it. The headline is the forge's description, or the opening sentence of the README when there isn't one, with the topics under it and an **Open on GitHub** button (the label follows the remote's host). Beside it, the commits of the last 30 days over a 26-week sparkline.
-- **A tile for every count** — Changes, Stashes, Commits, Upstream, Branches, Worktrees, Tags, Issues, Pull Requests, Stars, On Disk and Findings. Each tile wears its tab's colour and icon, and a click opens that tab; Stars opens the repository on its forge. A local-only repo has no Issues, Pull Requests or Stars tiles.
+- **A card for every section** — each shows a figure and a line of detail, in the colour and icon of its section:
+  - **Changes** — the number of changed files; the line says *Working tree clean*, *Nothing staged yet*, *Partly staged*, *All staged, ready to commit* or the number of conflicts, and adds the stash count when there are stashes. It turns red on conflicts.
+  - **Commits** — the number of commits; the line is the distance from the upstream, like `↑0 ↓1 · origin/main`, or *In step with* the upstream, *No upstream*, *Detached HEAD* or *No commits yet*. It takes the colour of what asks for something: orange when behind, purple when only ahead.
+  - **Branches** — the number of local branches; the line gives the current branch and the number of linked worktrees (or, with none, how many branches exist only on remotes). In a linked worktree it says which repository it belongs to.
+  - **Tags** — the number of tags; the line is the latest tag, or *No tags yet*.
+  - **Issues** and **Pull Requests** — the open count on the forge; the line names the forge, or says *None open*, or that the forge does not track it.
+  - **Stars** — the star count; the line gives forks and watchers.
+  - **Maintenance** — what the repository weighs on disk; the line gives its number of tracked files.
+  - **Trust** — the number of findings, in the colour of the worst: red for critical findings, orange when the auto-run surface changed, yellow for hooks to review, green when there is nothing to review.
 - **Activity** — the last year as a calendar, one square per day, with the current and the longest streak. Hover a day to read how many commits it holds.
-- **Stars** — on a GitHub remote, the repository's stars since it was created: the running total, the stars of the last 30 days, of the last year once it has one, and of the best week. A switch beside them draws the history as steps, a smooth line, or bars of each month's new stars.
 - **Rhythm** — the same commits by weekday and hour, with the busiest day and the peak hour.
 - **Codebase** — the languages by size, and whether the repository carries a README, a license, a `.gitignore`, a contributing guide, a security policy and CI.
-- **Latest commits** and **Releases** — the five newest commits and the five newest tags as timelines, with how often a release ships and how many commits are still unreleased. A row opens the Commits or Release tab.
+- **Latest commits** and **Releases** — the five newest commits and the five newest tags as timelines, with how often a release ships and how many commits are still unreleased. A row opens the Commits or Tags card.
 - **Contributors** — who wrote it, with how much, when more than one person did. A solo project is named at the top instead.
 
-The cards arrive one after another and the charts draw themselves when you open the tab, and again when you refresh. Nothing moves on its own after that, and with Reduce Motion turned on everything is simply there.
+What the old stash, upstream and worktree counts showed is now carried in those lines of detail: stashes in Changes, the upstream in Commits, worktrees in Branches.
+
+The **Stars** history lives in the Stars card's section: on a GitHub remote, the repository's stars since it was created — the running total, the stars of the last 30 days, of the last year once it has one, and of the best week. A switch beside them draws the history as steps, a smooth line, or bars of each month's new stars, and **Open on GitHub** takes you to the people who starred it.
+
+The cards arrive one after another and the charts draw themselves when you select the repository, and again when you refresh. Nothing moves on its own after that, and with Reduce Motion turned on everything is simply there.
 
 The numbers follow the repository as it changes: a commit, a pull, a checkout or a new tag updates them, and the calendar moves to the next day at midnight.
 
@@ -71,19 +101,17 @@ The numbers follow the repository as it changes: a commit, a pull, a checkout or
 
 On a GitHub repository the same menu holds **Put It in Your README with glancecard…**, which opens the glancecard window with that repository added, to show a card of it that redraws itself every day (see [Profile Card](/docs/profile-card#on-your-github-profile)).
 
-![Overview dashboard — the repository's pulse and age above a tile for every count, then a year of activity](/screenshot-detail-overview.png)
+![Overview page — the repository's pulse and age above a card for every section, then a year of activity](/screenshot-detail-overview.png)
 
-## Unstage
+## Changes
 
-This is where the working-tree affordances live. The Unstage tab holds:
+This is where the working-tree affordances live. The Changes card opens:
 
 - The **changes list** (staged and unstaged paths, with status markers)
 - An inline **diff viewer** for the selected change (see [Diff Viewer](/docs/diff-viewer))
 - The **commit form** with the AI Commit button (see [AI Commit Messages](/docs/ai-commit-messages))
 
-This was previously folded into Overview; splitting it out keeps the informational and operational concerns separate.
-
-![Unstage tab with changes list, inline diff, and the commit form](/screenshot-detail-unstage.png)
+![The Changes card open under the hero and cards — changes list, inline diff, and the commit form](/screenshot-detail-unstage.png)
 
 ### Discard changes
 
@@ -94,7 +122,7 @@ Every unstaged row also carries a red **Discard**, and the section header a **Di
 
 Both run behind a confirmation that states exactly what will happen, including the file count for Discard All. Discarding is destructive by nature; the Trash routing for untracked files is the safety net.
 
-![Discard All on an Unstage tab with four unstaged changes, asking for confirmation before anything is reverted or moved to the Trash](/screenshot-discard.png)
+![Discard All in the Changes section with four unstaged changes, asking for confirmation before anything is reverted or moved to the Trash](/screenshot-discard.png)
 
 ### Stashed changes
 
@@ -112,11 +140,11 @@ Three actions per row:
 
 If a pop hits a conflict, git writes the conflict into your files and **keeps the stash** — nothing is lost, and the entry stays on the list so you can try again after resolving. The panel refreshes to show the conflicted files, and the failure stays on screen rather than flickering past.
 
-![The Unstage tab with the stash list open — two entries, one carrying a typed message and one badged Automatic, each showing its branch and age with Pop, Apply and Drop on the right](/screenshot-stash.png)
+![The Changes section with the stash list open — two entries, one carrying a typed message and one badged Automatic, each showing its branch and age with Pop, Apply and Drop on the right](/screenshot-stash.png)
 
 ## Commits
 
-A scrollable list of recent commits from local `git log`. Each row shows:
+The Commits card opens the repository's history from local `git log`. It starts with a page of commits and loads more when you reach the end of the list, so a long history never has to be read in one go. Each row shows:
 
 - The author's avatar on the left — from their GitHub account when the commit uses a GitHub noreply email, from Gravatar otherwise, or a colored monogram of their initials when neither is available
 - The commit subject (up to two lines)
@@ -126,39 +154,39 @@ A scrollable list of recent commits from local `git log`. Each row shows:
 
 When the branch is **behind its upstream**, the commits a pull would bring in ride at the top in a distinct **"Incoming (N) · to pull"** card — each row marked with a ↓ — above your local history. So you see not just *that* you're behind, but *what* you're behind on. They're the commits from `git log HEAD..@{upstream}`, already on disk from the last fetch, so listing them costs nothing on the network. Pull, and the card folds away as they merge into the history below. Repos with no upstream — or already up to date — simply don't show it.
 
-![Commits tab with an "Incoming (3) · to pull" card at the top — three behind-upstream commits marked with a ↓ and origin/main badges, set off above the local history, and "Last fetched now" in the docked action bar](/screenshot-commits-incoming.png)
+![The Commits card open, with an "Incoming (3) · to pull" card at the top — three behind-upstream commits marked with a ↓ and origin/main badges, set off above the local history, and "Last fetched now" in the docked action bar](/screenshot-commits-incoming.png)
 
 ### What a commit changed
 
 Every commit row opens like a folder. Click the row — or the chevron on its left — and the files that commit touched unfold underneath it, with a **"N files · +additions −deletions"** summary on top and, per file, git's own status letter (**A**dded, **M**odified, **D**eleted, **R**enamed), the path, and that file's own line counts. A renamed file carries its old name underneath. Binary files say **binary** rather than pretending to a line count.
 
-Click a file in that list and its diff for that commit opens in a sheet — the same viewer the working-tree diff uses, scoped to what this one commit did to this one file. That includes **deleted** files: what a commit removed is often the part most worth reading, and the whole deletion is there. Only binary files have no diff to show. It is read-only: nothing here stages, discards or reverts.
+Click a file in that list and its diff for that commit opens in a window of its own — the same viewer the working-tree diff uses, scoped to what this one commit did to this one file. The window can be moved and resized, so you can read it beside the list; there is one window per file, and asking for the same file again brings its window forward. See [the commit diff window](/docs/diff-viewer#a-commits-diff-in-its-own-window). That includes **deleted** files: what a commit removed is often the part most worth reading, and the whole deletion is there. Only binary files have no diff to show. It is read-only: nothing here stages, discards or reverts.
 
-The list is fetched only when you open a row, so the tab still costs one `git log` no matter how much history you scroll. Merge commits list what they brought in against their first parent, rather than the empty list `git show` gives them by default.
+The list is fetched only when you open a row, so the section still costs one `git log` per page no matter how much history you scroll. Merge commits list what they brought in against their first parent, rather than the empty list `git show` gives them by default.
 
-![Commits tab with the newest commit opened onto its files — a "2 files +2" summary, then each path with git's status letter and its own line counts, tied to the commit above by a hairline](/screenshot-commit-files.png)
+![The Commits card with the newest commit opened onto its files — a "2 files +2" summary, then each path with git's status letter and its own line counts, tied to the commit above by a hairline](/screenshot-commit-files.png)
 
-Hover any row to highlight it. Avatars and badges can each be turned off, and the number of commits shown (default **4**, up to **50**) set, in [Settings → Appearance](/docs/settings#commits).
+Hover any row to highlight it. Avatars and badges can each be turned off in [Settings → Appearance](/docs/settings#commits).
 
-![Commits tab — each row leads with the author's avatar on the left; commits pointed at by a ref show badges above the subject (gold tag, accent current branch, grey origin/master and origin/HEAD), followed by subject, short SHA, author, relative date, and a copy button](/screenshot-detail-commits.png)
+![The Commits card — each row leads with the author's avatar on the left; commits pointed at by a ref show badges above the subject (gold tag, accent current branch, grey origin/master and origin/HEAD), followed by subject, short SHA, author, relative date, and a copy button](/screenshot-detail-commits.png)
 
 ## Branches
 
 Switch branches without leaving the app — no more discovering mid-task that you were on the wrong one. Three ways in:
 
 - **The branch chip** in the panel header shows the current branch; click it for a dropdown of the repo's local branches and switch with one click.
-- **The Branches tab** is the full view. The **checked-out branch is pinned at the top** in its own card, with its upstream and its ↑ahead ↓behind counts beside it, so the one branch you are actually on never scrolls away. Under it, **Local** and **Remote** are separate bounded groups, each with a count, each row separated and highlighted under the pointer. Every row is a target: click anywhere on it, or use its **Checkout** button. Checking out a remote branch creates a local branch tracking exactly that remote — unambiguous even when several remotes carry the same branch name.
+- **The Branches card** opens the full view. The **checked-out branch is pinned at the top** in its own card, with its upstream and its ↑ahead ↓behind counts beside it, so the one branch you are actually on never scrolls away. Under it, **Local** and **Remote** are separate bounded groups, each with a count, each row separated and highlighted under the pointer. Every row is a target: click anywhere on it, or use its **Checkout** button. Checking out a remote branch creates a local branch tracking exactly that remote — unambiguous even when several remotes carry the same branch name.
 - **Right-click a repo** in the file browser → **Switch Branch** for the same quick switch from the list.
 
 Every row also carries a **context menu** for the things that are not a switch — rename, merge, rebase, delete — and **New branch…** sits at the top of the dropdown. See [Managing branches](/docs/git-actions#managing-branches).
 
 After a checkout the file tree, status badge, and branch chip all update automatically. If Git refuses the switch (typically uncommitted changes that would be overwritten), the error appears in the action-bar feedback — nothing is forced.
 
-![Branches tab — Local and Remote sections with per-row Checkout, the current branch marked, and the branch chip in the header](/screenshot-branches.png)
+![The Branches card — Local and Remote sections with per-row Checkout, the current branch marked, and the branch chip in the header](/screenshot-branches.png)
 
 ### Worktrees
 
-Under Local and Remote, the same tab lists the repository's **linked worktrees** — the folders `git worktree add` creates, each holding a second branch checked out on its own. They live here because a worktree *is* a branch checked out somewhere else, and because this is where you end up when Git refuses to delete a branch one of them is holding.
+Under Local and Remote, the same section lists the repository's **linked worktrees** — the folders `git worktree add` creates, each holding a second branch checked out on its own. They live here because a worktree *is* a branch checked out somewhere else, and because this is where you end up when Git refuses to delete a branch one of them is holding.
 
 Each row shows the folder, where it is, and the branch it carries — or `detached` when it is not on one. A padlock marks a worktree you have locked, and a **missing** badge marks one whose folder is gone. The row menu offers **Add to Root Folders** (start working in it here), **Reveal in Finder**, and **Remove…**.
 
@@ -170,11 +198,11 @@ Removal is never forced. Git refuses to remove a worktree holding uncommitted ch
 
 ## Issues and Pull Requests
 
-The action bar stays pinned below the tab strip as you scroll through the list or an expanded thread. **New Issue** / **New Pull Request**, **Open on…** and **Refresh** remain within reach, as the tag controls already do in Release.
+The Issues and Pull Requests cards open the forge's lists. The controls stay pinned at the top of the panel as you scroll through the list or an expanded thread. **New Issue** / **New Pull Request**, **Open on…** and **Refresh** remain within reach, as the tag controls already do in Tags.
 
-Each tab carries its open count in the strip — a small badge beside the tab's name — so a repository says what is waiting on it before you open either tab. The number is the forge's own count of open items — the same one behind the file browser's Issues and PRs columns, read from the same place, so it costs nothing extra for a repository already on screen. A tab with nothing open shows no badge at all (the column still prints its `0`: a column with a heading needs a cell, a tab is quieter without one), and neither does a forge that has no such counter — Bitbucket retired its issue tracker, so its Issues tab stays bare rather than claiming zero.
+Each card carries its open count as its figure — so a repository says what is waiting on it before you open either card. The number is the forge's own count of open items — the same one behind the file browser's Issues and PRs columns, read from the same place, so it costs nothing extra for a repository already on screen. A card with nothing open says **None open** (the column still prints its `0`: a column with a heading needs a cell). A forge that has no such counter shows no figure — Bitbucket retired its issue tracker, so its Issues card stays bare rather than claiming zero.
 
-Both tabs share the same row shape:
+Both sections share the same row shape:
 
 - A GitHub-style state icon (filled circle for issues — green for open, purple for closed; pull-request arrows for PRs — green for open, grey for draft, purple for merged, red for closed)
 - The `#number`
@@ -189,9 +217,9 @@ Click anywhere on a row and it unfolds in place: the **description rendered as M
 
 **The HTML a forge allows in Markdown is drawn, not printed.** A collapsed section (`<details>`) is a row you click to open, the way it is on the forge's page, so a bot's long review comment is a few titles rather than a wall; bold, links, line breaks, lists, tables and callouts (`> [!NOTE]`) read as what they are. Code is left exactly as written, and so is anything that only looks like a tag — `Array<String>` stays `Array<String>`.
 
-On a **pull request** the preview shows the whole discussion, not just the conversation tab: the body a reviewer submitted with their verdict, and the notes pinned to lines of a file, each labelled for what it is. A pull request reviewed entirely inline — which is how most of them are — would otherwise look as though nobody had said anything.
+On a **pull request** the preview shows the whole discussion, not just the conversation: the body a reviewer submitted with their verdict, and the notes pinned to lines of a file, each labelled for what it is. A pull request reviewed entirely inline — which is how most of them are — would otherwise look as though nobody had said anything.
 
-The description costs nothing extra — every forge already returns it with the list. The comments are fetched only when you open a row, capped at the first 30, and cached for a minute like everything else in these tabs. That is the same on GitHub, Codeberg and Bitbucket; GitLab shows comments only to a signed-in user, so its preview says so instead (see [GitLab](/docs/github-integration#gitlab)).
+The description costs nothing extra — every forge already returns it with the list. The comments are fetched only when you open a row, capped at the first 30, and cached for a minute like everything else in these sections. That is the same on GitHub, Codeberg and Bitbucket; GitLab shows comments only to a signed-in user, so its preview says so instead (see [GitLab](/docs/github-integration#gitlab)).
 
 **Images in a description are not downloaded.** An issue body is written by anyone who can open an issue, so every image URL in it is chosen by someone else — and fetching one would tell them your IP address and when you read their issue, or reach a service only your Mac can see. FinderGit shows a placeholder and leaves the fetching to your browser, which is what the **Open in browser** button is for.
 
@@ -199,17 +227,17 @@ At the top of the preview, **Copy link** and **Open in browser** are there for w
 
 ![An issue opened in place — labels, the author and when they filed it, then the description rendered as Markdown with headings, inline code and a fenced block, folded behind Show more, with Copy link and Open in browser above it](/screenshot-issue-preview.png)
 
-Each tab's header has a **New Issue / New Pull Request** button (opens the corresponding "new" page), an **Open on GitHub** button (opens the full Issues / Pull Requests list page — the label follows the remote's host), and a **Refresh** button that bypasses the 60-second cache when you want fresh data.
+Each section's header has a **New Issue / New Pull Request** button (opens the corresponding "new" page), an **Open on GitHub** button (opens the full Issues / Pull Requests list page — the label follows the remote's host), and a **Refresh** button that bypasses the 60-second cache when you want fresh data.
 
-On GitHub repos both tabs need either a working `gh` CLI (see [GitHub Integration](/docs/github-integration)) or a Personal Access Token in Settings. On Codeberg and GitLab they need nothing — both APIs answer anonymously. On Bitbucket only Pull Requests apply: its issue tracker was retired, and the Issues tab says so. For a repo with no remote, the tabs show a short explanation instead of an empty list.
+On GitHub repos both sections need either a working `gh` CLI (see [GitHub Integration](/docs/github-integration)) or a Personal Access Token in Settings. On Codeberg and GitLab they need nothing — both APIs answer anonymously. On Bitbucket only Pull Requests apply: its issue tracker was retired, and the Issues card says so. A repo with no remote has no Issues or Pull Requests cards at all.
 
-![Issues tab — the strip above badges the open counts on both Issues and Pull Requests; below, each row carries a green open-issue icon, number, title, labels and author avatar, with New Issue, Open on GitHub, and Refresh in the header](/screenshot-detail-issues.png)
+![The Issues card open — the cards above show the open counts of Issues and Pull Requests; below, each row carries a green open-issue icon, number, title, labels and author avatar, with New Issue, Open on GitHub, and Refresh in the header](/screenshot-detail-issues.png)
 
-![Pull Requests tab on a Codeberg repository, needing no credentials — the strip badges both open counts, the top pull request is opened in place with its description, the next one collapsed below, and New Pull Request / Open on Codeberg / Refresh in the header](/screenshot-detail-prs.png)
+![The Pull Requests card on a Codeberg repository, needing no credentials — the cards above show both open counts, the top pull request is opened in place with its description, the next one collapsed below, and New Pull Request / Open on Codeberg / Refresh in the header](/screenshot-detail-prs.png)
 
-## Release
+## Tags
 
-![The Release tab — tags on the left with their presence, releases on the right, a filter and the tag count in the header](/screenshot-detail-release.png)
+![The Tags card — tags on the left with their presence, releases on the right, a filter and the tag count in the header](/screenshot-detail-release.png)
 
 Tags and releases side by side, because the states worth seeing are the ones where they disagree: a tag nobody cut a release from, a release whose tag is not in your clone, a tag that exists here and not on the remote.
 
@@ -270,7 +298,7 @@ The selection covers the tag, never the release beside it. **A tag and its relea
 
 Deletions run one at a time and report **an outcome per tag**, not per run. Ten pushes where three fail will tell you which three and what Git said about each — "already exists" and "denied" are different problems with different fixes. The ones that did not go through stay selected, so retrying does not mean picking them again. **Stop** ends the run, and whatever had not been attempted is reported as exactly that rather than as a failure.
 
-While a run is going, the bar shows how far it has got — how many tags are **finished** out of how many, and the name of the one Git is holding right now, which is what tells a run wedged on an unreachable ref from a run that is merely slow. Every tag in the run says the same thing on its own row: waiting, running, done, failed. Switching to another tab or another repository does not lose any of it: the run belongs to the repository, and coming back shows where it got to.
+While a run is going, the bar shows how far it has got — how many tags are **finished** out of how many, and the name of the one Git is holding right now, which is what tells a run wedged on an unreachable ref from a run that is merely slow. Every tag in the run says the same thing on its own row: waiting, running, done, failed. Closing the card or switching to another repository does not lose any of it: the run belongs to the repository, and coming back shows where it got to.
 
 When the run ends, the bar does not simply disappear — it becomes the **result**, which stays there to be read, and stays until you dismiss it whenever something did not go through. That matters most for the fastest case: deleting ten tags locally is over in about a tenth of a second, and rows vanishing is not by itself a report of what happened to them.
 
@@ -283,7 +311,7 @@ Worth knowing before you use it, because it is not what most people expect:
 - **If a release was cut from that tag, GitHub does not delete it — it turns it into a draft.** The release disappears from the public releases page and moves to an `untagged-…` URL.
 - **Pushing the tag back does not undo that.** The release stays a draft until someone re-publishes it by hand.
 
-FinderGit says which of these applies before you confirm, and it knows because the tab already pairs each tag with its release. A tag with no release gets the shorter, calmer sentence.
+FinderGit says which of these applies before you confirm, and it knows because the section already pairs each tag with its release. A tag with no release gets the shorter, calmer sentence.
 
 ### Right-click
 
@@ -303,7 +331,7 @@ On the **release** you get **Open Release in Browser**, **Copy Release Link** an
 
 The right-hand column is read from the forge: the release title, **draft** and **pre-release** badges, an attachment count, when it was published, and a button to open it in a browser.
 
-A badge appears only when the forge actually reported it. GitLab has no draft or pre-release concept at all, so nothing is drawn there rather than "published" being implied by a flag it never sent. **Bitbucket has no releases**, and the tab says so instead of showing an empty list under a heading.
+A badge appears only when the forge actually reported it. GitLab has no draft or pre-release concept at all, so nothing is drawn there rather than "published" being implied by a flag it never sent. **Bitbucket has no releases**, and the section says so instead of showing an empty list under a heading.
 
 A release whose tag is not in your clone is **not** an orphan: it gets an ordinary row, marked "not fetched", because the tag does exist — just not here. What lands in the separate section at the top is the genuinely stranded kind, typically a release left as a draft after its tag was deleted.
 
