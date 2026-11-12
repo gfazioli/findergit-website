@@ -614,7 +614,7 @@ const features: Feature[] = [
     icon: IconGitMerge,
     title: 'Branch Management',
     description:
-      'Create a branch from the branch menu, then rename, merge, rebase or delete it from the Branches tab. The rebase confirmation says the part nothing on screen would suggest — Git checks out the branch it rebases — before you agree to it.',
+      'Create a branch from the branch menu, then rename, merge, rebase or delete it from the Branches card. The rebase confirmation says the part nothing on screen would suggest — Git checks out the branch it rebases — before you agree to it.',
     color: 'lime',
     href: '/docs/git-actions#managing-branches',
     since: '0.38.0',
@@ -1065,7 +1065,7 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
               title="Catch a supply-chain worm before it runs"
               description="Cloning or pulling a repo can quietly arm it to run code — on folder open, on agent load, on npm install. Repo Trust surfaces that auto-run surface in plain language and detects the obfuscated dropper behind supply-chain worms like Shai-Hulud / Miasma — across your branches, not just the one you checked out. It flags changes after a pull, walks you through cleanup if a repo looks compromised, and never runs anything it finds."
               image="/screenshot-feature-trust.png"
-              imageAlt="The Repo Trust tab listing a repository's auto-run hooks with a plain-language explanation of what each one runs"
+              imageAlt="The Trust card open on a repository, listing its auto-run hooks with a plain-language explanation of what each one runs"
               href="/docs/repo-trust"
             />
 
@@ -1105,9 +1105,9 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
               icon={IconDatabase}
               iconColor="teal"
               title="Reclaim the space your repos waste"
-              description="The Maintenance tab shows exactly where a repository's Git data goes — packs, loose objects, undo history. A one-click Optimize tidies it up, and a careful Deep Clean frees the rest while your stashes stay safe. And the Size column gives you every repo's footprint at a glance, so you always know which one to clean first."
+              description="The Maintenance card shows exactly where a repository's Git data goes — packs, loose objects, undo history. A one-click Optimize tidies it up, and a careful Deep Clean frees the rest while your stashes stay safe. And the Size column gives you every repo's footprint at a glance, so you always know which one to clean first."
               image="/screenshot-feature-maintenance.png"
-              imageAlt="Repo Maintenance tab showing Git disk-space breakdown with Optimize and Deep Clean actions in FinderGit"
+              imageAlt="The Maintenance card open, showing the Git disk-space breakdown with Optimize and Deep Clean actions in FinderGit"
               href="/docs/repo-maintenance"
             />
           </Stack>
