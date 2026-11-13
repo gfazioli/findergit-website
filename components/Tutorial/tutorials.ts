@@ -47,6 +47,15 @@ export const TUTORIALS: TutorialFilm[] = [
     seconds: 54.9,
     published: '2026-11-11T17:22:47+01:00',
   },
+  {
+    n: 2,
+    id: '1ekkw84qgE0',
+    title: 'Read your Git repository list at a glance',
+    summary:
+      'All Repositories is where FinderGit opens: every repository you track, one row each. In this tutorial, read a row column by column (branch, status, what is ahead and behind, files and size), sort the list by a column, and find the totals in the bar at the bottom.',
+    seconds: 68.4,
+    published: '2026-11-13T08:33:04+01:00',
+  },
 ];
 
 /** The film numbered `n`; a number with no film is a typo in a page, or a film not out yet, and fails the build. */
