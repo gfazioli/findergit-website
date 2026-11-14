@@ -1,5 +1,5 @@
 ---
-description: "Browse files in a Finder-style outline with live Git status badges, sortable columns, GitHub issue, pull request and star counts, Quick Look and a filter."
+description: "Browse files in a Finder-style outline with live Git status badges, sortable columns, forge counts, Quick Look, a filter and a status bar."
 ---
 
 # File Browser
@@ -133,10 +133,23 @@ On repository rows, the **Size** column shows how much disk space the repo's Git
 
 A header strip pinned above the file browser hosts both controls:
 
-- **Filter files** field — filter the tree by name. The filter applies across the entire tree with a 300ms debounce. <Kbd>⌘</Kbd> <Kbd>F</Kbd> (**Edit → Search**) focuses the field from anywhere in the window.
+- **Filter files** field — filter by name, 300ms after you stop typing. <Kbd>⌘</Kbd> <Kbd>F</Kbd> (**Edit → Search**) focuses the field from anywhere in the window.
 - **Git Only** toggle — hide every file and directory that isn't (or isn't inside) a Git repository.
 
+Both apply to **the folder on screen**: the top of the tree, or the folder you [drilled into](#drill-into-a-folder), together with the folders opened beneath it with their disclosure triangle. A row whose name matches stays whole, with everything inside it; a folder that doesn't match stays only for the matching rows already opened inside it. Enter or leave a folder and the filter follows you there.
+
+When nothing in the folder matches, the table says so (*No Results for "…"*, or *No Repositories Here* under Git Only) and you stay in the folder. Inside a repository, Git Only shows all of its files: they are all the repository's.
+
 Both controls are scoped to the file browser column and stay anchored above it as the window resizes.
+
+## Status bar
+
+A strip under the file list says what the folder holds, as in Finder:
+
+- **On the left** — how many items the folder has; with a filter on, how many it shows out of how many (*6 of 32*, behind a filter mark); with a selection, how many rows are selected and the size of the selected files. Then how many of the rows are repositories.
+- **On the right** — the repositories' **clean**, **dirty**, **ahead** and **behind** counts, the same tallies the [Repository List](/docs/repository-list) shows under its table; inside a repository, how many files and folders have changes; and the space left on the disk.
+
+When the column is narrow, the right side gives up its pieces first, so the left one always reads in full. Hide or show the bar with **View → Show Status Bar** (<Kbd>⌘</Kbd> <Kbd>/</Kbd>).
 
 ## Selection
 
