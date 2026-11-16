@@ -58,8 +58,8 @@ Dynamic, status-driven filters — each shows a running count and updates in rea
 
 Group the list by where each repository's `origin` remote points:
 
-- **GitHub**, **GitLab**, **Bitbucket**, **Codeberg** — recognized from the remote URL.
-- **Local Only** — repositories with no recognized remote.
+- **GitHub**, **GitLab**, **Bitbucket**, **Codeberg** — recognized from the remote URL, SSH host aliases included: with `Host github-work` pointing at `github.com` in `~/.ssh/config`, a remote of `git@github-work:org/repo.git` is a GitHub one, as it is for git.
+- **Local Only** — repositories with no recognized remote: none at all, or one on a server FinderGit doesn't read, whose name the repository's Overview shows in place of *Local only*.
 
 > Live forge data (Issues, PRs, Stars, and a fork's parent) is populated for **GitHub**, **Codeberg**, **GitLab** and **Bitbucket** remotes — the last three with no setup at all, since their APIs answer anonymously. Two caveats: only GitHub reports **how far** a fork trails its upstream, and Bitbucket has no issue tracker any more, so its Issues column stays empty. See [GitHub Integration](/docs/github-integration).
 
