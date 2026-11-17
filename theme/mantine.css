@@ -867,7 +867,7 @@ fieldset:disabled .mantine-active:active {
 
 .m_87cf2631 {
   background-color: transparent;
-  cursor: pointer;
+  cursor: var(--mantine-cursor-type);
   border: 0;
   padding: 0;
   appearance: none;
@@ -1077,7 +1077,7 @@ fieldset:disabled .mantine-active:active {
   background: var(--ai-bg, var(--mantine-primary-color-filled));
   color: var(--ai-color, var(--mantine-color-white));
   border: var(--ai-bd, calc(0.0625rem * var(--mantine-scale)) solid transparent);
-  cursor: pointer;
+  cursor: var(--mantine-cursor-type);
 }
 
   @media (hover: hover) {
@@ -1394,7 +1394,7 @@ fieldset:disabled .mantine-active:active {
   flex-direction: row-reverse;
   padding-inline: var(--mantine-spacing-md);
   opacity: 1;
-  cursor: pointer;
+  cursor: var(--mantine-cursor-type);
   background-color: transparent;
   color: var(--mantine-color-bright);
 }
@@ -1694,7 +1694,7 @@ fieldset:disabled .mantine-active:active {
   padding: 0;
   margin: 0;
   background-color: transparent;
-  cursor: pointer;
+  cursor: var(--mantine-cursor-type);
 }
 
   @media (hover: hover) {
@@ -1972,7 +1972,7 @@ fieldset:disabled .mantine-active:active {
   overflow: hidden;
 
   width: auto;
-  cursor: pointer;
+  cursor: var(--mantine-cursor-type);
   display: inline-block;
   border-radius: var(--button-radius, var(--mantine-radius-default));
   font-size: var(--button-fz, var(--mantine-font-size-sm));
@@ -2693,13 +2693,17 @@ fieldset:disabled .mantine-active:active {
       border-bottom: none;
     }
 
+.m_b242d975:where([data-sticky]) :where(.m_4e7aa4f3[data-with-column-border]) {
+      border-inline-start: none;
+      border-inline-end: none;
+    }
+
 .m_b242d975:where([data-sticky]) :where(.m_4e7aa4fd[data-with-row-border]) :where(.m_4e7aa4f3) {
       box-shadow: inset 0 -1px 0 var(--table-border-color);
     }
 
-.m_b242d975:where([data-sticky]) :where(.m_4e7aa4f3[data-with-column-border]) {
-      border-inline-start: none;
-      border-inline-end: none;
+.m_b242d975:where([data-sticky]) :where(.m_4e7aa4f3[data-with-column-border][rowspan]) {
+      z-index: 1;
     }
 
 .m_b242d975:where([data-sticky]) :where(.m_4e7aa4f3[data-with-column-border]:not(:first-child))::before {
@@ -2707,6 +2711,15 @@ fieldset:disabled .mantine-active:active {
       position: absolute;
       inset-block: 0;
       inset-inline-start: calc(-0.03125rem * var(--mantine-scale));
+      width: calc(0.0625rem * var(--mantine-scale));
+      background-color: var(--table-border-color);
+    }
+
+.m_b242d975:where([data-sticky]) :where(.m_4e7aa4f3[data-with-column-border][rowspan]:not(:last-child))::after {
+      content: '';
+      position: absolute;
+      inset-block: 0;
+      inset-inline-end: calc(-0.03125rem * var(--mantine-scale));
       width: calc(0.0625rem * var(--mantine-scale));
       background-color: var(--table-border-color);
     }
