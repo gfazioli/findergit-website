@@ -81,6 +81,8 @@ The sidebar is shared with the [Repository List](/docs/repository-list#the-sideb
 - **+** popup menu in the sidebar toolbar — choose **Add Root Folder…** to pick a directory from the macOS Open panel, or **Add Group…** to create a virtual container (see below)
 - **−** button removes the currently selected root (its repos drop out of the browser; the actual files on disk are untouched)
 - **↻** button rescans every root for new or removed repositories
+- **A root you move or rename comes along.** The next scan (at launch, or ↻) finds it in its new place and keeps its group, its position, and the Favorites and Recents inside it. That works for a folder moved or renamed on the same disk
+- **A root FinderGit can't find** (deleted, copied to another disk, or on a drive that isn't connected) shows a question mark in the sidebar, and selecting it says where FinderGit looked. Right-click it → **Change Location…** to show FinderGit where it is now
 
 ### Linked worktrees
 
@@ -92,9 +94,9 @@ Worktrees are also counted in the [Repository List](/docs/repository-list#linked
 
 - **Drag** any root to reorder it within the sidebar — position is persisted across launches
 - **Right-click → Move to Group** to assign a root to a group, or drag the row directly onto a group header. The menu lists every group by its full path (*Work › Clients*), so two groups with the same name stay apart
-- **+ → Add Group…** (in the sidebar's `+` popup menu) opens a small dialog to create a virtual group — Tower-style containers that hold roots without changing anything on disk. Useful when you want to keep work, side projects, and dotfiles visually separated
+- **+ → Add Group…** (in the sidebar's `+` popup menu), or **File › New Group…**, opens a small dialog to create a virtual group — Tower-style containers that hold roots without changing anything on disk. Useful when you want to keep work, side projects, and dotfiles visually separated
 - **Groups nest.** Right-click a group → **New Group Inside…** to create one inside it, or **Move to Group** to put an existing group inside another, or back at the **Top Level**. A group lists its own groups first, then its roots. A group can't go inside itself or one of its own groups, so the menu leaves those out, and greys out the place it already is
-- Groups can be renamed or deleted from their own right-click menu. Deleting a group keeps what it held one level up: its groups and roots move into the group it sat in, or out of any group when it was at the top. Expanded/collapsed state is sticky like Finder, for every group at every level
+- Groups can be renamed or deleted from their own right-click menu. Deleting a group keeps what it held one level up: its groups and roots move into the group it sat in, or out of any group when it was at the top. Expanded/collapsed state is sticky like Finder, for every group at every level. Click a group's name to open or close it, as the arrow does
 
 ### Focusing the tree
 
