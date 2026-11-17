@@ -362,6 +362,67 @@ describe('ScrollGuide', () => {
     expect(corner()).toBeNull();
   });
 
+  describe('folding a bubble the keyboard is in', () => {
+    // netfox.app's #129, from vicenda.app's #47: a bubble folded on its own
+    // took the focused Next or Dismiss with it, and the focus dropped to the
+    // page. The mascot stays, so the focus goes to it.
+    const focusNextShot = () =>
+      act(() => screen.getByRole('button', { name: 'Next screenshot' }).focus());
+    const onMascot = (name: string) =>
+      expect(document.activeElement).toBe(screen.getByRole('button', { name }));
+
+    /** The carousel, narrated from the corner where the dots leave no room. */
+    const narrationOpen = () => {
+      narrow = true;
+      render(<Page />);
+      wait(DELAY_MS);
+      rowOnScreen();
+      wait(CORNER_IN_MS + HOP_MS);
+      expect(screen.getByText(SHOTS[0])).toBeInTheDocument();
+    };
+
+    it('on the narration’s timer', () => {
+      narrationOpen();
+      focusNextShot();
+      wait(HERO_FOLD_MS);
+      expect(screen.queryByText(SHOTS[0])).toBeNull();
+      onMascot('Show the next screenshot');
+    });
+
+    it('once the dots are scrolled past', () => {
+      narrationOpen();
+      focusNextShot();
+      rowPassed();
+      expect(screen.queryByText(SHOTS[0])).toBeNull();
+      onMascot('Show a tip');
+    });
+
+    it('half a window of scroll after the reader opened a tip', () => {
+      inTheCorner();
+      // From the top: an earlier test leaves jsdom's scrollY deleted.
+      Object.defineProperty(window, 'scrollY', { configurable: true, value: 0 });
+      fireEvent.click(mascot()!);
+      act(() => screen.getByRole('button', { name: 'Dismiss' }).focus());
+      Object.defineProperty(window, 'scrollY', { configurable: true, value: window.innerHeight });
+      act(() => {
+        window.dispatchEvent(new Event('scroll'));
+      });
+      delete (window as { scrollY?: number }).scrollY;
+      expect(bubble()).toBe('');
+      onMascot('Show a tip');
+    });
+
+    it('and, when the dots get room again and the mascot goes, to the page, not to nothing', () => {
+      narrationOpen();
+      focusNextShot();
+      narrow = false;
+      act(() => {
+        window.dispatchEvent(new Event('resize'));
+      });
+      expect(document.activeElement).toBe(screen.getByRole('link', { name: 'See what it does' }));
+    });
+  });
+
   it('hands the keyboard focus to a control in view rather than the one before it', () => {
     // Codex, round 1 of netfox.app's #83: the mascot rides in the corner at any
     // height of the page, so the control before it in the markup is usually

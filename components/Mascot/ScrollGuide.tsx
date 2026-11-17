@@ -163,6 +163,8 @@ export function ScrollGuide({ tips }: { tips: Tip[] }) {
   const [card, setCard] = useState<HTMLElement | null>(null);
   // The mascot's box, in whichever place it is.
   const box = useRef<HTMLDivElement>(null);
+  // The mascot's own button in the corner, which stays when its bubble folds.
+  const walker = useRef<HTMLButtonElement>(null);
   // Where the reader opened a tip: half a window of scroll away, it folds.
   const openedAt = useRef(0);
   // What the page says about where the mascot belongs.
@@ -220,6 +222,23 @@ export function ScrollGuide({ tips }: { tips: Tip[] }) {
     target?.focus({ preventScroll: true });
   }, []);
 
+  /**
+   * Folds the bubble the mascot did not leave with: on its timer, once the
+   * dots are scrolled past or have room beside them again, or once the reader
+   * has scrolled on. The keyboard on Next or Dismiss would drop to the page as
+   * the bubble unmounts, so it goes to the mascot's own button, which stays
+   * (netfox.app's #129, from vicenda.app's #47; `handFocusBack` is for when the
+   * mascot itself goes).
+   */
+  const fold = useCallback(() => {
+    const el = box.current;
+    const focused = document.activeElement;
+    if (el?.contains(focused) && focused !== walker.current) {
+      walker.current?.focus({ preventScroll: true });
+    }
+    setBubble('closed');
+  }, [setBubble]);
+
   const hop = useCallback(() => setHops((count) => count + 1), []);
 
   /** Once it stands in the corner with the dots in view and no room beside them, it narrates. */
@@ -245,7 +264,7 @@ export function ScrollGuide({ tips }: { tips: Tip[] }) {
           setBubble('carousel');
           later(() => {
             if (bubbleNow.current === 'carousel' && !turnedByReader.current) {
-              setBubble('closed');
+              fold();
             }
           }, HERO_FOLD_MS);
         }
@@ -256,7 +275,7 @@ export function ScrollGuide({ tips }: { tips: Tip[] }) {
         later(open, HOP_MS);
       }
     },
-    [hop, later, narratingNow, setBubble]
+    [fold, hop, later, narratingNow, setBubble]
   );
 
   /** Moves the mascot to where it belongs: out of where it is first, then in. */
@@ -348,7 +367,7 @@ export function ScrollGuide({ tips }: { tips: Tip[] }) {
       page.heroRoom = guideFits();
       setNarrating(narratingNow());
       if (!visible && bubbleNow.current === 'carousel') {
-        setBubble('closed');
+        fold();
       }
       sync();
     };
@@ -379,7 +398,7 @@ export function ScrollGuide({ tips }: { tips: Tip[] }) {
       page.heroRoom = guideFits();
       setNarrating(narratingNow());
       if (!narratingNow() && bubbleNow.current === 'carousel') {
-        setBubble('closed');
+        fold();
       }
       sync();
     };
@@ -390,7 +409,7 @@ export function ScrollGuide({ tips }: { tips: Tip[] }) {
       window.removeEventListener('scroll', scrolled);
       window.removeEventListener('resize', resized);
     };
-  }, [sync, setBubble, narratingNow]);
+  }, [sync, fold, narratingNow]);
 
   // The footer's Support card.
   useEffect(() => {
@@ -440,7 +459,7 @@ export function ScrollGuide({ tips }: { tips: Tip[] }) {
         bubbleNow.current === 'tip' &&
         Math.abs(window.scrollY - openedAt.current) > window.innerHeight / 2
       ) {
-        setBubble('closed');
+        fold();
       }
     };
     window.addEventListener('scroll', scrolled, { passive: true });
@@ -448,7 +467,7 @@ export function ScrollGuide({ tips }: { tips: Tip[] }) {
       window.clearTimeout(still);
       window.removeEventListener('scroll', scrolled);
     };
-  }, [setBubble]);
+  }, [fold]);
 
   // Dismissed here, or beside the dots: it goes from everywhere.
   useEffect(() => onGuideDismissed(sync), [sync]);
@@ -559,7 +578,13 @@ export function ScrollGuide({ tips }: { tips: Tip[] }) {
       data-moving={moving ? '' : undefined}
       inert={phase === 'leaving'}
     >
-      <button type="button" className={classes.walker} aria-label={walkerName} onClick={fromMascot}>
+      <button
+        ref={walker}
+        type="button"
+        className={classes.walker}
+        aria-label={walkerName}
+        onClick={fromMascot}
+      >
         {/* Keyed on the hop, so every new tip or shot replays it. */}
         <Mascot
           key={`hop-${hops}`}
