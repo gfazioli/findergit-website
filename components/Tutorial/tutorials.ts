@@ -56,6 +56,15 @@ export const TUTORIALS: TutorialFilm[] = [
     seconds: 68.4,
     published: '2026-11-13T08:33:04+01:00',
   },
+  {
+    n: 3,
+    id: 'bCEKqCdqM6k',
+    title: 'Find what needs attention',
+    summary:
+      "FinderGit already knows the state of every repository you track. In this tutorial, use the sidebar's Smart Views (Changes, Behind, Ahead, Diverged, Dirty and Clean) to list the repositories that need you, and its Filters to group them by where their origin remote points.",
+    seconds: 84.7,
+    published: '2026-11-17T17:00:00+01:00',
+  },
 ];
 
 /** The film numbered `n`; a number with no film is a typo in a page, or a film not out yet, and fails the build. */
