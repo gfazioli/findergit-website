@@ -86,16 +86,27 @@ const TARGETS: ShareTarget[] = [
 ];
 
 /**
+ * The path a page is shared under. On Vercel a page regenerated on a timer is
+ * rendered under its file name, so the home page's pathname reads `/index`, a
+ * second address for it that answers 200; every button shared it (2026-11-20).
+ * `app/page.tsx` names `/` for its canonical for the same reason. `next start`
+ * renders `/`, so only Vercel shows it.
+ */
+function sharePath(pathname: string | null): string {
+  return pathname?.replace(/\/index$/, '') || '/';
+}
+
+/**
  * A row of "share this page" buttons. Resolves the current page's absolute URL
- * from the pathname + the canonical site base, and uses the live document title
- * as the share text. Icon-only, tooltip-labelled, theme-aware.
+ * from its share path + the canonical site base, and uses the live document
+ * title as the share text. Icon-only, tooltip-labelled, theme-aware.
  */
 export const ShareButtons = () => {
   const pathname = usePathname();
   const clipboard = useClipboard({ timeout: 1500 });
 
   // Absolute URL of the current page, resolved against the canonical site base.
-  const url = new URL(pathname || '/', config.metadata.metadataBase).toString();
+  const url = new URL(sharePath(pathname), config.metadata.metadataBase).toString();
 
   // Share text = the page <title>. Kept deterministic on first render (the
   // configured default) so SSR and client hydration agree, then upgraded to the
