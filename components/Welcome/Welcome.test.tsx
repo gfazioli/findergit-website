@@ -1,5 +1,10 @@
-import { act, fireEvent, render, screen, waitFor } from '@/test-utils';
+import { act, fireEvent, render, screen, waitFor, within } from '@/test-utils';
 import { Welcome } from './Welcome';
+
+/** The feature rows' screenshots (Repo Trust's and In action's), under `root`. */
+const featureShots = (root: ParentNode = document) => [
+  ...root.querySelectorAll<HTMLImageElement>('img[src*="screenshot-feature"]'),
+];
 
 describe('Welcome component', () => {
   it('renders the hero title', () => {
@@ -9,11 +14,42 @@ describe('Welcome component', () => {
     expect(screen.getByText(/every git repo\. one window\./i)).toBeInTheDocument();
   });
 
-  it('serves the In action screenshots through next/image, lazily, at their column’s width', () => {
+  describe('the sections', () => {
+    it('give Repo Trust one of its own, right after the Solution', () => {
+      render(<Welcome />);
+      const title = 'Catch a supply-chain worm before it runs';
+      const trust = screen.getByRole('region', { name: title });
+      const h2s = screen.getAllByRole('heading', { level: 2 });
+      const own = h2s.findIndex((h) => trust.contains(h));
+      expect(h2s[own]).toHaveTextContent(title);
+      expect(h2s[own - 1]).toHaveTextContent('One window. All your repos. Always live.');
+
+      expect(within(trust).getByRole('link', { name: /^Learn more about/ })).toHaveAttribute(
+        'href',
+        '/docs/repo-trust'
+      );
+      const shots = featureShots(trust);
+      expect(shots).toHaveLength(1);
+      expect(shots[0].getAttribute('src')).toContain('screenshot-feature-trust');
+    });
+
+    it('leave In action the four other rows', () => {
+      render(<Welcome />);
+      const inAction = screen.getByRole('region', {
+        name: 'Built around the way you actually work',
+      });
+      const shots = featureShots(inAction);
+      expect(shots).toHaveLength(4);
+      expect(shots.some((img) => img.getAttribute('src')?.includes('trust'))).toBe(false);
+      expect(
+        within(inAction).getByText(/^Four touches that make Git feel native/)
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('serves the feature rows’ screenshots through next/image, lazily, at their column’s width', () => {
     render(<Welcome />);
-    const shots = screen
-      .getAllByRole('img')
-      .filter((img) => img.getAttribute('src')?.includes('screenshot-feature'));
+    const shots = featureShots();
     expect(shots).toHaveLength(5);
     for (const img of shots) {
       expect(img.getAttribute('src')).toMatch(/\/_next\/image\?url=/);
@@ -33,7 +69,7 @@ describe('Welcome component', () => {
     await waitFor(() => expect(screen.getByRole('button', { name: 'Close' })).toHaveFocus());
   });
 
-  describe('the In action rows', () => {
+  describe('the feature rows (Repo Trust and In action)', () => {
     let observed: { el: Element; fire: () => void }[];
 
     beforeEach(() => {
@@ -77,9 +113,7 @@ describe('Welcome component', () => {
 
     /** Each row's screenshot column and copy column, found from its screenshot. */
     function rows() {
-      const images = screen
-        .getAllByRole('img')
-        .filter((img) => img.getAttribute('src')?.includes('screenshot-feature'));
+      const images = featureShots();
       expect(images).toHaveLength(5);
       return images.map((img) => {
         const shot = img.closest('[data-reveal]') as HTMLElement;
