@@ -890,11 +890,13 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
 
             {/* Three lines at 1280 and 1440 wide: the Repo Trust sentence was a
                 fourth until the first one gave up its repeats (measured in the
-                browser, findergit-website#159). */}
+                browser, findergit-website#159). "Before you open it", never
+                "before it runs": Repo Trust shows the surface for you to review,
+                it cannot stop an editor that opens the clone first. */}
             <Text c="dimmed" ta="center" size="lg" maw={620} mx="auto">
               FinderGit is a native macOS file browser that shows branch, status and diffs for all
               your repos at a glance — and lets you commit, push and branch right there. It also
-              tells you what a fresh clone can run on its own, before it does.
+              shows what a fresh clone can run on its own, before you open it.
             </Text>
 
             <Group justify="center" mt="md">
