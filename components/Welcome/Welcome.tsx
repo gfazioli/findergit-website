@@ -1,6 +1,6 @@
 'use client';
 
-import { type CSSProperties, useEffect, useRef, useState } from 'react';
+import { type CSSProperties, useEffect, useId, useRef, useState } from 'react';
 import NextImage from 'next/image';
 import Link from 'next/link';
 import { TextAnimate } from '@gfazioli/mantine-text-animate';
@@ -71,11 +71,12 @@ import { isRecent } from './recent';
 import classes from './Welcome.module.css';
 
 /**
- * Single feature row in the "In action" showcase. Pairs a large screenshot
- * with copy on the opposite side, alternating left/right per row to give
- * the section vertical rhythm. Mobile collapses both columns into a stack
- * with the screenshot always on top, regardless of `reverse` — copy
- * second is the natural reading order on a phone.
+ * Single feature row: a large screenshot with copy on the opposite side. The
+ * "In action" showcase alternates them left/right per row to give the section
+ * vertical rhythm; Repo Trust's section is one row on its own (`section`).
+ * Mobile collapses both columns into a stack with the screenshot always on
+ * top, regardless of `reverse` — copy second is the natural reading order on
+ * a phone.
  */
 function FeatureRow({
   icon: Icon,
@@ -86,6 +87,7 @@ function FeatureRow({
   imageAlt,
   href,
   reverse = false,
+  section,
 }: {
   icon: typeof IconMarkdown;
   iconColor: string;
@@ -97,17 +99,42 @@ function FeatureRow({
   href?: string;
   /** When true, copy is on the left and screenshot on the right at md+. */
   reverse?: boolean;
+  /**
+   * The row is a section of its own: the eyebrow sits beside the icon, and
+   * the title is the section's h2 (a row inside a section is its h3), with
+   * the id the section's `aria-labelledby` names. A centred header above the
+   * row would say the title twice.
+   */
+  section?: { eyebrow: string; titleId: string };
 }) {
-  // Each row renders inside the "In action" dark band (see Welcome()), so
-  // the copy is forced to light colours — white title, gray-4 description —
-  // rather than the theme-default near-black, which would be unreadable on
-  // the dark backdrop in light mode.
+  // Every row sits on the night ground (the site is dark only), so the copy
+  // is forced to light colours — white title, gray-4 description — rather
+  // than the theme-default near-black.
+  const icon = (
+    <ThemeIcon size={44} radius="md" variant="light" color={iconColor}>
+      <Icon size={24} />
+    </ThemeIcon>
+  );
   const copyCol = (
     <Stack gap="md" justify="center" h="100%">
-      <ThemeIcon size={44} radius="md" variant="light" color={iconColor}>
-        <Icon size={24} />
-      </ThemeIcon>
-      <Title order={3} fz={{ base: 24, sm: 30 }} fw={800} lh={1.15} c="white">
+      {section ? (
+        <Group gap="sm">
+          {icon}
+          <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
+            {section.eyebrow}
+          </Text>
+        </Group>
+      ) : (
+        icon
+      )}
+      <Title
+        id={section?.titleId}
+        order={section ? 2 : 3}
+        fz={section ? { base: 28, sm: 36 } : { base: 24, sm: 30 }}
+        fw={800}
+        lh={1.15}
+        c="white"
+      >
         {title}
       </Title>
       <Text c="gray.4" size="md" lh={1.65}>
@@ -206,7 +233,7 @@ function ownReveal(
 }
 
 /**
- * Every screenshot on this page, the hero's and the In action rows', is a
+ * Every screenshot on this page, the hero's and the feature rows', is a
  * 2000x1282 PNG (`FinderGit/scripts/screenshots/shoot.sh` delivers them at
  * that size). All of them go through next/image, which serves each at the
  * width it is drawn, as AVIF or WebP: drawn as plain <img>s, production sent
@@ -225,7 +252,8 @@ const SHOT_HEIGHT = 1282;
 const HERO_SIZES = '(width < 71.25em) calc(100vw - 2rem), 69.25rem';
 
 /**
- * How wide an In action screenshot is drawn: the whole `xl` Container (82.5rem
+ * How wide a feature row's screenshot is drawn (Repo Trust's section and the
+ * In action rows both sit in an `xl` Container): the whole Container (82.5rem
  * at most, less 1rem a side) under `md`, and from `md` up 7 of its 12 columns
  * less their share of the 3.5rem gap. In rem, like `HERO_SIZES`, and switching
  * where `md` does: range syntax excludes 62em itself, as `min-width` includes it.
@@ -772,6 +800,11 @@ const tips: Tip[] = features
  * any path that mounts the hero without the server fetch.
  */
 export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cadence }) {
+  // The two sections of feature rows are named by their titles: a row's
+  // screenshot comes before its copy in the DOM, so its heading alone would
+  // leave the screenshot under the heading above.
+  const trustTitle = useId();
+  const inActionTitle = useId();
   return (
     <>
       {/* ─── Hero ─── */}
@@ -855,10 +888,13 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
               </TextAnimate>
             </Title>
 
+            {/* Three lines at 1280 and 1440 wide: the Repo Trust sentence was a
+                fourth until the first one gave up its repeats (measured in the
+                browser, findergit-website#159). */}
             <Text c="dimmed" ta="center" size="lg" maw={620} mx="auto">
-              FinderGit is a native macOS file browser that shows branch, status, changes and diffs
-              for all your repositories at a glance — and lets you commit, push, branch and diff
-              right there. No app-switching, no terminal round-trips.
+              FinderGit is a native macOS file browser that shows branch, status and diffs for all
+              your repos at a glance — and lets you commit, push and branch right there. It also
+              tells you what a fresh clone can run on its own, before it does.
             </Text>
 
             <Group justify="center" mt="md">
@@ -933,6 +969,26 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
 
       {/* ─── The Solution ─── */}
       <SolutionSection />
+
+      {/* ─── Repo Trust ─── */}
+      {/* Right under the Solution: few Git apps say what a cloned repo can run
+          on its own, and this was a row of "In action", seven sections down
+          (findergit-website#159). `overflowX: clip` as there: the screenshot
+          comes in from the side. */}
+      <Box component="section" aria-labelledby={trustTitle} py={80} style={{ overflowX: 'clip' }}>
+        <Container size="xl">
+          <FeatureRow
+            section={{ eyebrow: 'Repo Trust', titleId: trustTitle }}
+            icon={IconShieldHalfFilled}
+            iconColor="indigo"
+            title="Catch a supply-chain worm before it runs"
+            description="Cloning or pulling a repo can quietly arm it to run code — on folder open, on agent load, on npm install. Repo Trust surfaces that auto-run surface in plain language and detects the obfuscated dropper behind supply-chain worms like Shai-Hulud / Miasma — across your branches, not just the one you checked out. It flags changes after a pull, walks you through cleanup if a repo looks compromised, and never runs anything it finds."
+            image="/screenshot-feature-trust.png"
+            imageAlt="The Trust card open on a repository, listing its auto-run hooks with a plain-language explanation of what each one runs"
+            href="/docs/repo-trust"
+          />
+        </Container>
+      </Box>
 
       {/* ─── Features ─── */}
       {/* `scrollMarginTop`: the navbar is sticky, and the Features link in it
@@ -1042,33 +1098,35 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
           out, and a transformed box that far out would widen the page for the
           length of the spring. `clip` makes no scroll container, so the
           shadows above and below are not cut. */}
-      <Box py={96} style={{ overflowX: 'clip' }}>
+      <Box
+        component="section"
+        aria-labelledby={inActionTitle}
+        py={96}
+        style={{ overflowX: 'clip' }}
+      >
         <Container size="xl">
           <Reveal variant="rise">
             <Stack align="center" gap="md" mb={72}>
               <Text size="sm" fw={700} tt="uppercase" style={{ letterSpacing: 3 }} c="findergit.3">
                 In action
               </Text>
-              <Title order={2} ta="center" fz={{ base: 32, sm: 42 }} fw={900} c="white">
+              <Title
+                id={inActionTitle}
+                order={2}
+                ta="center"
+                fz={{ base: 32, sm: 42 }}
+                fw={900}
+                c="white"
+              >
                 Built around the way you actually work
               </Title>
               <Text c="gray.4" ta="center" size="lg" maw={640}>
-                Five touches that make Git feel native to the file browser — not bolted on top.
+                Four touches that make Git feel native to the file browser — not bolted on top.
               </Text>
             </Stack>
           </Reveal>
 
           <Stack gap={96}>
-            <FeatureRow
-              icon={IconShieldHalfFilled}
-              iconColor="indigo"
-              title="Catch a supply-chain worm before it runs"
-              description="Cloning or pulling a repo can quietly arm it to run code — on folder open, on agent load, on npm install. Repo Trust surfaces that auto-run surface in plain language and detects the obfuscated dropper behind supply-chain worms like Shai-Hulud / Miasma — across your branches, not just the one you checked out. It flags changes after a pull, walks you through cleanup if a repo looks compromised, and never runs anything it finds."
-              image="/screenshot-feature-trust.png"
-              imageAlt="The Trust card open on a repository, listing its auto-run hooks with a plain-language explanation of what each one runs"
-              href="/docs/repo-trust"
-            />
-
             <FeatureRow
               icon={IconEye}
               iconColor="blue"
@@ -1077,7 +1135,6 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
               image="/screenshot-feature-code-preview.png"
               imageAlt="Source code preview with syntax highlighting inside FinderGit"
               href="/docs/file-browser#quick-look"
-              reverse
             />
 
             <FeatureRow
@@ -1088,6 +1145,7 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
               image="/screenshot-feature-ai-commit.png"
               imageAlt="The ✨ AI button beside the commit field, with four changes staged, in the FinderGit detail panel"
               href="/docs/ai-commit-messages"
+              reverse
             />
 
             <FeatureRow
@@ -1098,7 +1156,6 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
               image="/screenshot-feature-diff.png"
               imageAlt="File-level diff view in the FinderGit detail panel"
               href="/docs/diff-viewer"
-              reverse
             />
 
             <FeatureRow
@@ -1109,6 +1166,7 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
               image="/screenshot-feature-maintenance.png"
               imageAlt="The Maintenance card open, showing the Git disk-space breakdown with Optimize and Deep Clean actions in FinderGit"
               href="/docs/repo-maintenance"
+              reverse
             />
           </Stack>
         </Container>
