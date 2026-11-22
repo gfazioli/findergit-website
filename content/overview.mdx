@@ -24,10 +24,11 @@ A grid of at-a-glance counters across your whole workspace:
 - **On Disk** — the total git footprint of every repo. Once any repository is found to be *bloated* rather than merely large, the card says how many.
 - **GitHub** — how fast your own requests to GitHub are coming back right now (see [GitHub connection](#github-connection) below).
 - **Stars / Forks** — your GitHub social proof, with a "behind upstream" count for forks.
+- **Failing checks / Dependabot** — how many repositories fail a check on their default branch, and how many have open Dependabot alerts (see [Checks and Dependabot](#checks-and-dependabot)).
 
-The cards come in groups, in the order you'd ask the questions: the working tree first (repositories, clean, modified, unpushed, worktrees, tree health, needs attention, critical findings), then the disk, then GitHub (connection, stars, forks). A card that opens sits right after the figure it details: **Largest on disk** beside **On Disk**, **Top starred** beside **Stars**.
+The cards come in groups, in the order you'd ask the questions: the working tree first (repositories, clean, modified, unpushed, worktrees, tree health, needs attention, critical findings), then the disk, then GitHub (connection, stars, forks, failing checks, Dependabot). A card that opens sits right after the figure it details: **Largest on disk** beside **On Disk**, **Top starred** beside **Stars**.
 
-Four cards open: **GitHub**, **Needs attention**, **Top starred** and **Largest on disk**. Click one and it grows into its panel right under its row; one is open at a time, a second click closes it, and FinderGit remembers which was open. **Needs attention** is open the first time. The other cards are figures and stay as they are.
+Six cards open: **GitHub**, **Needs attention**, **Top starred**, **Largest on disk**, **Failing checks** and **Dependabot**. Click one and it grows into its panel right under its row; one is open at a time, a second click closes it, and FinderGit remembers which was open. **Needs attention** is open the first time. The other cards are figures and stay as they are.
 
 Each card shows a small spinner while its data is still loading, so you can tell live numbers from ones still being fetched.
 
@@ -60,6 +61,12 @@ Two rankings: your most-starred repositories, and the ones eating the most disk 
 ![Largest on disk as a donut: the biggest repositories as slices, the rest folded into Other, the total in the middle](/screenshot-overview-largest.png)
 
 Every repository is clickable in all three views, and hovering a repository shows its full path, which tells two clones with the same name apart. When the panel is narrow, at a large zoom, the legend moves under the donut and the bars stack their figures over the bar, so nothing is squeezed out.
+
+## Checks and Dependabot
+
+**Failing checks** lists every repository where a check failed on the newest commit of its default branch, by name, with the branch beside it; its card says out of how many repositories anything reports checks at all. **Dependabot** lists the repositories with open Dependabot alerts, the most severe first, each with its count in the colour of the worst. Click a row to open that repository.
+
+Both come from GitHub in one extra request per repository, read beside the stars and the open issues and refreshed with them. A zero on the Dependabot card means none *seen*: GitHub shows the alerts only to accounts allowed to see them, and only where Dependabot is on, and answers zero otherwise.
 
 ## GitHub connection
 

@@ -26,10 +26,12 @@ The cards, in the order they appear:
 - **Issues** — open issues on the repo's forge
 - **Pull Requests** — open pull requests (merge requests on GitLab) on the repo's forge
 - **Stars** — the star history, on GitHub
+- **Actions** — the newest run of each workflow on the default branch, on GitHub (see [Actions and Security cards](/docs/github-integration#actions-and-security-cards))
+- **Security** — open Dependabot, code scanning and secret scanning alerts, on GitHub
 - **Maintenance** — disk-space breakdown and cleanup (see [Repo Maintenance](/docs/repo-maintenance))
 - **Trust** — the repo's auto-run surface (see [Repo Trust](/docs/repo-trust))
 
-A repository on GitHub has all nine. On another forge there are eight (no Stars), and with no remote there are six (no Issues, Pull Requests or Stars). The cards read in order of what they are about: what you are doing right now, then this repository's refs, then what the forge says about it, then looking after the place. Tags sits beside Branches because a tag is a ref and the two answer the same kind of question.
+A repository on GitHub has all eleven. On another forge there are eight (no Stars, Actions or Security), and with no remote there are six (no Issues, Pull Requests or Stars). The cards read in order of what they are about: what you are doing right now, then this repository's refs, then what the forge says about it, then looking after the place. Tags sits beside Branches because a tag is a ref and the two answer the same kind of question.
 
 ## Opening a card
 
@@ -79,6 +81,8 @@ The Overview is the page itself: a dashboard of the selected repository, and a m
   - **Tags** — the number of tags; the line is the latest tag, or *No tags yet*.
   - **Issues** and **Pull Requests** — the open count on the forge; the line names the forge, or says *None open*, or that the forge does not track it.
   - **Stars** — the star count; the line gives forks and watchers.
+  - **Actions** — the failing workflows on the default branch, else the running ones, else how many there are; the line says *Failing workflows*, *Running now*, *All passing*, *No runs on* the branch, or *Not all workflows checked*. Red, blue, green, or grey.
+  - **Security** — the open alerts, in the colour of the worst; the line names the worst (*Critical alerts*, *Exposed secrets*…), or says *No open alerts* once every kind was read, or *Not all alerts visible* when one could not be.
   - **Maintenance** — what the repository weighs on disk; the line gives its number of tracked files.
   - **Trust** — the number of findings, in the colour of the worst: red for critical findings, orange when the auto-run surface changed, yellow for hooks to review, green when there is nothing to review.
 - **Activity** — the last year as a calendar, one square per day, or as a line through its days, with the current and the longest streak. The switch beside the streaks picks one for every repository, and an exported picture draws the same. Hover a day in the calendar to read how many commits it holds.
