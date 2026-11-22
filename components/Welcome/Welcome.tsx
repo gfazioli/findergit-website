@@ -688,7 +688,7 @@ const features: Feature[] = [
     icon: IconSparkles,
     title: 'Profile Card',
     description:
-      'Your GitHub profile on one card, in nine looks \u2014 Halloween and Christmas in season \u2014 saved as an image or a PDF, copied, or shared in a click.',
+      'Your GitHub profile on one card, in seventeen looks \u2014 a 1970s green-screen monitor among them, Halloween and Christmas in season \u2014 saved as an image or a PDF, copied, or shared in a click.',
     color: 'violet',
     href: '/docs/profile-card',
     since: '0.52.0',
