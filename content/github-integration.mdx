@@ -84,6 +84,10 @@ On a GitHub repository, two more cards follow **Stars**:
 - **Actions** reads the newest run of each workflow on the default branch: pushes and schedules, not pull requests coming from other branches. Its figure is the failing workflows, red, or the running ones, blue, or else how many workflows there are, green when every one passed. Its section lists those runs, and each one opens on GitHub. A repository with more workflows than one look covers says *Not all workflows checked* rather than calling the branch green.
 - **Security** counts the open alerts of the three kinds GitHub keeps (Dependabot, code scanning and secret scanning) in the colour of the worst, and an exposed secret counts as the worst there is. It says *No open alerts* only when every kind was read or is turned off on GitHub; a kind your token or your role can't see makes it *Not all alerts visible* instead. Its section lists each kind's alerts, or why that kind has none to show: not set up, turned off, or not visible with your token.
 
+![The Actions card open on a GitHub repository, its figure 1 on a red card for the one failing workflow: below, the newest run of each workflow on main, CodeQL still running, CI failed, Lint and Release passed, each with its run number, title, event and how long ago it ran](/screenshot-detail-actions.png)
+
+![The Security card open on the same repository, 4 open alerts on a red card that says Exposed secrets: two Dependabot alerts, Critical and High, with the package and the manifest; a code scanning alert with the file and line it points at; and a GitHub token that secret scanning found, still valid](/screenshot-detail-security.png)
+
 Both read when you open the repository and on **Refresh**, never in the background: Actions keeps its answer for two minutes, Security for ten.
 
 ### File-browser columns
@@ -95,6 +99,8 @@ In the table, five columns appear next to **Status**:
 - **Stars** — stargazer count, with a small ⭐ icon
 - **Checks** — the mark GitHub shows beside the newest commit of the default branch: a check when every check passed, a cross when one failed, a clock while they run. It counts everything that reports there, GitHub Actions and anything else such as a deploy preview, so it can be green on a repository whose Actions card has no runs. Empty when nothing reports.
 - **Dependabot** — the open Dependabot alerts, in the colour of the worst. The cell stays empty rather than showing 0: GitHub answers zero both when there are none and when your account may not see them.
+
+![The file browser on a folder of repositories. Checks: a red cross on the two that fail, a blue clock on the one still running, a green check on those that passed. Dependabot: each repository's open alerts in the colour of the worst, red, orange or yellow. Both cells stay empty where GitHub has nothing to report](/screenshot-browser-checks.png)
 
 Numbers use the compact format (`1.2K` instead of `1234`). Click any column header to sort by it — popular repos to the top, or busiest repos by open issues.
 

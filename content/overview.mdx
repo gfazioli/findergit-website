@@ -66,6 +66,8 @@ Every repository is clickable in all three views, and hovering a repository show
 
 **Failing checks** lists every repository where a check failed on the newest commit of its default branch, by name, with the branch beside it; its card says out of how many repositories anything reports checks at all. **Dependabot** lists the repositories with open Dependabot alerts, the most severe first, each with its count in the colour of the worst. Click a row to open that repository.
 
+![The Overview with Failing checks at 2, out of 6 repositories with checks, and the Dependabot card open: 4 repositories with 10 open alerts, listed most severe first, each count in the colour of its worst alert](/screenshot-overview-dependabot.png)
+
 Both come from GitHub in one extra request per repository, read beside the stars and the open issues and refreshed with them. A zero on the Dependabot card means none *seen*: GitHub shows the alerts only to accounts allowed to see them, and only where Dependabot is on, and answers zero otherwise.
 
 ## GitHub connection
