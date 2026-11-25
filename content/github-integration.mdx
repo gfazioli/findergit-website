@@ -46,7 +46,7 @@ If you can't or don't want to install `gh`:
 2. Open **Settings → Git → GitHub Token**.
 3. Paste the token into the field and click **Save & Validate**.
 
-FinderGit round-trips a single call to GitHub before saving. If the token is rejected (401/403), the error is surfaced and the token never lands in your Keychain. If the call fails for a network reason (offline, transient outage), you'll see a "Couldn't reach GitHub" message — try again, no need to assume the token is bad.
+FinderGit round-trips a single call to GitHub before saving. If the token is rejected (401/403), the error is surfaced and the token never lands in your Keychain. If the call fails for a network reason (offline, transient outage), you'll see a "Couldn't reach GitHub" message — try again, no need to assume the token is bad. The same goes when GitHub's rate limit was reached: FinderGit says so, rather than calling the token rejected.
 
 Once stored, the token lives in the Keychain under the entry for `github.com`. Use the **Remove** button to delete it.
 
@@ -159,6 +159,8 @@ To respect GitHub's rate limits and keep the UI snappy:
 - **Fork status** caches for **5 minutes** too — fork drift moves slowly. The toolbar **Refresh** re-checks every loaded repo, and syncing a fork re-checks that one immediately.
 
 Each of these sections has a **Refresh** button that bypasses the cache when you want immediate fresh data.
+
+When GitHub refuses a section because the token lacks a permission — a fine-grained token without Issues, Pull requests or Actions, say — the section names the permission to add, or, when GitHub doesn't say which, asks you to check that the token covers the repository and its owner. The file browser's counts and the Actions and Security cards then don't ask again each time they appear: a **Refresh**, a new token, or a change of the repository's remote does. A rate limit reads as a rate limit, never as a rejected token.
 
 ## Privacy and rate limits
 

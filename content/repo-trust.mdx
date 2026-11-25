@@ -102,6 +102,24 @@ Most auto-run hooks are perfectly legitimate — your own build task, a setup ho
 
 Trusting a repo records its current surface as reviewed, so the **Changed since last seen** alert still fires later if that surface drifts — trusting silences the *presence* badge, never the *drift* one.
 
+## Programs git runs from this repository
+
+The checks above are about what runs when *you* open, install or load a repository. git itself is the other way in: a repository's own git configuration can name programs that git runs for it — hooks, filters, a diff tool, an SSH command, a credential helper. git never copies them with a clone, but a repository unpacked from an archive, or copied from another Mac or a shared drive, keeps them. And FinderGit runs git without a click: a fetch at launch and on the auto-fetch timer, a status whenever a file changes.
+
+So when a repository you add configures any of these, its Trust card lists them under **Programs git runs from this repository**, each with its command or the hook's path, and until you allow them:
+
+- FinderGit **doesn't fetch it on its own** — at launch or on the timer;
+- what FinderGit **reads on its own** — the repository's status, the diff of a file you select — runs none of them: its hooks, filters and diff tools stay off.
+
+A Fetch, Pull, Push or Commit you click runs them as usual: the click is your say-so. When you've looked, click **Allow these programs**. If they change later, FinderGit holds the automatic fetch again and marks what is new; **Hold automatic fetch** takes the allowance back. While a repository is held, its Trust tile on the [Overview](/docs/detail-panel) reads *Automatic fetch held* in orange, with the number of programs not yet allowed.
+
+Repositories already in your folders when you updated to FinderGit 0.76.0, which brought this check, stay allowed as they were, so nothing you work in changes overnight; the hold applies to repositories you add afterwards, and to any whose programs change.
+
+<Callout type="info">
+  With its filters off, a held repository that relies on one (git-crypt, for instance) can show its
+  filtered files as modified until you allow it.
+</Callout>
+
 ## If a repo looks compromised
 
 When FinderGit finds a dropper artifact, the Trust section swaps its usual "most of these are legitimate" summary for a short **incident runbook** — because at that point the advice is no longer "review it", it's "don't run it, and clean it up". The danger is *running* the repo: opening it in an editor or running an install/test script. Don't, until it's clean.

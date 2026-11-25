@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderGit 0.76.0 — Release Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --accent: #007aff;
+    --muted: #6b6b73;
+    --code-bg: #f4f4f5;
+    --border: rgba(0,0,0,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #ececec;
+      --muted: #9c9ca5;
+      --code-bg: #2c2c2e;
+      --border: rgba(255,255,255,0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    max-width: 720px;
+  }
+  header.page-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  header.page-header h1 { font-size: 1.7em; margin: 0 0 4px; letter-spacing: -0.02em; }
+  header.page-header .subtitle { color: var(--muted); margin: 0; font-size: 0.92em; }
+  h1, h2, h3, h4 { letter-spacing: -0.01em; margin: 1.5em 0 0.5em; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.2em; }
+  h3 { font-size: 1em; }
+  a { color: var(--accent); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 22px 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  code {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 12px 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  pre code { background: transparent; padding: 0; font-size: 1em; }
+  blockquote {
+    margin: 12px 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--border);
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.95em; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: var(--code-bg); }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <h1>FinderGit 0.76.0</h1>
+  <p class="subtitle">Release notes</p>
+</header>
+<p>FinderGit 0.76.0 — Programs a repository runs, held until you allow them</p>
+<h2>Highlights</h2>
+<ul>
+<li><strong>Programs a repository runs, held until you allow them.</strong> A repository's own git configuration can name programs that git runs for it: hooks, filters, a diff tool, an SSH command, a credential helper. git never copies them with a clone, but a repository unpacked from an archive or copied from another Mac keeps them, and FinderGit runs git without a click: a fetch at launch and on the auto-fetch timer, a status whenever a file changes. When a repository you add configures any, its Trust card lists them, and until you allow them FinderGit doesn't fetch it on its own, and what it reads on its own (the status, the diff of a file you select, the Overview's size check) runs none of them. A Fetch, Pull, Push or Commit you click runs them as usual. <strong>Allow these programs</strong> takes one click; if they change later, the automatic fetch is held again and what is new is marked. Repositories already in your folders when you update stay allowed as they were.</li>
+</ul>
+<h2>Bug fixes</h2>
+<ul>
+<li>A GitHub token that works but lacks one permission, or that hit GitHub's rate limit, was called rejected, and you were sent to replace a token that was fine. Now a missing permission is named when GitHub says which (otherwise you're asked to check that the token covers the repository and its owner), fork sync says it needs Read and write on Contents, and a rate limit reads as a rate limit, also when you save a token. The file browser's counts and the Actions and Security cards then wait for your Refresh instead of asking again each time they appear, and a refused read keeps the Checks and Dependabot figures already shown.</li>
+</ul>
+<h2>Under the hood</h2>
+<ul>
+<li>The gate reads a repository's own git configuration with <code class="notranslate">git config</code>, which starts no program, keeping only what the repository itself sets (an included file counts, and so does every submodule's own configuration), and lists its hooks without running them. A held repository's reads run with its hooks pointed at <code class="notranslate">/dev/null</code>, its filter drivers emptied and <code class="notranslate">--no-ext-diff --no-textconv</code>: a <code class="notranslate">status</code> that refreshes stale stat data rewrites the index, and git then runs the <code class="notranslate">post-index-change</code> hook. Your global configuration is yours: a globally installed Git LFS or a keychain credential helper holds nothing.</li>
+<li>Every git call FinderGit makes now carries <code class="notranslate">-c log.showSignature=false</code> beside <code class="notranslate">core.fsmonitor=false</code>: when a repository sets <code class="notranslate">log.showSignature</code>, git runs its <code class="notranslate">gpg.program</code> on any <code class="notranslate">git log</code> over a signed commit, and FinderGit reads the newest commit as soon as a repository is selected.</li>
+<li>The Actions card's beam now counts its laps in UndologUI 0.2.0 rather than in a timer of FinderGit's own. The MIT license notice of the code the beam is ported from ships inside the app, so the About window drops its <strong>Open-Source Licenses</strong> link.</li>
+<li>Six test suites now compare the app's types on the main actor, ready for the Swift 6 language mode.</li>
+</ul>
+<h2>Install</h2>
+<ol>
+<li>Download <code class="notranslate">FinderGit-0.76.0.dmg</code></li>
+<li>Open the DMG and drag FinderGit into Applications (or open it from there, and it offers to move itself)</li>
+<li>Launch normally — the app is signed with an Apple Developer ID and notarized by Apple</li>
+</ol>
+<h2>Requirements</h2>
+<p>macOS 15 or later. Universal binary (Apple Silicon and Intel).</p>
+</body>
+</html>
