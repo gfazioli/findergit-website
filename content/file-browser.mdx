@@ -57,6 +57,10 @@ Repositories (directories containing `.git/`) show inline status. The badge refl
 
 Hover the badge for a tooltip with the exact meaning. Ahead/behind counts are only accurate after a `git fetch` has brought the latest remote refs — Settings → Git → **Fetch on launch** (on by default) runs one fetch at startup so the counts are correct from the first moment.
 
+### Private repositories
+
+A repository not everyone can see carries a **lock** next to its name: private, or internal (visible to the signed-in members of its organisation or instance, which gets its own glyph). A public one carries nothing, since most are. The answer comes with the Issues, PRs and Stars figures, in the same request, from GitHub, GitLab and Codeberg; Bitbucket's figures don't say, so its repositories carry no mark. Hover the lock for what it means on that forge. The same mark is in the [Repository List](/docs/repository-list) and the Overview's lists, and the repository's own Overview says it in words.
+
 ### Fork badge
 
 **Forks** carry a small branch glyph next to their name. It stays muted when the fork is in sync, and turns orange with **↓N** when the fork is behind its upstream — so you can spot at a glance which forks need syncing. Only GitHub reports how far behind a fork is; on the other three forges the glyph marks the fork and its tooltip says the drift isn't available, rather than implying it is current. When one does, **Sync Fork** (from the context menu or the repo's Overview) updates it on GitHub and pulls your local clone in one step; a fork that has [diverged](/docs/github-integration#update-from-upstream) — its own commits *and* missing upstream ones — can't be fast-forwarded, so the Overview banner offers a merge or a rebase from upstream instead. See [Fork awareness](/docs/github-integration#fork-awareness) for the full story.
