@@ -86,7 +86,7 @@ import { join } from 'node:path';
 
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const MANTINE_KEY = 'mantine-color-scheme-value';
-/** `NewsletterModal`'s flag (`DISMISSED_KEY`), which it stores as the JSON `true`. */
+/** `NewsletterModal`'s flag (`DISMISSED_KEY`): the time the prompt was closed, in ms. */
 const PROMPT_KEY = 'findergit-newsletter-prompt-dismissed';
 
 const [url, prefix, ...rest] = process.argv.slice(2);
@@ -267,7 +267,7 @@ try {
     'Runtime.evaluate',
     {
       expression: `localStorage.setItem(${JSON.stringify(MANTINE_KEY)}, "dark");${
-        prompt ? '' : ` localStorage.setItem(${JSON.stringify(PROMPT_KEY)}, "true");`
+        prompt ? '' : ` localStorage.setItem(${JSON.stringify(PROMPT_KEY)}, String(Date.now()));`
       }`,
     },
     sessionId
