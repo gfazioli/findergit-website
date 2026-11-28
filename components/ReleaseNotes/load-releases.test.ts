@@ -62,7 +62,15 @@ describe('compileMarkdown', () => {
   it('puts a copy button after every code block, the block left as marked writes it', () => {
     const html = compileMarkdown('```sh\nshasum -a 256 FinderGit.dmg\n```');
     expect(html).toBe(
-      '<div class="release-code"><pre><code class="language-sh">shasum -a 256 FinderGit.dmg\n</code></pre>\n<button type="button" data-release-copy>Copy</button></div>\n'
+      '<div class="release-code"><pre><code class="language-sh">shasum -a 256 FinderGit.dmg\n</code></pre>\n<button type="button" data-release-copy data-pagefind-ignore>Copy</button></div>\n'
+    );
+  });
+});
+
+describe('compileMarkdown links', () => {
+  it('opens a link out of the site in a new tab, and leaves the others alone', () => {
+    expect(compileMarkdown('[site](https://example.com/a) and [docs](/docs/faq)')).toBe(
+      '<p><a target="_blank" rel="noopener noreferrer" href="https://example.com/a">site</a> and <a href="/docs/faq">docs</a></p>\n'
     );
   });
 });

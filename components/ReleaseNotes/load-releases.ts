@@ -36,7 +36,14 @@ export const compileMarkdown: ReleaseCompiler = (markdown) => {
       },
       code(token) {
         const block = Renderer.prototype.code.call(this, token);
-        return `<div class="release-code">${block}<button type="button" ${COPY_BUTTON_ATTRIBUTE}>Copy</button></div>\n`;
+        return `<div class="release-code">${block}<button type="button" ${COPY_BUTTON_ATTRIBUTE} data-pagefind-ignore>Copy</button></div>\n`;
+      },
+      // A link out of the site opens a new tab, as every external link in the docs does.
+      link(token) {
+        const html = Renderer.prototype.link.call(this, token);
+        return /^https?:\/\//.test(token.href)
+          ? html.replace(/^<a /, '<a target="_blank" rel="noopener noreferrer" ')
+          : html;
       },
     },
   });

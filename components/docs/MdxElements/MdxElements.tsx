@@ -43,7 +43,15 @@ function heading(order: HeadingOrder) {
 }
 
 function MdxLink({ href = '', children, ...others }: React.ComponentPropsWithoutRef<'a'>) {
-  if (/^(https?:)?\/\//.test(href) || href.startsWith('mailto:')) {
+  // A mail link opens the mail app: in a new tab it left an empty one behind, as Nextra's did not.
+  if (href.startsWith('mailto:')) {
+    return (
+      <Anchor href={href} {...others}>
+        {children}
+      </Anchor>
+    );
+  }
+  if (/^(https?:)?\/\//.test(href)) {
     return (
       <Anchor href={href} target="_blank" rel="noopener noreferrer" {...others}>
         {children}

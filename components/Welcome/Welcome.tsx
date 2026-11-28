@@ -993,9 +993,13 @@ export function Welcome({ cadence = fallbackReleaseCadence() }: { cadence?: Cade
       </Box>
 
       {/* ─── Features ─── */}
-      {/* `scrollMarginTop`: the navbar is sticky, and the Features link in it
-          would otherwise land the eyebrow under the bar. */}
-      <Box py={80} id="features" style={{ scrollMarginTop: 64 }}>
+      {/* `scrollMarginTop`: the header is fixed, and the Features link in it
+          would otherwise land the eyebrow under it (its height, banner included). */}
+      <Box
+        py={80}
+        id="features"
+        style={{ scrollMarginTop: 'var(--app-shell-header-height, 4rem)' }}
+      >
         <Container size="lg">
           <Reveal variant="rise">
             <Stack align="center" gap="md" mb={48}>
