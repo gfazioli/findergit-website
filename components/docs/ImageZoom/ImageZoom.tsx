@@ -3,14 +3,16 @@
 import NextImage, { type ImageProps } from 'next/image';
 import { Modal, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { blurPlaceholder } from './blur-placeholder';
 import classes from './ImageZoom.module.css';
 
 /**
  * An image that opens full size in a Mantine `Modal` when clicked. Takes `next/image`'s props,
- * as Nextra's `<ImageZoom>` does.
+ * as Nextra's `<ImageZoom>` does, and paints an import's blurred preview first.
  */
 export function ImageZoom(props: ImageProps) {
   const [opened, { open, close }] = useDisclosure(false);
+  const placeholder = props.placeholder ?? blurPlaceholder(props.src);
 
   return (
     <>
@@ -19,7 +21,7 @@ export function ImageZoom(props: ImageProps) {
         className={classes.trigger}
         aria-label={`Enlarge: ${props.alt}`}
       >
-        <NextImage {...props} />
+        <NextImage {...props} placeholder={placeholder} />
       </UnstyledButton>
       <Modal
         opened={opened}

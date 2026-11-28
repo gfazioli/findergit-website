@@ -75,24 +75,6 @@ function drawnWidth(src: DocsImageProps['src']): number | undefined {
 }
 
 /**
- * `blur` when the import carries a blurred preview (a PNG or a JPEG; next/image
- * makes none for an SVG or a GIF, and `blur` without one is an error).
- *
- * As on Nextra, which set it on every static image: the preview, inlined in the
- * HTML, is painted with the page, and the picture replaces it when it arrives.
- * Without it a docs page showed an empty box where its first screenshot goes
- * until the file came in, and its LCP moved from the preview's paint to the
- * picture's: 1.6 s to 3.3 s on /docs, Lighthouse mobile (2026-11-28).
- */
-function placeholderOf(src: DocsImageProps['src']): 'blur' | undefined {
-  if (typeof src !== 'object') {
-    return undefined;
-  }
-  const image = 'default' in src ? src.default : src;
-  return image.blurDataURL ? 'blur' : undefined;
-}
-
-/**
  * A docs image: the engine's zoomable image, told how wide it is drawn. Every
  * Markdown image in `content/` comes here (`mdx-components.tsx`), imported by
  * the engine's `remark-static-images` from `public/`.
@@ -105,11 +87,5 @@ function placeholderOf(src: DocsImageProps['src']): 'blur' | undefined {
  * than the column says its own width.
  */
 export function DocsImage(props: DocsImageProps) {
-  return (
-    <ImageZoom
-      sizes={docsSizes(drawnWidth(props.src))}
-      placeholder={placeholderOf(props.src)}
-      {...props}
-    />
-  );
+  return <ImageZoom sizes={docsSizes(drawnWidth(props.src))} {...props} />;
 }

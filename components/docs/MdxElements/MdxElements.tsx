@@ -18,6 +18,7 @@ import {
   Title,
 } from '@mantine/core';
 import { Link } from '@/components/Link/Link';
+import { blurPlaceholder } from '../ImageZoom/blur-placeholder';
 import { GitHubAlert } from '../Callout/GitHubAlert';
 import { CodeBlock } from '../CodeBlock/CodeBlock';
 import classes from './MdxElements.module.css';
@@ -92,10 +93,12 @@ export const mdxElements: MDXComponents = {
   pre: CodeBlock,
   blockquote: GitHubAlert,
   hr: () => <Divider my="xl" />,
-  // A relative image (`![](./photo.png)`) arrives as an imported file (`remark-static-images`):
-  // `next/image` takes its size from it, and `h="auto"` keeps the ratio at the column's width
-  // (Mantine's `Image` is `object-fit: cover`, which cropped it to the height attribute).
-  img: ({ src, alt }) =>
+  // An image the site holds (`![](./photo.png)`, `![](/photo.png)`) arrives as an imported file
+  // (`remark-static-images`): `next/image` takes its size from it, paints its blurred preview
+  // first, and `h="auto"` keeps the ratio at the column's width (Mantine's `Image` is
+  // `object-fit: cover`, which cropped it to the height attribute). The first one of a page comes
+  // with `loading="eager"` and `fetchPriority="high"` (`remark-first-image-eager`).
+  img: ({ src, alt, loading, fetchPriority }) =>
     typeof src === 'object' && src !== null ? (
       <Image
         component={NextImage}
@@ -104,6 +107,9 @@ export const mdxElements: MDXComponents = {
         radius="md"
         my="md"
         h="auto"
+        loading={loading}
+        fetchPriority={fetchPriority}
+        placeholder={blurPlaceholder(src as StaticImageData)}
       />
     ) : (
       <Image src={typeof src === 'string' ? src : undefined} alt={alt ?? ''} radius="md" my="md" />

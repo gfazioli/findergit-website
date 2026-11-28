@@ -21,12 +21,13 @@ import { useReleaseNotes, type Release } from './use-release-notes';
 import classes from './ReleaseNotes.module.css';
 
 /**
- * A release's line in the page's table of contents: `v0.78.0 - Nov, 2026`, the
- * month of the day it was created, as the Nextra page listed it.
+ * A release's line in the page's table of contents: `v0.78.0 - Nov, 2026`. The
+ * month of the date the timeline shows beside it, for the same reasons
+ * (`formatReleaseDate`): published, not created, and in UTC.
  */
-export function tocLabel(release: Pick<Release, 'tag_name' | 'created_at'>): string {
-  const month = new Date(release.created_at)
-    .toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+function tocLabel(release: Release): string {
+  const month = new Date(release.published_at ?? release.created_at)
+    .toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' })
     .replace(' ', ', ');
   return `${release.tag_name} - ${month}`;
 }
@@ -36,18 +37,18 @@ export function tocLabel(release: Pick<Release, 'tag_name' | 'created_at'>): str
  * served HTML for crawlers and the browser makes no request. Without it (the
  * build could not reach GitHub) the component fetches at runtime instead.
  *
- * Each release joins the docs engine's table of contents (`data-toc-entry`);
- * the releases fetched at runtime arrive after it read the page, so it is asked
- * to read it again.
+ * Each release joins the docs engine's table of contents (`data-toc-entry`).
+ * The built ones are in the page when it reads it; the ones fetched at runtime
+ * arrive after, so it is asked to read the page again.
  */
 export function ReleaseNotes({ initialReleases }: { initialReleases?: Release[] }) {
   const { data, error, isLoading } = useReleaseNotes(initialReleases);
 
   useEffect(() => {
-    if (data.length > 0) {
+    if (data.length > 0 && data !== initialReleases) {
       window.dispatchEvent(new Event(TOC_REFRESH_EVENT));
     }
-  }, [data]);
+  }, [data, initialReleases]);
 
   if (error) {
     return (

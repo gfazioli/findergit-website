@@ -5,18 +5,8 @@ import { DocsImage, docsSizes } from './DocsImage';
 // What is under test is what DocsImage hands to the engine's ImageZoom, so a
 // stand-in records exactly that.
 jest.mock('@/components/docs', () => ({
-  ImageZoom: (props: {
-    alt?: string;
-    sizes?: string;
-    placeholder?: string;
-    style?: CSSProperties;
-  }) => (
-    <img
-      alt={props.alt}
-      data-sizes={props.sizes}
-      data-placeholder={props.placeholder}
-      style={props.style}
-    />
+  ImageZoom: (props: { alt?: string; sizes?: string; style?: CSSProperties }) => (
+    <img alt={props.alt} data-sizes={props.sizes} style={props.style} />
   ),
 }));
 
@@ -61,19 +51,6 @@ describe('DocsImage', () => {
   it('asks for the column when it cannot know the size', () => {
     const img = drawn({ src: 'https://example.com/screenshot-x.png', alt: '' });
     expect(img.dataset.sizes).toBe(COLUMN);
-  });
-
-  // Nextra set `placeholder="blur"` on every static image: the preview is the
-  // first thing painted where the picture goes.
-  it('paints the blurred preview an import carries, and asks for none without one', () => {
-    const blurred = { ...shot, blurDataURL: 'data:image/png;base64,AAAA' };
-    expect(drawn({ src: blurred, alt: '' }).dataset.placeholder).toBe('blur');
-    expect(drawn({ src: { default: blurred }, alt: '' }).dataset.placeholder).toBe('blur');
-    expect(drawn({ src: shot, alt: '' }).dataset.placeholder).toBeUndefined();
-    expect(
-      drawn({ src: 'https://example.com/x.png', alt: '', width: 10, height: 10 }).dataset
-        .placeholder
-    ).toBeUndefined();
   });
 
   // One capture here is two pixels per point, and nothing marks it (see
