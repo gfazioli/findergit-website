@@ -4,6 +4,7 @@ import { Profiler } from 'react';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@/test-utils';
 import { NewsletterModal } from './NewsletterModal';
+import { NewsletterSignup } from './NewsletterSignup';
 import { closedRecently, DISMISSED_KEY, PROMPT_OPEN_ATTRIBUTE } from './prompt-open';
 
 /** The promise, written out here rather than read from the code it checks. */
@@ -183,18 +184,69 @@ describe('NewsletterModal', () => {
     expect(closedRecently(String(now + 60_000), now)).toBe(false);
   });
 
-  it('shows the Goodies under the newsletter, and closes as it goes to them', () => {
+  it('shows the Goodies above the newsletter, and closes as it goes to them', () => {
     render(withRouter(<NewsletterModal />));
     scrollTo(1300);
     runFrames();
     const goodies = screen.getByRole('link', { name: /See the Goodies/ });
     expect(goodies).toHaveAttribute('href', '/goodies');
-    expect(screen.getByRole('link', { name: /Subscribe for updates/ })).toBeInTheDocument();
+    const subscribe = screen.getByRole('link', { name: /Subscribe for updates/ });
+    // The promotion first: its button comes before the newsletter's.
+    expect(goodies.compareDocumentPosition(subscribe)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(screen.getAllByRole('heading').map((heading) => heading.textContent)).toEqual([
+      'FinderGit Goodies',
+      'Get release updates',
+    ]);
 
     fireEvent.click(goodies);
     expect(router.push).toHaveBeenCalledWith('/goodies', expect.anything());
     expect(isOpen()).toBe(false);
     expect(closedRecently(localStorage.getItem(DISMISSED_KEY), Date.now())).toBe(true);
+  });
+
+  it('fills one button, the Goodies’, and leaves the newsletter’s plain under it', () => {
+    render(withRouter(<NewsletterModal />));
+    scrollTo(1300);
+    runFrames();
+    expect(screen.getByRole('link', { name: /See the Goodies/ })).not.toHaveAttribute(
+      'data-variant'
+    );
+    expect(screen.getByRole('link', { name: /Subscribe for updates/ })).toHaveAttribute(
+      'data-variant',
+      'default'
+    );
+    // The pack's light is the dialog's own ground, behind a clear header.
+    expect(screen.getByRole('dialog').getAttribute('style')).toContain('radial-gradient');
+  });
+
+  it('leaves the footer’s newsletter as it was, its button filled', () => {
+    render(<NewsletterSignup />);
+    expect(screen.getByRole('link', { name: /Subscribe for updates/ })).not.toHaveAttribute(
+      'data-variant'
+    );
+    expect(screen.queryByRole('link', { name: /See the Goodies/ })).toBeNull();
+  });
+
+  it('gives the pictures to the pointer alone, as a second way to the shop', () => {
+    render(withRouter(<NewsletterModal />));
+    scrollTo(1300);
+    runFrames();
+    // One link by that name for a screen reader and the Tab key.
+    expect(screen.getAllByRole('link').map((link) => link.textContent)).toEqual([
+      'See the Goodies',
+      'Subscribe for updates',
+    ]);
+    const pictures = screen
+      .getByRole('dialog')
+      .querySelector('a[aria-hidden="true"]') as HTMLAnchorElement;
+    expect(pictures).toHaveAttribute('href', '/goodies');
+    expect(pictures).toHaveAttribute('tabindex', '-1');
+    expect(pictures.querySelectorAll('img')).toHaveLength(3);
+    pictures.querySelectorAll('img').forEach((img) => expect(img).toHaveAttribute('alt', ''));
+
+    fireEvent.click(pictures);
+    expect(router.push).toHaveBeenCalledWith('/goodies', expect.anything());
+    expect(isOpen()).toBe(false);
   });
 
   it('stays open when the Goodies open in a new tab', () => {
@@ -251,10 +303,21 @@ describe('NewsletterModal', () => {
     render(<NewsletterModal />);
     scrollTo(1300);
     runFrames();
-    expect(screen.getByRole('dialog')).toHaveAccessibleName(
-      'Subscribe to the FinderGit newsletter'
-    );
+    const prompt = screen.getByRole('dialog');
+    expect(prompt).toHaveAccessibleName('Subscribe to the FinderGit newsletter');
     expect(screen.queryByRole('link', { name: /See the Goodies/ })).toBeNull();
+    // The newsletter alone, as the footer has it: its button filled, no
+    // heading but its own, and nothing of the Goodies' left around it (their
+    // light, the line under them, a link to the page behind the overlay).
+    expect(screen.getByRole('link', { name: /Subscribe for updates/ })).not.toHaveAttribute(
+      'data-variant'
+    );
+    expect(screen.getAllByRole('heading').map((heading) => heading.textContent)).toEqual([
+      'Get release updates',
+    ]);
+    expect(screen.getAllByRole('link')).toHaveLength(1);
+    expect(prompt.getAttribute('style') ?? '').not.toContain('radial-gradient');
+    expect(prompt.querySelector('.mantine-Modal-body')?.children).toHaveLength(1);
   });
 
   it('opens at most once per page load, even where storage refuses the answer', () => {

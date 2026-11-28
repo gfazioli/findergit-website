@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { GoodiesCallToAction } from './GoodiesCallToAction';
+import { GOODIES_WASH, GoodiesCallToAction } from './GoodiesCallToAction';
 import { NewsletterCallToAction } from './NewsletterCallToAction';
 import { closedRecently, DISMISSED_KEY, PROMPT_OPEN_ATTRIBUTE } from './prompt-open';
 
@@ -12,13 +12,14 @@ import { closedRecently, DISMISSED_KEY, PROMPT_OPEN_ATTRIBUTE } from './prompt-o
  * Scroll-triggered newsletter prompt.
  *
  * Once the visitor has scrolled past the hero, a dismissible modal with the
- * shared newsletter CTA, and the Goodies below it, appears: at most once a
- * page load, and not for a day once closed. Closing it stores the time in
- * localStorage, and a visit 24 hours later sees it again
+ * Goodies as a promotion, and the shared newsletter CTA under them, appears:
+ * at most once a page load, and not for a day once closed. Closing it stores
+ * the time in localStorage, and a visit 24 hours later sees it again
  * (`PROMPT_RETURNS_AFTER_MS`). Mounted once globally in the root layout.
  *
  * The Goodies (`GoodiesCallToAction`) stay out on the shop's own pages, where
- * they would point at the page behind the overlay.
+ * they would point at the page behind the overlay: there the newsletter is
+ * alone, as it is in the footer.
  */
 const SCROLL_TRIGGER_PX = 1200;
 
@@ -124,9 +125,20 @@ export function NewsletterModal() {
       }}
       // The button the focus lands on as it opens: an icon alone names nothing.
       closeButtonProps={{ 'aria-label': 'Close' }}
+      // The pack's light, on the dialog itself so it reaches the top edge: the
+      // header over it is clear, or its own ground would cut the light off
+      // above the pictures.
+      styles={
+        inShop
+          ? undefined
+          : {
+              content: { backgroundImage: GOODIES_WASH, backgroundRepeat: 'no-repeat' },
+              header: { backgroundColor: 'transparent' },
+            }
+      }
     >
-      <NewsletterCallToAction />
       {!inShop && <GoodiesCallToAction onNavigate={handleClose} />}
+      <NewsletterCallToAction quiet={!inShop} />
     </Modal>
   );
 }
