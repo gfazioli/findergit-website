@@ -15,7 +15,7 @@ import '@/theme/global.css';
 import './global.css';
 
 import type { Viewport } from 'next';
-import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
+import { Box, ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
 // !! End of important imports !!
 
 import { MantineFooter } from '@/components';
@@ -84,8 +84,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             siteFooter={footer}
             banner={
               <Banner storageKey={`findergit-release-${config.app.version}`}>
+                {/* One line, clipped: on a phone the description goes, or the
+                    link was cut off after it ("FinderGit v0.78.1 is here. See
+                    what's new"). */}
                 <span>
-                  {`FinderGit v${config.app.version} is here — a Git-aware file browser for macOS. `}
+                  {`FinderGit v${config.app.version} is here`}
+                  <Box component="span" visibleFrom="sm">
+                    {' — a Git-aware file browser for macOS'}
+                  </Box>
+                  {'. '}
                   <Link href="/docs/release-notes">See what&apos;s new</Link>
                 </span>
               </Banner>

@@ -26,3 +26,31 @@
 .item {
   scroll-margin-top: calc(var(--app-shell-header-height, 0px) + var(--mantine-spacing-md));
 }
+
+/* A code block of a release, with its copy button in the corner (`copy-button.ts`) */
+.body :global(.release-code) {
+  position: relative;
+}
+
+.body :global(.release-code) :global(pre) {
+  padding-right: rem(72px);
+}
+
+.body :global([data-release-copy]) {
+  position: absolute;
+  top: rem(8px);
+  right: rem(8px);
+  padding: rem(2px) rem(10px);
+  border: rem(1px) solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-xl);
+  background-color: var(--mantine-color-default);
+  color: var(--mantine-color-text);
+  font: inherit;
+  font-size: var(--mantine-font-size-xs);
+  cursor: pointer;
+  transition: background-color 150ms ease;
+
+  &:hover {
+    background-color: var(--mantine-color-default-hover);
+  }
+}

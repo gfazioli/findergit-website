@@ -40,7 +40,7 @@ function TopNav({ nav }: { nav: TopNavEntry[] }) {
   const pathname = usePathname();
 
   return (
-    <Group gap={4} wrap="nowrap" visibleFrom="md">
+    <Group component="nav" aria-label="Main" gap={4} wrap="nowrap" visibleFrom="md">
       {nav.map((entry) =>
         isMenu(entry) ? (
           <Menu key={entry.key} trigger="click-hover" position="bottom-start" withinPortal>

@@ -1,12 +1,24 @@
-import { appReleases, compileReleaseBodies, loadReleases } from './load-releases';
+import { appReleases, compileMarkdown, compileReleaseBodies, loadReleases } from './load-releases';
 import type { Release } from './use-release-notes';
 
-// `marked` is ESM, which Jest does not transform; what is under test is what
-// happens AROUND it, so it is replaced. It stands in for the compile
-// `loadReleases` uses when nothing is injected.
-jest.mock('marked', () => ({
-  marked: { parse: jest.fn((body: string) => `compiled:${body}`) },
-}));
+// github-slugger ships ESM only, which Jest does not transform. Its algorithm is
+// its own business (the engine and Nextra slug headings with it too); what is
+// under test is that every heading gets one, counted per body. This stand-in
+// slugs as GitHub does for plain words.
+jest.mock(
+  'github-slugger',
+  () =>
+    class {
+      private seen = new Map<string, number>();
+
+      slug(text: string) {
+        const base = text.toLowerCase().trim().replace(/\s+/g, '-');
+        const count = this.seen.get(base) ?? 0;
+        this.seen.set(base, count + 1);
+        return count ? `${base}-${count}` : base;
+      }
+    }
+);
 
 function release(tag: string, body: string | null, name = `FinderGit ${tag}`): Release {
   return {
@@ -23,14 +35,31 @@ function answer(status: number, json: unknown): Response {
   return { ok: status >= 200 && status < 300, status, json: async () => json } as Response;
 }
 
-describe('compileReleaseBodies', () => {
-  it('compiles each body as GitHub-flavoured markdown, so a brace is never JavaScript', () => {
-    const { marked } = jest.requireMock('marked');
-    const out = compileReleaseBodies([release('v1.0.0', 'quoting { code = 1 }')]);
-    expect(marked.parse).toHaveBeenCalledWith('quoting { code = 1 }', { async: false, gfm: true });
-    expect(out[0].body).toBe('compiled:quoting { code = 1 }');
+describe('compileMarkdown', () => {
+  it('reads a body as markdown, so a brace is text and never JavaScript', () => {
+    expect(compileMarkdown('quoting `{ code = "-32600" }` and { braces } verbatim')).toBe(
+      '<p>quoting <code>{ code = &quot;-32600&quot; }</code> and { braces } verbatim</p>\n'
+    );
   });
 
+  it('gives every heading its GitHub slug, counted per body, as Nextra did', () => {
+    const html = compileMarkdown('## Highlights\n\n### Verify this download\n\n## Highlights');
+    expect(html).toContain('<h2 id="highlights">Highlights</h2>');
+    expect(html).toContain('<h3 id="verify-this-download">Verify this download</h3>');
+    expect(html).toContain('<h2 id="highlights-1">Highlights</h2>');
+    // A new body starts counting again: each release has its own `#highlights`.
+    expect(compileMarkdown('## Highlights')).toContain('<h2 id="highlights">');
+  });
+
+  it('puts a copy button after every code block, the block left as marked writes it', () => {
+    const html = compileMarkdown('```sh\nshasum -a 256 FinderGit.dmg\n```');
+    expect(html).toBe(
+      '<div class="release-code"><pre><code class="language-sh">shasum -a 256 FinderGit.dmg\n</code></pre>\n<button type="button" data-release-copy>Copy</button></div>\n'
+    );
+  });
+});
+
+describe('compileReleaseBodies', () => {
   it('lets one uncompilable body cost only its own formatting', () => {
     const compile = jest.fn((body: string) => {
       if (body.includes('{')) {
@@ -80,7 +109,7 @@ describe('loadReleases', () => {
     delete process.env.GITHUB_TOKEN;
     const fetchImpl = jest.fn(async () => answer(200, [release('v0.39.0', 'notes')]));
     const out = await loadReleases(fetchImpl as any);
-    expect(out.map((r) => [r.tag_name, r.body])).toEqual([['v0.39.0', 'compiled:notes']]);
+    expect(out.map((r) => [r.tag_name, r.body])).toEqual([['v0.39.0', '<p>notes</p>\n']]);
   });
 
   it('never throws, so the page can fall back to its runtime fetch', async () => {

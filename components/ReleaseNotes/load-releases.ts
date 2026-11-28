@@ -1,5 +1,7 @@
-import { marked } from 'marked';
+import GithubSlugger from 'github-slugger';
+import { Marked, Renderer } from 'marked';
 import config from '@/config';
+import { COPY_BUTTON_ATTRIBUTE } from './copy-button';
 import { plainRelease } from './plain-release';
 import type { Release } from './use-release-notes';
 
@@ -13,9 +15,28 @@ export type ReleaseCompiler = (markdown: string) => string;
  * (`{ code = "-32600"; ... }`). `marked` reads Markdown only, GitHub's flavour,
  * so nothing in a body is ever JSX. The bodies are this repository's own
  * releases, written by its owner: trusted content, rendered as HTML.
+ *
+ * Two things Nextra's compiler gave a body, kept: every heading its id, GitHub's
+ * slug of its text, counted per release (`#verify-this-download`), and every
+ * code block a copy button, for the checksum and the command that verifies it.
  */
-export const compileMarkdown: ReleaseCompiler = (markdown) =>
-  marked.parse(markdown, { async: false, gfm: true });
+export const compileMarkdown: ReleaseCompiler = (markdown) => {
+  const slugger = new GithubSlugger();
+  const compiler = new Marked({
+    gfm: true,
+    renderer: {
+      heading(token) {
+        const id = slugger.slug(this.parser.parseInline(token.tokens, this.parser.textRenderer));
+        return Renderer.prototype.heading.call(this, token).replace(/^<h(\d)>/, `<h$1 id="${id}">`);
+      },
+      code(token) {
+        const block = Renderer.prototype.code.call(this, token);
+        return `<div class="release-code">${block}<button type="button" ${COPY_BUTTON_ATTRIBUTE}>Copy</button></div>\n`;
+      },
+    },
+  });
+  return compiler.parse(markdown, { async: false });
+};
 
 /**
  * Compile every body, and let one bad body cost only its own formatting.

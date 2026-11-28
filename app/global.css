@@ -83,7 +83,8 @@ nav.mantine-AppShell-navbar .mantine-NavLink-root[data-active] svg {
  * brand's sky when the pointer or the keyboard is on the poster.
  */
 .fg-tutorial {
-  margin-block: 1.75rem;
+  /* A <figure>: no inline margin, or the browser's 40px a side narrow the player. */
+  margin: 1.75rem 0;
 }
 
 .fg-tutorial-frame {

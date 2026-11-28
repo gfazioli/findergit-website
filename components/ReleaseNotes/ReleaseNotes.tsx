@@ -17,6 +17,7 @@ import {
 } from '@mantine/core';
 import config from '@/config';
 import { TOC_REFRESH_EVENT } from '@/lib/docs/routes';
+import { copyFromButton } from './copy-button';
 import { useReleaseNotes, type Release } from './use-release-notes';
 import classes from './ReleaseNotes.module.css';
 
@@ -73,7 +74,7 @@ export function ReleaseNotes({ initialReleases }: { initialReleases?: Release[] 
   }
 
   return (
-    <Stack mt={24}>
+    <Stack mt={24} onClick={(event) => copyFromButton(event.target)}>
       <Timeline active={1} bulletSize={32} lineWidth={4}>
         {data.map((release: Release) => (
           <TimelineItem
