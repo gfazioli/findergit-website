@@ -7,10 +7,6 @@ import { clock, isoDuration, TUTORIALS, twoDigits, type TutorialFilm } from './t
 
 const ROOT = join(__dirname, '..', '..');
 
-// Nextra ships ESM that Jest does not transform; the player takes only
-// `docsSizes` from DocsImage, which does not need it.
-jest.mock('nextra/components', () => ({ ImageZoom: () => null }), { virtual: true });
-
 // A film of the tests' own, numbered as no film of the series is: the
 // component is tested on it whichever films the registry lists.
 const FILM: TutorialFilm = {

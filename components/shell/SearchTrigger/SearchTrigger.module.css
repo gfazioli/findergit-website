@@ -1,0 +1,18 @@
+.trigger {
+  padding: rem(4px) rem(10px);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-md);
+  color: var(--mantine-color-dimmed);
+  transition: border-color 100ms ease;
+
+  &:hover {
+    border-color: var(--mantine-primary-color-filled);
+  }
+}
+
+/* Sidebar variant: full-width search box */
+.fullWidth {
+  width: 100%;
+  padding-block: rem(7px);
+  background-color: var(--mantine-color-default-hover);
+}

@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { SkipNavContent } from 'nextra/components';
 import { Anchor, Button, Container, Group, Stack, Text, Title } from '@mantine/core';
 import { checkSession, GOODIES_SUPPORT_EMAIL, goodiesShop, type PackKind } from '@/lib/goodies';
 import { emailsPurchaseLink } from '@/lib/goodies-mail';
@@ -46,56 +45,53 @@ export default async function GoodiesThanksPage({
 
   return (
     <>
-      <SkipNavContent />
-      <main>
-        <Container size="sm" py={64}>
-          {check === 'paid' ? (
-            <Stack gap="lg">
-              <Title order={1}>Thank you!</Title>
-              <Text size="lg">
-                FinderGit Goodies is yours, and your receipt is on its way by email.
-              </Text>
-              <Group gap="md">
-                <Button component="a" href={download('mac')} size="lg" rel="nofollow noreferrer">
-                  Download for Mac
-                </Button>
-                <Button
-                  component="a"
-                  href={download('pictures')}
-                  size="lg"
-                  variant="default"
-                  rel="nofollow noreferrer"
-                >
-                  Pictures only (ZIP)
-                </Button>
-              </Group>
-              <Text>
-                The Mac disk image holds everything: the two screen savers, their preview app, the
-                wallpapers, the extras and a Read Me with the steps. The ZIP has the pictures alone,
-                for any other system.
-              </Text>
-              <Text>
-                {emailsPurchaseLink()
-                  ? 'We have also emailed you the link to this page. It keeps working, and always serves the latest version of the pack.'
-                  : 'Bookmark this page: its link keeps working, and always serves the latest version of the pack.'}
-              </Text>
-              <Support lead="Something wrong?" />
-            </Stack>
-          ) : (
-            <Stack gap="lg">
-              <Title order={1}>
-                {check === 'unavailable' ? 'One moment, please' : 'We could not confirm a purchase'}
-              </Title>
-              <Text>
-                {check === 'unavailable'
-                  ? 'We could not check your payment just now. Reload this page in a minute.'
-                  : 'This link does not match a completed purchase. If you have just paid, reload this page in a few seconds.'}
-              </Text>
-              <Support lead="Still stuck?" />
-            </Stack>
-          )}
-        </Container>
-      </main>
+      <Container size="sm" py={64}>
+        {check === 'paid' ? (
+          <Stack gap="lg">
+            <Title order={1}>Thank you!</Title>
+            <Text size="lg">
+              FinderGit Goodies is yours, and your receipt is on its way by email.
+            </Text>
+            <Group gap="md">
+              <Button component="a" href={download('mac')} size="lg" rel="nofollow noreferrer">
+                Download for Mac
+              </Button>
+              <Button
+                component="a"
+                href={download('pictures')}
+                size="lg"
+                variant="default"
+                rel="nofollow noreferrer"
+              >
+                Pictures only (ZIP)
+              </Button>
+            </Group>
+            <Text>
+              The Mac disk image holds everything: the two screen savers, their preview app, the
+              wallpapers, the extras and a Read Me with the steps. The ZIP has the pictures alone,
+              for any other system.
+            </Text>
+            <Text>
+              {emailsPurchaseLink()
+                ? 'We have also emailed you the link to this page. It keeps working, and always serves the latest version of the pack.'
+                : 'Bookmark this page: its link keeps working, and always serves the latest version of the pack.'}
+            </Text>
+            <Support lead="Something wrong?" />
+          </Stack>
+        ) : (
+          <Stack gap="lg">
+            <Title order={1}>
+              {check === 'unavailable' ? 'One moment, please' : 'We could not confirm a purchase'}
+            </Title>
+            <Text>
+              {check === 'unavailable'
+                ? 'We could not check your payment just now. Reload this page in a minute.'
+                : 'This link does not match a completed purchase. If you have just paid, reload this page in a few seconds.'}
+            </Text>
+            <Support lead="Still stuck?" />
+          </Stack>
+        )}
+      </Container>
     </>
   );
 }

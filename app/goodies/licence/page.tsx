@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { SkipNavContent } from 'nextra/components';
 import { Anchor, Container, List, ListItem, Stack, Text, Title } from '@mantine/core';
 import { goodiesRobots, goodiesShop, packLicence, parseLicence } from '@/lib/goodies';
 
@@ -54,35 +53,32 @@ export default async function GoodiesLicencePage() {
 
   return (
     <>
-      <SkipNavContent />
-      <main>
-        <Container size="sm" py={64}>
-          <Stack gap="lg">
-            <Title order={1}>FinderGit Goodies licence</Title>
-            <Text c="dimmed">{licence.version}</Text>
-            {licence.sections.map((section) => (
-              <Stack key={section.heading} gap="sm">
-                {section.heading && (
-                  <Title order={2} fz="xl">
-                    {section.heading.charAt(0) + section.heading.slice(1).toLowerCase()}
-                  </Title>
-                )}
-                {section.blocks.map((block, i) =>
-                  block.kind === 'list' ? (
-                    <List key={i} spacing="xs" listStyleType="disc">
-                      {block.items.map((item) => (
-                        <ListItem key={item}>{withLinks(item)}</ListItem>
-                      ))}
-                    </List>
-                  ) : (
-                    <Text key={i}>{withLinks(block.text)}</Text>
-                  )
-                )}
-              </Stack>
-            ))}
-          </Stack>
-        </Container>
-      </main>
+      <Container size="sm" py={64}>
+        <Stack gap="lg">
+          <Title order={1}>FinderGit Goodies licence</Title>
+          <Text c="dimmed">{licence.version}</Text>
+          {licence.sections.map((section) => (
+            <Stack key={section.heading} gap="sm">
+              {section.heading && (
+                <Title order={2} fz="xl">
+                  {section.heading.charAt(0) + section.heading.slice(1).toLowerCase()}
+                </Title>
+              )}
+              {section.blocks.map((block, i) =>
+                block.kind === 'list' ? (
+                  <List key={i} spacing="xs" listStyleType="disc">
+                    {block.items.map((item) => (
+                      <ListItem key={item}>{withLinks(item)}</ListItem>
+                    ))}
+                  </List>
+                ) : (
+                  <Text key={i}>{withLinks(block.text)}</Text>
+                )
+              )}
+            </Stack>
+          ))}
+        </Stack>
+      </Container>
     </>
   );
 }

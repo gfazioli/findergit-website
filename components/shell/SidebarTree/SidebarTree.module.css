@@ -1,0 +1,51 @@
+.link {
+  border-radius: var(--mantine-radius-md);
+  padding-block: rem(6px);
+  font-size: var(--mantine-font-size-sm);
+  color: var(--mantine-color-dimmed);
+
+  &:hover {
+    color: var(--mantine-color-text);
+  }
+
+  &[data-active] {
+    color: var(--mantine-primary-color-light-color);
+    background-color: var(--mantine-primary-color-light);
+    font-weight: 500;
+
+    &:hover {
+      background-color: var(--mantine-primary-color-light-hover);
+    }
+  }
+}
+
+/* Folder rows: pill look, fumadocs-style */
+.folder {
+  font-weight: 500;
+  color: var(--mantine-color-text);
+}
+
+/* Folder containing the active page: highlighted pill */
+.folderActive {
+  color: var(--mantine-primary-color-light-color);
+  background-color: var(--mantine-primary-color-light);
+
+  &:hover {
+    background-color: var(--mantine-primary-color-light-hover);
+  }
+}
+
+/* Children of a folder: indented with a guide rail on the left */
+.children {
+  margin-left: rem(14px);
+  padding-left: rem(8px);
+  border-left: rem(1px) solid var(--mantine-color-default-border);
+}
+
+.label {
+  font-size: var(--mantine-font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mantine-color-text);
+}

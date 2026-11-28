@@ -1,0 +1,9 @@
+.action {
+  align-items: flex-start;
+}
+
+.icon {
+  flex-shrink: 0;
+  margin-top: rem(2px);
+  color: var(--mantine-color-dimmed);
+}

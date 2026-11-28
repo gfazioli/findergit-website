@@ -1,0 +1,59 @@
+.body {
+  font-size: var(--mantine-font-size-sm);
+  margin-top: var(--mantine-spacing-xs);
+}
+
+/* Release bodies often start with h1/h2 — scale them down inside the timeline */
+.body :global(h1),
+.body :global(h2) {
+  font-size: var(--mantine-font-size-lg);
+  margin-top: var(--mantine-spacing-sm);
+  margin-bottom: var(--mantine-spacing-xs);
+}
+
+.body :global(h3),
+.body :global(h4) {
+  font-size: var(--mantine-font-size-md);
+  margin-top: var(--mantine-spacing-sm);
+  margin-bottom: var(--mantine-spacing-xs);
+}
+
+.body :global(ul) {
+  margin-block: var(--mantine-spacing-xs);
+}
+
+/* A release, or a section of one (`#verify-this-download`), linked lands below the fixed header */
+.item,
+.body :global(.release-anchor) {
+  scroll-margin-top: calc(var(--app-shell-header-height, 0px) + var(--mantine-spacing-md));
+}
+
+/* A code block of a release, with its copy button in the corner (`copy-button.ts`) */
+.body :global(.release-code) {
+  position: relative;
+}
+
+/* The button has a band of its own above the code: over a line of a long checksum it hid the
+   end of it, which scrolls under it on a phone. */
+.body :global(.release-code) :global(pre) {
+  padding-top: rem(40px);
+}
+
+.body :global([data-release-copy]) {
+  position: absolute;
+  top: rem(8px);
+  right: rem(8px);
+  padding: rem(2px) rem(10px);
+  border: rem(1px) solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-xl);
+  background-color: var(--mantine-color-default);
+  color: var(--mantine-color-text);
+  font: inherit;
+  font-size: var(--mantine-font-size-xs);
+  cursor: pointer;
+  transition: background-color 150ms ease;
+
+  &:hover {
+    background-color: var(--mantine-color-default-hover);
+  }
+}

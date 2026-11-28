@@ -49,7 +49,8 @@
    on the home page the mascot comes to stand on it (`Mascot/ScrollGuide`). */
 .sponsors {
   position: relative;
-  scroll-margin-top: rem(90px);
+  /* Under the fixed header, whose height the banner changes, and 26px of air. */
+  scroll-margin-top: calc(var(--app-shell-header-height, 4rem) + rem(26px));
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;

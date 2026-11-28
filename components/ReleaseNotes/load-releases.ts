@@ -1,16 +1,56 @@
-import { compileMdx } from 'nextra/compile';
+import GithubSlugger from 'github-slugger';
+import { Marked, Renderer } from 'marked';
 import config from '@/config';
+import { COPY_BUTTON_ATTRIBUTE } from './copy-button';
 import { plainRelease } from './plain-release';
 import type { Release } from './use-release-notes';
+
+/** Turns one release body into HTML. */
+export type ReleaseCompiler = (markdown: string) => string;
 
 /**
  * A release body is MARKDOWN, not MDX. In MDX a brace opens a JavaScript
  * expression, and that took lancetta.app's release notes down on 2026-09-19
  * the minute a release quoted an agent's raw error object
- * (`{ code = "-32600"; ... }`). Nothing in these notes is ever meant as JSX, so
- * `md` is the correct reading of the input, not a workaround.
+ * (`{ code = "-32600"; ... }`). `marked` reads Markdown only, GitHub's flavour,
+ * so nothing in a body is ever JSX. The bodies are this repository's own
+ * releases, written by its owner: trusted content, rendered as HTML.
+ *
+ * Two things Nextra's compiler gave a body, kept: every heading its anchor,
+ * GitHub's slug of its text, counted per release (`#verify-this-download`), and
+ * every code block a copy button, for the checksum and the command that
+ * verifies it. The anchor is an empty element inside the heading, not the
+ * heading's own id: the docs engine's table of contents lists every heading
+ * with an id, and it lists the releases, not the sections inside each one.
  */
-const MARKDOWN: Parameters<typeof compileMdx>[1] = { mdxOptions: { format: 'md' } };
+export const compileMarkdown: ReleaseCompiler = (markdown) => {
+  const slugger = new GithubSlugger();
+  const compiler = new Marked({
+    gfm: true,
+    renderer: {
+      heading(token) {
+        const id = slugger.slug(this.parser.parseInline(token.tokens, this.parser.textRenderer));
+        return Renderer.prototype.heading
+          .call(this, token)
+          .replace(/^<h(\d)>/, `<h$1><span id="${id}" class="release-anchor"></span>`);
+      },
+      code(token) {
+        const block = Renderer.prototype.code.call(this, token);
+        // Out of the docs search, as Nextra kept every code block: a release's commands
+        // ranked it above the page that explains them.
+        return `<div class="release-code" data-pagefind-ignore>${block}<button type="button" ${COPY_BUTTON_ATTRIBUTE}>Copy</button></div>\n`;
+      },
+      // A link out of the site opens a new tab, as every external link in the docs does.
+      link(token) {
+        const html = Renderer.prototype.link.call(this, token);
+        return /^https?:\/\//.test(token.href)
+          ? html.replace(/^<a /, '<a target="_blank" rel="noopener noreferrer" ')
+          : html;
+      },
+    },
+  });
+  return compiler.parse(markdown, { async: false });
+};
 
 /**
  * Compile every body, and let one bad body cost only its own formatting.
@@ -19,22 +59,20 @@ const MARKDOWN: Parameters<typeof compileMdx>[1] = { mdxOptions: { format: 'md' 
  * least trusted input on the site. Compiled at build time, an uncaught failure
  * would now fail the page for everyone; caught here, that release falls back to
  * its raw text and the others render. The compiler is injected so a test can
- * drive the failing branch without loading nextra's compiler under jsdom.
+ * drive the failing branch.
  */
-export async function compileReleaseBodies(
+export function compileReleaseBodies(
   releases: Release[],
-  compile: typeof compileMdx = compileMdx
-): Promise<Release[]> {
-  return Promise.all(
-    releases.map(async (release) => {
-      const plain = plainRelease(release);
-      try {
-        return { ...plain, body: await compile(plain.rawBody, MARKDOWN) };
-      } catch {
-        return plain;
-      }
-    })
-  );
+  compile: ReleaseCompiler = compileMarkdown
+): Release[] {
+  return releases.map((release) => {
+    const plain = plainRelease(release);
+    try {
+      return { ...plain, body: compile(plain.rawBody) };
+    } catch {
+      return plain;
+    }
+  });
 }
 
 /**
@@ -94,7 +132,7 @@ export async function loadReleases(fetchImpl: typeof fetch = fetch): Promise<Rel
     if (!response.ok) {
       return [];
     }
-    return await compileReleaseBodies(appReleases(await response.json()));
+    return compileReleaseBodies(appReleases(await response.json()));
   } catch {
     return [];
   }

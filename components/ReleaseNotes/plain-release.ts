@@ -12,7 +12,7 @@ import type { Release } from './use-release-notes';
  * Either way the releases are shown, never dropped.
  *
  * A module of its own because the hook imports it STATICALLY. `load-releases`
- * brings nextra's compiler, which the hook may only import on demand, and
+ * brings the Markdown compiler, which the hook may only import on demand, and
  * `use-release-notes` brings React and SWR, which the server's import of
  * `load-releases` must not.
  */

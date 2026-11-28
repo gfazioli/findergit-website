@@ -12,7 +12,7 @@ const RATE_LIMIT = 'Rate limit exceeded. Please try again later.';
 
 // The compiler is not what these tests are about: a list comes back as it went in.
 jest.mock('./load-releases', () => ({
-  compileReleaseBodies: async (releases: unknown[]) => releases,
+  compileReleaseBodies: (releases: unknown[]) => releases,
 }));
 
 function answer(status: number, body: unknown): Response {

@@ -1,0 +1,41 @@
+.card {
+  color: var(--mantine-color-text);
+  text-decoration: none;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+
+  &:hover {
+    border-color: var(--mantine-primary-color-filled);
+    box-shadow: var(--mantine-shadow-sm);
+  }
+}
+
+.media {
+  margin-bottom: var(--mantine-spacing-sm);
+}
+
+.title {
+  min-width: 0;
+}
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+
+  & svg {
+    width: rem(20px);
+    height: rem(20px);
+  }
+}
+
+.arrow {
+  flex-shrink: 0;
+  color: var(--mantine-color-dimmed);
+  transition: transform 150ms ease;
+
+  .card:hover & {
+    transform: translateX(rem(3px));
+    color: var(--mantine-primary-color-filled);
+  }
+}

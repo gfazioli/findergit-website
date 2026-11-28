@@ -300,7 +300,7 @@
 
 /*
  * In the corner of the window. Above the page's sections and below anything
- * that opens over them: Nextra's menu on a phone, Mantine's overlays and the
+ * that opens over them: the header's menu sheet on a phone (AppShell, z-index 100), Mantine's overlays and the
  * newsletter prompt.
  */
 .corner {

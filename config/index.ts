@@ -1,3 +1,7 @@
+// The Undolog Discord server's invite: the community's home (see `community`)
+// and the engine's sidebar link (`links`) read this one value.
+const DISCORD_INVITE = 'https://discord.gg/rdWu5yFCR6';
+
 export default {
   metadata: {
     title: {
@@ -45,16 +49,34 @@ export default {
       canonical: './',
     },
   },
-  nextraLayout: {
-    docsRepositoryBase: 'https://github.com/gfazioli/findergit-website/tree/main/app/docs/',
+  // The docs engine (lib/docs, components/shell), copied from
+  // next-app-mantine-docs-template: see AGENTS.md, *The docs engine*.
+  docs: {
+    // No "Edit this page" link. Nextra drew one from `docsRepositoryBase`,
+    // and it was a 404 on every page (`tree/main/app/docs//content/…`): the
+    // site's feedback goes to feedback@, not to pull requests.
+    editUrlBase: '',
     sidebar: {
       defaultMenuCollapseLevel: 1,
+      // At the foot of the sidebar, as on Nextra; a collapsed sidebar comes back from the header.
+      toggle: 'sidebar' as 'header' | 'sidebar',
     },
+    // The site is dark only (app/layout.tsx): no switch to offer.
+    colorSchemeControl: false as boolean,
   },
   head: {
     mantine: {
+      defaultColorScheme: 'dark',
       nonce: '8IBTHwOdqNKAWeKl7plt8g==',
     },
+  },
+  // What the engine's shell links (the GitHub and Discord icons at the foot of
+  // the sidebar). `github` is the website's repository, which is public and
+  // carries the releases: FinderGit's own repository is private, never link it.
+  links: {
+    github: 'https://github.com/gfazioli/findergit-website',
+    discord: DISCORD_INVITE,
+    discordLabel: 'Join us on Discord',
   },
   gitHub: {
     // Note: the app repo is PRIVATE. Releases API will be configured
@@ -127,7 +149,7 @@ export default {
   // reads the invite from here, except `content/faq.mdx`, whose plain markdown
   // link is what gets the docs' link style.
   community: {
-    discord: 'https://discord.gg/rdWu5yFCR6',
+    discord: DISCORD_INVITE,
     // The app version current when the server opened. The home page's "Just
     // opened" badge decays from it like the feature cards' NEW (`isRecent`):
     // gone two minor releases on, with no one having to remember it.

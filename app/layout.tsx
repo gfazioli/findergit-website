@@ -3,30 +3,46 @@
 // `node scripts/mantine-css.mjs --write`, which says how they are found.
 import '@/theme/mantine.css';
 // !! The order of these imports is important !!
+// The docs engine's code blocks (CodeHighlight) and search (Spotlight).
+import '@mantine/code-highlight/styles.css';
+import '@mantine/spotlight/styles.css';
 import '@gfazioli/mantine-text-animate/styles.css';
 // Mantine theme overrides (body background, etc.)
 import '@/theme/global.css';
+// The site's rules over the engine's shell, in the same render-blocking request
+// as the theme: imported last, after the components, it was a request of its
+// own (1.8 KB), one more on every page.
+import './global.css';
 
-import { Layout } from 'nextra-theme-docs';
-import { Banner, Head } from 'nextra/components';
-import { getPageMap } from 'nextra/page-map';
-import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
+import type { Viewport } from 'next';
+import { Box, ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
 // !! End of important imports !!
 
-import { MantineFooter, MantineNavBar } from '@/components';
+import { MantineFooter } from '@/components';
+import { Link } from '@/components/Link/Link';
 import { NewsletterModal } from '@/components/NewsletterSignup/NewsletterModal';
+import { Banner } from '@/components/shell/Banner/Banner';
+import { DocsSearch } from '@/components/shell/DocsSearch/DocsSearch';
+import { SiteShell } from '@/components/shell/SiteShell/SiteShell';
 import { SiteAnalytics } from '@/components/SiteAnalytics/SiteAnalytics';
 import { WebsiteJsonLd } from '@/components/StructuredData/StructuredData';
 import config from '@/config';
+import { getDocs } from '@/lib/docs/content';
+import { SIDEBAR_COLLAPSED_SCRIPT } from '@/lib/docs/sidebar';
+import { getTopNav } from '@/lib/docs/top-nav';
 import { theme } from '../theme';
-
-import './global.css';
 
 export const metadata = config.metadata;
 
+// The page's own night (--fg-page, theme/global.css), which tints the
+// browser's own chrome on a phone. Nextra wrote it from its `backgroundColor`.
+export const viewport: Viewport = { themeColor: '#0b1628' };
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const pageMap = await getPageMap();
-  const { nextraLayout, head } = config;
+  const { tree } = await getDocs();
+  const { head } = config;
+  // One footer under every page, docs included, as on the Nextra site.
+  const footer = <MantineFooter year={new Date().getFullYear()} />;
 
   return (
     // `data-scroll-behavior`: app/global.css makes <html> scroll smoothly (for
@@ -37,18 +53,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     // lancetta.app, from its FAQ: mounted at 9177, 1.6 s to the top, 37
     // reveals spent. With it, Next jumps before any effect reads the scroll.
     <html lang="en" dir="ltr" data-scroll-behavior="smooth" {...mantineHtmlProps}>
-      {/*
-        Nextra's primary colour, which its links, active sidebar row and
-        table of contents are all cut from: the Finder's blue in the icon,
-        #609be3 as HSL. The same in both schemes, since only dark is ever
-        shown. The background is --fg-page (theme/global.css), given here as
-        well because Nextra also writes it into the theme-color meta, which
-        tints the browser's own chrome on a phone.
-      */}
-      <Head
-        color={{ hue: 213, saturation: 70, lightness: 63 }}
-        backgroundColor={{ dark: '#0b1628', light: '#0b1628' }}
-      >
+      <head>
         {/*
           Forced, not defaulted: the site is at night, with no switch
           (theme/global.css). `forceColorScheme` makes the pre-hydration
@@ -68,40 +73,37 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           regression (and a Lighthouse flag). Let the default stand so
           users can zoom.
         */}
-      </Head>
+        <script dangerouslySetInnerHTML={{ __html: SIDEBAR_COLLAPSED_SCRIPT }} />
+      </head>
       <body>
         <MantineProvider theme={theme} forceColorScheme="dark">
-          <Layout
+          <SiteShell
+            tree={tree}
+            nav={getTopNav()}
+            docsFooter={footer}
+            siteFooter={footer}
             banner={
               <Banner storageKey={`findergit-release-${config.app.version}`}>
-                {/*
-                  Wrap the banner body in a single span. Nextra's Banner
-                  internally maps over its children; passing two siblings
-                  (the text node + the <a>) triggers React 19's "Each
-                  child should have a unique key" warning surfaced through
-                  the ConfigProvider.
-                */}
+                {/* One line, clipped: on a phone the name and the description go,
+                    or the link was cut off after them ("v0.78.1 is here. See
+                    what's new" fits 320px). */}
                 <span>
-                  FinderGit v{config.app.version} is here — a Git-aware file browser for macOS.{' '}
-                  <a href="/docs/release-notes">See what&apos;s new</a>
+                  <Box component="span" visibleFrom="sm">
+                    {'FinderGit '}
+                  </Box>
+                  {`v${config.app.version} is here`}
+                  <Box component="span" visibleFrom="sm">
+                    {' — a Git-aware file browser for macOS'}
+                  </Box>
+                  {'. '}
+                  <Link href="/docs/release-notes">See what&apos;s new</Link>
                 </span>
               </Banner>
             }
-            navbar={<MantineNavBar />}
-            pageMap={pageMap}
-            docsRepositoryBase={nextraLayout.docsRepositoryBase}
-            footer={<MantineFooter year={new Date().getFullYear()} />}
-            sidebar={nextraLayout.sidebar}
-            /*
-              Nextra's DARK theme, forced, with no switch in its sidebar:
-              the same night as Mantine above, so its tables, callouts and
-              code blocks are drawn for the ground they sit on.
-            */
-            darkMode={false}
-            nextThemes={{ defaultTheme: 'dark', forcedTheme: 'dark' }}
           >
             {children}
-          </Layout>
+          </SiteShell>
+          <DocsSearch />
           <NewsletterModal />
         </MantineProvider>
         <WebsiteJsonLd />

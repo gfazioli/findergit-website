@@ -1,0 +1,32 @@
+.root {
+  border-inline-start: rem(3px) solid var(--callout-color, var(--mantine-primary-color-filled));
+}
+
+.title {
+  color: var(--callout-color, var(--mantine-primary-color-filled));
+}
+
+.icon {
+  color: var(--callout-color, var(--mantine-primary-color-filled));
+}
+
+/* An emoji or a custom icon in place of the type's icon */
+.emoji {
+  display: inline-flex;
+  font-size: var(--mantine-font-size-lg);
+  line-height: 1;
+
+  & svg {
+    width: rem(20px);
+    height: rem(20px);
+  }
+}
+
+/* The body's paragraphs sit tight inside the alert */
+.root :global(p) {
+  margin-block: 0;
+}
+
+.root :global(p + p) {
+  margin-top: var(--mantine-spacing-xs);
+}

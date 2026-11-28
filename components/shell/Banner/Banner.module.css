@@ -1,0 +1,44 @@
+/* The banner's height, which the shell adds to the fixed header's while the banner is shown */
+:global(:root) {
+  --site-banner-height: rem(36px);
+}
+
+.banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--site-banner-height);
+  padding-inline: rem(44px);
+  color: var(--mantine-color-white);
+  /* A site with its own colours sets --site-banner-background in its theme CSS, rather than
+     editing this file. */
+  background: var(
+    --site-banner-background,
+    linear-gradient(90deg, var(--mantine-color-blue-7), var(--mantine-color-violet-7))
+  );
+
+  :global([data-banner-dismissed]) & {
+    display: none;
+  }
+}
+
+.text {
+  min-width: 0;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  & a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: rem(3px);
+  }
+}
+
+.close {
+  position: absolute;
+  right: var(--mantine-spacing-sm);
+  color: inherit;
+}

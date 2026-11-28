@@ -11,6 +11,8 @@ const customJestConfig = {
   moduleNameMapper: {
     '^@/components/(.*)$': '<rootDir>/components/$1',
     '^@/pages/(.*)$': '<rootDir>/pages/$1',
+    // `marked` exports ESM only, which Jest does not transform; its UMD build is the same code.
+    '^marked$': '<rootDir>/node_modules/marked/lib/marked.umd.js',
   },
   testEnvironment: 'jest-environment-jsdom',
 };

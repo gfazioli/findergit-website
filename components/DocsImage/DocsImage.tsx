@@ -1,30 +1,38 @@
 import type { ComponentProps } from 'react';
-import { ImageZoom } from 'nextra/components';
+import { ImageZoom } from '@/components/docs';
 
 export type DocsImageProps = ComponentProps<typeof ImageZoom>;
 
 /**
- * The docs column of the Nextra 4.6.1 layout, measured from 700 to 2000 px
- * wide on the four app sites, with the browser's default font at 16 and at
- * 20px (2026-10-11). Nextra lays it out in rem, so it moves with the visitor's
- * font: the viewport less 2rem on a phone; less 22rem once the sidebar shows,
- * at 48em; less 38rem once the table of contents shows too, at 80em; and never
- * wider than 52rem. At 16px that is 32, 352 and 608 px, and 832 at most; at
- * 20px, 40, 440, 760 and 1040.
+ * The docs column of the docs engine (`components/shell`: `SiteShell`'s
+ * 280px sidebar from Mantine's md, 62em; `DocsPage`'s padding, 1rem on a
+ * phone and 2rem from md, its 15rem table of contents and 2rem gap from lg,
+ * 75em, the column at most 53.75rem in a 73.75rem page). All of it is rem and
+ * em, so it moves with the visitor's default font:
  *
- * In px, the first version under-asked for a visitor with a larger font: at
- * 20px and 900 px wide the column is 860, still the phone's, and a px `sizes`
- * said 548 (found in review). Each stretch ends where the layout switches,
- * with range syntax (`width < 48em`), which excludes the breakpoint itself, so
- * no viewport, however fractional, falls between two. Chrome and Safari read
- * it in `sizes` (measured); a browser that does not skips those clauses and
- * takes `52rem`: more bytes, never a rendering too small.
+ * - the viewport less 2rem, until that reaches the column's 53.75rem;
+ * - 53.75rem, until the sidebar shows at 62em;
+ * - the viewport less 21.5rem (the sidebar and the padding), until the table
+ *   of contents shows at 75em;
+ * - the viewport less 38.5rem (both, the gap and the padding), until the page
+ *   reaches its 73.75rem, at 91.25em;
+ * - 52.75rem from there.
+ *
+ * Each stretch ends where the layout switches, with range syntax
+ * (`width < 48em`), which excludes the breakpoint itself, so no viewport,
+ * however fractional, falls between two. Chrome and Safari read it in `sizes`
+ * (measured); a browser that does not skips those clauses and takes the last:
+ * more bytes, never a rendering too small. A page with no table of contents,
+ * or a collapsed sidebar, draws the column wider than this from 75em: such a
+ * picture is fetched a step smaller than its drawn width, never at the
+ * wrong ratio.
  */
 const STRETCHES: { below?: string; column: string }[] = [
-  { below: '48em', column: 'calc(100vw - 2rem)' },
-  { below: '80em', column: 'calc(100vw - 22rem)' },
-  { below: '90em', column: 'calc(100vw - 38rem)' },
-  { column: '52rem' },
+  { below: '55.75em', column: 'calc(100vw - 2rem)' },
+  { below: '62em', column: '53.75rem' },
+  { below: '75em', column: 'calc(100vw - 21.5rem)' },
+  { below: '91.25em', column: 'calc(100vw - 38.5rem)' },
+  { column: '52.75rem' },
 ];
 
 /**
@@ -42,9 +50,9 @@ export function docsSizes(width?: number): string {
 
 /**
  * How wide a picture is drawn when the column is wider: its width in file
- * pixels, one CSS pixel each. Nextra's stylesheet gives an image no width but
- * `max-width: 100%`, so the `width` next/image writes from the import is the
- * width it takes.
+ * pixels, one CSS pixel each. The engine's zoomable image gives it no width
+ * but `max-width: 100%` (`components/docs/ImageZoom`), so the `width`
+ * next/image writes from the import is the width it takes.
  *
  * Not half of it, as on a site whose captures are Retina's two pixels per
  * point. These are not: `FinderGit/scripts/screenshots/shoot.sh` runs the
@@ -67,7 +75,9 @@ function drawnWidth(src: DocsImageProps['src']): number | undefined {
 }
 
 /**
- * A docs image: Nextra's own zoomable image, told how wide it is drawn.
+ * A docs image: the engine's zoomable image, told how wide it is drawn. Every
+ * Markdown image in `content/` comes here (`mdx-components.tsx`), imported by
+ * the engine's `remark-static-images` from `public/`.
  *
  * Without `sizes`, next/image offers the srcset as 1x and 2x of the file's own
  * width, and the browser cannot know the column is narrower: the docs' 832px

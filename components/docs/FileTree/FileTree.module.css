@@ -1,0 +1,28 @@
+.tree {
+  margin-block: var(--mantine-spacing-md);
+  padding: var(--mantine-spacing-sm);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-md);
+  background-color: var(--mantine-color-default-hover);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  padding: rem(2px) rem(4px);
+  border-radius: var(--mantine-radius-sm);
+  color: var(--mantine-color-text);
+
+  &:hover {
+    background-color: var(--mantine-color-default-border);
+  }
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--mantine-color-dimmed);
+}
+
+.children {
+  padding-left: var(--mantine-spacing-lg);
+}
