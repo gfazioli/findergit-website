@@ -42,24 +42,28 @@ function heading(order: HeadingOrder) {
   };
 }
 
+/**
+ * A link in a page is underlined, not only on hover: in running text its colour alone is the
+ * only other cue, and Nextra underlined it too.
+ */
 function MdxLink({ href = '', children, ...others }: React.ComponentPropsWithoutRef<'a'>) {
   // A mail link opens the mail app: in a new tab it left an empty one behind, as Nextra's did not.
   if (href.startsWith('mailto:')) {
     return (
-      <Anchor href={href} {...others}>
+      <Anchor underline="always" href={href} {...others}>
         {children}
       </Anchor>
     );
   }
   if (/^(https?:)?\/\//.test(href)) {
     return (
-      <Anchor href={href} target="_blank" rel="noopener noreferrer" {...others}>
+      <Anchor underline="always" href={href} target="_blank" rel="noopener noreferrer" {...others}>
         {children}
       </Anchor>
     );
   }
   return (
-    <Anchor component={Link} href={href} {...others}>
+    <Anchor underline="always" component={Link} href={href} {...others}>
       {children}
     </Anchor>
   );
@@ -106,12 +110,13 @@ export const mdxElements: MDXComponents = {
   // first, and `h="auto"` keeps the ratio at the column's width (Mantine's `Image` is
   // `object-fit: cover`, which cropped it to the height attribute). The first one of a page comes
   // with `loading="eager"` and `fetchPriority="high"` (`remark-first-image-eager`).
-  img: ({ src, alt, loading, fetchPriority }) =>
+  img: ({ src, alt, title, loading, fetchPriority }) =>
     typeof src === 'object' && src !== null ? (
       <Image
         component={NextImage}
         src={src as StaticImageData}
         alt={alt ?? ''}
+        title={title}
         radius="md"
         my="md"
         h="auto"
@@ -124,6 +129,7 @@ export const mdxElements: MDXComponents = {
       <Image
         src={typeof src === 'string' ? src : undefined}
         alt={alt ?? ''}
+        title={title}
         radius="md"
         my="md"
         data-pagefind-index-attrs="title,alt"

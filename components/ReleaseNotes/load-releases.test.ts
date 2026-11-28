@@ -62,7 +62,7 @@ describe('compileMarkdown', () => {
   it('puts a copy button after every code block, the block left as marked writes it', () => {
     const html = compileMarkdown('```sh\nshasum -a 256 FinderGit.dmg\n```');
     expect(html).toBe(
-      '<div class="release-code"><pre><code class="language-sh">shasum -a 256 FinderGit.dmg\n</code></pre>\n<button type="button" data-release-copy data-pagefind-ignore>Copy</button></div>\n'
+      '<div class="release-code" data-pagefind-ignore><pre><code class="language-sh">shasum -a 256 FinderGit.dmg\n</code></pre>\n<button type="button" data-release-copy>Copy</button></div>\n'
     );
   });
 });

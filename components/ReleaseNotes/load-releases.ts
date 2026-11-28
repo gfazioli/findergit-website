@@ -36,7 +36,9 @@ export const compileMarkdown: ReleaseCompiler = (markdown) => {
       },
       code(token) {
         const block = Renderer.prototype.code.call(this, token);
-        return `<div class="release-code">${block}<button type="button" ${COPY_BUTTON_ATTRIBUTE} data-pagefind-ignore>Copy</button></div>\n`;
+        // Out of the docs search, as Nextra kept every code block: a release's commands
+        // ranked it above the page that explains them.
+        return `<div class="release-code" data-pagefind-ignore>${block}<button type="button" ${COPY_BUTTON_ATTRIBUTE}>Copy</button></div>\n`;
       },
       // A link out of the site opens a new tab, as every external link in the docs does.
       link(token) {

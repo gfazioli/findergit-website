@@ -19,10 +19,11 @@ function sizeOf({ src, width, height }: ImageProps) {
  * `width: auto`, a Retina screen drew it at its density-corrected width, which next/image's
  * largest candidate (3840w, never upscaled) made smaller than the picture it enlarges: a 2000px
  * screenshot shown at 812 in the page opened at 744, a 278px crop at 103. Undefined for a
- * picture of unknown size (`fill`, which takes no width of its own): it keeps the viewport.
+ * picture of unknown size, or one that fills its box (`fill` takes no width of its own, and
+ * next/image rejects one): it keeps the viewport.
  */
 function zoomWidth(props: ImageProps) {
-  const size = sizeOf(props);
+  const size = props.fill ? undefined : sizeOf(props);
   return size ? `min(90vw, ${size.w}px, calc(90vh * ${size.w / size.h}))` : undefined;
 }
 

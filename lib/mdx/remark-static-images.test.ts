@@ -131,6 +131,8 @@ describe('remarkStaticImages', () => {
           image('/linked.png'),
           image('/shots%2Fa.png'),
           image('/shots%5Ca.png'),
+          image('/shots%3Fa.png'),
+          image('/../public/shots/a.png'),
         ],
         { publicDir },
         page
