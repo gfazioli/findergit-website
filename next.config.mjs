@@ -8,7 +8,8 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 /**
  * The docs engine (next-app-mantine-docs-template): plain `@next/mdx`, the MDX loader Next.js
- * itself maintains. This block is the template's, unchanged; the rest of the file is the site's.
+ * itself maintains. This block is the template's, plus the one site plugin marked below; the rest
+ * of the file is the site's.
  *
  * Turbopack runs in Rust and cannot receive JavaScript functions, so every remark and rehype
  * plugin is named by a string (a package, or a path to a local module) with serializable options.
@@ -22,6 +23,8 @@ const withBundleAnalyzer = bundleAnalyzer({
  *   (code is left alone).
  * - `remark-static-images`: an image the site holds, next to the page or in `public/`, becomes an
  *   import of the file, served by `next/image`.
+ * - `remark-first-image-eager` (the site's, `lib/mdx-site/`): the first picture of a page is
+ *   loaded eagerly, with high priority; the others stay lazy.
  * - `rehype-slug`: an `id` on every heading, for the table of contents and for deep links.
  * - `rehype-code-meta`: keeps the fence meta (`filename="…" copy {4}`) on the `<pre>`, where the
  *   code block reads it. MDX drops it otherwise. A local plugin is given by its absolute path:
@@ -35,6 +38,8 @@ const withMDX = createMDX({
       fileURLToPath(new URL('./lib/mdx/remark-heading-ids.mjs', import.meta.url)),
       'remark-smartypants',
       fileURLToPath(new URL('./lib/mdx/remark-static-images.mjs', import.meta.url)),
+      // The site's own, after the engine's: the first picture of a page is fetched at once.
+      fileURLToPath(new URL('./lib/mdx-site/remark-first-image-eager.mjs', import.meta.url)),
       'remark-frontmatter',
       ['remark-mdx-frontmatter', { name: 'frontmatter' }],
     ],

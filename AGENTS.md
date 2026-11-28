@@ -6,7 +6,17 @@ The site at findergit.app: the landing page, the docs and the downloads for Find
 
 The site is dark only, forced in `app/layout.tsx`; the theme's traps are commented where they apply (`app/layout.tsx`, `theme.ts`, `theme/global.css`).
 
-- **Measure contrast in place**, against the real ground: a DOM walk in a real browser (`scripts/shot.mjs --eval`). Its colour parser reads `rgb()` only; a `lab()` colour (Nextra's text) comes out as a false 1.5:1 and has to be checked by eye.
+- **Measure contrast in place**, against the real ground: a DOM walk in a real browser (`scripts/shot.mjs --eval`). Its colour parser reads `rgb()` only; a `lab()` colour comes out as a false 1.5:1 and has to be checked by eye.
+
+## The docs engine
+
+Since 2026-11-28 the docs run on the engine of `next-app-mantine-docs-template` (`Mantine Extensions/` workspace), not Nextra: `@next/mdx` with the content in `content/` and Nextra's `_meta` format, every piece of the interface a Mantine component. The template's `CLAUDE.md` says how it works. Removing Nextra removed `zod` (its only path) and `nextra-theme-docs`.
+
+- **Copied from the template, byte for byte** (check with `diff -r` against it): `lib/docs/`, `lib/mdx/`, `components/shell/` (all but `DocsFooter`), `components/docs/`, `components/ColorSchemeControl/`, `components/Link/`, `app/docs/[[...slug]]/page.tsx`, `app/not-found.tsx`, `app/api/search/route.server.ts`. A fix there goes to the template first, then here and to netfox-website in the same work; never edit them for this site alone.
+- **The site's own**: `mdx-components.tsx` (the engine's elements, plus `Kbd`, `Callout`, `ShortcutsTable`, `MascotNote`, `Tutorial` without an import, and `img` = `DocsImage`), `next.config.mjs` (the template's MDX block, then the site's settings; no static export), `components/MantineNavBar/` (the template's header with FinderGit's controls), `MantineFooter` under every page, docs included (`role="contentinfo"`: the shell draws it inside `AppShell.Main`), `config/index.ts` (`docs`, `links`), `app/layout.tsx` (forced dark, the release banner), `app/global.css` (the banner's denim, the header, the filled active sidebar row).
+- **No `<main>` in a page**: the shell's `AppShell.Main` is every page's `main`.
+- **Every Markdown picture is a `/public` path**, imported by the engine's `remark-static-images` and drawn by `DocsImage`: zoomable, with `sizes` for the engine's column (`docsSizes`). A layout change in `components/shell` changes that column: update `STRETCHES` with it.
+- **Release notes** are compiled at build time with `marked` (`load-releases.ts`) and join the table of contents through `data-toc-entry`; the hook's runtime fallback loads the compiler only when the build could not reach GitHub.
 
 ## Motion and the mascot
 

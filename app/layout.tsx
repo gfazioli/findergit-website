@@ -9,6 +9,10 @@ import '@mantine/spotlight/styles.css';
 import '@gfazioli/mantine-text-animate/styles.css';
 // Mantine theme overrides (body background, etc.)
 import '@/theme/global.css';
+// The site's rules over the engine's shell, in the same render-blocking request
+// as the theme: imported last, after the components, it was a request of its
+// own (1.8 KB), one more on every page.
+import './global.css';
 
 import type { Viewport } from 'next';
 import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
@@ -27,8 +31,6 @@ import { getDocs } from '@/lib/docs/content';
 import { SIDEBAR_COLLAPSED_SCRIPT } from '@/lib/docs/sidebar';
 import { getTopNav } from '@/lib/docs/top-nav';
 import { theme } from '../theme';
-
-import './global.css';
 
 export const metadata = config.metadata;
 
