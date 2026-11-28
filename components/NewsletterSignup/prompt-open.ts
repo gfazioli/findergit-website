@@ -16,12 +16,13 @@ export const PROMPT_OPEN_ATTRIBUTE = 'data-newsletter-prompt';
 export const DISMISSED_KEY = 'findergit-newsletter-prompt-dismissed';
 
 /**
- * How long a closed prompt stays closed: a day, so it does not nag on the
- * visit it was closed in, and a later visit sees it again (user, 2026-11-27:
- * *"dopo 24h riappare comunque, così non diamo fastidio ma allo stesso tempo
- * torna visibile in visite successive"*).
+ * How long a closed prompt stays closed: twelve hours, so it does not nag on
+ * the visit it was closed in, and a later visit sees it again. It was a day
+ * (user, 2026-11-27: *"dopo 24h riappare comunque, così non diamo fastidio ma
+ * allo stesso tempo torna visibile in visite successive"*), then twelve hours
+ * (2026-11-28: *"riduci il reset del popover sui siti web da 24 a 12 ore"*).
  */
-export const PROMPT_RETURNS_AFTER_MS = 24 * 60 * 60 * 1000;
+export const PROMPT_RETURNS_AFTER_MS = 12 * 60 * 60 * 1000;
 
 /**
  * Whether what `DISMISSED_KEY` holds says the prompt was closed less than
