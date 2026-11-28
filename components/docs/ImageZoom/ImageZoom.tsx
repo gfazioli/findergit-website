@@ -21,7 +21,8 @@ export function ImageZoom(props: ImageProps) {
         className={classes.trigger}
         aria-label={`Enlarge: ${props.alt}`}
       >
-        <NextImage {...props} placeholder={placeholder} />
+        {/* Its alt text is searchable, as on Nextra (`pagefind.ts`'s index reads the attribute). */}
+        <NextImage {...props} placeholder={placeholder} data-pagefind-index-attrs="title,alt" />
       </UnstyledButton>
       <Modal
         opened={opened}

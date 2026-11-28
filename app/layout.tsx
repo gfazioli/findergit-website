@@ -84,11 +84,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             siteFooter={footer}
             banner={
               <Banner storageKey={`findergit-release-${config.app.version}`}>
-                {/* One line, clipped: on a phone the description goes, or the
-                    link was cut off after it ("FinderGit v0.78.1 is here. See
-                    what's new"). */}
+                {/* One line, clipped: on a phone the name and the description go,
+                    or the link was cut off after them ("v0.78.1 is here. See
+                    what's new" fits 320px). */}
                 <span>
-                  {`FinderGit v${config.app.version} is here`}
+                  <Box component="span" visibleFrom="sm">
+                    {'FinderGit '}
+                  </Box>
+                  {`v${config.app.version} is here`}
                   <Box component="span" visibleFrom="sm">
                     {' — a Git-aware file browser for macOS'}
                   </Box>

@@ -36,6 +36,11 @@ export interface MantineNavBarProps {
   sidebar?: SidebarToggleProps;
 }
 
+/** The header link of the section the page is in: `/docs` on every docs page. */
+function isCurrent(pathname: string, entry: { href: string; newWindow?: boolean }) {
+  return !entry.newWindow && (pathname === entry.href || pathname.startsWith(`${entry.href}/`));
+}
+
 function TopNav({ nav }: { nav: TopNavEntry[] }) {
   const pathname = usePathname();
 
@@ -77,10 +82,10 @@ function TopNav({ nav }: { nav: TopNavEntry[] }) {
             target={entry.newWindow ? '_blank' : undefined}
             rel={entry.newWindow ? 'noopener noreferrer' : undefined}
             className={classes.navLink}
-            data-active={
-              !entry.newWindow && (pathname === entry.href || pathname.startsWith(`${entry.href}/`))
-                ? true
-                : undefined
+            data-active={isCurrent(pathname, entry) || undefined}
+            // The section the page is in, said to assistive technology as well.
+            aria-current={
+              isCurrent(pathname, entry) ? (pathname === entry.href ? 'page' : 'true') : undefined
             }
             underline="never"
           >

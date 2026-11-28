@@ -22,8 +22,9 @@
   margin-block: var(--mantine-spacing-xs);
 }
 
-/* A release linked from the table of contents lands below the fixed header */
-.item {
+/* A release, or a section of one (`#verify-this-download`), linked lands below the fixed header */
+.item,
+.body :global(.release-anchor) {
   scroll-margin-top: calc(var(--app-shell-header-height, 0px) + var(--mantine-spacing-md));
 }
 
@@ -32,8 +33,10 @@
   position: relative;
 }
 
+/* The button has a band of its own above the code: over a line of a long checksum it hid the
+   end of it, which scrolls under it on a phone. */
 .body :global(.release-code) :global(pre) {
-  padding-right: rem(72px);
+  padding-top: rem(40px);
 }
 
 .body :global([data-release-copy]) {

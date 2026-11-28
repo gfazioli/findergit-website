@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import remarkStaticImages from './remark-static-images.mjs';
@@ -79,6 +79,9 @@ describe('remarkStaticImages', () => {
       writeFileSync(join(publicDir, 'shots', 'a.png'), '');
       writeFileSync(join(publicDir, 'my shot.png'), '');
       writeFileSync(join(root, 'secret.png'), '');
+      writeFileSync(join(publicDir, 'logo.svg'), '<svg xmlns="http://www.w3.org/2000/svg"/>');
+      mkdirSync(join(publicDir, 'folder.png'));
+      symlinkSync(join(root, 'secret.png'), join(publicDir, 'linked.png'));
     });
 
     afterAll(() => rmSync(root, { recursive: true, force: true }));
@@ -104,6 +107,35 @@ describe('remarkStaticImages', () => {
       const page = { path: join(root, 'content', 'index.mdx') };
       const tree = transform([image('/my%20shot.png')], { publicDir }, page);
       expect(values(tree)).toEqual(['import __staticImage0 from "../public/my shot.png"']);
+    });
+
+    it('imports the file of a URL with a query or a hash, without them', () => {
+      const page = { path: join(root, 'content', 'index.mdx') };
+      const tree = transform(
+        [image('/shots/a.png?v=2'), image('/shots/a.png#top')],
+        { publicDir },
+        page
+      );
+      expect(values(tree)).toEqual([
+        'import __staticImage0 from "../public/shots/a.png"',
+        'import __staticImage1 from "../public/shots/a.png"',
+      ]);
+    });
+
+    it('leaves an SVG, a folder, a link out of public/ and an encoded separator as written', () => {
+      const page = { path: join(root, 'content', 'index.mdx') };
+      const tree = transform(
+        [
+          image('/logo.svg'),
+          image('/folder.png'),
+          image('/linked.png'),
+          image('/shots%2Fa.png'),
+          image('/shots%5Ca.png'),
+        ],
+        { publicDir },
+        page
+      );
+      expect(values(tree)).toEqual([]);
     });
 
     it('stays as written when public/ holds no such file, or the path climbs out of it', () => {

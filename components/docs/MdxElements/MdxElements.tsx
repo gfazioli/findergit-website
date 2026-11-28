@@ -110,9 +110,16 @@ export const mdxElements: MDXComponents = {
         loading={loading}
         fetchPriority={fetchPriority}
         placeholder={blurPlaceholder(src as StaticImageData)}
+        data-pagefind-index-attrs="title,alt"
       />
     ) : (
-      <Image src={typeof src === 'string' ? src : undefined} alt={alt ?? ''} radius="md" my="md" />
+      <Image
+        src={typeof src === 'string' ? src : undefined}
+        alt={alt ?? ''}
+        radius="md"
+        my="md"
+        data-pagefind-index-attrs="title,alt"
+      />
     ),
   table: (props) => (
     <TableScrollContainer minWidth={500} my="md">

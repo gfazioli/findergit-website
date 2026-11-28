@@ -42,13 +42,21 @@ describe('compileMarkdown', () => {
     );
   });
 
-  it('gives every heading its GitHub slug, counted per body, as Nextra did', () => {
+  it('anchors every heading at its GitHub slug, counted per body, as Nextra did', () => {
+    const anchor = (tag: string, id: string, text: string) =>
+      `<${tag}><span id="${id}" class="release-anchor"></span>${text}</${tag}>`;
     const html = compileMarkdown('## Highlights\n\n### Verify this download\n\n## Highlights');
-    expect(html).toContain('<h2 id="highlights">Highlights</h2>');
-    expect(html).toContain('<h3 id="verify-this-download">Verify this download</h3>');
-    expect(html).toContain('<h2 id="highlights-1">Highlights</h2>');
+    expect(html).toContain(anchor('h2', 'highlights', 'Highlights'));
+    expect(html).toContain(anchor('h3', 'verify-this-download', 'Verify this download'));
+    expect(html).toContain(anchor('h2', 'highlights-1', 'Highlights'));
     // A new body starts counting again: each release has its own `#highlights`.
-    expect(compileMarkdown('## Highlights')).toContain('<h2 id="highlights">');
+    expect(compileMarkdown('## Highlights')).toContain('<span id="highlights"');
+  });
+
+  // The engine's table of contents lists `h2`-`h4` that carry an id: a release's
+  // sections stay out of it, as they were on Nextra, and only the releases join.
+  it('leaves the headings themselves without an id', () => {
+    expect(compileMarkdown('## Highlights\n### Fixes')).not.toMatch(/<h\d id=/);
   });
 
   it('puts a copy button after every code block, the block left as marked writes it', () => {

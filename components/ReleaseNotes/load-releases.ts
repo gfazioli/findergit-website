@@ -16,9 +16,12 @@ export type ReleaseCompiler = (markdown: string) => string;
  * so nothing in a body is ever JSX. The bodies are this repository's own
  * releases, written by its owner: trusted content, rendered as HTML.
  *
- * Two things Nextra's compiler gave a body, kept: every heading its id, GitHub's
- * slug of its text, counted per release (`#verify-this-download`), and every
- * code block a copy button, for the checksum and the command that verifies it.
+ * Two things Nextra's compiler gave a body, kept: every heading its anchor,
+ * GitHub's slug of its text, counted per release (`#verify-this-download`), and
+ * every code block a copy button, for the checksum and the command that
+ * verifies it. The anchor is an empty element inside the heading, not the
+ * heading's own id: the docs engine's table of contents lists every heading
+ * with an id, and it lists the releases, not the sections inside each one.
  */
 export const compileMarkdown: ReleaseCompiler = (markdown) => {
   const slugger = new GithubSlugger();
@@ -27,7 +30,9 @@ export const compileMarkdown: ReleaseCompiler = (markdown) => {
     renderer: {
       heading(token) {
         const id = slugger.slug(this.parser.parseInline(token.tokens, this.parser.textRenderer));
-        return Renderer.prototype.heading.call(this, token).replace(/^<h(\d)>/, `<h$1 id="${id}">`);
+        return Renderer.prototype.heading
+          .call(this, token)
+          .replace(/^<h(\d)>/, `<h$1><span id="${id}" class="release-anchor"></span>`);
       },
       code(token) {
         const block = Renderer.prototype.code.call(this, token);
