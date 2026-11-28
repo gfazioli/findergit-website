@@ -8,7 +8,9 @@ import { NewsletterSignup } from './NewsletterSignup';
 import { closedRecently, DISMISSED_KEY, PROMPT_OPEN_ATTRIBUTE } from './prompt-open';
 
 /** The promise, written out here rather than read from the code it checks. */
-const DAY = 24 * 60 * 60 * 1000;
+// Written out, not read from `PROMPT_RETURNS_AFTER_MS`: a prompt back after a
+// day, or after an hour, fails here.
+const RETURNS = 12 * 60 * 60 * 1000;
 
 // The page of the site, as the layout's navigations change it.
 let mockPathname = '/';
@@ -148,8 +150,8 @@ describe('NewsletterModal', () => {
     expect(localStorage.getItem(DISMISSED_KEY)).toBe('1800000000000');
   });
 
-  it('stays closed for a day after the visitor closed it', () => {
-    localStorage.setItem(DISMISSED_KEY, String(Date.now() - DAY + 60_000));
+  it('stays closed for twelve hours after the visitor closed it', () => {
+    localStorage.setItem(DISMISSED_KEY, String(Date.now() - RETURNS + 60_000));
     render(<NewsletterModal />);
     scrollTo(1300);
     runFrames();
@@ -157,8 +159,8 @@ describe('NewsletterModal', () => {
     expect(frames.size).toBe(0);
   });
 
-  it('opens again once a day has passed since the visitor closed it', () => {
-    localStorage.setItem(DISMISSED_KEY, String(Date.now() - DAY - 60_000));
+  it('opens again once twelve hours have passed since the visitor closed it', () => {
+    localStorage.setItem(DISMISSED_KEY, String(Date.now() - RETURNS - 60_000));
     render(<NewsletterModal />);
     scrollTo(1300);
     runFrames();
@@ -176,8 +178,8 @@ describe('NewsletterModal', () => {
   it('reads a closing time, a missing one, an old flag and a clock set back', () => {
     const now = 1_800_000_000_000;
     expect(closedRecently(String(now - 1000), now)).toBe(true);
-    expect(closedRecently(String(now - DAY + 1), now)).toBe(true);
-    expect(closedRecently(String(now - DAY), now)).toBe(false);
+    expect(closedRecently(String(now - RETURNS + 1), now)).toBe(true);
+    expect(closedRecently(String(now - RETURNS), now)).toBe(false);
     expect(closedRecently(null, now)).toBe(false);
     expect(closedRecently('', now)).toBe(false);
     expect(closedRecently('true', now)).toBe(false);
@@ -263,15 +265,15 @@ describe('NewsletterModal', () => {
     expect(localStorage.getItem(DISMISSED_KEY)).toBeNull();
   });
 
-  it('opens again, a day after it was closed, in the tab it was closed in', () => {
+  it('opens again, twelve hours after it was closed, in the tab it was closed in', () => {
     const { rerender } = render(<NewsletterModal />);
     scrollTo(1300);
     runFrames();
     fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' });
     expect(isOpen()).toBe(false);
 
-    // The same tab, the next day: a link to another page of the site.
-    jest.spyOn(Date, 'now').mockReturnValue(Date.now() + DAY);
+    // The same tab, twelve hours on: a link to another page of the site.
+    jest.spyOn(Date, 'now').mockReturnValue(Date.now() + RETURNS);
     mockPathname = '/docs';
     rerender(<NewsletterModal />);
     scrollTo(0);
@@ -287,8 +289,8 @@ describe('NewsletterModal', () => {
     runFrames();
     expect(isOpen()).toBe(false);
 
-    // The next day, in the same tab: a link to another page of the site.
-    jest.spyOn(Date, 'now').mockReturnValue(Date.now() + DAY);
+    // Twelve hours on, in the same tab: a link to another page of the site.
+    jest.spyOn(Date, 'now').mockReturnValue(Date.now() + RETURNS);
     mockPathname = '/docs';
     // The same tree as the first render: a different one would mount the
     // prompt anew and pass this without the recheck.

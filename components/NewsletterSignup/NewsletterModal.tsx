@@ -13,8 +13,8 @@ import { closedRecently, DISMISSED_KEY, PROMPT_OPEN_ATTRIBUTE } from './prompt-o
  *
  * Once the visitor has scrolled past the hero, a dismissible modal with the
  * Goodies as a promotion, and the shared newsletter CTA under them, appears:
- * at most once a page load, and not for a day once closed. Closing it stores
- * the time in localStorage, and a visit 24 hours later sees it again
+ * at most once a page load, and not for twelve hours once closed. Closing it stores
+ * the time in localStorage, and a visit 12 hours later sees it again
  * (`PROMPT_RETURNS_AFTER_MS`). Mounted once globally in the root layout.
  *
  * The Goodies (`GoodiesCallToAction`) stay out on the shop's own pages, where
