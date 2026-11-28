@@ -10,11 +10,15 @@ import { Button, Stack, Text, Title } from '@mantine/core';
  *
  * An h2 drawn at h3's size: in the footer of a page with no h2 of its own
  * (Legal, the FAQ), an h3 here followed the h1 with a level skipped.
+ *
+ * `quiet` is for the prompt, where it sits under the Goodies: a smaller
+ * heading and a plain button, so the one filled button there is the
+ * promotion's. The footer never passes it and stays as it was.
  */
-export function NewsletterCallToAction() {
+export function NewsletterCallToAction({ quiet = false }: { quiet?: boolean }) {
   return (
     <Stack gap="xs" align="center">
-      <Title order={2} size="h3" ta="center">
+      <Title order={2} size={quiet ? 'h4' : 'h3'} ta="center">
         Get release updates
       </Title>
       <Text c="dimmed" ta="center" size="sm" maw={420}>
@@ -28,6 +32,7 @@ export function NewsletterCallToAction() {
         leftSection={<IconMail size={16} />}
         radius="xl"
         mt="xs"
+        variant={quiet ? 'default' : undefined}
       >
         Subscribe for updates
       </Button>
