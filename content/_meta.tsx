@@ -25,7 +25,7 @@ import {
 // Sidebar entry with a leading icon, tinted with its hue at shade 4: shade 6
 // is drawn for a light page and sank into the night (grape-6 is under 4:1 on
 // it). On the active row app/global.css hands the stroke back to the row's
-// white text. The label stays a bare string so it keeps Nextra's own
+// white text. The label stays a bare string so it keeps the sidebar's own
 // active/hover colour (a Mantine `Text` would impose its own token). Kept as
 // a small helper so every page entry reads as `nav(Icon, 'Label')`.
 function nav(Icon: typeof IconBook2, label: string, color?: string): { title: ReactNode } {

@@ -1,135 +1,78 @@
-@import 'nextra-theme-docs/dist/style.css' layer(nextra);
-
-/**
- * Custom styles
- *
- * You can add your own custom styles here. This file will be imported after the theme styles.
- * This is a great place to add your own utility classes or override styles.
- *
- * In this case we're going to fix a glitch with the text size in the code blocks. 
+/*
+ * The site's own rules over the docs engine's shell (components/shell) and
+ * Mantine. Unlayered, after Mantine's CSS (app/layout.tsx imports this last).
  */
-@layer overwrite {
-  html {
-    scroll-behavior: smooth;
-  }
-
-  /* Nextra's chrome (navbar, sidebar, docs body) on the page's own surface. */
-  :root {
-    --x-color-nextra-bg: var(--fg-page);
-  }
-
-  /*
-   * The navbar is part of the page, not a bar laid over it: no rule under it,
-   * and on the home page its translucent layer takes the colour the page
-   * STARTS with, so at the top it cannot be told from the gradient behind
-   * it, and once scrolled it stays the page's top colour over the content.
-   */
-  .nextra-navbar-blur {
-    border-bottom-color: transparent;
-  }
-
-  /* The release banner in the icon's outline denim, not Nextra's grey. */
-  .nextra-banner {
-    background: var(--fg-denim);
-  }
-
-  body:has(.fg-home) .nextra-navbar-blur {
-    background-color: color-mix(in srgb, var(--fg-top) 78%, transparent);
-  }
-
-  :where(.dark) {
-    --x-color-neutral-800: var(--mantine-color-dark-6);
-  }
-
-  .x\:text-sm {
-    font-size: var(--x-text-sm) !important;
-    line-height: var(--tw-leading, var(--x-text-sm--line-height)) !important;
-  }
-
-  /*
-   * The active sidebar row. The brand's filled shade rather than the primary
-   * itself: white on the Finder's blue is 2.9:1, on this 4.7:1. Mantine's
-   * blue-6, which it was, measured 3.6:1.
-   */
-  .x\:bg-primary-100 {
-    background-color: var(--mantine-color-findergit-6) !important;
-  }
-
-  /*
-   * A tinted sidebar icon carries its hue as the SVG's stroke attribute, which
-   * CSS outranks: on the active row it follows the row's white text instead of
-   * sitting, grape on blue, where nobody can see it. (netfox.app, measured.)
-   */
-  .x\:bg-primary-100 svg {
-    stroke: currentColor !important;
-  }
-
-  /*
-   * Code blocks as the night's glass, not Nextra's pure black: a black slab
-   * on the navy page read as a hole cut in it.
-   */
-  article pre {
-    background-color: var(--fg-glass) !important;
-    border-color: var(--fg-rule) !important;
-  }
-
-  .x\:text-primary-800 {
-    color: var(--mantine-color-white) !important;
-  }
-
-  /*
-   * A full-bleed section wash, feathered back to the page colour at its own
-   * top and bottom edge (ported from netfox.app, where the same seams were
-   * measured). A wash at full strength exactly where its section begins draws
-   * a hard line across the page, and a line across the page reads as a rule:
-   * the page looks ruled into strips. This restores the page colour at the
-   * boundary and dissolves it inward, so two sections meet through a stretch
-   * of page rather than at an edge.
-   *
-   * An overlay rather than a `mask-image`, because the wash is the section's
-   * own background: masking the section would mask its copy too. `z-index: 0` sits above the wash and below the
-   * content, which these sections pin at `zIndex: 1`. Lengths, not
-   * percentages: a percentage of a tall section dissolves the section, not
-   * its edge. Set `--fg-feather-top: 0px` where a side has nothing to meet.
-   */
-  .fg-feather {
-    position: relative;
-  }
-
-  .fg-feather::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background:
-      linear-gradient(to bottom, var(--fg-page) 0, transparent var(--fg-feather-top, 110px)),
-      linear-gradient(to top, var(--fg-page) 0, transparent var(--fg-feather-bottom, 110px));
-    pointer-events: none;
-  }
-
-  nav.nextra-toc {
-    li {
-      a.x\:text-primary-600 {
-        position: relative;
-        color: var(--fg-blue) !important;
-      }
-
-      a.x\:text-primary-600::before {
-        content: '';
-        display: block;
-        width: 2px;
-        height: 100%;
-        background: var(--fg-blue);
-        position: absolute;
-        left: -8px;
-        top: 0;
-        z-index: 10;
-      }
-    }
-  }
+html {
+  scroll-behavior: smooth;
 }
 
-@layer components, mantine, nextra, overwrite;
+/* The release banner in the icon's outline denim (the engine's own hook). */
+:root {
+  --site-banner-background: var(--fg-denim);
+}
+
+/*
+ * The header is part of the page, not a bar laid over it: no rule under it,
+ * and on the home page its translucent layer takes the colour the page
+ * STARTS with, so at the top it cannot be told from the gradient behind it,
+ * and once scrolled it stays the page's top colour over the content.
+ */
+header.mantine-AppShell-header {
+  border-bottom-color: transparent;
+}
+
+body:has(.fg-home) header.mantine-AppShell-header {
+  background-color: color-mix(in srgb, var(--fg-top) 78%, transparent);
+}
+
+/*
+ * The active sidebar row. The brand's filled shade rather than the engine's
+ * light tint: white on findergit-6 measures 4.7:1 (on the Finder's blue
+ * itself, 2.9:1), as on the Nextra site.
+ */
+nav.mantine-AppShell-navbar .mantine-NavLink-root[data-active] {
+  background-color: var(--mantine-color-findergit-6);
+  color: var(--mantine-color-white);
+}
+
+/*
+ * A tinted sidebar icon carries its hue as the SVG's stroke attribute, which
+ * CSS outranks: on the active row it follows the row's white text instead of
+ * sitting, grape on blue, where nobody can see it. (netfox.app, measured.)
+ */
+nav.mantine-AppShell-navbar .mantine-NavLink-root[data-active] svg {
+  stroke: currentColor;
+}
+
+/*
+ * A full-bleed section wash, feathered back to the page colour at its own
+ * top and bottom edge (ported from netfox.app, where the same seams were
+ * measured). A wash at full strength exactly where its section begins draws
+ * a hard line across the page, and a line across the page reads as a rule:
+ * the page looks ruled into strips. This restores the page colour at the
+ * boundary and dissolves it inward, so two sections meet through a stretch
+ * of page rather than at an edge.
+ *
+ * An overlay rather than a `mask-image`, because the wash is the section's
+ * own background: masking the section would mask its copy too. `z-index: 0` sits above the wash and below the
+ * content, which these sections pin at `zIndex: 1`. Lengths, not
+ * percentages: a percentage of a tall section dissolves the section, not
+ * its edge. Set `--fg-feather-top: 0px` where a side has nothing to meet.
+ */
+.fg-feather {
+  position: relative;
+}
+
+.fg-feather::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(to bottom, var(--fg-page) 0, transparent var(--fg-feather-top, 110px)),
+    linear-gradient(to top, var(--fg-page) 0, transparent var(--fg-feather-bottom, 110px));
+  pointer-events: none;
+}
 
 /*
  * A FinderGit Tutorial in the docs (`Tutorial`): the film's poster in a 16:9

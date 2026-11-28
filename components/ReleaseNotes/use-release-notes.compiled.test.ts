@@ -7,7 +7,7 @@ const mockLoaded = jest.fn();
 jest.mock('./load-releases', () => {
   mockLoaded();
   return {
-    compileReleaseBodies: async (releases: Release[]) =>
+    compileReleaseBodies: (releases: Release[]) =>
       releases.map((r) => ({ ...r, rawBody: r.body ?? '', body: `compiled:${r.body ?? ''}` })),
   };
 });

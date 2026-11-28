@@ -1,0 +1,26 @@
+.trigger {
+  display: block;
+  max-width: 100%;
+  cursor: zoom-in;
+  border-radius: var(--mantine-radius-md);
+  overflow: hidden;
+
+  & img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.body {
+  line-height: 0;
+}
+
+.full {
+  display: block;
+  width: auto;
+  max-width: 90vw;
+  height: auto;
+  max-height: 90vh;
+  cursor: zoom-out;
+}

@@ -1,7 +1,6 @@
 /*
  * The whole site is at night, with no switch (user, 2026-09-23: the same as
- * netfox.app). Mantine and Nextra are both FORCED to their dark schemes in
- * app/layout.tsx. Unlike netfox.app, which writes its night over Mantine's
+ * netfox.app). Mantine is FORCED to its dark scheme in app/layout.tsx. Unlike netfox.app, which writes its night over Mantine's
  * light scheme because its redesign started light, this site was already
  * drawn for dark: every component has its dark variant, so the night here is
  * Mantine's own dark scheme, tinted from the icon through theme.ts's `dark`
@@ -41,11 +40,11 @@ html {
   /*
    * The night's surfaces, cut from the outline's navy. One token each, so
    * everything that has to dissolve INTO the page (a section's feathered
-   * edge, Nextra's own chrome) names the colour the body is painted with.
-   * Declared on :root, not on the body: a var() inside a custom property
-   * resolves where it is declared, so a token Nextra reads from html
-   * (`--x-color-nextra-bg: var(--fg-page)`) would keep the root's value
-   * whatever the body said. Measured on netfox.app.
+   * edge, the header's translucent layer) names the colour the body is
+   * painted with. Declared on :root, not on the body: a var() inside a
+   * custom property resolves where it is declared, so a token read from
+   * html would keep the root's value whatever the body said. Measured on
+   * netfox.app.
    *
    * - `--fg-page`    #0b1628, the page.
    * - `--fg-top`     #0f2547, the navy the home page starts with; its navbar
@@ -285,20 +284,5 @@ body {
 
   &:hover {
     transform: scale(1.02);
-  }
-}
-
-/*
- * Raise Nextra's desktop-nav cutoff from 768px (md) to 1200px (lg).
- * Between 768 and 1200 the 5 top-level nav items + search + controls
- * don't fit, so we force the hamburger menu to appear earlier.
- */
-@media (max-width: 1199.98px) {
-  .nextra-navbar [class*='max-md:hidden'] {
-    display: none !important;
-  }
-
-  .nextra-hamburger {
-    display: inline-flex !important;
   }
 }

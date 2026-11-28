@@ -1,0 +1,22 @@
+.inner {
+  backdrop-filter: blur(8px);
+}
+
+.navLink {
+  display: block;
+  padding: rem(6px) var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-md);
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 500;
+  color: var(--mantine-color-dimmed);
+
+  &:hover {
+    color: var(--mantine-color-text);
+    background-color: var(--mantine-color-default-hover);
+  }
+
+  &[data-active] {
+    color: var(--mantine-primary-color-light-color);
+    background-color: var(--mantine-primary-color-light);
+  }
+}

@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import NextImage from 'next/image';
 import { notFound } from 'next/navigation';
-import { SkipNavContent } from 'nextra/components';
 import {
   Anchor,
   Badge,
@@ -112,207 +111,204 @@ export default function GoodiesPage() {
 
   return (
     <>
-      <SkipNavContent />
-      <main>
-        <Box pos="relative" className={`fg-home ${classes.heroGround}`}>
-          <Container size="lg" py={64}>
-            <Grid gap={{ base: 40, md: 56 }} align="center">
-              <GridCol span={{ base: 12, md: 6 }}>
-                <Stack gap="lg" className={classes.night}>
-                  <Badge size="lg" variant="filled" w="fit-content">
-                    {GOODIES_PRICE}, one-off
-                  </Badge>
-                  <Title order={1} fz={{ base: 36, sm: 52 }} fw={900} lh={1.05}>
-                    Bring FinderGit to your whole Mac
-                  </Title>
-                  <Text c="dimmed" size="xl">
-                    Two screen savers, wallpapers for every screen, video-call backgrounds and pixel
-                    folder emoji, made from FinderGit’s world. Every purchase helps keep FinderGit
-                    free.
-                  </Text>
-                  <Box>
-                    <BuyButton href={shop.paymentLinkUrl} />
-                  </Box>
-                  <Text c="dimmed" size="sm">
-                    {`${GOODIES_PRICE}, VAT included · One-time purchase · The screen savers need macOS 15.6 or later`}
-                  </Text>
-                </Stack>
-              </GridCol>
-              <GridCol span={{ base: 12, md: 6 }}>
-                <div className={classes.pair}>
-                  <NextImage
-                    className={`${classes.picture} ${classes.shadowed} ${classes.pairBack}`}
-                    src="/goodies/goodies-saver-mainline.jpg"
-                    alt="FinderGit Mainline: a flight over a glowing commit graph"
-                    width={1280}
-                    height={720}
-                    sizes={HERO_SIZES}
-                    loading="eager"
-                    fetchPriority="high"
-                  />
-                  <NextImage
-                    className={`${classes.picture} ${classes.shadowed} ${classes.pairFront}`}
-                    src="/goodies/goodies-saver-streak.jpg"
-                    alt="FinderGit Streak: a wall of contribution calendars filling in"
-                    width={1280}
-                    height={720}
-                    sizes={HERO_SIZES}
-                    loading="eager"
-                  />
-                </div>
-              </GridCol>
-            </Grid>
-          </Container>
-        </Box>
-
+      <Box pos="relative" className={`fg-home ${classes.heroGround}`}>
         <Container size="lg" py={64}>
-          <Stack align="center" gap="md" mb={40}>
-            <Text {...EYEBROW}>The film</Text>
-            <Title order={2} ta="center" fz={{ base: 30, sm: 40 }} fw={900}>
-              The whole pack in 36 seconds
-            </Title>
-          </Stack>
-          <GoodiesFilm />
-        </Container>
-
-        <Container size="lg" py={64}>
-          <Stack align="center" gap="md" mb={40}>
-            <Text {...EYEBROW}>In the pack</Text>
-            <Title order={2} ta="center" fz={{ base: 30, sm: 40 }} fw={900}>
-              One download, everything inside
-            </Title>
-          </Stack>
-          <GoodiesInside />
-        </Container>
-
-        <Container size="lg" py={64}>
-          <Stack align="center" gap="md" mb={40}>
-            <Text {...EYEBROW}>The screen savers</Text>
-            <Title order={2} ta="center" fz={{ base: 30, sm: 40 }} fw={900}>
-              Two ways to leave your Mac alone
-            </Title>
-            <Text c="dimmed" ta="center" maw={680}>
-              Neither one reads a repository, runs git or touches the network: everything in them is
-              invented on your Mac, so they work on any Mac. Three colour palettes each and a
-              settings sheet. macOS 15.6 or later, Apple silicon and Intel.
-            </Text>
-          </Stack>
-          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="xl">
-            {SAVERS.map(([id, name, text]) => (
-              <Stack key={id} gap="sm">
-                <NextImage
-                  className={`${classes.picture} ${classes.shadowed}`}
-                  src={`/goodies/goodies-saver-${id}.jpg`}
-                  alt={`${name}, as it plays on screen`}
-                  width={1280}
-                  height={720}
-                  sizes={SAVER_SIZES}
-                  loading="lazy"
-                />
-                <Title order={3} fz="lg" fw={700}>
-                  {name}
+          <Grid gap={{ base: 40, md: 56 }} align="center">
+            <GridCol span={{ base: 12, md: 6 }}>
+              <Stack gap="lg" className={classes.night}>
+                <Badge size="lg" variant="filled" w="fit-content">
+                  {GOODIES_PRICE}, one-off
+                </Badge>
+                <Title order={1} fz={{ base: 36, sm: 52 }} fw={900} lh={1.05}>
+                  Bring FinderGit to your whole Mac
                 </Title>
+                <Text c="dimmed" size="xl">
+                  Two screen savers, wallpapers for every screen, video-call backgrounds and pixel
+                  folder emoji, made from FinderGit’s world. Every purchase helps keep FinderGit
+                  free.
+                </Text>
+                <Box>
+                  <BuyButton href={shop.paymentLinkUrl} />
+                </Box>
                 <Text c="dimmed" size="sm">
-                  {text}
+                  {`${GOODIES_PRICE}, VAT included · One-time purchase · The screen savers need macOS 15.6 or later`}
                 </Text>
               </Stack>
-            ))}
-          </SimpleGrid>
-        </Container>
-
-        <Container size="lg" py={64}>
-          <Stack align="center" gap="md" mb={40}>
-            <Text {...EYEBROW}>The designs</Text>
-            <Title order={2} ta="center" fz={{ base: 30, sm: 40 }} fw={900}>
-              Five pictures, every screen
-            </Title>
-          </Stack>
-          <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
-            {WALLPAPERS.map(([id, name]) => (
-              <Stack key={id} gap="xs">
+            </GridCol>
+            <GridCol span={{ base: 12, md: 6 }}>
+              <div className={classes.pair}>
                 <NextImage
-                  className={classes.picture}
-                  src={`/goodies/goodies-wallpaper-${id}.jpg`}
-                  alt={`The ${name} wallpaper`}
+                  className={`${classes.picture} ${classes.shadowed} ${classes.pairBack}`}
+                  src="/goodies/goodies-saver-mainline.jpg"
+                  alt="FinderGit Mainline: a flight over a glowing commit graph"
                   width={1280}
                   height={720}
-                  sizes={GALLERY_SIZES}
-                  loading="lazy"
-                />
-                <Text size="sm" fw={600}>
-                  {name}
-                </Text>
-              </Stack>
-            ))}
-            <Stack gap="xs">
-              <div className={`${classes.picture} ${classes.emojiTile}`}>
-                {/* 128px is 4x the art's 32px grid: drawn at its own size, never scaled. */}
-                <NextImage
-                  className={classes.emoji}
-                  src="/goodies/goodies-emoji-stand.png"
-                  alt="The pixel folder character, standing"
-                  width={128}
-                  height={128}
-                  unoptimized
-                  loading="lazy"
+                  sizes={HERO_SIZES}
+                  loading="eager"
+                  fetchPriority="high"
                 />
                 <NextImage
-                  className={classes.emoji}
-                  src="/goodies/goodies-emoji-wave.png"
-                  alt="The pixel folder character, waving"
-                  width={128}
-                  height={128}
-                  unoptimized
-                  loading="lazy"
+                  className={`${classes.picture} ${classes.shadowed} ${classes.pairFront}`}
+                  src="/goodies/goodies-saver-streak.jpg"
+                  alt="FinderGit Streak: a wall of contribution calendars filling in"
+                  width={1280}
+                  height={720}
+                  sizes={HERO_SIZES}
+                  loading="eager"
                 />
               </div>
-              <Text size="sm" fw={600}>
-                Pixel folder emoji
+            </GridCol>
+          </Grid>
+        </Container>
+      </Box>
+
+      <Container size="lg" py={64}>
+        <Stack align="center" gap="md" mb={40}>
+          <Text {...EYEBROW}>The film</Text>
+          <Title order={2} ta="center" fz={{ base: 30, sm: 40 }} fw={900}>
+            The whole pack in 36 seconds
+          </Title>
+        </Stack>
+        <GoodiesFilm />
+      </Container>
+
+      <Container size="lg" py={64}>
+        <Stack align="center" gap="md" mb={40}>
+          <Text {...EYEBROW}>In the pack</Text>
+          <Title order={2} ta="center" fz={{ base: 30, sm: 40 }} fw={900}>
+            One download, everything inside
+          </Title>
+        </Stack>
+        <GoodiesInside />
+      </Container>
+
+      <Container size="lg" py={64}>
+        <Stack align="center" gap="md" mb={40}>
+          <Text {...EYEBROW}>The screen savers</Text>
+          <Title order={2} ta="center" fz={{ base: 30, sm: 40 }} fw={900}>
+            Two ways to leave your Mac alone
+          </Title>
+          <Text c="dimmed" ta="center" maw={680}>
+            Neither one reads a repository, runs git or touches the network: everything in them is
+            invented on your Mac, so they work on any Mac. Three colour palettes each and a settings
+            sheet. macOS 15.6 or later, Apple silicon and Intel.
+          </Text>
+        </Stack>
+        <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="xl">
+          {SAVERS.map(([id, name, text]) => (
+            <Stack key={id} gap="sm">
+              <NextImage
+                className={`${classes.picture} ${classes.shadowed}`}
+                src={`/goodies/goodies-saver-${id}.jpg`}
+                alt={`${name}, as it plays on screen`}
+                width={1280}
+                height={720}
+                sizes={SAVER_SIZES}
+                loading="lazy"
+              />
+              <Title order={3} fz="lg" fw={700}>
+                {name}
+              </Title>
+              <Text c="dimmed" size="sm">
+                {text}
               </Text>
             </Stack>
-          </SimpleGrid>
-        </Container>
+          ))}
+        </SimpleGrid>
+      </Container>
 
-        <Container size="sm" py={64}>
-          <Stack gap="lg">
-            <Title order={2} fz={{ base: 28, sm: 34 }} fw={900}>
-              How you get it
-            </Title>
-            <Text>
-              <strong>Pay once.</strong> Checkout is secure, the price includes VAT, and your
-              receipt comes by email.
-            </Text>
-            <Text>
-              <strong>Download.</strong> You land on your download page: the Mac disk image holds
-              everything, and the pictures also come on their own as a ZIP, for any other system.
-            </Text>
-            <Text>
-              <strong>Come back any time.</strong>
-              {emailsTheLink
-                ? ' We email you the link to your download page, and it always serves the latest version of the pack.'
-                : ' Bookmark your download page: it always serves the latest version of the pack.'}
-            </Text>
-            <Text>
-              <strong>Yours to use.</strong> Everything is licensed for your own devices, for
-              yourself and your own work. <Anchor href="/goodies/licence">Read the licence</Anchor>.
+      <Container size="lg" py={64}>
+        <Stack align="center" gap="md" mb={40}>
+          <Text {...EYEBROW}>The designs</Text>
+          <Title order={2} ta="center" fz={{ base: 30, sm: 40 }} fw={900}>
+            Five pictures, every screen
+          </Title>
+        </Stack>
+        <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
+          {WALLPAPERS.map(([id, name]) => (
+            <Stack key={id} gap="xs">
+              <NextImage
+                className={classes.picture}
+                src={`/goodies/goodies-wallpaper-${id}.jpg`}
+                alt={`The ${name} wallpaper`}
+                width={1280}
+                height={720}
+                sizes={GALLERY_SIZES}
+                loading="lazy"
+              />
+              <Text size="sm" fw={600}>
+                {name}
+              </Text>
+            </Stack>
+          ))}
+          <Stack gap="xs">
+            <div className={`${classes.picture} ${classes.emojiTile}`}>
+              {/* 128px is 4x the art's 32px grid: drawn at its own size, never scaled. */}
+              <NextImage
+                className={classes.emoji}
+                src="/goodies/goodies-emoji-stand.png"
+                alt="The pixel folder character, standing"
+                width={128}
+                height={128}
+                unoptimized
+                loading="lazy"
+              />
+              <NextImage
+                className={classes.emoji}
+                src="/goodies/goodies-emoji-wave.png"
+                alt="The pixel folder character, waving"
+                width={128}
+                height={128}
+                unoptimized
+                loading="lazy"
+              />
+            </div>
+            <Text size="sm" fw={600}>
+              Pixel folder emoji
             </Text>
           </Stack>
-        </Container>
+        </SimpleGrid>
+      </Container>
 
-        <Container size="sm" pb={80}>
-          <Stack align="center" gap="md" ta="center">
-            <Title order={2} fz={{ base: 28, sm: 34 }} fw={900}>
-              Every purchase helps keep FinderGit free
-            </Title>
-            <BuyButton href={shop.paymentLinkUrl} />
-            <Text c="dimmed" size="sm">
-              {'Questions? Write to '}
-              <Anchor href={`mailto:${GOODIES_SUPPORT_EMAIL}`}>{GOODIES_SUPPORT_EMAIL}</Anchor>
-              {'.'}
-            </Text>
-          </Stack>
-        </Container>
-      </main>
+      <Container size="sm" py={64}>
+        <Stack gap="lg">
+          <Title order={2} fz={{ base: 28, sm: 34 }} fw={900}>
+            How you get it
+          </Title>
+          <Text>
+            <strong>Pay once.</strong> Checkout is secure, the price includes VAT, and your receipt
+            comes by email.
+          </Text>
+          <Text>
+            <strong>Download.</strong> You land on your download page: the Mac disk image holds
+            everything, and the pictures also come on their own as a ZIP, for any other system.
+          </Text>
+          <Text>
+            <strong>Come back any time.</strong>
+            {emailsTheLink
+              ? ' We email you the link to your download page, and it always serves the latest version of the pack.'
+              : ' Bookmark your download page: it always serves the latest version of the pack.'}
+          </Text>
+          <Text>
+            <strong>Yours to use.</strong> Everything is licensed for your own devices, for yourself
+            and your own work. <Anchor href="/goodies/licence">Read the licence</Anchor>.
+          </Text>
+        </Stack>
+      </Container>
+
+      <Container size="sm" pb={80}>
+        <Stack align="center" gap="md" ta="center">
+          <Title order={2} fz={{ base: 28, sm: 34 }} fw={900}>
+            Every purchase helps keep FinderGit free
+          </Title>
+          <BuyButton href={shop.paymentLinkUrl} />
+          <Text c="dimmed" size="sm">
+            {'Questions? Write to '}
+            <Anchor href={`mailto:${GOODIES_SUPPORT_EMAIL}`}>{GOODIES_SUPPORT_EMAIL}</Anchor>
+            {'.'}
+          </Text>
+        </Stack>
+      </Container>
     </>
   );
 }

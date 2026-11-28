@@ -1,0 +1,28 @@
+.body {
+  font-size: var(--mantine-font-size-sm);
+  margin-top: var(--mantine-spacing-xs);
+}
+
+/* Release bodies often start with h1/h2 — scale them down inside the timeline */
+.body :global(h1),
+.body :global(h2) {
+  font-size: var(--mantine-font-size-lg);
+  margin-top: var(--mantine-spacing-sm);
+  margin-bottom: var(--mantine-spacing-xs);
+}
+
+.body :global(h3),
+.body :global(h4) {
+  font-size: var(--mantine-font-size-md);
+  margin-top: var(--mantine-spacing-sm);
+  margin-bottom: var(--mantine-spacing-xs);
+}
+
+.body :global(ul) {
+  margin-block: var(--mantine-spacing-xs);
+}
+
+/* A release linked from the table of contents lands below the fixed header */
+.item {
+  scroll-margin-top: calc(var(--app-shell-header-height, 0px) + var(--mantine-spacing-md));
+}

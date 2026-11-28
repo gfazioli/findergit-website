@@ -1,0 +1,17 @@
+.root {
+  padding-block: var(--mantine-spacing-lg);
+}
+
+.control {
+  line-height: 1.4;
+  padding-block: rem(5px);
+}
+
+.top {
+  padding-inline: 0;
+
+  &:hover {
+    background-color: transparent;
+    color: var(--mantine-color-text);
+  }
+}

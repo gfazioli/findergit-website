@@ -84,19 +84,13 @@ export interface Release {
   tarball_url: string;
   zipball_url: string;
   /**
-   * As GitHub serves it, the markdown; once compiled, the source for
-   * `MDXRemote`, or `null` when that one body would not compile -- never a
-   * reason to drop the release, since `rawBody` still holds it.
+   * As GitHub serves it, the markdown; once compiled, its HTML, or `null`
+   * when that one body would not compile -- never a reason to drop the
+   * release, since `rawBody` still holds it.
    */
   body: string | null;
   /** The body exactly as GitHub published it, for the plain-text fallback. */
   rawBody?: string;
-}
-
-export interface TOC {
-  value: string;
-  depth: string;
-  id: string;
 }
 
 /**
@@ -133,13 +127,13 @@ export function useReleaseNotes(initial: Release[] = []) {
       const fetchReleases = async () => {
         try {
           // Imported here, on the fallback, and nowhere else in the browser: the
-          // module brings nextra's MDX compiler, and a static import put it in
-          // the client JavaScript of EVERY page, 470 KB compressed that the home
-          // page downloaded and never ran (Lighthouse, 2026-09-29). The build
-          // compiles the releases on the server, so this runs only when it could
-          // not.
+          // module brings the Markdown compiler, which no page needs while the
+          // build compiles the releases on the server (a static import of the
+          // MDX compiler this replaced put 470 KB compressed in the client
+          // JavaScript of EVERY page, Lighthouse, 2026-09-29). This runs only
+          // when the build could not.
           const { compileReleaseBodies } = await import('./load-releases');
-          setCompiledReleases(await compileReleaseBodies(releases));
+          setCompiledReleases(compileReleaseBodies(releases));
         } catch (err) {
           // The chunk did not load. The releases were fetched all the same, so
           // they are shown as the text GitHub published, as one body that will

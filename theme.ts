@@ -60,6 +60,12 @@ export const theme = createTheme({
    * ignores that setting.
    */
   respectReducedMotion: true,
+  /*
+   * The pointer on every control Mantine draws, links included (the docs
+   * sidebar's NavLinks, the table of contents): its default, 'default', gives
+   * them the arrow. Nextra's own sidebar had the pointer.
+   */
+  cursorType: 'pointer',
   headings: {
     fontWeight: '600',
   },

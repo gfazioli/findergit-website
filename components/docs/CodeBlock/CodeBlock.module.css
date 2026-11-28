@@ -1,0 +1,24 @@
+.root {
+  margin-block: var(--mantine-spacing-md);
+}
+
+/* Both Shiki themes ride on every token; Mantine's colour scheme picks one. */
+.root :global(.line) span {
+  color: var(--shiki-light);
+}
+
+:global([data-mantine-color-scheme='dark']) .root :global(.line) span {
+  color: var(--shiki-dark);
+}
+
+/* Each line spans the full width, so a highlighted line (a line number in the fence meta)
+   reaches the edges. No braces in CSS comments: a canary test stops at the first one. */
+.root :global(.line) {
+  display: inline-block;
+  width: 100%;
+}
+
+.root :global(.line.highlighted) {
+  background-color: var(--mantine-primary-color-light);
+  box-shadow: inset 2px 0 0 var(--mantine-primary-color-filled);
+}

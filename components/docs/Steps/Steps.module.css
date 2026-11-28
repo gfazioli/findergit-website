@@ -1,0 +1,42 @@
+.steps {
+  counter-reset: step;
+  position: relative;
+  margin-block: var(--mantine-spacing-lg);
+  padding-left: rem(44px);
+}
+
+/* Vertical connector line behind the numbered circles */
+.steps::before {
+  content: '';
+  position: absolute;
+  top: rem(4px);
+  bottom: rem(4px);
+  left: rem(14px);
+  width: rem(1px);
+  background-color: var(--mantine-color-default-border);
+}
+
+.steps :global(:is(h2, h3, h4, h5, h6)) {
+  counter-increment: step;
+  position: relative;
+}
+
+.steps :global(:is(h2, h3, h4, h5, h6))::before {
+  content: counter(step);
+  position: absolute;
+  left: rem(-44px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: rem(28px);
+  height: rem(28px);
+  border-radius: 50%;
+  background-color: var(--mantine-color-default-hover);
+  border: rem(1px) solid var(--mantine-color-default-border);
+  outline: rem(6px) solid var(--mantine-color-body);
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 600;
+  color: var(--mantine-color-text);
+}

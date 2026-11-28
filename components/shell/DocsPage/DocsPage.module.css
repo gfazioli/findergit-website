@@ -1,0 +1,77 @@
+.root {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--mantine-spacing-xl);
+  width: 100%;
+  max-width: rem(1180px);
+  margin-inline: auto;
+  padding: var(--mantine-spacing-xl) var(--mantine-spacing-md);
+
+  @media (min-width: $mantine-breakpoint-md) {
+    padding-inline: var(--mantine-spacing-xl);
+  }
+
+  @media (min-width: $mantine-breakpoint-lg) {
+    &[data-toc='true'] {
+      grid-template-columns: minmax(0, 1fr) rem(240px);
+    }
+  }
+
+  &[data-layout='full'] {
+    max-width: none;
+  }
+}
+
+.content {
+  min-width: 0;
+  width: 100%;
+  max-width: rem(860px);
+  margin-inline: auto;
+
+  /* A long inline code, a bare URL or a long breadcrumb wraps instead of widening the page on a
+     phone (Nextra's article broke words too), and a raw <img> never outgrows the column. */
+  overflow-wrap: anywhere;
+
+  & img:not([class]) {
+    max-width: 100%;
+    height: auto;
+  }
+
+  [data-layout='full'] & {
+    max-width: none;
+  }
+}
+
+/* The table of contents follows the reader down the page, below the fixed header */
+.aside {
+  position: sticky;
+  top: calc(var(--app-shell-header-height, 0px) + var(--mantine-spacing-md));
+  align-self: start;
+  max-height: calc(100dvh - var(--app-shell-header-height, 0px) - var(--mantine-spacing-xl));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.breadcrumbs {
+  flex-wrap: wrap;
+
+  /* Mantine keeps each crumb on one line; a long title wraps (the page's overflow-wrap) */
+  & > * {
+    white-space: normal;
+  }
+}
+
+.card {
+  color: var(--mantine-color-text);
+  text-decoration: none;
+  transition: border-color 150ms ease;
+
+  &:hover {
+    border-color: var(--mantine-primary-color-filled);
+  }
+}
+
+.nextText {
+  text-align: right;
+}

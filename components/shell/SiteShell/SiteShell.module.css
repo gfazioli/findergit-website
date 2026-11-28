@@ -1,0 +1,91 @@
+.header {
+  background-color: alpha(var(--mantine-color-body), 0.85);
+}
+
+.mobileNav {
+  padding: var(--mantine-spacing-sm);
+  border-bottom: 1px solid var(--mantine-color-default-border);
+}
+
+.tree {
+  padding: var(--mantine-spacing-sm);
+}
+
+.navbarFooter {
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  border-top: 1px solid var(--mantine-color-default-border);
+}
+
+/* The skip link: above the fixed header, and on screen only while it has focus */
+.skipLink {
+  position: fixed;
+  top: var(--mantine-spacing-xs);
+  left: var(--mantine-spacing-xs);
+  z-index: 1000;
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-sm);
+  background-color: var(--mantine-color-body);
+  color: var(--mantine-color-text);
+  font-weight: 600;
+  transform: translateY(-200%);
+
+  &:focus {
+    transform: none;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+/* AppShell only slides a collapsed navbar out of view: hiding it also takes its links out of the
+   tab order. Visibility switches at the end of the slide when hiding, at once when showing. */
+.navbar {
+  transition-property: transform, top, height, visibility;
+}
+
+/* The same below the breakpoint: the phone's navbar, closed, slides off screen and its links
+   would still take the tab key. */
+@mixin smaller-than $mantine-breakpoint-md {
+  .navbar[data-mobile-collapsed] {
+    visibility: hidden;
+  }
+}
+
+@media (min-width: $mantine-breakpoint-md) {
+  .navbar[data-desktop-collapsed] {
+    visibility: hidden;
+  }
+
+  /* Before React runs, a stored "collapsed" arrives as an attribute on the root (see
+     lib/docs/sidebar.ts): the values AppShell itself sets for collapsed.desktop. */
+  :global(:root[data-sidebar-collapsed]) {
+    --app-shell-navbar-offset: 0px !important;
+    --app-shell-navbar-transform: translateX(calc(var(--app-shell-navbar-width) * -1)) !important;
+    --app-shell-navbar-transform-rtl: translateX(var(--app-shell-navbar-width)) !important;
+  }
+
+  :global(:root[data-sidebar-collapsed]) .navbar {
+    visibility: hidden;
+  }
+}
+
+/* The release banner sits in the fixed header, above the navigation row (60px, as in the header
+   prop): while it is shown the header grows by its height, from the first paint. A dismissed
+   banner is hidden before React runs, see Banner. Nextra keeps its banner sticky only on phones;
+   this one stays in view on every screen. */
+:global(:root:not([data-banner-dismissed]):has([data-site-banner])) {
+  --app-shell-header-height: calc(rem(60px) + var(--site-banner-height));
+  --app-shell-header-offset: calc(rem(60px) + var(--site-banner-height));
+}
+
+/* With the toggle at the foot of the sidebar, the header's button only brings a collapsed sidebar
+   back: hidden while the sidebar is open. Before React runs, the pre-paint attribute says whether
+   the stored sidebar is collapsed, so the button is there from the first paint. */
+:global(:root:not([data-sidebar-collapsed]))
+  .header[data-toggle='sidebar']:not([data-collapsed])
+  [data-sidebar-toggle='header'] {
+  display: none;
+}

@@ -2,19 +2,16 @@ import type { CSSProperties } from 'react';
 import { render } from '@/test-utils';
 import { DocsImage, docsSizes } from './DocsImage';
 
-// Nextra ships ESM that Jest does not transform. What is under test is what
-// DocsImage hands to ImageZoom, so a stand-in records exactly that.
-jest.mock(
-  'nextra/components',
-  () => ({
-    ImageZoom: (props: { alt?: string; sizes?: string; style?: CSSProperties }) => (
-      <img alt={props.alt} data-sizes={props.sizes} style={props.style} />
-    ),
-  }),
-  { virtual: true }
-);
+// What is under test is what DocsImage hands to the engine's ImageZoom, so a
+// stand-in records exactly that.
+jest.mock('@/components/docs', () => ({
+  ImageZoom: (props: { alt?: string; sizes?: string; style?: CSSProperties }) => (
+    <img alt={props.alt} data-sizes={props.sizes} style={props.style} />
+  ),
+}));
 
-// Static imports, the shape Nextra makes of a Markdown image in `public/`:
+// Static imports, the shape the engine's remark-static-images makes of a
+// Markdown image in `public/`:
 // the sidebar crop and a window shot, at their sizes on disk.
 const crop = {
   src: '/_next/static/media/screenshot-sidebar.1z71mrr.png',
@@ -64,18 +61,18 @@ describe('DocsImage', () => {
   });
 });
 
-// The column, measured: in rem and em, as Nextra lays it out, so that it
-// moves with the visitor's default font.
+// The column: in rem and em, as the engine lays it out, so that it moves with
+// the visitor's default font.
 describe('docsSizes', () => {
   it('follows the column for a picture of unknown width', () => {
     expect(docsSizes()).toBe(
-      '(width < 48em) calc(100vw - 2rem), (width < 80em) calc(100vw - 22rem), (width < 90em) calc(100vw - 38rem), 52rem'
+      '(width < 55.75em) calc(100vw - 2rem), (width < 62em) 53.75rem, (width < 75em) calc(100vw - 21.5rem), (width < 91.25em) calc(100vw - 38.5rem), 52.75rem'
     );
   });
 
   it('asks for the smaller of the column and the picture, in each stretch', () => {
     expect(docsSizes(380)).toBe(
-      '(width < 48em) min(calc(100vw - 2rem), 380px), (width < 80em) min(calc(100vw - 22rem), 380px), (width < 90em) min(calc(100vw - 38rem), 380px), min(52rem, 380px)'
+      '(width < 55.75em) min(calc(100vw - 2rem), 380px), (width < 62em) min(53.75rem, 380px), (width < 75em) min(calc(100vw - 21.5rem), 380px), (width < 91.25em) min(calc(100vw - 38.5rem), 380px), min(52.75rem, 380px)'
     );
   });
 });

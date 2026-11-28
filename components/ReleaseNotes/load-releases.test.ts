@@ -1,14 +1,12 @@
 import { appReleases, compileReleaseBodies, loadReleases } from './load-releases';
 import type { Release } from './use-release-notes';
 
-// The real compiler is ESM and needs a Node environment; what is under test is
-// what happens AROUND it, so it is replaced. The default export stands in for
-// the compile `loadReleases` uses when nothing is injected.
-jest.mock(
-  'nextra/compile',
-  () => ({ compileMdx: jest.fn(async (body: string) => `compiled:${body}`) }),
-  { virtual: true }
-);
+// `marked` is ESM, which Jest does not transform; what is under test is what
+// happens AROUND it, so it is replaced. It stands in for the compile
+// `loadReleases` uses when nothing is injected.
+jest.mock('marked', () => ({
+  marked: { parse: jest.fn((body: string) => `compiled:${body}`) },
+}));
 
 function release(tag: string, body: string | null, name = `FinderGit ${tag}`): Release {
   return {
@@ -26,23 +24,24 @@ function answer(status: number, json: unknown): Response {
 }
 
 describe('compileReleaseBodies', () => {
-  it('reads a release body as markdown, so a brace is never JavaScript', async () => {
-    const compile = jest.fn(async () => 'compiled');
-    await compileReleaseBodies([release('v1.0.0', 'hello')], compile as any);
-    expect(compile).toHaveBeenCalledWith('hello', { mdxOptions: { format: 'md' } });
+  it('compiles each body as GitHub-flavoured markdown, so a brace is never JavaScript', () => {
+    const { marked } = jest.requireMock('marked');
+    const out = compileReleaseBodies([release('v1.0.0', 'quoting { code = 1 }')]);
+    expect(marked.parse).toHaveBeenCalledWith('quoting { code = 1 }', { async: false, gfm: true });
+    expect(out[0].body).toBe('compiled:quoting { code = 1 }');
   });
 
-  it('lets one uncompilable body cost only its own formatting', async () => {
-    const compile = jest.fn(async (body: string) => {
+  it('lets one uncompilable body cost only its own formatting', () => {
+    const compile = jest.fn((body: string) => {
       if (body.includes('{')) {
         throw new Error('Could not parse expression with acorn');
       }
       return `compiled:${body}`;
     });
 
-    const out = await compileReleaseBodies(
+    const out = compileReleaseBodies(
       [release('v0.3.3', 'quoting { code = "-32600" } verbatim'), release('v0.3.2', 'fine')],
-      compile as any
+      compile
     );
 
     expect(out).toHaveLength(2);

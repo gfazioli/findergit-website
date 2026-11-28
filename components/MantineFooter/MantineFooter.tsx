@@ -74,7 +74,9 @@ const VerticalLinks = ({ list }: { list: VerticalLink[] }) => {
 export const MantineFooter = ({ year }: { year: number }) => {
   const { legal } = config;
   return (
-    <footer className={classes.contentFooter}>
+    // `contentinfo` said outright: the docs engine's shell draws the footer
+    // inside its `AppShell.Main`, where a <footer> is no landmark of its own.
+    <footer role="contentinfo" className={classes.contentFooter}>
       <Container className={classes.footer} size="lg">
         {/* The newsletter leads, and space separates it from the columns: no rule. */}
         <NewsletterSignup />
